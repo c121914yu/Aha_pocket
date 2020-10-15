@@ -1,0 +1,125 @@
+.home {
+  padding-bottom: 140rpx;
+}
+.home .header {
+  height: 30vh;
+  width: 100%;
+  background-color: var(--origin4);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.home .header .top {
+  height: 120rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.home .header .top .iconfont {
+  font-size: 46rpx;
+}
+.home .header .top .outIcon {
+  margin: 0 10rpx;
+  color: #fff;
+  text-align: center;
+}
+.home .header .top .outIcon view {
+  font-size: 24rpx;
+  font-weight: 300;
+}
+.home .header .top .input {
+  position: relative;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 0 55rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.home .header .top .input input {
+  width: 100%;
+}
+.home .header .top .input .iconfont {
+  position: absolute;
+  color: var(--origin4);
+}
+.home .header .top .input .iconfont.left {
+  left: 25rpx;
+}
+.home .header .top .input .iconfont.right {
+  right: 25rpx;
+}
+.home .header .slide-card {
+  margin: 0 auto;
+  height: 45vw;
+  width: 90vw;
+}
+.home .navs {
+/* 
+			轮播图下方位置 = 轮播图高度 + 搜索栏高度 - top高度
+			距离轮播图距离 = 轮播图下方位置 + 偏移量
+		*/
+  margin: calc(45vw + 120rpx - 30vh + 30rpx) 0 30rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+}
+.home .navs .nav {
+  text-align: center;
+}
+.home .navs .nav .iconfont {
+  font-size: 60rpx;
+  padding: 25rpx;
+  background-color: var(--origin3);
+  color: #fff;
+  border: 2px solid var(--origin2);
+  border-radius: 50%;
+}
+.home .navs .nav .text {
+  margin-top: 10rpx;
+  font-weight: bold;
+  color: var(--origin4);
+}
+.home .navs .nav:last-child .iconfont {
+  padding: 25rpx 80rpx;
+  background-color: var(--origin4);
+  border-radius: 30px;
+}
+.home .recommand {
+  margin: 0 auto;
+  width: 90%;
+}
+.home .recommand .title {
+  padding: 20rpx;
+  background-color: var(--origin2);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.home .recommand .title .text {
+  color: var(--origin5);
+}
+.home .recommand .title .iconfont {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: var(--origin4);
+}
+

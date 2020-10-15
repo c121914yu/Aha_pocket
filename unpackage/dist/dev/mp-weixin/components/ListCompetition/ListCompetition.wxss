@@ -1,0 +1,79 @@
+.competition-list .item.data-v-cee61370 {
+  position: relative;
+  margin-bottom: 10px;
+  height: 200rpx;
+  line-height: 1.3;
+  padding: 5rpx 15rpx;
+  background-color: var(--origin2);
+  border-radius: 15px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+/* 左侧小图 */
+}
+.competition-list .item.data-v-cee61370:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.competition-list .item .left.data-v-cee61370 {
+  width: 170rpx;
+  height: 170rpx;
+  background-color: var(--origin3);
+  border-radius: 10px;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.competition-list .item .left image.data-v-cee61370 {
+  width: 100%;
+  height: 100%;
+}
+.competition-list .item .content.data-v-cee61370 {
+  margin: 0 30rpx 0 20rpx;
+  height: 100%;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  font-weight: 600;
+  color: var(--origin4);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.competition-list .item .content .brief.data-v-cee61370 {
+  height: 100rpx;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.competition-list .item .collect.data-v-cee61370 {
+  position: absolute;
+  right: 0;
+  bottom: -10rpx;
+  font-size: 30px;
+  color: var(--origin4);
+}
+.competition-list .item .collect.collected.data-v-cee61370 {
+  color: var(--origin5);
+}
+

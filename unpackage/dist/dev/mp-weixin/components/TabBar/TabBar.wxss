@@ -1,0 +1,34 @@
+.tabBar.data-v-43a9aa84 {
+  z-index: 10;
+  position: fixed;
+  bottom: 0;
+  height: 140rpx;
+  width: 100%;
+  background-color: var(--origin4);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  text-align: center;
+}
+.tabBar .nav.data-v-43a9aa84 {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  color: #fff;
+  line-height: 1.2;
+}
+.tabBar .nav.active.data-v-43a9aa84 {
+  color: var(--origin2);
+}
+.tabBar .nav .iconfont.data-v-43a9aa84 {
+  font-size: 46rpx;
+}
+.tabBar .nav .text.data-v-43a9aa84 {
+  font-size: 30rpx;
+}
+

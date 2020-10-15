@@ -1,0 +1,37 @@
+.code.data-v-3c6cb780 {
+  margin: 20rpx auto;
+  width: 90%;
+}
+.code .unshow-input.data-v-3c6cb780 {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.code .inputs.data-v-3c6cb780 {
+  z-index: 2;
+  margin: 10px 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.code .inputs .item.data-v-3c6cb780 {
+  margin: 0 10rpx;
+  width: 80rpx;
+  height: 80rpx;
+  border: 1px solid #000;
+  border-radius: 10px;
+  font-size: 40rpx;
+  text-align: center;
+  line-height: 80rpx;
+}
+.code .inputs .item.focus.data-v-3c6cb780 {
+  border-color: var(--origin5);
+  box-shadow: 0 0 5px var(--origin5);
+}
+.code .sendCode.data-v-3c6cb780 {
+  text-align: end;
+}
+
