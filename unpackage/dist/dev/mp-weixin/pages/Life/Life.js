@@ -129,7 +129,7 @@ var _default =
 
 /***/ }),
 
-/***/ 69:
+/***/ 71:
 /*!***********************************************************!*\
   !*** D:/服务外包/竞赛统计/main.js?{"page":"pages%2FLife%2FLife"} ***!
   \***********************************************************/
@@ -145,5 +145,5 @@ createPage(_Life.default);
 
 /***/ })
 
-},[[69,"common/runtime","common/vendor"]]]);
+},[[71,"common/runtime","common/vendor"]]]);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/Life/Life.js.map

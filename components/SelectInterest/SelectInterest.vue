@@ -1,12 +1,16 @@
 <template>
 	<view class="select-interest">
+		<!-- 蒙层 -->
 		<view class="mask"></view>
+		<!-- 主体内容 -->
 		<view class="content">
+			<!-- 标题 -->
 			<view class="h3">根据需求为你定制推荐内容</view>
-			<view class="arrow-right">
+			<view class="arrow-right" @click="$emit('close')">
 				<text class="iconfont icon-arrow-right icon"></text>
 				<text class="text small">跳过</text>
 			</view>
+			<!-- 标签选择 -->
 			<view class="select">
 				<view class="title strong">个人</view>
 				<view class="select-box">
@@ -45,6 +49,7 @@
 					</view>
 				</view>
 			</view>
+			<!-- 底部按键 -->
 			<view class="bottom">
 				<button @click="sure">确认</button>
 			</view>
@@ -95,9 +100,11 @@
 .select-interest
 	z-index 100
 	position fixed
-	height 100%
-	width 100%
-	animation show 1s ease-in-out
+	top 0
+	left 0
+	height 100vh
+	width 100vw
+	animation show .8s ease
 	@keyframes show
 		0%
 			transform translateY(100%)

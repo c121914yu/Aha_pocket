@@ -78,10 +78,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   SlideCard: function() {
-    return __webpack_require__.e(/*! import() | components/SlideCard/SlideCard */ "components/SlideCard/SlideCard").then(__webpack_require__.bind(null, /*! @/components/SlideCard/SlideCard.vue */ 86))
+    return __webpack_require__.e(/*! import() | components/SlideCard/SlideCard */ "components/SlideCard/SlideCard").then(__webpack_require__.bind(null, /*! @/components/SlideCard/SlideCard.vue */ 88))
   },
   ListCompetition: function() {
-    return __webpack_require__.e(/*! import() | components/ListCompetition/ListCompetition */ "components/ListCompetition/ListCompetition").then(__webpack_require__.bind(null, /*! @/components/ListCompetition/ListCompetition.vue */ 93))
+    return __webpack_require__.e(/*! import() | components/ListCompetition/ListCompetition */ "components/ListCompetition/ListCompetition").then(__webpack_require__.bind(null, /*! @/components/ListCompetition/ListCompetition.vue */ 95))
   }
 }
 var render = function() {
@@ -223,7 +223,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 68:
+/***/ 70:
 /*!***********************************************************!*\
   !*** D:/服务外包/竞赛统计/main.js?{"page":"pages%2FHome%2FHome"} ***!
   \***********************************************************/
@@ -239,5 +239,5 @@ createPage(_Home.default);
 
 /***/ })
 
-},[[68,"common/runtime","common/vendor"]]]);
+},[[70,"common/runtime","common/vendor"]]]);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/Home/Home.js.map

@@ -1,46 +1,50 @@
 {
 	"pages": [{
-			"path": "pages/Login/Login",
-			"style": {
-				"navigationBarTitleText": "登录"
-			}
-		}, {
-			"path": "pages/Login/Register",
-			"style": {
-				"navigationBarTitleText": "用户注册"
-			}
-		}, {
-			"path": "pages/Login/FindPassword",
-			"style": {
-				"navigationBarTitleText": "找回密码"
-			}
-		},{
-			"path": "pages/app",
-			"style": {
-				"navigationBarTitleText": "竞赛"
-			}
-		}, {
-			"path": "pages/Home/Home",
-			"style": {
-				"navigationBarTitleText": "竞赛"
-			}
-		}, {
-			"path": "pages/Life/Life",
-			"style": {
-				"navigationBarTitleText": "生活"
-			}
-		}, {
-			"path": "pages/Member/Member",
-			"style": {
-				"navigationBarTitleText": "会员"
-			}
-		}, {
-			"path": "pages/Self/Self",
-			"style": {
-				"navigationBarTitleText": "个人"
-			}
+		"path": "pages/Login/Login",
+		"style": {
+			"navigationBarTitleText": "登录"
 		}
-	],
+	}, {
+		"path": "pages/Login/Register",
+		"style": {
+			"navigationBarTitleText": "用户注册"
+		}
+	}, {
+		"path": "pages/Login/FindPassword",
+		"style": {
+			"navigationBarTitleText": "找回密码"
+		}
+	}, {
+		"path": "pages/app",
+		"style": {
+			"navigationBarTitleText": "竞赛"
+		}
+	}, {
+		"path": "pages/Home/Home",
+		"style": {
+			"navigationBarTitleText": "竞赛"
+		}
+	}, {
+		"path": "pages/Life/Life",
+		"style": {
+			"navigationBarTitleText": "生活"
+		}
+	}, {
+		"path": "pages/Member/Member",
+		"style": {
+			"navigationBarTitleText": "会员"
+		}
+	}, {
+		"path": "pages/Self/Self",
+		"style": {
+			"navigationBarTitleText": "个人"
+		}
+	}, {
+		"path": "pages/Self/AccountInfo",
+		"style": {
+			"navigationBarTitleText": "账号信息"
+		}
+	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "uni-app",
@@ -52,9 +56,12 @@
 		"list": [{
 			"name": "找回密码",
 			"path": "pages/Login/FindPassword"
-		},{
+		}, {
 			"name": "主页",
 			"path": "pages/app"
+		}, {
+			"name": "账号信息",
+			"path": "pages/Self/AccountInfo"
 		}]
 	}
 }

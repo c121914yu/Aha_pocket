@@ -1,11 +1,12 @@
 <template>
 	<view class="self">
+		<!-- 头部 -->
 		<view class="head">
 			<!-- 头像 -->
-			<view class="avatar">
-				<view class="bg bg1"></view>
-				<view class="bg bg2"></view>
+			<view class="avatar" @click="setAvatar">
 				<view class="bg bg3"></view>
+				<view class="bg bg2"></view>
+				<view class="bg bg1"></view>
 				<image src="../../static/icon/logo.png" mode="widthFix"></image>
 			</view>
 			<!-- 右侧昵称 & 标签 -->
@@ -13,7 +14,10 @@
 				<!-- 昵称 -->
 				<view class="name">15677751219画像</view>
 				<!-- 标签 -->
-				<view class="tags">
+				<view
+					class="tags"
+					@click="isCheckTags=true"
+					>
 					<view 
 						class="tag small"
 						v-for="(tag,index) in tags"
@@ -23,11 +27,47 @@
 				</view>
 			</view>
 			<!-- 幕布 -->
-			<view class="curtain">
+			<view class="curtain" ref="curtain">
 				<view class="one"></view>
 				<view class="two"></view>
 			</view>
 		</view>
+		<!-- 核心导航 招募 & 资源分享 -->
+		<view class="navs">
+			<button>招募队友</button>
+			<button @click="share">资源分享</button>
+		</view>
+		<!-- 任务 进行中 & 已完成 & 贡献详情 -->
+		<view class="tasks">
+			<navigator 
+				class="task"
+				v-for="(task,index) in tasks"
+				:key="index"
+				hover-class="none"
+				:url="task.to">
+				<text :class="'iconfont ' + task.icon"></text>
+				<view>{{task.name}}</view>
+			</navigator>
+		</view>
+		<!-- 功能列表 -->
+		<view class="list">
+			<navigator 
+				class="item"
+				:style="{
+					'animationDelay': index*0.1 + 's'
+				}"
+				v-for="(item,index) in funtions"
+				:key="index"
+				hover-stay-time	="50"
+				:url="item.to">
+				<text :class="'iconfont ' + item.icon"></text>
+				<text class="name">{{item.name}}</text>
+				<text v-if="item.val" class="val">{{item.val}}</text>
+				<text v-else class="right iconfont icon-arrow-right"></text>
+			</navigator>
+		</view>
+		<!-- 兴趣选择 -->
+		<SelectInterest v-if="isCheckTags" @close="isCheckTags=false"></SelectInterest>
 	</view>
 </template>
 
@@ -36,13 +76,32 @@ export default {
 	data() {
 		return {
 			userInfo: null,
-			tags: ["前端","挑战杯","商业计划书","运河杯","服务外包"]
+			/* 标签 */
+			tags: ["前端","挑战杯","商业计划书","运河杯","服务外包"],
+			/* 任务列表 */
+			tasks: [
+				{name: "进行中",icon: "icon-shouye",to: "/pages/Self/AccountInfo"},
+				{name: "已完成",icon: "icon-yiwancheng",to: "/pages/Self/AccountInfo"},
+				{name: "贡献详情",icon: "icon-icon",to: "/pages/Self/AccountInfo"},
+			],
+			/* 功能列表 */
+			funtions: [
+				{name: "贡献值",icon: "icon-icon;",val: "160",to:""},
+				{name: "账号信息",icon: "icon-personal",to:"/pages/Self/AccountInfo"},
+				{name: "实名认证",icon: "icon-shimingrenzheng",to:"/pages/Self/AccountInfo"},
+				{name: "个人简历",icon: "icon-personal",to:"/pages/Self/AccountInfo"},
+				{name: "邀请好友",icon: "icon-iconfontzhizuobiaozhun49",to:"/pages/Self/AccountInfo"},
+				{name: "联系管理员",icon: "icon-lianxikefu",to:"/pages/Self/AccountInfo"},
+			],
+			isCheckTags: false, // 是否进入选择标签
 		}
 	},
 	methods: {
-		
+		setAvatar(){
+			console.log("头像设计")
+		},
 	},
-	created() {
+	mounted() {
 		
 	}
 }
@@ -54,8 +113,11 @@ bgSetting(size,color)
 	height size
 	background-color color
 .self
-	height 100vh
+	min-height 100vh
+	width 100%
+	padding-bottom 140rpx
 	background-color var(--origin2)
+	/* 头部 */
 	.head
 		position relative
 		height 45vw
@@ -79,13 +141,10 @@ bgSetting(size,color)
 				position absolute
 				border-radius 50%
 			.bg1
-				z-index 4
 				bgSetting(40vw,var(--origin2))
 			.bg2
-				z-index 3
 				bgSetting(50vw,var(--origin3))
 			.bg3
-				z-index 2
 				bgSetting(60vw,var(--origin4))
 		/* 右侧 */
 		.right
@@ -103,31 +162,96 @@ bgSetting(size,color)
 					padding 3px 10px
 					border-radius 10px
 					background-color var(--origin3)
-					color #FFFFFF
 		/* 幕布 */
 		.curtain
-			z-index 6
 			position absolute
 			top 0
 			width 100%
 			height 70vw
 			display flex
+			animation 1ms closeCurtain forwards
+			animation-delay .8s
 			view
 				width 50%
 			.one
 				background-color var(--origin2)
 				transform-origin right top
-				animation curtaine1 .8s forwards
+				animation curtain1 .8s forwards
 			.two
 				background-color var(--origin2)
 				transform-origin left top
-				animation curtaine2 .8s forwards
+				animation curtain2 .8s forwards
 				
+	/* 核心导航 招募队友 & 资源分享 */
+	.navs
+		margin 10vw 0 20px
+		display flex
+		button
+			width 40%
+			background-color var(--origin4)
+			color #FFFFFF
+			border-radius 30px
+			font-weight 600
+	/* 任务列表 */
+	.tasks
+		margin 0 auto
+		width 90%
+		padding 5px
+		background-color #FFFFFF
+		border-radius 20px
+		display flex
+		justify-content space-around
+		.task
+			text-align center
+			text
+				font-size 70rpx
+				color var(--origin3)
+			view
+				color var(--origin4)
+				font-weight 600
+	/* 功能列表 */
+	.list
+		margin 10px auto
+		width 90%
+		.item
+			margin-bottom 3px
+			transform translateY(50vh)
+			padding 10px 20px
+			background-color #FFFFFF
+			display flex
+			align-items center
+			animation funShow .3s forwards
+			&:first-child
+				border-top-left-radius 20px
+				border-top-right-radius 20px
+			&:last-child
+				border-bottom-left-radius 20px
+				border-bottom-right-radius 20px
+			.iconfont
+				font-size 50rpx
+				color var(--origin4)
+			.right
+				font-size 60rpx
+			.name
+				margin-left 25rpx
+				flex 1
+				color var(--origin3)
+				font-weight 800
+			.val
+				font-size 30rpx
+				color var(--gray-font)
 /* 动画 */
-@keyframes curtaine1
+@keyframes curtain1
 	to
 		transform rotate(90deg)
-@keyframes curtaine2
+@keyframes curtain2
 	to
 		transform rotate(-90deg)
+/* 隐藏幕布 */
+@keyframes closeCurtain
+	to
+		z-index -1
+@keyframes funShow
+	to
+		transform translateY(0)
 </style>

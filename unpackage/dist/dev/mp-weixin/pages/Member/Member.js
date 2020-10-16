@@ -129,7 +129,7 @@ var _default =
 
 /***/ }),
 
-/***/ 70:
+/***/ 72:
 /*!***************************************************************!*\
   !*** D:/服务外包/竞赛统计/main.js?{"page":"pages%2FMember%2FMember"} ***!
   \***************************************************************/
@@ -145,5 +145,5 @@ createPage(_Member.default);
 
 /***/ })
 
-},[[70,"common/runtime","common/vendor"]]]);
+},[[72,"common/runtime","common/vendor"]]]);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/Member/Member.js.map

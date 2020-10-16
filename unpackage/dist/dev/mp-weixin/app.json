@@ -7,7 +7,8 @@
     "pages/Home/Home",
     "pages/Life/Life",
     "pages/Member/Member",
-    "pages/Self/Self"
+    "pages/Self/Self",
+    "pages/Self/AccountInfo"
   ],
   "subPackages": [],
   "window": {
@@ -17,6 +18,5 @@
     "backgroundColor": "#FFFFFF"
   },
   "permission": {},
-  "usingComponents": {},
-  "sitemapLocation": "sitemap15.json"
+  "usingComponents": {}
 }

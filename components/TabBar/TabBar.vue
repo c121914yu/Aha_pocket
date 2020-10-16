@@ -3,7 +3,7 @@
 	<view class="tabBar">
 		<view 
 			class="nav"
-			:class="nav.name === name ? 'active' : ''"
+			:class="nav.name === navs[currentNav].name ? 'active' : ''"
 			v-for="(nav,index) in navs"
 			:key="index"
 			@click="$emit('navigate',nav.name)">
@@ -11,6 +11,11 @@
 			<view class="text">
 				{{nav.text}}
 			</view>
+		</view>
+		<!-- 颜色滑块 -->
+		<view 
+			class="slide-card"
+			:style="{'left': `${25 * currentNav}vw`}">
 		</view>
 	</view>
 </template>
@@ -28,9 +33,9 @@
 			}
 		},
 		props:{
-			name: {
-				type: String,
-				default: "Home"
+			currentNav: {
+				type: Number,
+				default: 0
 			}
 		}
 	}
@@ -49,13 +54,21 @@
 	justify-content space-around
 	text-align center
 	.nav
+		z-index 2
 		flex 1
 		color #FFFFFF
 		line-height 1.2
-		&.active
-			color var(--origin2)
 		.iconfont
 			font-size 46rpx
 		.text
 			font-size 30rpx
+	.slide-card
+		z-index 1
+		position absolute
+		width 25vw
+		height 90%
+		background-color var(--origin2)
+		opacity 0.5
+		border-radius 10px
+		transition .3s
 </style>

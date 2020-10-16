@@ -4,43 +4,14 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": false,
-    "es6": true,
-    "enhance": false,
+    "urlCheck": true,
     "postcss": true,
-    "preloadBackgroundData": false,
-    "minified": true,
-    "newFeature": false,
-    "coverView": true,
-    "nodeModules": false,
-    "autoAudits": false,
-    "showShadowRootInWxmlPanel": true,
-    "scopeDataCheck": false,
-    "uglifyFileName": false,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
-    "uploadWithSourceMap": true,
-    "compileHotReLoad": false,
-    "useMultiFrameRuntime": false,
-    "useApiHook": true,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    },
-    "useIsolateContext": true,
-    "useCompilerModule": true,
-    "userConfirmedUseCompilerModuleSwitch": false,
-    "packNpmManually": false,
-    "packNpmRelationList": []
+    "minified": true
   },
   "compileType": "miniprogram",
   "libVersion": "",
   "appid": "wxafd522b076e38be0",
   "projectname": "竞赛统计",
-  "cloudfunctionRoot": "static/cloudfunction/",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "current": -1,
@@ -66,8 +37,14 @@
           "name": "主页",
           "id": 1,
           "pathName": "pages/app"
+        },
+        {
+          "name": "账号信息",
+          "id": 2,
+          "pathName": "pages/Self/AccountInfo"
         }
       ]
     }
-  }
+  },
+  "cloudfunctionRoot": "static/cloudfunction/"
 }

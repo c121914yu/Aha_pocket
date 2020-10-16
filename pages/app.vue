@@ -1,7 +1,7 @@
 <template>
 	<view class="app">
 		<TabBar 
-			:name="navs[currentNav].name"
+			:currentNav="currentNav"
 			@navigate="navigate">
 		</TabBar>
 		<!-- 主页 -->

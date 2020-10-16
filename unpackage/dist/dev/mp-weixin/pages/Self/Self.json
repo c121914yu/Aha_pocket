@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "个人",
-  "usingComponents": {}
+  "usingComponents": {
+    "select-interest": "/components/SelectInterest/SelectInterest"
+  }
 }
