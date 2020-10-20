@@ -29,9 +29,36 @@ function gToastError(title,duration=1500,mask=false){
 		duration
 	})
 }
+/* 
+	name: showModal
+	description: 提示确认操作
+	input: 
+				content: String,提示文字
+				success: Function,点击确认后的操作
+				cancel: Function,点击取消后的操作
+	return: null
+*/
+function gShowModal(content,success,cancel){
+	uni.showModal({
+		title: "提示",
+		content: "即将删除该教育经历",
+		confirmColor: "#f8b86b",
+		success: (res) => {
+			if(res.confirm && success)
+			{
+				success()
+			}
+			else if(res.cancel && cancel)
+			{
+				cancel
+			}
+		}
+	})
+}
 
 const globalFun = {
 	gToastSuccess,
 	gToastError,
+	gShowModal
 }
 export default globalFun

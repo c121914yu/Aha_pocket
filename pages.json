@@ -1,5 +1,7 @@
 {
-	"pages": [{
+	"pages": [
+	/* 账号管理 */
+	{
 		"path": "pages/Login/Login",
 		"style": {
 			"navigationBarTitleText": "登录"
@@ -14,35 +16,27 @@
 		"style": {
 			"navigationBarTitleText": "找回密码"
 		}
-	}, {
+	},
+	/* 
+		主页
+		4个副页全部放在app.vue中
+	*/
+	{
 		"path": "pages/app",
 		"style": {
 			"navigationBarTitleText": "竞赛"
 		}
-	}, {
-		"path": "pages/Home/Home",
-		"style": {
-			"navigationBarTitleText": "竞赛"
-		}
-	}, {
-		"path": "pages/Life/Life",
-		"style": {
-			"navigationBarTitleText": "生活"
-		}
-	}, {
-		"path": "pages/Member/Member",
-		"style": {
-			"navigationBarTitleText": "会员"
-		}
-	}, {
-		"path": "pages/Self/Self",
-		"style": {
-			"navigationBarTitleText": "个人"
-		}
-	}, {
+	},
+	/* 次界面，不含主导航 */
+	{
 		"path": "pages/Self/AccountInfo",
 		"style": {
 			"navigationBarTitleText": "账号信息"
+		}
+	}, {
+		"path": "pages/Self/Resume",
+		"style": {
+			"navigationBarTitleText": "个人简历"
 		}
 	}],
 	"globalStyle": {
@@ -60,8 +54,8 @@
 			"name": "主页",
 			"path": "pages/app"
 		}, {
-			"name": "账号信息",
-			"path": "pages/Self/AccountInfo"
+			"name": "个人简历",
+			"path": "pages/Self/Resume"
 		}]
 	}
 }

@@ -4,11 +4,8 @@
     "pages/Login/Register",
     "pages/Login/FindPassword",
     "pages/app",
-    "pages/Home/Home",
-    "pages/Life/Life",
-    "pages/Member/Member",
-    "pages/Self/Self",
-    "pages/Self/AccountInfo"
+    "pages/Self/AccountInfo",
+    "pages/Self/Resume"
   ],
   "subPackages": [],
   "window": {
@@ -18,5 +15,6 @@
     "backgroundColor": "#FFFFFF"
   },
   "permission": {},
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap32.json"
 }

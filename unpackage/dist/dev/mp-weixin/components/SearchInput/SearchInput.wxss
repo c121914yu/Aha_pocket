@@ -1,0 +1,27 @@
+.search-input.data-v-1945f34a {
+  position: relative;
+}
+.search-input input.data-v-1945f34a {
+  padding: 5rpx 15rpx;
+  background-color: var(--origin2);
+  border-radius: 20px;
+}
+.search-input .search-result.data-v-1945f34a {
+  z-index: 5;
+  position: absolute;
+  width: 100%;
+  max-height: 350rpx;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 0 5px var(--origin2);
+  border-radius: 20rpx;
+}
+.search-input .search-result .result.data-v-1945f34a {
+  text-align: center;
+  height: 70rpx;
+  line-height: 70rpx;
+}
+.search-input .search-result .result.active.data-v-1945f34a {
+  background-color: rgba(144,140,139,0.5);
+}
+

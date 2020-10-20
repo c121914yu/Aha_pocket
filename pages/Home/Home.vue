@@ -71,7 +71,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .home
 	// 偏离底部导航距离
 	padding-bottom 140rpx
@@ -115,10 +115,6 @@ export default {
 					&.right
 						right 25rpx
 			// 右侧
-		.slide-card
-			margin 0 auto
-			height 45vw
-			width 90vw
 	// 小导航
 	.navs
 		/* 

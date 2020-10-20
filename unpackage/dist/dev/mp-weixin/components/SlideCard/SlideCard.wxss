@@ -1,5 +1,8 @@
 .slide-card.data-v-e8f1a8f0 {
+  margin: 0 auto;
   position: relative;
+  height: 45vw;
+  width: 90vw;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

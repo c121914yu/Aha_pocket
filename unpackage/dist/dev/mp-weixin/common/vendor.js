@@ -8075,10 +8075,37 @@ function gToastError(title) {var duration = arguments.length > 1 && arguments[1]
     duration: duration });
 
 }
+/* 
+  	name: showModal
+  	description: 提示确认操作
+  	input: 
+  				content: String,提示文字
+  				success: Function,点击确认后的操作
+  				cancel: Function,点击取消后的操作
+  	return: null
+  */
+function gShowModal(content, _success, cancel) {
+  uni.showModal({
+    title: "提示",
+    content: "即将删除该教育经历",
+    confirmColor: "#f8b86b",
+    success: function success(res) {
+      if (res.confirm && _success)
+      {
+        _success();
+      } else
+      if (res.cancel && cancel)
+      {
+        cancel;
+      }
+    } });
+
+}
 
 var globalFun = {
   gToastSuccess: gToastSuccess,
-  gToastError: gToastError };var _default =
+  gToastError: gToastError,
+  gShowModal: gShowModal };var _default =
 
 globalFun;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

@@ -169,7 +169,7 @@ export default {
 	},
 	mounted() {
 		/* 获取图片的宽度 */
-		uni.createSelectorQuery().in(this).select('.content').boundingClientRect(result => { 
+		uni.createSelectorQuery().in(this).select('.content').boundingClientRect(result => {
 			if (result)
 			{ 
 				this.imgWidth = result.width
@@ -179,13 +179,16 @@ export default {
 				this.imgWidth = 325
 			} 
 		}).exec()
-	}
+	},
 }
 </script>
 
 <style lang="stylus" scoped>
 .slide-card
+	margin 0 auto
 	position relative
+	height 45vw
+	width 90vw
 	display flex
 	align-items center
 	justify-content center

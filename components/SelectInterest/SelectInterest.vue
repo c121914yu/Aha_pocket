@@ -104,12 +104,10 @@
 	left 0
 	height 100vh
 	width 100vw
-	animation show .8s ease
+	animation show .6s ease
 	@keyframes show
 		0%
 			transform translateY(100%)
-		80%
-			transform translateY(-5%)
 		100%
 			transform translateY(0)
 	.mask

@@ -89,7 +89,7 @@ export default {
 				{name: "贡献值",icon: "icon-icon;",val: "160",to:""},
 				{name: "账号信息",icon: "icon-personal",to:"/pages/Self/AccountInfo"},
 				{name: "实名认证",icon: "icon-shimingrenzheng",to:"/pages/Self/AccountInfo"},
-				{name: "个人简历",icon: "icon-personal",to:"/pages/Self/AccountInfo"},
+				{name: "个人简历",icon: "icon-personal",to:"/pages/Self/Resume"},
 				{name: "邀请好友",icon: "icon-iconfontzhizuobiaozhun49",to:"/pages/Self/AccountInfo"},
 				{name: "联系管理员",icon: "icon-lianxikefu",to:"/pages/Self/AccountInfo"},
 			],

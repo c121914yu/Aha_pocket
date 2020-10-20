@@ -1,0 +1,24 @@
+.picker.data-v-72af98f0 {
+  position: relative;
+  padding: 5rpx 20rpx;
+  border-radius: 15px;
+  background-color: var(--origin2);
+}
+.picker view.data-v-72af98f0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.picker .value.data-v-72af98f0 {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
+.picker .iconfont.data-v-72af98f0 {
+  margin: 0 5px;
+  color: var(--origin4);
+}
+

@@ -7,15 +7,11 @@ export default {
 	globalData:{
 		gCodeTime: 0, // 用户允许发送验证码的倒计时
 		gCodeMaxTime: 10, // 倒计时时长
-		gUserInfo: {}
-	},
-	onLaunch: function() {
-	},
-	onShow: function() {
-	},
-	onHide: function() {
+		gUserInfo: {}, // 用户信息
+		Degress: ["博士后","博士","硕士","本科","专科","高中","初中"], // 学历列表
+		Grads: ["前1%","1%-5%","5%-20%","20%-50%","50%-100%"]
 	}
-};
+}
 </script>
 
 <style lang="stylus">

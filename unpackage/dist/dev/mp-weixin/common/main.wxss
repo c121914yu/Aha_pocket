@@ -28,6 +28,7 @@ view {
   box-sizing: border-box;
 }
 input {
+  font-size: 30rpx;
   padding: 10px 20px 10px 10px;
 }
 button {
@@ -47,6 +48,7 @@ navigator {
 .placeholderStyle {
   font-size: 26rpx;
   color: var(--gray-font);
+  letter-spacing: 0;
 }
 .small {
   font-size: 26rpx;

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "个人简历",
+  "usingComponents": {
+    "s-picker": "/components/SPicker/SPicker",
+    "search-input": "/components/SearchInput/SearchInput"
+  }
+}

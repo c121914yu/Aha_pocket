@@ -4,14 +4,43 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
+    "es6": true,
+    "enhance": false,
     "postcss": true,
-    "minified": true
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": false,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "useMultiFrameRuntime": false,
+    "useApiHook": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useIsolateContext": true,
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": []
   },
   "compileType": "miniprogram",
   "libVersion": "",
   "appid": "wxafd522b076e38be0",
   "projectname": "竞赛统计",
+  "cloudfunctionRoot": "static/cloudfunction/",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "current": -1,
@@ -39,12 +68,11 @@
           "pathName": "pages/app"
         },
         {
-          "name": "账号信息",
+          "name": "个人简历",
           "id": 2,
-          "pathName": "pages/Self/AccountInfo"
+          "pathName": "pages/Self/Resume"
         }
       ]
     }
-  },
-  "cloudfunctionRoot": "static/cloudfunction/"
+  }
 }

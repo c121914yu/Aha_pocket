@@ -45,20 +45,37 @@ export default {
 				{name: "Member",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 3
+			currentNav: 0
 		}
 	},
 	methods: {
-		showNav(){
+		/* 
+			name: 路由加载
+			description: 加载指定下标的路由
+			input:
+						this.currentNav: Number,当前路由下标
+			change:
+						this.navs[].loaded: Boolean,路由是否加载标识符
+			return: null
+		*/
+		loadNav(){
 			this.navs[this.currentNav].loaded = true
 		},
+		/*
+			name: 路由跳转
+			description: 跳转指定下标的路由
+			input:
+						this.currentNav: Number,需要跳转的路由下标
+			change: null
+			return: null
+		*/
 		navigate(name){
 			this.currentNav = this.navs.findIndex(item => item.name === name)
-			this.showNav()
+			this.loadNav()
 		}
 	},
 	onLoad() {
-		this.showNav()
+		this.loadNav()
 	},
 	components:{
 		Home,

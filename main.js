@@ -10,6 +10,7 @@ import "./static/icon/iconfont.css"
 import globalFun from "./static/js/globalFun.js"
 Vue.prototype.gToastError = globalFun.gToastError
 Vue.prototype.gToastSuccess = globalFun.gToastSuccess
+Vue.prototype.gShowModal = globalFun.gShowModal
 
 const app = new Vue({
 	...App
