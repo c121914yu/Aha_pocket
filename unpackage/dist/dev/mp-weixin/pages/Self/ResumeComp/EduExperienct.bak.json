@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "s-picker": "/components/SPicker/SPicker",
+    "search-input": "/components/SearchInput/SearchInput",
+    "data-picker": "/components/DataPicker/DataPicker"
+  },
+  "component": true
+}

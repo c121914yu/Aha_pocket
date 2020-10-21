@@ -1,0 +1,1 @@
+<view class="card"><view class="h3">自我描述</view><textarea style="height:300rpx;" placeholder-class="placeholderStyle" data-event-opts="{{[['input',[['__set_model',['','selfDescription','$event',[]]]]]]}}" value="{{selfDescription}}" bindinput="__e"></textarea></view>

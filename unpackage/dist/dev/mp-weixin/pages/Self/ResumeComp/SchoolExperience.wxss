@@ -1,0 +1,23 @@
+.experience.data-v-52751c27 {
+  padding: 40rpx;
+}
+.experience input.data-v-52751c27 {
+  width: 72%;
+}
+.experience .checkbox.data-v-52751c27 {
+  margin-left: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.experience .description.data-v-52751c27 {
+  padding-right: 15rpx;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+          align-items: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+

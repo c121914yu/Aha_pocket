@@ -1,0 +1,17 @@
+.experience.data-v-5c3ec80a {
+  padding: 40rpx;
+}
+.experience input.data-v-5c3ec80a {
+  width: 65%;
+}
+.experience .description.data-v-5c3ec80a {
+  padding-right: 15rpx;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+          align-items: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+

@@ -1,0 +1,158 @@
+<template>
+	<!-- 基本信息表 -->
+	<view
+		class="card"
+		:style="{
+			'height': isBaseInfo ? 'auto' : '110rpx'
+		}"
+		>
+		<view class="h3">基本信息</view>
+		<!-- 姓名 -->
+		<view class="item name">
+			<text>姓名</text>
+			<input 
+				class="input" 
+				style="width: 300rpx" 
+				type="text" 
+				maxlength="10"
+				v-model="name"/>
+		</view>
+		<!-- 联系方式 -->
+		<view class="item contact">
+			<text>联系方式</text>
+			<input 
+				class="input" 
+				style="flex: 1" 
+				type="text"
+				v-model="contact"/>
+		</view>
+		<!-- 性别 -->
+		<view class="item gender">
+			<text>性别</text>
+			<radio-group
+				class="radio-group"
+				@change="gender = $event.detail.value">
+				<label>
+					<text 
+						class="female iconfont icon-icfemale"
+						style="color: #188cc9">
+					</text>
+					<radio class="radio" value="男" color="#f8b86b" checked="true"/>
+				</label>
+				<label>
+					<text 
+						class="male iconfont icon-icmale"
+						style="color: #ce5d91">
+					</text>
+					<radio class="radio" value="女" color="#f8b86b"/>
+				</label>
+			</radio-group>
+		</view>
+		<!-- 出生年月 -->
+		<view class="item both">
+			<text>出生年份</text>
+			<DataPicker 
+				placeholder="2000-4"
+				endTime="2010-12"
+				v-model="both">
+			</DataPicker>
+		</view>
+		<!-- 最高学历 -->
+		<view class="item highest-degree">
+			<text>最高学历</text>
+			<SPicker 
+				placeholder="包括在读"
+				startIndex="3"
+				:range="Degress"
+				v-model="highestDegree">
+			</SPicker>
+		</view>
+		<!-- 是否在读学生 -->
+		<view class="item gender">
+			<text>当前身份</text>
+			<radio-group
+				class="radio-group"
+				@change="identity = $event.detail.value">
+				<label>
+					<view>学生</view>
+					<radio class="radio" value="学生" color="#f8b86b" checked="true"/>
+				</label>
+				<label>
+					<view>非学生</view>
+					<radio class="radio" value="非学生" color="#f8b86b"/>
+				</label>
+			</radio-group>
+		</view>
+		<!-- 当前年级 -->
+		<view class="item grade" v-if="identity==='学生'">
+			<text>当前年级</text>
+			<input 
+				class="input"
+				type="text"
+				placeholder-class="placeholderStyle"
+				placeholder="大二;研一"
+				v-model="currentGrade"/>
+		</view>
+		<!-- 求职城市 -->
+		<view class="item city">
+			<text>工作城市</text>
+			<input
+				class="input" 
+				style="flex: 1" 
+				type="text"
+				placeholder-class="placeholderStyle"
+				placeholder="杭州,北京"
+				v-model="workPlace"/>
+		</view>
+		<!-- 期望职业 -->
+		<view class="item profession">
+			<text>期望职业</text>
+			<input
+				class="input" 
+				style="flex: 1" 
+				type="text"
+				placeholder-class="placeholderStyle"
+				placeholder="前端工程师;Java工程师"
+				v-model="profession"/>
+		</view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			name: "", // 姓名
+			contact: "", // 联系方式
+			gender: "男", // 性别
+			both: "", // 出生日期
+			highestDegree: "", // 最高学历
+			identity: "学生", // 当前身份
+			currentGrade: "", // 当前年级
+			workPlace: "", // 求职地点
+			profession: "", // 期望职业
+			// 是否展示
+			isBaseInfo: true,
+			// 选框列表 & 选中下标
+			Degress: [], // 学历数组
+		}
+	},
+	created() {
+		this.Degress = getApp().globalData.Degress
+	}
+}
+</script>
+
+<style lang="stylus" scoped>
+/* 单选框 */
+.gender .radio-group
+	display flex
+	align-items center
+	label
+		margin-right 20px
+		display flex
+		align-items center
+		.iconfont
+			font-size 40rpx
+			margin-right 5rpx
+</style>

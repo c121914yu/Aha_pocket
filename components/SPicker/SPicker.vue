@@ -7,12 +7,12 @@
 		:range="range"
 		:value="startIndex"
 		@change="check">
-		<view>
-			<text 
+		<view class="content">
+			<view 
 				class="value"
 				:class="value === '' ? 'placeholderStyle' : ''">
 				{{value === "" ? placeholder : value}}
-			</text>
+			</view>
 			<text class="iconfont icon-xiala"></text>
 		</view>
 	</picker>
@@ -53,13 +53,15 @@ export default {
 <style lang="stylus" scoped>
 .picker
 	position relative
-	padding 5rpx 20rpx
+	padding-left 20rpx
 	border-radius 15px
 	background-color var(--origin2)
-	view
+	.content
 		display flex
 		align-items center
 	.value
+		height 53rpx
+		line-height 53rpx
 		flex 1
 	.iconfont
 		margin 0 5px

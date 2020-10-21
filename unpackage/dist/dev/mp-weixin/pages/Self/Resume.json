@@ -1,7 +1,12 @@
 {
   "navigationBarTitleText": "个人简历",
   "usingComponents": {
-    "s-picker": "/components/SPicker/SPicker",
-    "search-input": "/components/SearchInput/SearchInput"
+    "base-info": "/pages/Self/ResumeComp/BaseInfo",
+    "edu-experience": "/pages/Self/ResumeComp/EduExperience",
+    "school-experience": "/pages/Self/ResumeComp/SchoolExperience",
+    "project-experience": "/pages/Self/ResumeComp/ProjectExperience",
+    "pro-skill": "/pages/Self/ResumeComp/ProSkill",
+    "honors": "/pages/Self/ResumeComp/Honors",
+    "self-description": "/pages/Self/ResumeComp/SelfDescription"
   }
 }

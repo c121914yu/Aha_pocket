@@ -1,0 +1,1 @@
+<view class="card data-v-6c8bf5cd"><view class="h3 data-v-6c8bf5cd">专业技能</view><textarea style="height:300rpx;" placeholder="IT技能: 前端开发,java……不同技能换行更美观!" placeholder-class="placeholderStyle" data-event-opts="{{[['input',[['__set_model',['','proSkill','$event',[]]]]]]}}" value="{{proSkill}}" bindinput="__e" class="data-v-6c8bf5cd"></textarea></view>

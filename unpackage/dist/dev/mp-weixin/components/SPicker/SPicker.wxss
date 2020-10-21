@@ -1,10 +1,10 @@
 .picker.data-v-72af98f0 {
   position: relative;
-  padding: 5rpx 20rpx;
+  padding-left: 20rpx;
   border-radius: 15px;
   background-color: var(--origin2);
 }
-.picker view.data-v-72af98f0 {
+.picker .content.data-v-72af98f0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -13,6 +13,8 @@
           align-items: center;
 }
 .picker .value.data-v-72af98f0 {
+  height: 53rpx;
+  line-height: 53rpx;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
