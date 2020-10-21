@@ -6,9 +6,11 @@
 		<!-- 教育经历 -->
 		<EduExperience ref="eduExperience"></EduExperience>
 		<!-- 校园经历 -->
-		<SchoolExperience ref="projectExperience"></SchoolExperience>
+		<SchoolExperience ref="schoolExperience"></SchoolExperience>
 		<!-- 项目经历 -->
-		<ProjectExperience></ProjectExperience>
+		<ProjectExperience ref="projectExperience"></ProjectExperience>
+		<!-- 实习经历 -->
+		<PracticeExperience ref="practiceExperience"></PracticeExperience>
 		<!-- 专业技能卡片 -->
 		<ProSkill ref="projectSkill"></ProSkill>
 		<!-- 荣誉情况 -->
@@ -17,9 +19,11 @@
 		<SelfDescription ref="selfDescription"></SelfDescription>
 		<!-- 按键 -->
 		<view class="btns">
-			<button class="preview" @click="preview">预览</button>
-			<text class="small center">自动保存中\n......</text>
-			<button class="save" @click="save">保存</button>
+			<navigator class="preview" url="./ResumePreview">
+				预览
+			</navigator>
+			<text class="small center">{{storyText}}</text>
+			<button class="save" @click="commitResume">保存</button>
 		</view>
 	</view>
 </template>
@@ -29,53 +33,87 @@ import BaseInfo from "./ResumeComp/BaseInfo.vue"
 import EduExperience from "./ResumeComp/EduExperience.vue"
 import SchoolExperience from "./ResumeComp/SchoolExperience.vue"
 import ProjectExperience from "./ResumeComp/ProjectExperience.vue"
+import PracticeExperience from "./ResumeComp/PracticeExperience.vue"
 import ProSkill from "./ResumeComp/ProSkill.vue"
 import Honors from "./ResumeComp/Honors.vue"
 import SelfDescription from "./ResumeComp/SelfDescription.vue"
 export default {
 	data() {
 		return {
+			storyText: "",
 		}
 	},
 	methods: {
-		/* 
+		/*
 			name: 保存个人简历
-			description: 获取各组件的内容构成简历数据
+			description: 保存个人简历至本地
 			input: null
 			return: null
 		*/
 		save()
 		{
+			this.storyText = "保存中"
 			const data = {
 				// 基础信息表
 				name: this.$refs.baseInfo.name,
 				contact: this.$refs.baseInfo.contact,
 				gender: this.$refs.baseInfo.gender,
 				both: this.$refs.baseInfo.both,
-				highestDegree: this.$refs.baseInfo.highestDegree,
+				hDegree: this.$refs.baseInfo.hDegree,
 				identity: this.$refs.baseInfo.identity,
 				currentGrade: this.$refs.baseInfo.currentGrade,
 				workPlace: this.$refs.baseInfo.workPlace,
 				profession: this.$refs.baseInfo.profession,
 				// 教育经历
-				eduExperience: this.$refs.eduExperience.eduExperience,
+				eduExper: this.$refs.eduExperience.eduExper,
+				// 校园经历
+				schoolExper: this.$refs.schoolExperience.schoolExper,
 				// 项目经历
-				projectExperience: this.$refs.projectExperience.experiences,
+				projectExper: this.$refs.projectExperience.projectExper,
+				// 实习经历
+				practiceExper: this.$refs.practiceExperience.practiceExper,
 				// 专业技能
-				projectSkill: this.$refs.projectSkill.proSkill,
+				projectSkill: this.$refs.projectSkill.projectSkill,
 				// 荣誉情况
-				honors: this.$refs.honors.honorList,
+				honors: this.$refs.honors.honors,
 				// 自我描述
-				selfDescription: this.$refs.selfDescription.selfDescription
+				intro: this.$refs.selfDescription.intro
 			}
-			console.log(data)
+			uni.setStorage({
+				key: "resume",
+				data: JSON.stringify(data),
+				success: () => {
+					this.storyText = "已保存\n至本地"
+					setTimeout(() => {
+						this.storyText = ""
+					},2000)
+				}
+			})
+			return data
+		},
+		/* 
+			name: 提交个人简历
+			description: 提交个人简历至服务器
+			input: null
+			return: null
+		*/
+		commitResume()
+		{
+			const data = this.save()
 		}
+	},
+	mounted() {
+		/* 每10s保存一次数据至本地 */
+		setInterval(() => {
+			this.save()
+		},10000)
 	},
 	components:{
 		BaseInfo,
 		EduExperience,
 		SchoolExperience,
 		ProjectExperience,
+		PracticeExperience,
 		ProSkill,
 		Honors,
 		SelfDescription
@@ -95,11 +133,21 @@ export default {
 		background-color #FFFFFF
 		filter brightness(99%)
 		border-radius 22px
+		overflow hidden
+		/* 折叠图标 */
+		.fold
+			position absolute
+			right 30rpx
+			top 30rpx
+			color var(--origin4)
+			font-size 40rpx
+			transition .4s
 		// 大标题
 		.h3
 			color #F39800
-		// 小字提示
+		/* 小字提示 */
 		.small
+			margin-top 10px
 			color var(--gray-font)
 		// 子元素
 		.item
@@ -162,13 +210,15 @@ export default {
 		justify-content space-around
 		.small
 			flex 1
-		button
+		.save,.preview
 			height 80rpx
 			width 30%
 			line-height 80rpx
 			font-size 30rpx
-			&.preview
-				background-color transparent
-				color #FFFFFF
-				border 1px dotted #FFFFFF
+		.preview
+			text-align center
+			background-color transparent
+			border-radius 12px
+			color #FFFFFF
+			border 1px dotted #FFFFFF
 </style>

@@ -5,11 +5,18 @@
 		:style="{
 			'height': isEduExperience ? 'auto' : '110rpx'
 		}">
+		<text
+			class="fold iconfont icon-xiala"
+			:style="{
+				'transform': isEduExperience ? 'rotate(0)' : 'rotate(180deg)'
+			}"
+			@click="isEduExperience=!isEduExperience">
+		</text>
 		<text class="h3">教育经历</text>
 		<!-- 教育经历内容填写 -->
 		<view 
 			class="list-itme"
-			v-for="(edu,index) in eduExperience"
+			v-for="(edu,index) in eduExper"
 			:key="index">
 			<!-- 学历 -->
 			<view class="item degree">
@@ -80,7 +87,7 @@
 export default {
 	data() {
 		return {
-			eduExperience: [], // 教育经历
+			eduExper: [], // 教育经历
 			isEduExperience: true,
 			Degress: [], // 学历数组
 			Grades: [], // 成绩等级
@@ -93,11 +100,11 @@ export default {
 			input: null
 			return: null
 			change: 
-						eduExperience: Array,教育经历数组
+						eduExper: Array,教育经历数组
 		*/
 		addEdu()
 		{
-			this.eduExperience.push({
+			this.eduExper.push({
 				degree: "",
 				school: "",
 				specialty: "",
@@ -113,18 +120,21 @@ export default {
 						index: Number,经历的下标
 			return: null
 			change: 
-						eduExperience: Array,教育经历数组
+						eduExper: Array,教育经历数组
 		*/
 		removeEdu(index)
 		{
 				 this.gShowModal("即将删除该教育经历",() => {
-					 this.eduExperience.splice(index,1)
+					 this.eduExper.splice(index,1)
 				 })
 		},
 	},
 	created() {
 		this.Degress = getApp().globalData.Degress
 		this.Grades = getApp().globalData.Grads
+		/* 读取本地数据 */
+		const story = JSON.parse(uni.getStorageSync("resume"))
+		this.eduExper = story.eduExper
 	},
 }
 </script>

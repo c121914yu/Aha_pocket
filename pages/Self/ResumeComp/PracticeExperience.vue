@@ -1,37 +1,37 @@
 <template>
-	<!-- 项目经历 -->
+	<!-- 实习经历 -->
 	<view
 		class="card"
 		:style="{
-			'height': isProjectExper ? 'auto' : '110rpx'
+			'height': isPracticeExper ? 'auto' : '110rpx'
 		}">
 		<text
 			class="fold iconfont icon-xiala"
 			:style="{
-				'transform': isProjectExper ? 'rotate(0)' : 'rotate(180deg)'
+				'transform': isPracticeExper ? 'rotate(0)' : 'rotate(180deg)'
 			}"
-			@click="isProjectExper=!isProjectExper">
+			@click="isPracticeExper=!isPracticeExper">
 		</text>
-		<text class="h3">项目经历</text>
+		<text class="h3">实习经历</text>
 		<view 
 			class="list-itme"
-			v-for="(exp,index) in projectExper"
+			v-for="(exp,index) in practiceExper"
 			:key="index">
-			<!-- 项目名称 -->
+			<!-- 公司名称 -->
 			<view class="item">
-				<text>项目名称</text>
+				<text>公司</text>
 				<input 
 					class="input"
 					type="text"
-					v-model="exp.name"/>
+					v-model="exp.company"/>
 			</view>
-			<!-- 负责内容 -->
+			<!-- 职位 -->
 			<view class="item">
-				<text>负责内容</text>
+				<text>职位</text>
 				<input 
 					class="input"
 					type="text"
-					v-model="exp.content"/>
+					v-model="exp.post"/>
 			</view>
 			<!-- 经历时间 -->
 			<view class="item edu-time">
@@ -47,14 +47,14 @@
 				</DataPicker>
 				<label
 					class="checkbox"  
-					@click="projectExper[index].endTime = exp.endTime === '至今' ? '' : '至今'">
+					@click="practiceExper[index].endTime = exp.endTime === '至今' ? '' : '至今'">
 					<checkbox color="#f8b86b" :checked="exp.endTime === '至今'"/>
 					<text >至今</text>
 				</label>
 			</view>
-			<!-- 项目描述 -->
+			<!-- 实习描述 -->
 			<view class="item description">
-				<text>项目描述</text>
+				<text>实习描述</text>
 				<textarea
 					style="height: 200rpx;"
 					v-model="exp.description"/>
@@ -71,7 +71,7 @@
 		<button
 			class="add-btn"
 			@click="addExperience">
-			+添加项目经历
+			+添加实习经历
 		</button>
 	</view>
 </template>
@@ -80,8 +80,8 @@
 export default {
 	data() {
 		return {
-			projectExper: [],
-			isProjectExper: true
+			practiceExper: [],
+			isPracticeExper: true
 		}
 	},
 	methods: {
@@ -91,13 +91,13 @@ export default {
 				input: null
 				return: null
 				change: 
-							projectExper: Array,教育经历数组
+							practiceExper: Array,教育经历数组
 			*/
 		 addExperience()
 		 {
-				this.projectExper.push({
-					name: "",
-					content: "",
+				this.practiceExper.push({
+					company: "",
+					post: "",
 					startTime: "",
 					endTime: "",
 					description: ""
@@ -110,19 +110,19 @@ export default {
 						index: Number,经历的下标
 			return: null
 			change: 
-						projectExper: Array,教育经历数组
+						practiceExper: Array,教育经历数组
 		*/
 		 removeExperience(index)
 		 {
-			 this.gShowModal("即将删除该项目经历",() => {
-				 this.projectExper.splice(index,1)
+			 this.gShowModal("即将删除该实习经历",() => {
+				 this.practiceExper.splice(index,1)
 			 })
 		 },
 	},
 	created() {
 		/* 读取本地数据 */
 		const story = JSON.parse(uni.getStorageSync("resume"))
-		this.projectExper = story.projectExper
+		this.practiceExper = story.practiceExper
 	}
 }
 </script>

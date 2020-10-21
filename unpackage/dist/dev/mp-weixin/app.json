@@ -5,7 +5,8 @@
     "pages/Login/FindPassword",
     "pages/app",
     "pages/Self/AccountInfo",
-    "pages/Self/Resume"
+    "pages/Self/Resume",
+    "pages/Self/ResumePreview"
   ],
   "subPackages": [],
   "window": {
@@ -15,6 +16,5 @@
     "backgroundColor": "#FFFFFF"
   },
   "permission": {},
-  "usingComponents": {},
-  "sitemapLocation": "sitemap3.json"
+  "usingComponents": {}
 }

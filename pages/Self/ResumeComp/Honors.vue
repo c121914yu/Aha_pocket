@@ -1,12 +1,22 @@
 <template>
 	<!-- 荣誉情况 -->
 	<view
-		class="card honor">
+		class="card"
+		:style="{
+			'height': isHonors ? 'auto' : '110rpx'
+		}">
+		<text
+			class="fold iconfont icon-xiala"
+			:style="{
+				'transform': isHonors ? 'rotate(0)' : 'rotate(180deg)'
+			}"
+			@click="isHonors=!isHonors">
+		</text>
 		<text class="h3">荣誉情况</text>
 		<view class="small">证书,竞赛,论文,软著等获得经历</view>
 		<view 
 			class="list-itme"
-			v-for="(honor,index) in honorList"
+			v-for="(honor,index) in honors"
 			:key="index">
 			<view 
 				class="item honor-name">
@@ -57,7 +67,8 @@
 export default {
 	data() {
 		return {
-			honorList: []
+			honors: [],
+			isHonors: true
 		}
 	},
 	methods: {
@@ -67,11 +78,11 @@ export default {
 				input: null
 				return: null
 				change: 
-							honorList: Array,荣誉情况数组
+							honors: Array,荣誉情况数组
 			*/
 		 addHonor()
 		 {
-				this.honorList.push({
+				this.honors.push({
 					name: "",
 						time: "",
 						description: ""
@@ -84,14 +95,19 @@ export default {
 						index: Number,荣誉数组的下标
 			return: null
 			change: 
-						honorList: Array,荣誉数组
+						honors: Array,荣誉数组
 		*/
 		 removeHonor(index)
 		 {
 			 this.gShowModal("即将删除该获奖情况",() => {
-				 this.honorList.splice(index,1)
+				 this.honors.splice(index,1)
 			 })
 		 },
+	},
+	created() {
+		/* 读取本地数据 */
+		const story = JSON.parse(uni.getStorageSync("resume"))
+		this.honors = story.honors
 	}
 }
 </script>

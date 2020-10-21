@@ -1,12 +1,23 @@
 <template>
 	<!-- 专业技能 -->
-	<view class="card">
+	<view 
+		class="card"
+		:style="{
+			'height': isProjectSkill ? 'auto' : '110rpx'
+		}">
+		<text
+			class="fold iconfont icon-xiala"
+			:style="{
+				'transform': isProjectSkill ? 'rotate(0)' : 'rotate(180deg)'
+			}"
+			@click="isProjectSkill=!isProjectSkill">
+		</text>
 		<view class="h3">专业技能</view>
 		<textarea 
 			style="height: 300rpx;" 
 			placeholder="IT技能: 前端开发,java……不同技能换行更美观!"
 			placeholder-class="placeholderStyle"
-			v-model="proSkill"/>
+			v-model="projectSkill"/>
 	</view>
 </template>
 
@@ -14,8 +25,14 @@
 export default {
 	data() {
 		return {
-			proSkill: "", // 专业技能
+			projectSkill: "", // 专业技能
+			isProjectSkill: true
 		}
+	},
+	created() {
+		/* 读取本地数据 */
+		const story = JSON.parse(uni.getStorageSync("resume"))
+		this.projectSkill = story.projectSkill
 	}
 }
 </script>

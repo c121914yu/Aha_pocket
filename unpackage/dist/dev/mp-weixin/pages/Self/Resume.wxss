@@ -12,13 +12,26 @@
   -webkit-filter: brightness(99%);
           filter: brightness(99%);
   border-radius: 22px;
+  overflow: hidden;
+/* 折叠图标 */
+/* 小字提示 */
 /* textarea输入 */
 /* 多组中单个样式 */
+}
+.resume .card .fold {
+  position: absolute;
+  right: 30rpx;
+  top: 30rpx;
+  color: var(--origin4);
+  font-size: 40rpx;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 .resume .card .h3 {
   color: #f39800;
 }
 .resume .card .small {
+  margin-top: 10px;
   color: var(--gray-font);
 }
 .resume .card .item {
@@ -96,14 +109,17 @@
   -webkit-flex: 1;
           flex: 1;
 }
-.resume .btns button {
+.resume .btns .save,
+.resume .btns .preview {
   height: 80rpx;
   width: 30%;
   line-height: 80rpx;
   font-size: 30rpx;
 }
-.resume .btns button.preview {
+.resume .btns .preview {
+  text-align: center;
   background-color: transparent;
+  border-radius: 12px;
   color: #fff;
   border: 1px dotted #fff;
 }

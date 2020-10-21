@@ -1,16 +1,16 @@
-.experience.data-v-5c3ec80a {
+.experience.data-v-4a68396e {
   padding: 40rpx;
 }
-.experience input.data-v-5c3ec80a {
+.experience input.data-v-4a68396e {
   width: 65%;
 }
-.experience .checkbox.data-v-5c3ec80a {
+.experience .checkbox.data-v-4a68396e {
   margin-left: 10px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
 }
-.experience .description.data-v-5c3ec80a {
+.experience .description.data-v-4a68396e {
   padding-right: 15rpx;
   -webkit-box-align: start;
   -webkit-align-items: flex-start;

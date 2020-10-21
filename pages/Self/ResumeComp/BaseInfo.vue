@@ -4,8 +4,14 @@
 		class="card"
 		:style="{
 			'height': isBaseInfo ? 'auto' : '110rpx'
-		}"
-		>
+		}">
+		<text 
+			class="fold iconfont icon-xiala"
+			:style="{
+				'transform': isBaseInfo ? 'rotate(0)' : 'rotate(180deg)'
+			}"
+			@click="isBaseInfo=!isBaseInfo">
+		</text>
 		<view class="h3">基本信息</view>
 		<!-- 姓名 -->
 		<view class="item name">
@@ -23,7 +29,7 @@
 			<input 
 				class="input" 
 				style="flex: 1" 
-				type="text"
+				type="number"
 				v-model="contact"/>
 		</view>
 		<!-- 性别 -->
@@ -64,7 +70,7 @@
 				placeholder="包括在读"
 				startIndex="3"
 				:range="Degress"
-				v-model="highestDegree">
+				v-model="hDegree">
 			</SPicker>
 		</view>
 		<!-- 是否在读学生 -->
@@ -126,7 +132,7 @@ export default {
 			contact: "", // 联系方式
 			gender: "男", // 性别
 			both: "", // 出生日期
-			highestDegree: "", // 最高学历
+			hDegree: "", // 最高学历
 			identity: "学生", // 当前身份
 			currentGrade: "", // 当前年级
 			workPlace: "", // 求职地点
@@ -139,6 +145,17 @@ export default {
 	},
 	created() {
 		this.Degress = getApp().globalData.Degress
+		/* 读取本地数据 */
+		const story = JSON.parse(uni.getStorageSync("resume"))
+		this.name = story.name
+		this.contact = story.contact
+		this.gender = story.gender
+		this.both = story.both
+		this.hDegree = story.hDegree
+		this.identity = story.identity
+		this.currentGrade = story.currentGrade
+		this.workPlace = story.workPlace
+		this.profession = story.profession
 	}
 }
 </script>

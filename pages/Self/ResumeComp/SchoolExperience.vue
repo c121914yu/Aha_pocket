@@ -1,11 +1,21 @@
 <template>
 	<!-- 校园经历 -->
 	<view
-		class="card experience">
+		class="card experience"
+		:style="{
+			'height': isSchoolExper ? 'auto' : '110rpx'
+		}">
+		<text
+			class="fold iconfont icon-xiala"
+			:style="{
+				'transform': isSchoolExper ? 'rotate(0)' : 'rotate(180deg)'
+			}"
+			@click="isSchoolExper=!isSchoolExper">
+		</text>
 		<text class="h3">校园经历</text>
 		<view 
 			class="list-itme"
-			v-for="(exp,index) in experiences"
+			v-for="(exp,index) in schoolExper"
 			:key="index">
 			<!-- 组织 -->
 			<view class="item">
@@ -35,8 +45,10 @@
 					placeholder="2020-9"
 					v-model="exp.endTime">
 				</DataPicker>
-				<label class="checkbox">
-					<checkbox value="男" color="#f8b86b"/>
+				<label 
+					class="checkbox"  
+					@click="schoolExper[index].endTime = exp.endTime === '至今' ? '' : '至今'">
+					<checkbox color="#f8b86b" :checked="exp.endTime === '至今'"/>
 					<text >至今</text>
 				</label>
 			</view>
@@ -68,21 +80,22 @@
 export default {
 	data() {
 		return {
-			experiences: []
+			schoolExper: [],
+			isSchoolExper: true
 		}
 	},
 	methods: {
 		/*
-				name: 添加经历
-				description: 添加一组经历，往数组追加一组数据
-				input: null
-				return: null
-				change: 
-							experiences: Array,教育经历数组
-			*/
+			name: 添加经历
+			description: 添加一组经历，往数组追加一组数据
+			input: null
+			return: null
+			change: 
+						schoolExper: Array,教育经历数组
+		*/
 		 addExperience()
 		 {
-				this.experiences.push({
+				this.schoolExper.push({
 					organization: "",
 					post: "",
 					startTime: "",
@@ -97,15 +110,19 @@ export default {
 						index: Number,经历的下标
 			return: null
 			change: 
-						experiences: Array,教育经历数组
+						schoolExper: Array,教育经历数组
 		*/
 		 removeExperience(index)
 		 {
-			 this.gShowModal("即将删除该个人经历",() => {
-				 this.experiences.splice(index,1)
+			 this.gShowModal("即将删除该校园经历",() => {
+				 this.schoolExper.splice(index,1)
 			 })
 		 },
-		 
+	},
+	created() {
+		/* 读取本地数据 */
+		const story = JSON.parse(uni.getStorageSync("resume"))
+		this.schoolExper = story.schoolExper
 	}
 }
 </script>

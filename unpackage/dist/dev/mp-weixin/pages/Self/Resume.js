@@ -130,7 +130,12 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var BaseInfo = function BaseInfo() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/BaseInfo */ "pages/Self/ResumeComp/BaseInfo").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/BaseInfo.vue */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var EduExperience = function EduExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/EduExperience */ "pages/Self/ResumeComp/EduExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/EduExperience.vue */ 167));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var SchoolExperience = function SchoolExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/SchoolExperience */ "pages/Self/ResumeComp/SchoolExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/SchoolExperience.vue */ 190));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProjectExperience = function ProjectExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/ProjectExperience */ "pages/Self/ResumeComp/ProjectExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/ProjectExperience.vue */ 198));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProSkill = function ProSkill() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/ProSkill */ "pages/Self/ResumeComp/ProSkill").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/ProSkill.vue */ 172));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Honors = function Honors() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/Honors */ "pages/Self/ResumeComp/Honors").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/Honors.vue */ 177));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var SelfDescription = function SelfDescription() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/SelfDescription */ "pages/Self/ResumeComp/SelfDescription").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/SelfDescription.vue */ 185));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var BaseInfo = function BaseInfo() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/BaseInfo */ "pages/Self/ResumeComp/BaseInfo").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/BaseInfo.vue */ 100));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var EduExperience = function EduExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/EduExperience */ "pages/Self/ResumeComp/EduExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/EduExperience.vue */ 107));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var SchoolExperience = function SchoolExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/SchoolExperience */ "pages/Self/ResumeComp/SchoolExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/SchoolExperience.vue */ 112));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProjectExperience = function ProjectExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/ProjectExperience */ "pages/Self/ResumeComp/ProjectExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/ProjectExperience.vue */ 119));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PracticeExperience = function PracticeExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/PracticeExperience */ "pages/Self/ResumeComp/PracticeExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/PracticeExperience.vue */ 126));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProSkill = function ProSkill() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/ProSkill */ "pages/Self/ResumeComp/ProSkill").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/ProSkill.vue */ 133));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Honors = function Honors() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/Honors */ "pages/Self/ResumeComp/Honors").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/Honors.vue */ 138));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var SelfDescription = function SelfDescription() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/SelfDescription */ "pages/Self/ResumeComp/SelfDescription").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/SelfDescription.vue */ 145));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
 
 
 
@@ -166,51 +171,85 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 {
   data: function data() {
-    return {};
+    return {
+      storyText: "" };
 
   },
   methods: {
-    /* 
+    /*
              	name: 保存个人简历
-             	description: 获取各组件的内容构成简历数据
+             	description: 保存个人简历至本地
              	input: null
              	return: null
              */
     save: function save()
-    {
+    {var _this = this;
+      this.storyText = "保存中";
       var data = {
         // 基础信息表
         name: this.$refs.baseInfo.name,
         contact: this.$refs.baseInfo.contact,
         gender: this.$refs.baseInfo.gender,
         both: this.$refs.baseInfo.both,
-        highestDegree: this.$refs.baseInfo.highestDegree,
+        hDegree: this.$refs.baseInfo.hDegree,
         identity: this.$refs.baseInfo.identity,
         currentGrade: this.$refs.baseInfo.currentGrade,
         workPlace: this.$refs.baseInfo.workPlace,
         profession: this.$refs.baseInfo.profession,
         // 教育经历
-        eduExperience: this.$refs.eduExperience.eduExperience,
+        eduExper: this.$refs.eduExperience.eduExper,
+        // 校园经历
+        schoolExper: this.$refs.schoolExperience.schoolExper,
         // 项目经历
-        projectExperience: this.$refs.projectExperience.experiences,
+        projectExper: this.$refs.projectExperience.projectExper,
+        // 实习经历
+        practiceExper: this.$refs.practiceExperience.practiceExper,
         // 专业技能
-        projectSkill: this.$refs.projectSkill.proSkill,
+        projectSkill: this.$refs.projectSkill.projectSkill,
         // 荣誉情况
-        honors: this.$refs.honors.honorList,
+        honors: this.$refs.honors.honors,
         // 自我描述
-        selfDescription: this.$refs.selfDescription.selfDescription };
+        intro: this.$refs.selfDescription.intro };
 
-      console.log(data);
+      uni.setStorage({
+        key: "resume",
+        data: JSON.stringify(data),
+        success: function success() {
+          _this.storyText = "已保存\n至本地";
+          setTimeout(function () {
+            _this.storyText = "";
+          }, 2000);
+        } });
+
+      return data;
+    },
+    /* 
+       	name: 提交个人简历
+       	description: 提交个人简历至服务器
+       	input: null
+       	return: null
+       */
+    commitResume: function commitResume()
+    {
+      var data = this.save();
     } },
 
+  mounted: function mounted() {var _this2 = this;
+    /* 每10s保存一次数据至本地 */
+    setInterval(function () {
+      _this2.save();
+    }, 10000);
+  },
   components: {
     BaseInfo: BaseInfo,
     EduExperience: EduExperience,
     SchoolExperience: SchoolExperience,
     ProjectExperience: ProjectExperience,
+    PracticeExperience: PracticeExperience,
     ProSkill: ProSkill,
     Honors: Honors,
     SelfDescription: SelfDescription } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

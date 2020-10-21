@@ -38,6 +38,11 @@
 		"style": {
 			"navigationBarTitleText": "个人简历"
 		}
+	}, {
+		"path": "pages/Self/ResumePreview",
+		"style": {
+			"navigationBarTitleText": "简历预览"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
