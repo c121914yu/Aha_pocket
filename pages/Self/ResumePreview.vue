@@ -1,23 +1,146 @@
 <!-- 简历预览 -->
 <template>
 	<view class="preview">
-		
+		<view class="part base-info">
+			<!-- 姓名 -->
+			<view class="name center">{{name}}</view>
+			<!-- 求职意愿 -->
+			<view class="center">(工作意愿: {{workPlace}} {{profession}})</view>
+			<!-- 基础信息1 -->
+			<view>
+				{{gender}}&emsp;{{age}}&emsp;{{hDegree}}{{identity === "学生" ? "在读" : "毕业"}}&emsp;{{currentGrade}}
+			</view>
+			<!-- 基础信息2 -->
+			<view>
+				{{phone}} | {{email}}
+			</view>
+		</view>
+		<!-- 教育经历 -->
+		<view class="part eduExper">
+			<view class="h3">教育经历</view>
+			<view 
+				class="item"
+				v-for="(edu,index) in eduExper"
+				:key="index">
+				<view>
+					{{edu.startTime.replace("-",".")}} - {{edu.endTime.replace("-",".")}}&emsp;{{edu.degree}}&emsp;{{edu.school}}
+				</view>
+				<view>
+					{{edu.specialty}}&emsp;成绩排名{{edu.grade}}
+				</view>
+			</view>
+		</view>
+		<!-- 校园经历 -->
+		<view class="part schoolExper">
+			<view class="h3">校园经历</view>
+			<view 
+				class="item"
+				v-for="(exper,index) in schoolExper"
+				:key="index">
+				<view>{{exper.startTime.replace("-",".")}} - {{exper.endTime.replace("-",".")}}</view>
+				<view class="main">{{exper.organization}}&emsp;{{exper.post}}</view>
+				<view class="description">{{exper.description}}</view>
+			</view>
+		</view>
+		<!-- 项目经历 -->
+		<view class="part projectExper">
+			<view class="h3">项目经历</view>
+			<view 
+				class="item"
+				v-for="(exper,index) in projectExper"
+				:key="index">
+				<view>{{exper.startTime.replace("-",".")}} - {{exper.endTime.replace("-",".")}}</view>
+				<view class="main">项目名称: {{exper.name}}</view>
+				<view class="main">负责内容: {{exper.content}}</view>
+				<view class="description">{{exper.description}}</view>
+			</view>
+		</view>
+		<!-- 实习经历 -->
+		<view class="part practiceExper">
+			<view class="h3">实习经历</view>
+			<view 
+				class="item"
+				v-for="(exper,index) in practiceExper"
+				:key="index">
+				<view>{{exper.startTime.replace("-",".")}} - {{exper.endTime.replace("-",".")}}</view>
+				<view class="main">{{exper.company}}&emsp;{{exper.post}}</view>
+				<view class="description">{{exper.description}}</view>
+			</view>
+		</view>
+		<!-- 专业技能 -->
+		<view class="part projectSkill">
+			<view class="h3">个人技能</view>
+			<view style="margin-top: 5px">{{projectSkill}}</view>
+		</view>
+		<!-- 荣誉情况 -->
+		<view class="part eduExper">
+			<view class="h3">荣誉情况</view>
+			<view 
+				class="item"
+				v-for="(honor,index) in honors"
+				:key="index">
+				<view>{{honor.time.replace("-",".")}}&emsp;{{honor.name}}</view>
+				<view class="description">{{honor.description}}</view>
+			</view>
+		</view>
+		<!-- 自我介绍 -->
+		<view class="part intro">
+			<view class="h3">自我介绍</view>
+			<view style="margin-top: 5px">{{intro}}</view>
+		</view>
 	</view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		methods: {
-			
+import Vue from 'vue'
+export default {
+	data(){
+		/* 批量导入简历数据 */
+		const resume = JSON.parse(uni.getStorageSync("resume"))
+		// 计算年龄
+		let age = Math.floor((Date.now() - new Date(resume.both)) / 1000 / 60 / 60 / 24 / 365)
+		age += "岁"
+		return{
+			age,
+			...resume
 		}
+	},
+	methods: {
+		
 	}
+}
 </script>
 
-<style>
-
+<style lang="stylus" scoped>
+.preview
+	min-height 100vh
+	padding 40rpx
+	/* 每个模块公有样式 */
+	.part
+		margin-bottom 10px
+		width 100%
+		padding-bottom 5px
+		border-bottom 1px solid #9fa0a0
+		color #333333
+		white-space pre-wrap
+		&:last-of-type
+			border none
+		.h3
+			padding-left 10px
+			border-left 10px solid var(--origin3)
+		.item
+			margin 12px 0
+			font-size 30rpx
+			font-weight 600
+			.main
+				font-size 32rpx
+			.description
+				font-weight 400
+	/* 基本信息 */
+	.base-info
+		view
+			margin 5px 0
+		.name
+			font-size 50rpx
+			font-weight 600
 </style>

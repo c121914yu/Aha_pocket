@@ -60,6 +60,7 @@
   padding: 15rpx;
   background-color: var(--origin2);
   border-radius: 15px;
+  font-size: 28rpx;
 }
 .resume .card .add-btn {
   margin-top: 30rpx;
@@ -109,15 +110,16 @@
   -webkit-flex: 1;
           flex: 1;
 }
-.resume .btns .save,
-.resume .btns .preview {
+.resume .btns button {
   height: 80rpx;
   width: 30%;
   line-height: 80rpx;
   font-size: 30rpx;
 }
+.resume .btns .save {
+  margin: 0 10px;
+}
 .resume .btns .preview {
-  text-align: center;
   background-color: transparent;
   border-radius: 12px;
   color: #fff;

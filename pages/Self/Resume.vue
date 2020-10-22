@@ -19,11 +19,9 @@
 		<SelfDescription ref="selfDescription"></SelfDescription>
 		<!-- 按键 -->
 		<view class="btns">
-			<navigator class="preview" url="./ResumePreview">
-				预览
-			</navigator>
-			<text class="small center">{{storyText}}</text>
+			<button class="preview" @click="preview">预览</button>
 			<button class="save" @click="commitResume">保存</button>
+			<text class="small center">{{storyText}}</text>
 		</view>
 	</view>
 </template>
@@ -55,15 +53,16 @@ export default {
 			this.storyText = "保存中"
 			const data = {
 				// 基础信息表
-				name: this.$refs.baseInfo.name,
-				contact: this.$refs.baseInfo.contact,
-				gender: this.$refs.baseInfo.gender,
-				both: this.$refs.baseInfo.both,
-				hDegree: this.$refs.baseInfo.hDegree,
-				identity: this.$refs.baseInfo.identity,
-				currentGrade: this.$refs.baseInfo.currentGrade,
-				workPlace: this.$refs.baseInfo.workPlace,
-				profession: this.$refs.baseInfo.profession,
+				name: this.$refs.baseInfo.name || "",
+				phone: this.$refs.baseInfo.phone || "",
+				email: this.$refs.baseInfo.email || "",
+				gender: this.$refs.baseInfo.gender || "",
+				both: this.$refs.baseInfo.both || "",
+				hDegree: this.$refs.baseInfo.hDegree || "",
+				identity: this.$refs.baseInfo.identity || "",
+				currentGrade: this.$refs.baseInfo.currentGrade || "",
+				workPlace: this.$refs.baseInfo.workPlace || "",
+				profession: this.$refs.baseInfo.profession || "",
 				// 教育经历
 				eduExper: this.$refs.eduExperience.eduExper,
 				// 校园经历
@@ -100,6 +99,20 @@ export default {
 		commitResume()
 		{
 			const data = this.save()
+			console.log(data)
+		},
+		/*
+			name: 预览简历
+			description: 保存数据并跳转预览界面
+			input: null
+			return: null
+		*/
+		preview()
+		{
+			this.save()
+			uni.navigateTo({
+				url: "./ResumePreview"
+			})
 		}
 	},
 	mounted() {
@@ -172,6 +185,7 @@ export default {
 			padding 15rpx
 			background-color var(--origin2)
 			border-radius 15px
+			font-size 28rpx
 		// 添加按键
 		.add-btn
 			margin-top 30rpx
@@ -210,13 +224,14 @@ export default {
 		justify-content space-around
 		.small
 			flex 1
-		.save,.preview
+		button
 			height 80rpx
 			width 30%
 			line-height 80rpx
 			font-size 30rpx
+		.save
+			margin 0 10px
 		.preview
-			text-align center
 			background-color transparent
 			border-radius 12px
 			color #FFFFFF

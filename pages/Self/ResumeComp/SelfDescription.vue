@@ -16,6 +16,7 @@
 		<textarea 
 			style="height: 300rpx;" 
 			placeholder-class="placeholderStyle"
+			hold-keyboard="true"
 			v-model="intro"/>
 	</view>
 </template>

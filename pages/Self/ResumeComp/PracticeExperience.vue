@@ -1,7 +1,7 @@
 <template>
 	<!-- 实习经历 -->
 	<view
-		class="card"
+		class="card experience"
 		:style="{
 			'height': isPracticeExper ? 'auto' : '110rpx'
 		}">
@@ -23,6 +23,7 @@
 				<input 
 					class="input"
 					type="text"
+					hold-keyboard="true"
 					v-model="exp.company"/>
 			</view>
 			<!-- 职位 -->
@@ -31,6 +32,7 @@
 				<input 
 					class="input"
 					type="text"
+					hold-keyboard="true"
 					v-model="exp.post"/>
 			</view>
 			<!-- 经历时间 -->
@@ -57,6 +59,7 @@
 				<text>实习描述</text>
 				<textarea
 					style="height: 200rpx;"
+					hold-keyboard="true"
 					v-model="exp.description"/>
 			</view>
 			<!-- 删除按键 -->

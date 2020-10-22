@@ -1,7 +1,7 @@
 <template>
 	<!-- 荣誉情况 -->
 	<view
-		class="card"
+		class="card honor"
 		:style="{
 			'height': isHonors ? 'auto' : '110rpx'
 		}">
@@ -27,6 +27,7 @@
 					type="text"
 					placeholder-class="placeholderStyle"
 					placeholder="服务外包大赛全国一等奖 / ***论文第一作者"
+					hold-keyboard="true"
 					v-model="honor.name"/>
 			</view>
 			<!-- 获得时间 -->
@@ -44,6 +45,7 @@
 					style="height: 200rpx;" 
 					placeholder="简单描述下项目内容及个人负责的内容."
 					placeholder-class="placeholderStyle"
+					hold-keyboard="true"
 					v-model="honor.description"/>
 			</view>
 			<!-- 删除按键 -->

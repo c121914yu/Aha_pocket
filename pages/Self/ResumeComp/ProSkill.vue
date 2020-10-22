@@ -17,6 +17,7 @@
 			style="height: 300rpx;" 
 			placeholder="IT技能: 前端开发,java……不同技能换行更美观!"
 			placeholder-class="placeholderStyle"
+			hold-keyboard="true"
 			v-model="projectSkill"/>
 	</view>
 </template>

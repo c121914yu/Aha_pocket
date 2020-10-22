@@ -23,6 +23,7 @@
 				<input 
 					class="input"
 					type="text"
+					hold-keyboard="true"
 					v-model="exp.organization"/>
 			</view>
 			<!-- 职位 -->
@@ -31,6 +32,7 @@
 				<input 
 					class="input"
 					type="text"
+					hold-keyboard="true"
 					v-model="exp.post"/>
 			</view>
 			<!-- 经历时间 -->
@@ -57,6 +59,7 @@
 				<text>经历描述</text>
 				<textarea 
 					style="height: 200rpx;"
+					hold-keyboard="true"
 					v-model="exp.description"/>
 			</view>
 			<!-- 删除按键 -->

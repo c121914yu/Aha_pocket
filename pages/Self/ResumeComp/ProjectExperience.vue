@@ -1,7 +1,7 @@
 <template>
 	<!-- 项目经历 -->
 	<view
-		class="card"
+		class="card experience"
 		:style="{
 			'height': isProjectExper ? 'auto' : '110rpx'
 		}">
@@ -23,6 +23,7 @@
 				<input 
 					class="input"
 					type="text"
+					hold-keyboard="true"
 					v-model="exp.name"/>
 			</view>
 			<!-- 负责内容 -->
@@ -31,6 +32,7 @@
 				<input 
 					class="input"
 					type="text"
+					hold-keyboard="true"
 					v-model="exp.content"/>
 			</view>
 			<!-- 经历时间 -->
@@ -57,6 +59,7 @@
 				<text>项目描述</text>
 				<textarea
 					style="height: 200rpx;"
+					hold-keyboard="true"
 					v-model="exp.description"/>
 			</view>
 			<!-- 删除按键 -->
@@ -137,6 +140,7 @@ export default {
 		display flex
 	.description
 		padding-right 15rpx
-		align-items flex-start
+		display flex
 		flex-direction column
+		align-items flex-start
 </style>

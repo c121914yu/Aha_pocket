@@ -21,16 +21,28 @@
 				style="width: 300rpx" 
 				type="text" 
 				maxlength="10"
+				hold-keyboard="true"
 				v-model="name"/>
 		</view>
-		<!-- 联系方式 -->
-		<view class="item contact">
-			<text>联系方式</text>
+		<!-- 手机号 -->
+		<view class="item phone">
+			<text>手机号</text>
 			<input 
 				class="input" 
 				style="flex: 1" 
 				type="number"
-				v-model="contact"/>
+				hold-keyboard="true"
+				v-model="phone"/>
+		</view>
+		<!-- 邮箱地址 -->
+		<view class="item phone">
+			<text>邮箱地址</text>
+			<input 
+				class="input" 
+				style="flex: 1" 
+				type="text"
+				hold-keyboard="true"
+				v-model="email"/>
 		</view>
 		<!-- 性别 -->
 		<view class="item gender">
@@ -90,13 +102,14 @@
 			</radio-group>
 		</view>
 		<!-- 当前年级 -->
-		<view class="item grade" v-if="identity==='学生'">
+		<view class="item grade" v-if="identity === '学生'">
 			<text>当前年级</text>
 			<input 
 				class="input"
 				type="text"
 				placeholder-class="placeholderStyle"
 				placeholder="大二;研一"
+				hold-keyboard="true"
 				v-model="currentGrade"/>
 		</view>
 		<!-- 求职城市 -->
@@ -108,6 +121,7 @@
 				type="text"
 				placeholder-class="placeholderStyle"
 				placeholder="杭州,北京"
+				hold-keyboard="true"
 				v-model="workPlace"/>
 		</view>
 		<!-- 期望职业 -->
@@ -119,6 +133,7 @@
 				type="text"
 				placeholder-class="placeholderStyle"
 				placeholder="前端工程师;Java工程师"
+				hold-keyboard="true"
 				v-model="profession"/>
 		</view>
 	</view>
@@ -127,16 +142,20 @@
 <script>
 export default {
 	data() {
+		/* 读取本地数据 */
+		const story = JSON.parse(uni.getStorageSync("resume"))
 		return {
-			name: "", // 姓名
-			contact: "", // 联系方式
-			gender: "男", // 性别
-			both: "", // 出生日期
-			hDegree: "", // 最高学历
-			identity: "学生", // 当前身份
-			currentGrade: "", // 当前年级
-			workPlace: "", // 求职地点
-			profession: "", // 期望职业
+			name: "",
+			phone: "",
+			email: "",
+			gender: "男",
+			both: "",
+			hDegree: "",
+			identity: "学生",
+			currentGrade: "",
+			workPlace: "",
+			profession: "",
+			...story,
 			// 是否展示
 			isBaseInfo: true,
 			// 选框列表 & 选中下标
@@ -145,17 +164,6 @@ export default {
 	},
 	created() {
 		this.Degress = getApp().globalData.Degress
-		/* 读取本地数据 */
-		const story = JSON.parse(uni.getStorageSync("resume"))
-		this.name = story.name
-		this.contact = story.contact
-		this.gender = story.gender
-		this.both = story.both
-		this.hDegree = story.hDegree
-		this.identity = story.identity
-		this.currentGrade = story.currentGrade
-		this.workPlace = story.workPlace
-		this.profession = story.profession
 	}
 }
 </script>

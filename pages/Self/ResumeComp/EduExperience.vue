@@ -39,6 +39,7 @@
 				<input 
 					class="input"
 					type="text"
+					hold-keyboard="true"
 					v-model="edu.specialty"/>
 			</view>
 			<!-- 成绩 -->

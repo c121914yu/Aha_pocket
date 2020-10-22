@@ -4,7 +4,7 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": true,
     "enhance": false,
     "postcss": true,
@@ -39,8 +39,6 @@
   "appid": "wxafd522b076e38be0",
   "projectname": "竞赛统计",
   "cloudfunctionRoot": "static/cloudfunction/",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "current": -1,
@@ -71,6 +69,11 @@
           "name": "个人简历",
           "id": 2,
           "pathName": "pages/Self/Resume"
+        },
+        {
+          "name": "简历预览",
+          "id": 3,
+          "pathName": "pages/Self/ResumePreview"
         }
       ]
     }

@@ -4,6 +4,7 @@
 		<input 
 			type="text" 
 			:value="value"
+			hold-keyboard="true"
 			@input="inputing"/>
 		<view class="search-result">
 			<view 
