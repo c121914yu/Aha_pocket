@@ -15,6 +15,7 @@ page {
   --font-dark: #595757;
   --gray: #9fa0a0;
   --gray-font: #b5b5b6;
+  --border1: 1px solid #9fa0a0;
   --speed-slide: 0.8s ease-in-out;
   --speed-hover: 0.5s;
   margin: 0;
@@ -24,7 +25,8 @@ page {
   color: var(--font-dark);
   letter-spacing: 2rpx;
 }
-view {
+view,
+textarea {
   box-sizing: border-box;
 }
 input {
@@ -49,6 +51,10 @@ navigator {
   font-size: 26rpx;
   color: var(--gray-font);
   letter-spacing: 0;
+}
+.hoverScale {
+  -webkit-transform: scale(0.98);
+          transform: scale(0.98);
 }
 .small {
   font-size: 26rpx;

@@ -15,7 +15,7 @@
 		<text class="h3">校园经历</text>
 		<view 
 			class="list-itme"
-			v-for="(exp,index) in schoolExper"
+			v-for="(exp,index) in schoolExperiences"
 			:key="index">
 			<!-- 组织 -->
 			<view class="item">
@@ -49,7 +49,7 @@
 				</DataPicker>
 				<label 
 					class="checkbox"  
-					@click="schoolExper[index].endTime = exp.endTime === '至今' ? '' : '至今'">
+					@click="schoolExperiences[index].endTime = exp.endTime === '至今' ? '' : '至今'">
 					<checkbox color="#f8b86b" :checked="exp.endTime === '至今'"/>
 					<text >至今</text>
 				</label>
@@ -83,7 +83,7 @@
 export default {
 	data() {
 		return {
-			schoolExper: [],
+			schoolExperiences: [],
 			isSchoolExper: true
 		}
 	},
@@ -94,11 +94,11 @@ export default {
 			input: null
 			return: null
 			change: 
-						schoolExper: Array,教育经历数组
+						schoolExperiences: Array,教育经历数组
 		*/
 		 addExperience()
 		 {
-				this.schoolExper.push({
+				this.schoolExperiences.push({
 					organization: "",
 					post: "",
 					startTime: "",
@@ -113,19 +113,19 @@ export default {
 						index: Number,经历的下标
 			return: null
 			change: 
-						schoolExper: Array,教育经历数组
+						schoolExperiences: Array,教育经历数组
 		*/
 		 removeExperience(index)
 		 {
 			 this.gShowModal("即将删除该校园经历",() => {
-				 this.schoolExper.splice(index,1)
+				 this.schoolExperiences.splice(index,1)
 			 })
 		 },
 	},
 	created() {
 		/* 读取本地数据 */
 		const story = JSON.parse(uni.getStorageSync("resume"))
-		this.schoolExper = story.schoolExper
+		this.schoolExperiences = story.schoolExperiences || []
 	}
 }
 </script>

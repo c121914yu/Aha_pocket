@@ -1,6 +1,15 @@
 <!-- 简历预览 -->
 <template>
 	<view class="preview">
+		<!-- 下载按键 -->
+		<icon 
+			class="download" 
+			type="download" 
+			size="30" 
+			color="#f8b62d" 
+			@click="download">
+		</icon>
+		<!-- 基本信息 -->
 		<view class="part base-info">
 			<!-- 姓名 -->
 			<view class="name center">{{name}}</view>
@@ -16,7 +25,9 @@
 			</view>
 		</view>
 		<!-- 教育经历 -->
-		<view class="part eduExper">
+		<view 
+			v-if="eduExper.length > 0"
+			class="part eduExper">
 			<view class="h3">教育经历</view>
 			<view 
 				class="item"
@@ -30,20 +41,24 @@
 				</view>
 			</view>
 		</view>
-		<!-- 校园经历 -->
-		<view class="part schoolExper">
-			<view class="h3">校园经历</view>
+		<!-- 实习经历 -->
+		<view 
+			v-if="practiceExper.length > 0"
+			class="part practiceExper">
+			<view class="h3">实习经历</view>
 			<view 
 				class="item"
-				v-for="(exper,index) in schoolExper"
+				v-for="(exper,index) in practiceExper"
 				:key="index">
 				<view>{{exper.startTime.replace("-",".")}} - {{exper.endTime.replace("-",".")}}</view>
-				<view class="main">{{exper.organization}}&emsp;{{exper.post}}</view>
+				<view class="main">{{exper.company}}&emsp;{{exper.post}}</view>
 				<view class="description">{{exper.description}}</view>
 			</view>
 		</view>
 		<!-- 项目经历 -->
-		<view class="part projectExper">
+		<view 
+			v-if="projectExper.length > 0"
+			class="part projectExper">
 			<view class="h3">项目经历</view>
 			<view 
 				class="item"
@@ -55,25 +70,24 @@
 				<view class="description">{{exper.description}}</view>
 			</view>
 		</view>
-		<!-- 实习经历 -->
-		<view class="part practiceExper">
-			<view class="h3">实习经历</view>
+		<!-- 校园经历 -->
+		<view 
+			v-if="schoolExper.length > 0"
+			class="part schoolExper">
+			<view class="h3">校园经历</view>
 			<view 
 				class="item"
-				v-for="(exper,index) in practiceExper"
+				v-for="(exper,index) in schoolExper"
 				:key="index">
 				<view>{{exper.startTime.replace("-",".")}} - {{exper.endTime.replace("-",".")}}</view>
-				<view class="main">{{exper.company}}&emsp;{{exper.post}}</view>
+				<view class="main">{{exper.organization}}&emsp;{{exper.post}}</view>
 				<view class="description">{{exper.description}}</view>
 			</view>
 		</view>
-		<!-- 专业技能 -->
-		<view class="part projectSkill">
-			<view class="h3">个人技能</view>
-			<view style="margin-top: 5px">{{projectSkill}}</view>
-		</view>
 		<!-- 荣誉情况 -->
-		<view class="part eduExper">
+		<view 
+			v-if="honors.length > 0"
+			class="part eduExper">
 			<view class="h3">荣誉情况</view>
 			<view 
 				class="item"
@@ -83,8 +97,17 @@
 				<view class="description">{{honor.description}}</view>
 			</view>
 		</view>
+		<!-- 专业技能 -->
+		<view 
+			v-if="projectSkill"
+			class="part projectSkill">
+			<view class="h3">个人技能</view>
+			<view style="margin-top: 5px">{{projectSkill}}</view>
+		</view>
 		<!-- 自我介绍 -->
-		<view class="part intro">
+		<view 
+			v-if="intro"
+			class="part intro">
 			<view class="h3">自我介绍</view>
 			<view style="margin-top: 5px">{{intro}}</view>
 		</view>
@@ -106,7 +129,17 @@ export default {
 		}
 	},
 	methods: {
-		
+		/* 
+			name: 下载界面
+			description: 将整页下载成pdf文件
+			input: null
+			return: null
+			time: 2020/10/22
+		*/
+		download()
+		{
+			
+		}
 	}
 }
 </script>
@@ -115,6 +148,11 @@ export default {
 .preview
 	min-height 100vh
 	padding 40rpx
+	/* 下载按键 */
+	.download
+		position absolute
+		right 10px
+		top 10px
 	/* 每个模块公有样式 */
 	.part
 		margin-bottom 10px

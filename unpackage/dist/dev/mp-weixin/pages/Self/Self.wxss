@@ -66,6 +66,7 @@
 .self .head .right .name.data-v-bf8d8ef4 {
   color: var(--origin4);
   font-weight: 600;
+  border-bottom: 1px solid rgba(144,140,139,0.65);
 }
 .self .head .right .tags.data-v-bf8d8ef4 {
   display: -webkit-box;
@@ -115,9 +116,13 @@
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
 }
-.self .navs button.data-v-bf8d8ef4 {
-  width: 40%;
+.self .navs navigator.data-v-bf8d8ef4 {
+  width: 35%;
+  padding: 10px 0;
+  text-align: center;
   background-color: var(--origin4);
   color: #fff;
   border-radius: 30px;

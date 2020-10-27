@@ -80,6 +80,7 @@ export default {
 				.then(res => {
 					console.log(res)
 					uni.setStorageSync("token",res.data.token)
+					getApp().globalData.gUserInfo = res.data.userInfo
 					this.loginSuccess()
 				})
 			}

@@ -16,7 +16,7 @@
 		<!-- 教育经历内容填写 -->
 		<view 
 			class="list-itme"
-			v-for="(edu,index) in eduExper"
+			v-for="(edu,index) in eduExperiences"
 			:key="index">
 			<!-- 学历 -->
 			<view class="item degree">
@@ -31,7 +31,10 @@
 			<!-- 学校选择，可选择输入框 -->
 			<view class="item school">
 				<text>学校</text>
-				<SearchInput v-model="edu.school"></SearchInput>
+				<SearchInput
+					:allResults="Schools"
+					v-model="edu.school">
+				</SearchInput>
 			</view>
 			<!-- 专业 -->
 			<view class="item specialty">
@@ -87,11 +90,13 @@
 <script>
 export default {
 	data() {
+		const Schools = getApp().globalData.Schools
 		return {
-			eduExper: [], // 教育经历
+			eduExperiences: [], // 教育经历
 			isEduExperience: true,
 			Degress: [], // 学历数组
 			Grades: [], // 成绩等级
+			Schools,
 		}
 	},
 	methods:{
@@ -101,11 +106,11 @@ export default {
 			input: null
 			return: null
 			change: 
-						eduExper: Array,教育经历数组
+						eduExperiences: Array,教育经历数组
 		*/
 		addEdu()
 		{
-			this.eduExper.push({
+			this.eduExperiences.push({
 				degree: "",
 				school: "",
 				specialty: "",
@@ -121,12 +126,12 @@ export default {
 						index: Number,经历的下标
 			return: null
 			change: 
-						eduExper: Array,教育经历数组
+						eduExperiences: Array,教育经历数组
 		*/
 		removeEdu(index)
 		{
 				 this.gShowModal("即将删除该教育经历",() => {
-					 this.eduExper.splice(index,1)
+					 this.eduExperiences.splice(index,1)
 				 })
 		},
 	},
@@ -135,7 +140,7 @@ export default {
 		this.Grades = getApp().globalData.Grads
 		/* 读取本地数据 */
 		const story = JSON.parse(uni.getStorageSync("resume"))
-		this.eduExper = story.eduExper
+		this.eduExperiences = story.eduExperiences || []
 	},
 }
 </script>

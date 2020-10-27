@@ -5,7 +5,10 @@
 			type="text" 
 			:value="value"
 			hold-keyboard="true"
-			@input="inputing"/>
+			placeholder-class="placeholderStyle"
+			:placeholder="placeholder"
+			@input="inputing"
+			@blur="$emit('blur',$event.detail.value)"/>
 		<view class="search-result">
 			<view 
 				class="result"
@@ -22,15 +25,22 @@
 export default {
 	data() {
 		return {
-			allResults: ["浙江工业大学","杭州电子科技大学","浙江大学","杭州师范大学"],
 			searchResult: []
 		}
 	},
 	props: {
+		placeholder: {
+			type: String,
+			default: ""
+		},
+		allResults: {
+			type: Array,
+			default: () => []
+		},
 		value: {
 			type: String,
 			default: ""
-		}
+		},
 	},
 	methods:{
 		/* 
@@ -75,6 +85,7 @@ export default {
 	 {
 		 this.searchResult = []
 		 this.$emit("input",result)
+		 this.$emit('blur',result)
 	 }
 	}
 }
@@ -90,6 +101,8 @@ export default {
 	.search-result
 		z-index 5
 		position absolute
+		left 0
+		margin-top 5px
 		width 100%
 		max-height 350rpx
 		overflow hidden

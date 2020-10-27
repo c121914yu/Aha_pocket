@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "竞赛",
   "usingComponents": {
+    "user-agreement": "/components/UserAgreement/UserAgreement",
     "tab-bar": "/components/TabBar/TabBar",
     "home": "/pages/Home/Home",
     "life": "/pages/Life/Life",

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "资源上传",
+  "usingComponents": {
+    "s-picker": "/components/SPicker/SPicker",
+    "search-input": "/components/SearchInput/SearchInput"
+  }
+}

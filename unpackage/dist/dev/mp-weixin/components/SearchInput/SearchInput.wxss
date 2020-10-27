@@ -9,6 +9,8 @@
 .search-input .search-result.data-v-1945f34a {
   z-index: 5;
   position: absolute;
+  left: 0;
+  margin-top: 5px;
   width: 100%;
   max-height: 350rpx;
   overflow: hidden;

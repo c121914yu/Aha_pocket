@@ -72,7 +72,7 @@
 			<DataPicker 
 				placeholder="2000-4"
 				endTime="2010-12"
-				v-model="both">
+				v-model="birth">
 			</DataPicker>
 		</view>
 		<!-- 最高学历 -->
@@ -80,9 +80,9 @@
 			<text>最高学历</text>
 			<SPicker 
 				placeholder="包括在读"
-				startIndex="3"
+				:startIndex="highestDegree ? Degress.indexOf(highestDegree) : 3"
 				:range="Degress"
-				v-model="hDegree">
+				v-model="highestDegree">
 			</SPicker>
 		</view>
 		<!-- 是否在读学生 -->
@@ -149,8 +149,8 @@ export default {
 			phone: "",
 			email: "",
 			gender: "男",
-			both: "",
-			hDegree: "",
+			birth: "",
+			highestDegree: "",
 			identity: "学生",
 			currentGrade: "",
 			workPlace: "",
@@ -164,6 +164,7 @@ export default {
 	},
 	created() {
 		this.Degress = getApp().globalData.Degress
+		/* 读取本地数据 */
 	}
 }
 </script>

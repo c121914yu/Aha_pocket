@@ -131,7 +131,7 @@ export default {
 				getApp().globalData.gUserInfo = res.data.userInfo
 				/* 跳转主页 */
 				uni.reLaunch({
-					url: "../Home/Home",
+					url: "../app",
 					success: () => {
 						this.gToastSuccess(res.msg)
 					}

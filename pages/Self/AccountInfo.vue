@@ -24,89 +24,19 @@
 				placeholder="用户昵称" 
 				v-model="nickname"/>
 		</view>
-		<!-- 性别 -->
-		<view 
-			class="item gender"
-			style="animation-delay: .3s">
-			<text class="iconfont icon-icfemale"></text>
-			<text class="name">性别</text>
-			<!-- 单选框 -->
-			<radio-group 
-				class="value radio-group"
-				@change="gender = $event.detail.value">
-				<label>
-					<text class="female iconfont icon-icfemale"></text>
-					<radio class="radio" value="female" color="#f8b86b" checked="true"/>
-				</label>
-				<label>
-					<text class="male iconfont icon-icmale"></text>
-					<radio class="radio" value="male" color="#f8b86b"/>
-				</label>
-				<label>
-					<text class="private iconfont icon-password"></text>
-					<radio class="radio" value="private" color="#f8b86b"/>
-				</label>
-			</radio-group>
-		</view>
-		<!-- 学校 -->
-		<view 
-			class="item school"
-			style="animation-delay: .4s">
-			<text class="iconfont icon-zudui"></text>
-			<text class="name">学校</text>
-			<picker
-				class="value"
-				:range="schools"
-				@change="school = schools[$event.detail.value]">
-				<view :class="school === '' ? 'placeholderStyle' : ''">
-					{{school || "选择你的学校"}}
-				</view>
-			</picker>
-		</view>
-		<!-- 学院 -->
-		<view 
-			class="item school"
-			style="animation-delay: .5s">
-			<text class="iconfont icon-zudui"></text>
-			<text class="name">学院</text>
-			<picker
-				class="value"
-				:range="academies"
-				@change="academy = academies[$event.detail.value]">
-				<view :class="academy === '' ? 'placeholderStyle' : ''">
-					{{academy || "选择你的学院"}}
-				</view>
-			</picker>
-		</view>
-		<!-- 专业 -->
-		<view 
-			class="item major"
-			style="animation-delay: .6s">
-			<text class="iconfont icon-zudui"></text>
-			<text class="name">专业</text>
-			<picker
-				class="value"
-				:range="specialties"
-				@change="specialty = specialties[$event.detail.value]">
-				<view :class="specialty === '' ? 'placeholderStyle' : ''">
-					{{specialty || "选择你的专业"}}
-				</view>
-			</picker>
-		</view>
-		<!-- 方向 -->
+		<!-- 个性签名 -->
 		<view 
 			class="item main-learn"
 			style="animation-delay: .7s">
 			<text class="iconfont icon-huabanfuben"></text>
-			<text class="name">学习方向</text>
+			<text class="name">个性签名</text>
 			<input 
 				class="value" 
 				type="text" 
 				placeholder-class="placeholderStyle" 
-				placeholder="你的学习方向" 
+				placeholder="个性签名" 
 				v-model="mainLearn"/>
 		</view>
-		<view class="remind small center">*该部分信息为公开信息,可被所有用户查看,Aha口袋还会利用部分信息进行推荐算法。</view>
 		<view class="save">
 			<button @click="save">保存</button>
 		</view>
@@ -119,14 +49,9 @@ export default {
 		return {
 			phone: "15677751219",
 			nickname: "",
-			gender: "female",
-			school: "浙江工业大学",
 			academy: "",
 			specialty : "",
 			mainLearn: "",
-			schools: ["浙江工业大学","杭州电子科技大学"],
-			academies: ["信息工程学院","计算机学院","环境学院"],
-			specialties: ["自动化","电子科学与技术","通信工程"]
 		}
 	},
 	methods:{

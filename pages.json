@@ -1,49 +1,64 @@
 {
 	"pages": [
-	/* 账号管理 */
-	{
-		"path": "pages/Login/Login",
-		"style": {
-			"navigationBarTitleText": "登录"
+		/* 账号管理 */
+		{
+			"path": "pages/Login/Login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		}, {
+			"path": "pages/Login/Register",
+			"style": {
+				"navigationBarTitleText": "用户注册"
+			}
+		}, {
+			"path": "pages/Login/FindPassword",
+			"style": {
+				"navigationBarTitleText": "找回密码"
+			}
+		},
+		/* 
+			主页
+			4个副页全部放在app.vue中
+		*/
+		{
+			"path": "pages/app",
+			"style": {
+				"navigationBarTitleText": "竞赛"
+			}
+		},
+		/* 次界面，不含主导航 */
+		{
+			"path": "pages/Self/AccountInfo",
+			"style": {
+				"navigationBarTitleText": "账号信息"
+			}
+		}, {
+			"path": "pages/Self/Resume",
+			"style": {
+				"navigationBarTitleText": "个人简历"
+			}
+		}, {
+			"path": "pages/Self/ResumePreview",
+			"style": {
+				"navigationBarTitleText": "简历预览"
+			}
+		}, 
+		/* 资源管理 */
+		{
+			"path": "pages/Resource/UpResource",
+			"style": {
+				"navigationBarTitleText": "资源上传"
+			}
+		},
+		/* 合同 & 电子签名 */
+		{
+			"path": "pages/Resource/Contract",
+			"style": {
+				"navigationBarTitleText": "Aha口袋用户合同"
+			}
 		}
-	}, {
-		"path": "pages/Login/Register",
-		"style": {
-			"navigationBarTitleText": "用户注册"
-		}
-	}, {
-		"path": "pages/Login/FindPassword",
-		"style": {
-			"navigationBarTitleText": "找回密码"
-		}
-	},
-	/* 
-		主页
-		4个副页全部放在app.vue中
-	*/
-	{
-		"path": "pages/app",
-		"style": {
-			"navigationBarTitleText": "竞赛"
-		}
-	},
-	/* 次界面，不含主导航 */
-	{
-		"path": "pages/Self/AccountInfo",
-		"style": {
-			"navigationBarTitleText": "账号信息"
-		}
-	}, {
-		"path": "pages/Self/Resume",
-		"style": {
-			"navigationBarTitleText": "个人简历"
-		}
-	}, {
-		"path": "pages/Self/ResumePreview",
-		"style": {
-			"navigationBarTitleText": "简历预览"
-		}
-	}],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "uni-app",
@@ -62,8 +77,8 @@
 			"name": "个人简历",
 			"path": "pages/Self/Resume"
 		}, {
-			"name": "简历预览",
-			"path": "pages/Self/ResumePreview"
+			"name": "合同",
+			"path": "pages/Resource/Contract"
 		}]
 	}
 }

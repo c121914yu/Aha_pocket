@@ -1,6 +1,6 @@
-(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],[
-/* 0 */,
-/* 1 */
+(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],{
+
+/***/ 1:
 /*!************************************************************!*\
   !*** ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js ***!
   \************************************************************/
@@ -1805,7 +1805,296 @@ var uni$1 = uni;var _default =
 uni$1;exports.default = _default;
 
 /***/ }),
-/* 2 */
+
+/***/ 10:
+/*!**********************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode, /* vue-cli only */
+  components, // fixed by xxxxxx auto components
+  renderjs // fixed by xxxxxx renderjs
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // fixed by xxxxxx auto components
+  if (components) {
+    if (!options.components) {
+      options.components = {}
+    }
+    var hasOwn = Object.prototype.hasOwnProperty
+    for (var name in components) {
+      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
+        options.components[name] = components[name]
+      }
+    }
+  }
+  // fixed by xxxxxx renderjs
+  if (renderjs) {
+    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
+      this[renderjs.__module] = this
+    });
+    (options.mixins || (options.mixins = [])).push(renderjs)
+  }
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+
+/***/ 11:
+/*!*********************************************!*\
+  !*** D:/服务外包/竞赛统计/static/icon/iconfont.css ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+    if(false) { var cssReload; }
+  
+
+/***/ }),
+
+/***/ 12:
+/*!*******************************************!*\
+  !*** D:/服务外包/竞赛统计/static/js/globalFun.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /* 
+                                                                                                     	name: showSuccess
+                                                                                                     	description: 展示成功提示
+                                                                                                     	input: 
+                                                                                                     				title: String,提示文字
+                                                                                                     				mask: Boolean,是否展示蒙层
+                                                                                                     	return: null
+                                                                                                     */
+function gToastSuccess(title) {var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;var mask = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  uni.showToast({
+    title: title,
+    mask: mask,
+    duration: duration });
+
+}
+/* 
+  	name: showError
+  	description: 展示错误提示
+  	input: 
+  				title: String,提示文字
+  				mask: Boolean,是否展示蒙层
+  	return: null
+  */
+function gToastError(title) {var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;var mask = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  uni.showToast({
+    title: title,
+    image: "/static/icon/close.png",
+    mask: mask,
+    duration: duration });
+
+}
+/* 
+  	name: showModal
+  	description: 提示确认操作
+  	input: 
+  				content: String,提示文字
+  				success: Function,点击确认后的操作
+  				cancel: Function,点击取消后的操作
+  	return: null
+  */
+function gShowModal(content, _success, cancel) {
+  uni.showModal({
+    title: "提示",
+    content: content,
+    confirmColor: "#f8b86b",
+    success: function success(res) {
+      if (res.confirm && _success)
+      {
+        _success();
+      } else
+      if (res.cancel && cancel)
+      {
+        cancel;
+      }
+    } });
+
+}
+
+var globalFun = {
+  gToastSuccess: gToastSuccess,
+  gToastError: gToastError,
+  gShowModal: gShowModal };var _default =
+
+globalFun;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 19:
+/*!************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_login.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.WXLogin = exports.Login = exports.ChangePassword = exports.Register = exports.sendChangePswCode = exports.sendRegisterCode = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 
+                                                                                                                                                                                                                                                                                                                                                                                    	description: 发送注册验证码
+                                                                                                                                                                                                                                                                                                                                                                                    	input: 
+                                                                                                                                                                                                                                                                                                                                                                                    				phone: String,手机号
+                                                                                                                                                                                                                                                                                                                                                                                    	return: null
+                                                                                                                                                                                                                                                                                                                                                                                    */
+var sendRegisterCode = function sendRegisterCode(phone) {return (0, _request.default)("/sms/sendCode/register/" + phone, "GET", {});};
+/* 
+                                                                                                                                       	description: 发送修改密码验证码
+                                                                                                                                       	input: 
+                                                                                                                                       				phone: String,手机号
+                                                                                                                                       	return: null
+                                                                                                                                       */exports.sendRegisterCode = sendRegisterCode;
+var sendChangePswCode = function sendChangePswCode(phone) {return (0, _request.default)("/sms/sendCode/changePassword/" + phone, "GET", {});};
+
+/* 
+                                                                                                                                               	description: 用户注册
+                                                                                                                                               	input: 
+                                                                                                                                               				phone: String,手机号
+                                                                                                                                               				password: String,密码
+                                                                                                                                               				code: String,验证码
+                                                                                                                                               	return: 
+                                                                                                                                               				token: String
+                                                                                                                                               				userInfo: Object,用户信息
+                                                                                                                                               */exports.sendChangePswCode = sendChangePswCode;
+var Register = function Register(data) {return (0, _request.default)("/register", "POST", data);};
+
+/* 
+                                                                                                   	description: 修改密码
+                                                                                                   	input: 
+                                                                                                   				phone: String,手机号
+                                                                                                   				password: String,密码
+                                                                                                   				code: String,验证码
+                                                                                                   	return: null
+                                                                                                   */exports.Register = Register;
+var ChangePassword = function ChangePassword(data) {return (0, _request.default)("/changePassword/" + data.phone, "POST", data);};
+
+/* 
+                                                                                                                                   	description: 用户手机登录
+                                                                                                                                   	input: 
+                                                                                                                                   				phone: String,手机号
+                                                                                                                                   				password: String,密码
+                                                                                                                                   	return: 
+                                                                                                                                   				token: String
+                                                                                                                                   				userInfo: Object,用户信息
+                                                                                                                                   */exports.ChangePassword = ChangePassword;
+var Login = function Login(data) {return (0, _request.default)("/login", "POST", data);};
+
+/* 
+                                                                                          	description: 微信登录
+                                                                                          	input: 
+                                                                                          				code: String,微信用户表示码
+                                                                                          	return: 
+                                                                                          				token: String
+                                                                                          				userInfo: Object,用户信息
+                                                                                          */exports.Login = Login;
+var WXLogin = function WXLogin(data) {return (0, _request.default)("/wxLogin", "POST", data);};exports.WXLogin = WXLogin;
+
+/***/ }),
+
+/***/ 2:
 /*!******************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js ***!
   \******************************************************************************************/
@@ -7851,342 +8140,8 @@ internalMixin(Vue);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
-/* 3 */
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 4 */
-/*!*******************************!*\
-  !*** D:/服务外包/竞赛统计/pages.json ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */
-/*!**********************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \**********************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode, /* vue-cli only */
-  components, // fixed by xxxxxx auto components
-  renderjs // fixed by xxxxxx renderjs
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // fixed by xxxxxx auto components
-  if (components) {
-    if (!options.components) {
-      options.components = {}
-    }
-    var hasOwn = Object.prototype.hasOwnProperty
-    for (var name in components) {
-      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
-        options.components[name] = components[name]
-      }
-    }
-  }
-  // fixed by xxxxxx renderjs
-  if (renderjs) {
-    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
-      this[renderjs.__module] = this
-    });
-    (options.mixins || (options.mixins = [])).push(renderjs)
-  }
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 11 */
-/*!*********************************************!*\
-  !*** D:/服务外包/竞赛统计/static/icon/iconfont.css ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-    if(false) { var cssReload; }
-  
-
-/***/ }),
-/* 12 */
-/*!*******************************************!*\
-  !*** D:/服务外包/竞赛统计/static/js/globalFun.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /* 
-                                                                                                     	name: showSuccess
-                                                                                                     	description: 展示成功提示
-                                                                                                     	input: 
-                                                                                                     				title: String,提示文字
-                                                                                                     				mask: Boolean,是否展示蒙层
-                                                                                                     	return: null
-                                                                                                     */
-function gToastSuccess(title) {var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;var mask = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-  uni.showToast({
-    title: title,
-    mask: mask,
-    duration: duration });
-
-}
-/* 
-  	name: showError
-  	description: 展示错误提示
-  	input: 
-  				title: String,提示文字
-  				mask: Boolean,是否展示蒙层
-  	return: null
-  */
-function gToastError(title) {var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;var mask = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-  uni.showToast({
-    title: title,
-    image: "/static/icon/close.png",
-    mask: mask,
-    duration: duration });
-
-}
-/* 
-  	name: showModal
-  	description: 提示确认操作
-  	input: 
-  				content: String,提示文字
-  				success: Function,点击确认后的操作
-  				cancel: Function,点击取消后的操作
-  	return: null
-  */
-function gShowModal(content, _success, cancel) {
-  uni.showModal({
-    title: "提示",
-    content: "即将删除该教育经历",
-    confirmColor: "#f8b86b",
-    success: function success(res) {
-      if (res.confirm && _success)
-      {
-        _success();
-      } else
-      if (res.cancel && cancel)
-      {
-        cancel;
-      }
-    } });
-
-}
-
-var globalFun = {
-  gToastSuccess: gToastSuccess,
-  gToastError: gToastError,
-  gShowModal: gShowModal };var _default =
-
-globalFun;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */
-/*!************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_login.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.WXLogin = exports.Login = exports.ChangePassword = exports.Register = exports.sendChangePswCode = exports.sendRegisterCode = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/* 
-                                                                                                                                                                                                                                                                                                                                                                                    	description: 发送注册验证码
-                                                                                                                                                                                                                                                                                                                                                                                    	input: 
-                                                                                                                                                                                                                                                                                                                                                                                    				phone: String,手机号
-                                                                                                                                                                                                                                                                                                                                                                                    	return: null
-                                                                                                                                                                                                                                                                                                                                                                                    */
-var sendRegisterCode = function sendRegisterCode(phone) {return (0, _request.default)("/sms/sendCode/register/" + phone, "GET", {});};
-/* 
-                                                                                                                                       	description: 发送修改密码验证码
-                                                                                                                                       	input: 
-                                                                                                                                       				phone: String,手机号
-                                                                                                                                       	return: null
-                                                                                                                                       */exports.sendRegisterCode = sendRegisterCode;
-var sendChangePswCode = function sendChangePswCode(phone) {return (0, _request.default)("/sms/sendCode/changePassword/" + phone, "GET", {});};
-
-/* 
-                                                                                                                                               	description: 用户注册
-                                                                                                                                               	input: 
-                                                                                                                                               				phone: String,手机号
-                                                                                                                                               				password: String,密码
-                                                                                                                                               				code: String,验证码
-                                                                                                                                               	return: 
-                                                                                                                                               				token: String
-                                                                                                                                               				userInfo: Object,用户信息
-                                                                                                                                               */exports.sendChangePswCode = sendChangePswCode;
-var Register = function Register(data) {return (0, _request.default)("/register", "POST", data);};
-
-/* 
-                                                                                                   	description: 修改密码
-                                                                                                   	input: 
-                                                                                                   				phone: String,手机号
-                                                                                                   				password: String,密码
-                                                                                                   				code: String,验证码
-                                                                                                   	return: null
-                                                                                                   */exports.Register = Register;
-var ChangePassword = function ChangePassword(data) {return (0, _request.default)("/changePassword/" + data.phone, "POST", data);};
-
-/* 
-                                                                                                                                   	description: 用户手机登录
-                                                                                                                                   	input: 
-                                                                                                                                   				phone: String,手机号
-                                                                                                                                   				password: String,密码
-                                                                                                                                   	return: 
-                                                                                                                                   				token: String
-                                                                                                                                   				userInfo: Object,用户信息
-                                                                                                                                   */exports.ChangePassword = ChangePassword;
-var Login = function Login(data) {return (0, _request.default)("/login", "POST", data);};
-
-/* 
-                                                                                          	description: 微信登录
-                                                                                          	input: 
-                                                                                          				code: String,微信用户表示码
-                                                                                          	return: 
-                                                                                          				token: String
-                                                                                          				userInfo: Object,用户信息
-                                                                                          */exports.Login = Login;
-var WXLogin = function WXLogin(data) {return (0, _request.default)("/wxLogin", "POST", data);};exports.WXLogin = WXLogin;
-
-/***/ }),
-/* 20 */
+/***/ 20:
 /*!**********************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/request.js ***!
   \**********************************************/
@@ -8253,7 +8208,8 @@ myRequest;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 21 */
+
+/***/ 21:
 /*!***************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_userInfo.js ***!
   \***************************************************/
@@ -8270,6 +8226,72 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.getMe = vo
                                                                                                                                                                                                                                                                */
 var getMe = function getMe(data) {return (0, _request.default)("/userInfo/me", "GET", data);};exports.getMe = getMe;
 
+/***/ }),
+
+/***/ 3:
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+
+/***/ 4:
+/*!*******************************!*\
+  !*** D:/服务外包/竞赛统计/pages.json ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ 60:
+/*!*************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_resume.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getResume = exports.putResume = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 
+                                                                                                                                                                                                                                                                                       	description: 更新简历信息
+                                                                                                                                                                                                                                                                                       	input: resume: Object,简历的所有字段
+                                                                                                                                                                                                                                                                                       */
+var putResume = function putResume(data) {return (0, _request.default)("/resume", "PUT", data);};
+/* 
+                                                                                                  	description: 获取简历信息
+                                                                                                  	input: resume: Object,简历的所有字段
+                                                                                                  */exports.putResume = putResume;
+var getResume = function getResume(phone) {return (0, _request.default)("/resume/" + phone, "GET", {});};exports.getResume = getResume;
+
 /***/ })
-]]);
+
+}]);
 //# sourceMappingURL=../../.sourcemap/mp-weixin/common/vendor.js.map

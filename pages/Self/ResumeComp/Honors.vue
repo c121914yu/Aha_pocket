@@ -54,7 +54,7 @@
 				type="clear" 
 				size="22" 
 				color="#e86452"
-				@click="removePrize(index)">
+				@click="removeHonor(index)">
 			</icon>
 		</view>
 		<button

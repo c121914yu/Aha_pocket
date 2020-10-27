@@ -21,22 +21,27 @@
 <script>
 export default {
 	props:{
+		/* 宽度 */
 		width: {
 			type: Number,
 			default: 200
 		},
+		/* 数组 */
 		range: {
 			type: Array,
 			default: () => []
 		},
+		/* 无值填充 */
 		placeholder: {
 			type: String,
 			default: ""
 		},
+		/* 起始下标 */
 		startIndex: {
 			type: Number,
 			default: 0
 		},
+		/* 绑定值 */
 		value: {
 			type: String,
 			default: ""

@@ -91,14 +91,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
+  UserAgreement: function() {
+    return __webpack_require__.e(/*! import() | components/UserAgreement/UserAgreement */ "components/UserAgreement/UserAgreement").then(__webpack_require__.bind(null, /*! @/components/UserAgreement/UserAgreement.vue */ 94))
+  },
   TabBar: function() {
-    return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 77))
+    return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 101))
   }
 }
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  if (!_vm._isMounted) {
+    _vm.e0 = function($event) {
+      _vm.isReadedAgreement = true
+    }
+  }
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -132,7 +140,12 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Home = function Home() {__webpack_require__.e(/*! require.ensure | pages/Home/Home */ "pages/Home/Home").then((function () {return resolve(__webpack_require__(/*! ./Home/Home */ 84));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Life = function Life() {__webpack_require__.e(/*! require.ensure | pages/Life/Life */ "pages/Life/Life").then((function () {return resolve(__webpack_require__(/*! ./Life/Life */ 91));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Member = function Member() {__webpack_require__.e(/*! require.ensure | pages/Member/Member */ "pages/Member/Member").then((function () {return resolve(__webpack_require__(/*! ./Member/Member */ 96));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {__webpack_require__.e(/*! require.ensure | pages/Self/Self */ "pages/Self/Self").then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 101));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Home = function Home() {__webpack_require__.e(/*! require.ensure | pages/Home/Home */ "pages/Home/Home").then((function () {return resolve(__webpack_require__(/*! ./Home/Home */ 108));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Life = function Life() {__webpack_require__.e(/*! require.ensure | pages/Life/Life */ "pages/Life/Life").then((function () {return resolve(__webpack_require__(/*! ./Life/Life */ 115));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Member = function Member() {__webpack_require__.e(/*! require.ensure | pages/Member/Member */ "pages/Member/Member").then((function () {return resolve(__webpack_require__(/*! ./Member/Member */ 120));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 125));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
 
 
 
@@ -179,7 +192,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       { name: "Member", loaded: false },
       { name: "Self", loaded: false }],
 
-      currentNav: 0 };
+      currentNav: 0,
+      isReadedAgreement: true };
 
   },
   methods: {

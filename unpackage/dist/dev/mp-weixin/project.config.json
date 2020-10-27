@@ -12,7 +12,7 @@
     "minified": true,
     "newFeature": false,
     "coverView": true,
-    "nodeModules": false,
+    "nodeModules": true,
     "autoAudits": false,
     "showShadowRootInWxmlPanel": true,
     "scopeDataCheck": false,
@@ -39,6 +39,8 @@
   "appid": "wxafd522b076e38be0",
   "projectname": "竞赛统计",
   "cloudfunctionRoot": "static/cloudfunction/",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "current": -1,
@@ -71,9 +73,9 @@
           "pathName": "pages/Self/Resume"
         },
         {
-          "name": "简历预览",
+          "name": "合同",
           "id": 3,
-          "pathName": "pages/Self/ResumePreview"
+          "pathName": "pages/Resource/Contract"
         }
       ]
     }

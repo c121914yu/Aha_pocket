@@ -41,7 +41,7 @@ function gToastError(title,duration=1500,mask=false){
 function gShowModal(content,success,cancel){
 	uni.showModal({
 		title: "提示",
-		content: "即将删除该教育经历",
+		content,
 		confirmColor: "#f8b86b",
 		success: (res) => {
 			if(res.confirm && success)

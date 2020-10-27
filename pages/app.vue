@@ -1,5 +1,10 @@
 <template>
 	<view class="app">
+		<!-- 用户须知 -->
+		<UserAgreement 
+			v-if="!isReadedAgreement"
+			@readed="isReadedAgreement=true">
+		</UserAgreement>
 		<TabBar 
 			:currentNav="currentNav"
 			@navigate="navigate">
@@ -45,7 +50,8 @@ export default {
 				{name: "Member",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 0
+			currentNav: 0,
+			isReadedAgreement: true
 		}
 	},
 	methods: {

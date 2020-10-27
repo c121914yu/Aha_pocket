@@ -1,8 +1,14 @@
 .preview.data-v-907d84de {
   min-height: 100vh;
   padding: 40rpx;
+/* 下载按键 */
 /* 每个模块公有样式 */
 /* 基本信息 */
+}
+.preview .download.data-v-907d84de {
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
 .preview .part.data-v-907d84de {
   margin-bottom: 10px;

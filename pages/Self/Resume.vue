@@ -35,6 +35,7 @@ import PracticeExperience from "./ResumeComp/PracticeExperience.vue"
 import ProSkill from "./ResumeComp/ProSkill.vue"
 import Honors from "./ResumeComp/Honors.vue"
 import SelfDescription from "./ResumeComp/SelfDescription.vue"
+import { putResume } from "@/static/request/api_resume.js"
 export default {
 	data() {
 		return {
@@ -56,21 +57,21 @@ export default {
 				name: this.$refs.baseInfo.name || "",
 				phone: this.$refs.baseInfo.phone || "",
 				email: this.$refs.baseInfo.email || "",
-				gender: this.$refs.baseInfo.gender || "",
-				both: this.$refs.baseInfo.both || "",
-				hDegree: this.$refs.baseInfo.hDegree || "",
-				identity: this.$refs.baseInfo.identity || "",
+				gender: this.$refs.baseInfo.gender || "男",
+				birth: this.$refs.baseInfo.birth || "",
+				highestDegree: this.$refs.baseInfo.highestDegree || "",
+				identity: this.$refs.baseInfo.identity || "学生",
 				currentGrade: this.$refs.baseInfo.currentGrade || "",
 				workPlace: this.$refs.baseInfo.workPlace || "",
 				profession: this.$refs.baseInfo.profession || "",
 				// 教育经历
-				eduExper: this.$refs.eduExperience.eduExper,
+				eduExperiences: this.$refs.eduExperience.eduExperiences,
 				// 校园经历
-				schoolExper: this.$refs.schoolExperience.schoolExper,
+				schoolExperiences: this.$refs.schoolExperience.schoolExperiences,
 				// 项目经历
-				projectExper: this.$refs.projectExperience.projectExper,
+				projectExperiences: this.$refs.projectExperience.projectExperiences,
 				// 实习经历
-				practiceExper: this.$refs.practiceExperience.practiceExper,
+				practiceExperiences: this.$refs.practiceExperience.practiceExperiences,
 				// 专业技能
 				projectSkill: this.$refs.projectSkill.projectSkill,
 				// 荣誉情况
@@ -100,6 +101,10 @@ export default {
 		{
 			const data = this.save()
 			console.log(data)
+			putResume(data)
+			.then(res => {
+				this.gToastSuccess("保存成功")
+			})
 		},
 		/*
 			name: 预览简历

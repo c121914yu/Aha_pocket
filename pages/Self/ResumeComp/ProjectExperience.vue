@@ -15,7 +15,7 @@
 		<text class="h3">项目经历</text>
 		<view 
 			class="list-itme"
-			v-for="(exp,index) in projectExper"
+			v-for="(exp,index) in projectExperiences"
 			:key="index">
 			<!-- 项目名称 -->
 			<view class="item">
@@ -49,7 +49,7 @@
 				</DataPicker>
 				<label
 					class="checkbox"  
-					@click="projectExper[index].endTime = exp.endTime === '至今' ? '' : '至今'">
+					@click="projectExperiences[index].endTime = exp.endTime === '至今' ? '' : '至今'">
 					<checkbox color="#f8b86b" :checked="exp.endTime === '至今'"/>
 					<text >至今</text>
 				</label>
@@ -83,7 +83,7 @@
 export default {
 	data() {
 		return {
-			projectExper: [],
+			projectExperiences: [],
 			isProjectExper: true
 		}
 	},
@@ -94,11 +94,11 @@ export default {
 				input: null
 				return: null
 				change: 
-							projectExper: Array,教育经历数组
+							projectExperiences: Array,教育经历数组
 			*/
 		 addExperience()
 		 {
-				this.projectExper.push({
+				this.projectExperiences.push({
 					name: "",
 					content: "",
 					startTime: "",
@@ -113,19 +113,19 @@ export default {
 						index: Number,经历的下标
 			return: null
 			change: 
-						projectExper: Array,教育经历数组
+						projectExperiences: Array,教育经历数组
 		*/
 		 removeExperience(index)
 		 {
 			 this.gShowModal("即将删除该项目经历",() => {
-				 this.projectExper.splice(index,1)
+				 this.projectExperiences.splice(index,1)
 			 })
 		 },
 	},
 	created() {
 		/* 读取本地数据 */
 		const story = JSON.parse(uni.getStorageSync("resume"))
-		this.projectExper = story.projectExper
+		this.projectExperiences = story.projectExperiences || []
 	}
 }
 </script>

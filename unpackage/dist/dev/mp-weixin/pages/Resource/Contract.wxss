@@ -1,0 +1,18 @@
+.contract {
+  min-height: 100;
+  padding: 10px;
+  white-space: pre-wrap;
+}
+.contract .content {
+  font-size: 30rpx;
+  text-indent: 60rpx;
+}
+.contract image {
+  width: 100%;
+}
+.contract button {
+  margin: 10px 0;
+  color: #fff;
+  background-color: var(--button-bg);
+}
+

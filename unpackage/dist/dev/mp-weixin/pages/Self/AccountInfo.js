@@ -97,23 +97,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  if (!_vm._isMounted) {
-    _vm.e0 = function($event) {
-      _vm.gender = $event.detail.value
-    }
-
-    _vm.e1 = function($event) {
-      _vm.school = _vm.schools[$event.detail.value]
-    }
-
-    _vm.e2 = function($event) {
-      _vm.academy = _vm.academies[$event.detail.value]
-    }
-
-    _vm.e3 = function($event) {
-      _vm.specialty = _vm.specialties[$event.detail.value]
-    }
-  }
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -192,90 +175,15 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var _default =
 {
   data: function data() {
     return {
       phone: "15677751219",
       nickname: "",
-      gender: "female",
-      school: "浙江工业大学",
       academy: "",
       specialty: "",
-      mainLearn: "",
-      schools: ["浙江工业大学", "杭州电子科技大学"],
-      academies: ["信息工程学院", "计算机学院", "环境学院"],
-      specialties: ["自动化", "电子科学与技术", "通信工程"] };
+      mainLearn: "" };
 
   },
   methods: {

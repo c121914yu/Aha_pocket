@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   CodeInput: function() {
-    return __webpack_require__.e(/*! import() | components/CodeInput/CodeInput */ "components/CodeInput/CodeInput").then(__webpack_require__.bind(null, /*! @/components/CodeInput/CodeInput.vue */ 70))
+    return __webpack_require__.e(/*! import() | components/CodeInput/CodeInput */ "components/CodeInput/CodeInput").then(__webpack_require__.bind(null, /*! @/components/CodeInput/CodeInput.vue */ 87))
   }
 }
 var render = function() {
@@ -276,7 +276,7 @@ var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {return { p
         getApp().globalData.gUserInfo = res.data.userInfo;
         /* 跳转主页 */
         uni.reLaunch({
-          url: "../Home/Home",
+          url: "../app",
           success: function success() {
             _this2.gToastSuccess(res.msg);
           } });

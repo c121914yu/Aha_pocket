@@ -12,7 +12,12 @@
 			<!-- 右侧昵称 & 标签 -->
 			<view class="right">
 				<!-- 昵称 -->
-				<view class="name">15677751219画像</view>
+				<input 
+					class="name" 
+					value="15677751219画像"
+					maxlength="15"
+					@blur="setNickName">
+				</input>
 				<!-- 标签 -->
 				<view
 					class="tags"
@@ -34,8 +39,18 @@
 		</view>
 		<!-- 核心导航 招募 & 资源分享 -->
 		<view class="navs">
-			<button>招募队友</button>
-			<button @click="share">资源分享</button>
+			<navigator 
+				hover-class="hoverScale"
+				hover-stay-time	="50"
+				url="/pages/Resource/UpResource">
+				招募队友
+			</navigator>
+			<navigator
+				hover-class="hoverScale"
+				hover-stay-time	="50"
+				url="/pages/Resource/UpResource">
+				资源分享
+			</navigator>
 		</view>
 		<!-- 任务 进行中 & 已完成 & 贡献详情 -->
 		<view class="tasks">
@@ -72,6 +87,7 @@
 </template>
 
 <script>
+import { getResume } from "@/static/request/api_resume.js"
 export default {
 	data() {
 		return {
@@ -87,7 +103,6 @@ export default {
 			/* 功能列表 */
 			funtions: [
 				{name: "贡献值",icon: "icon-icon;",val: "160",to:""},
-				{name: "账号信息",icon: "icon-personal",to:"/pages/Self/AccountInfo"},
 				{name: "实名认证",icon: "icon-shimingrenzheng",to:"/pages/Self/AccountInfo"},
 				{name: "个人简历",icon: "icon-personal",to:"/pages/Self/Resume"},
 				{name: "邀请好友",icon: "icon-iconfontzhizuobiaozhun49",to:"/pages/Self/AccountInfo"},
@@ -97,12 +112,31 @@ export default {
 		}
 	},
 	methods: {
+		/* 
+			name: 设置昵称
+			description: 失去焦点时修改账号的昵称，需要预先判断是否有修改
+		*/
+		setNickName(e)
+		{
+			const value = e.detail.value
+			/* 判断value与原本的nickName是否相同，相同则无需请求，不同则请求服务器修改nickName */
+			
+			console.log(value)
+		},
 		setAvatar(){
 			console.log("头像设计")
 		},
 	},
-	mounted() {
-		
+	created() {
+		getResume("15677751219")
+		.then(res => {
+			getApp().globalData.gResume = res.data
+			uni.setStorage({
+				key: "resume",
+				data: JSON.stringify(res.data),
+			})
+			console.log(res.data)
+		})
 	}
 }
 </script>
@@ -154,6 +188,7 @@ bgSetting(size,color)
 			.name
 				color var(--origin4)
 				font-weight 600
+				border-bottom 1px solid rgba(144,140,139,0.65)
 			.tags
 				display flex
 				flex-wrap wrap
@@ -186,8 +221,11 @@ bgSetting(size,color)
 	.navs
 		margin 10vw 0 20px
 		display flex
-		button
-			width 40%
+		justify-content space-around
+		navigator
+			width 35%
+			padding 10px 0
+			text-align center
 			background-color var(--origin4)
 			color #FFFFFF
 			border-radius 30px
