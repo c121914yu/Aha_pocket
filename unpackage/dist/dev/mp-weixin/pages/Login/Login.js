@@ -241,15 +241,14 @@ var _api_userInfo = __webpack_require__(/*! ../..//static/request/api_userInfo.j
 //
 //
 var _default = { data: function data() {return { phone: "", password: "", isPassword: true // 是否展示密码
-    };}, methods: { loginSuccess: function loginSuccess() {var _this = this;uni.reLaunch({ url: "../app", success: function success() {_this.gToastSuccess("登录成功");} });}, login: function login() {var _this2 = this;if (this.phone === "") {this.gToastError("手机号不能为空");} else {(0, _api_login.Login)({ phone: this.phone, password: this.password }).then(function (res) {console.log(res);uni.setStorageSync("token", res.data.token);getApp().globalData.gUserInfo = res.data.userInfo;_this2.loginSuccess();});}}, wxLogin: function wxLogin() {var _this3 = this;uni.getUserInfo({ provider: 'weixin', withCredentials: true, lang: "zh_CN", success: function success(res) {// 获取code，请求openid
+    };}, methods: { loginSuccess: function loginSuccess() {this.gToastSuccess("登录成功");setTimeout(function () {uni.reLaunch({ url: "../app" });}, 1000);}, login: function login() {var _this = this;if (this.phone === "") {this.gToastError("手机号不能为空");} else {(0, _api_login.Login)({ phone: this.phone, password: this.password }).then(function (res) {uni.setStorageSync("token", res.data.token);getApp().globalData.gUserInfo = res.data.personalUserInfo;_this.loginSuccess();});}}, wxLogin: function wxLogin() {var _this2 = this;uni.getUserInfo({ provider: 'weixin', withCredentials: true, lang: "zh_CN", success: function success(res) {// 获取code，请求openid
           uni.login({ provider: 'weixin', success: function success(loginRes) {var data = { code: loginRes.code, avatarUrl: res.userInfo.avatarUrl, nickName: res.userInfo.nickName };
-
               // 调用wx登录接口，获取token
               (0, _api_login.WXLogin)(data).
               then(function (res) {
                 if (res.success) {
                   uni.setStorageSync("token", res.data.token);
-                  _this3.loginSuccess();
+                  _this2.loginSuccess();
                 }
               });
             } });
@@ -258,17 +257,19 @@ var _default = { data: function data() {return { phone: "", password: "", isPass
 
     } },
 
-  onLoad: function onLoad() {var _this4 = this;
+  mounted: function mounted() {var _this3 = this;
     /* 检查是否有存储token，验证登录身份 */
     if (uni.getStorageSync("token"))
-    (0, _api_userInfo.getMe)().
-    then(function (res) {
-      getApp().globalData.gUserInfo = res.data;
-      _this4.loginSuccess();
-    }).
-    catch(function (err) {
-      uni.clearStorageSync("token");
-    });
+    {
+      (0, _api_userInfo.getMe)().
+      then(function (res) {
+        getApp().globalData.gUserInfo = res.data;
+        _this3.loginSuccess();
+      }).
+      catch(function (err) {
+        uni.clearStorageSync("token");
+      });
+    }
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

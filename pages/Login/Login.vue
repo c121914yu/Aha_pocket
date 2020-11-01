@@ -59,12 +59,12 @@ export default {
 	},
 	methods: {
 		loginSuccess(){
-			uni.reLaunch({
-				url: "../app",
-				success: () => {
-					this.gToastSuccess("登录成功")
-				}
-			})
+			this.gToastSuccess("登录成功")
+			setTimeout(() => {
+				uni.reLaunch({
+					url: "../app",
+				})
+			},1000)
 		},
 		login(){
 			if(this.phone === "")
@@ -78,9 +78,8 @@ export default {
 					password: this.password
 				})
 				.then(res => {
-					console.log(res)
 					uni.setStorageSync("token",res.data.token)
-					getApp().globalData.gUserInfo = res.data.userInfo
+					getApp().globalData.gUserInfo = res.data.personalUserInfo
 					this.loginSuccess()
 				})
 			}
@@ -114,9 +113,10 @@ export default {
 			})
 		}
 	},
-	onLoad() {
+	mounted() {
 		/* 检查是否有存储token，验证登录身份 */
 		if(uni.getStorageSync("token"))
+		{
 			getMe()
 			.then(res => {
 				getApp().globalData.gUserInfo = res.data
@@ -125,6 +125,7 @@ export default {
 			.catch(err => {
 				uni.clearStorageSync("token")
 			})
+		}
 	}
 }
 </script>

@@ -18,16 +18,15 @@ page {
   --border1: 1px solid #9fa0a0;
   --speed-slide: 0.8s ease-in-out;
   --speed-hover: 0.5s;
+  box-sizing: border-box;
+}
+page {
   margin: 0;
   padding: 0s;
   font-size: 32rpx;
   line-height: 1.5;
   color: var(--font-dark);
   letter-spacing: 2rpx;
-}
-view,
-textarea {
-  box-sizing: border-box;
 }
 input {
   font-size: 30rpx;

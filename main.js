@@ -11,6 +11,8 @@ import globalFun from "./static/js/globalFun.js"
 Vue.prototype.gToastError = globalFun.gToastError
 Vue.prototype.gToastSuccess = globalFun.gToastSuccess
 Vue.prototype.gShowModal = globalFun.gShowModal
+Vue.prototype.gUploadFile = globalFun.gUploadFile
+Vue.prototype.gPutUserInfo = globalFun.gPutUserInfo
 
 const app = new Vue({
 	...App

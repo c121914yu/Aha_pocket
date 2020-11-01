@@ -24,15 +24,11 @@
 <script>
 export default {
 	data() {
+		const intro = getApp().globalData.gResume.intro || ""
 		return {
-			intro: "",
+			intro,
 			isIntro: true
 		}
-	},
-	created() {
-		/* 读取本地数据 */
-		const story = JSON.parse(uni.getStorageSync("resume"))
-		this.intro = story.intro
 	}
 }
 </script>

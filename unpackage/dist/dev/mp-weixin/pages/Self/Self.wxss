@@ -38,6 +38,7 @@
   z-index: 5;
   width: 30vw;
   height: 30vw;
+  border-radius: 50%;
 }
 .self .head .avatar .bg.data-v-bf8d8ef4 {
   position: absolute;

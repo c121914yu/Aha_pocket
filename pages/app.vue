@@ -2,8 +2,8 @@
 	<view class="app">
 		<!-- 用户须知 -->
 		<UserAgreement 
-			v-if="!isReadedAgreement"
-			@readed="isReadedAgreement=true">
+			v-if="!signedNotice"
+			@readed="signedNotice=true">
 		</UserAgreement>
 		<TabBar 
 			:currentNav="currentNav"
@@ -39,6 +39,7 @@ import Member from "./Member/Member"
 import Self from "./Self/Self"
 export default {
 	data() {
+		const signedNotice = getApp().globalData.gUserInfo.signedNotice
 		return {
 			/* 
 				第一次不直接加载界面，防止加载时间过长
@@ -51,7 +52,7 @@ export default {
 				{name: "Self",loaded: false},
 			],
 			currentNav: 0,
-			isReadedAgreement: true
+			signedNotice
 		}
 	},
 	methods: {
@@ -82,6 +83,7 @@ export default {
 	},
 	onLoad() {
 		this.loadNav()
+		console.log(getApp().globalData.gUserInfo)
 	},
 	components:{
 		Home,

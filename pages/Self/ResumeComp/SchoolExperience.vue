@@ -82,8 +82,9 @@
 <script>
 export default {
 	data() {
+		const schoolExperiences = [...getApp().globalData.gResume.schoolExperiences] || []
 		return {
-			schoolExperiences: [],
+			schoolExperiences,
 			isSchoolExper: true
 		}
 	},
@@ -121,11 +122,6 @@ export default {
 				 this.schoolExperiences.splice(index,1)
 			 })
 		 },
-	},
-	created() {
-		/* 读取本地数据 */
-		const story = JSON.parse(uni.getStorageSync("resume"))
-		this.schoolExperiences = story.schoolExperiences || []
 	}
 }
 </script>

@@ -25,15 +25,11 @@
 <script>
 export default {
 	data() {
+		const projectSkill = getApp().globalData.gResume.projectSkill || ""
 		return {
-			projectSkill: "", // 专业技能
+			projectSkill, // 专业技能
 			isProjectSkill: true
 		}
-	},
-	created() {
-		/* 读取本地数据 */
-		const story = JSON.parse(uni.getStorageSync("resume"))
-		this.projectSkill = story.projectSkill
 	}
 }
 </script>

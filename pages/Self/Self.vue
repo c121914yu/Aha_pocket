@@ -3,18 +3,19 @@
 		<!-- 头部 -->
 		<view class="head">
 			<!-- 头像 -->
-			<view class="avatar" @click="setAvatar">
+			<view class="avatar" @click="clickAvatar">
 				<view class="bg bg3"></view>
 				<view class="bg bg2"></view>
 				<view class="bg bg1"></view>
-				<image src="../../static/icon/logo.png" mode="widthFix"></image>
+				<image :src="userInfo.avatarUrl">
+				</image>
 			</view>
 			<!-- 右侧昵称 & 标签 -->
 			<view class="right">
 				<!-- 昵称 -->
 				<input 
 					class="name" 
-					value="15677751219画像"
+					:value="userInfo.nickname"
 					maxlength="15"
 					@blur="setNickName">
 				</input>
@@ -87,11 +88,13 @@
 </template>
 
 <script>
-import { getResume } from "@/static/request/api_resume.js"
+import { getAvatarOssSignature,putMe } from "@/static/request/api_userInfo.js"
 export default {
 	data() {
+		const userInfo = {...getApp().globalData.gUserInfo.userInfo}
+		userInfo.avatarUrl = userInfo.avatarUrl || "/static/icon/logo.png"
 		return {
-			userInfo: null,
+			userInfo,
 			/* 标签 */
 			tags: ["前端","挑战杯","商业计划书","运河杯","服务外包"],
 			/* 任务列表 */
@@ -114,29 +117,88 @@ export default {
 	methods: {
 		/* 
 			name: 设置昵称
-			description: 失去焦点时修改账号的昵称，需要预先判断是否有修改
+			description: 失去焦点时修改账号的昵称，需要预先判断是否有修改，即对比原数据与新输入的内容是否相等
 		*/
 		setNickName(e)
 		{
 			const value = e.detail.value
 			/* 判断value与原本的nickName是否相同，相同则无需请求，不同则请求服务器修改nickName */
-			
-			console.log(value)
+			if(value !== this.userInfo.nickname)
+			{
+				putMe({
+					nickname: value
+				})
+				.then(res => {
+					this.userInfo = this.gPutUserInfo({nickname: value}).userInfo
+					this.gToastSuccess("修改昵称成功!")
+				})
+			}
 		},
-		setAvatar(){
-			console.log("头像设计")
+		/*
+			name: 点击头像
+			description: 点击头像打开操作菜单，可选择预览或者修改头像
+									 点击预览，触发预览效果
+									 点击修改头像，进入选择头像模式，选择完成后上传头像至oss，然后将链接存储到数据库中。
+		*/
+		clickAvatar()
+		{
+			/* 进入操作菜单 */
+			uni.showActionSheet({
+				itemList: ['预览头像', '修改头像'],
+				success:  (res) => {
+					/* 预览头像 */
+					if(res.tapIndex === 0)
+					{
+						uni.previewImage({
+							urls: [this.userInfo.avatarUrl]
+						})
+					}
+					/* 修改头像 */
+					else if(res.tapIndex === 1)
+					{
+						uni.chooseImage({
+							count: 1, //默认9
+							sizeType: ['compressed'],
+							success:  (img) => {
+								/* 压缩图片 */
+								uni.compressImage({
+								  src: img.tempFilePaths[0],
+								  quality: 50,
+								  success: res => {
+										/* 获取签名 */
+										getAvatarOssSignature()
+										.then(sign => {
+											uni.showLoading({
+												title: "上传头像中..."
+											})
+											/* 上传文件 */
+											this.gUploadFile(res.tempFilePath,"avatar.JPG",sign.data)
+											.then(upRes => {
+												/* 更新头像 */
+												putMe({
+													avatarUrl: upRes.url
+												})
+												.then(putRes => {
+													this.userInfo = this.gPutUserInfo({avatarUrl: upRes.url}).userInfo,
+													uni.hideLoading()
+													this.gToastSuccess("修改头像成功!")
+												})
+											})
+										})
+								  }
+								})
+							}
+						})
+					}
+				},
+				fail: function (res) {
+					console.log(res.errMsg);
+				}
+			})
 		},
 	},
 	created() {
-		getResume("15677751219")
-		.then(res => {
-			getApp().globalData.gResume = res.data
-			uni.setStorage({
-				key: "resume",
-				data: JSON.stringify(res.data),
-			})
-			console.log(res.data)
-		})
+		
 	}
 }
 </script>
@@ -171,6 +233,7 @@ bgSetting(size,color)
 				z-index 5
 				width 30vw
 				height 30vw
+				border-radius 50%
 			.bg
 				position absolute
 				border-radius 50%

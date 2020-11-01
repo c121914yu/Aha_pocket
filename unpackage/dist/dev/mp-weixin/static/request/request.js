@@ -1,5 +1,5 @@
 import globalFun from "../js/globalFun.js"
-const baseUrl = "http://hdustea.f3322.net:8089"
+const baseUrl = getApp().globalData.baseUrl
 
 function myRequest(url,method,data){
 	uni.showLoading({
@@ -22,6 +22,7 @@ function myRequest(url,method,data){
 			header: headers,
 			success(result) 
 			{
+				uni.hideLoading()
 				/* 请求成功 */
 				if(result.data.code === 200)
 				{
@@ -34,21 +35,20 @@ function myRequest(url,method,data){
 					globalFun.gToastError(result.data.msg)
 					rej(result.data)
 				}
+			},
+			fail(err) 
+			{
+				uni.hideLoading()
+				console.log("请求错误")
+				globalFun.gToastError("请求错误")
+				rej(err)
+			},
+			complete(result) {
 				/* 判断是否有新token,有则替换旧的token */
 				if(result.header.Authorization)
 				{
 					uni.setStorageSync("token",result.header.Authorization)
 				}
-			},
-			fail(err) 
-			{
-				console.log("请求错误")
-				globalFun.gToastError("请求错误")
-				rej(err)
-			},
-			complete()
-			{
-				uni.hideLoading()
 			}
 		})
 	})

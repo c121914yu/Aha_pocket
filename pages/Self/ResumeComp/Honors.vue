@@ -68,8 +68,10 @@
 <script>
 export default {
 	data() {
+		/* 读取全局 */
+		const honors = [...getApp().globalData.gResume.honors] || []
 		return {
-			honors: [],
+			honors,
 			isHonors: true
 		}
 	},
@@ -86,8 +88,8 @@ export default {
 		 {
 				this.honors.push({
 					name: "",
-						time: "",
-						description: ""
+					time: "",
+					description: ""
 				})
 			},
 		 /*
@@ -105,11 +107,6 @@ export default {
 				 this.honors.splice(index,1)
 			 })
 		 },
-	},
-	created() {
-		/* 读取本地数据 */
-		const story = JSON.parse(uni.getStorageSync("resume"))
-		this.honors = story.honors
 	}
 }
 </script>

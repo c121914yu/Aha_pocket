@@ -28,28 +28,34 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				isReaded: false
-			}
-		},
-		methods: {
-			/* 
-				name: 我已阅读
-				desc: 点击我已阅读,判断是否勾选了用户协议，未勾选则跳过，勾选则触发请求
-			*/
-			readed()
-			{
-				if(!this.isReaded)
-				{
-					return
-				}
-				/* 触发请求 */
+import { signNotice } from "@/static/request/api_userInfo.js"
+export default {
+	data() {
+		return {
+			isReaded: false
+		}
+	},
+	methods: {
+		/* 
+			name: 我已阅读
+			desc: 点击我已阅读,判断是否勾选了用户协议，未勾选则跳过，勾选则触发请求
+		*/
+		readed()
+		{
+			if(!this.isReaded) return
+			/* 触发请求 */
+			signNotice()
+			.then(res => {
+				uni.setStorageSync("token",res.data.token)
+				this.gToastSuccess(res.msg)
 				this.$emit("readed")
-			}
+			})
+			.catch(err => {
+				this.gToastError("服务器错误 ")
+			})
 		}
 	}
+}
 </script>
 
 <style lang="stylus" scoped>

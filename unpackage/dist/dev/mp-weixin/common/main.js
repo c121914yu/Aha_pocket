@@ -20,6 +20,8 @@ var _globalFun = _interopRequireDefault(__webpack_require__(/*! ./static/js/glob
 _vue.default.prototype.gToastError = _globalFun.default.gToastError;
 _vue.default.prototype.gToastSuccess = _globalFun.default.gToastSuccess;
 _vue.default.prototype.gShowModal = _globalFun.default.gShowModal;
+_vue.default.prototype.gUploadFile = _globalFun.default.gUploadFile;
+_vue.default.prototype.gPutUserInfo = _globalFun.default.gPutUserInfo;
 
 var app = new _vue.default(_objectSpread({},
 _App.default));
@@ -101,6 +103,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
      getApp().globalData 获取
    */
   globalData: {
+    baseUrl: "http://47.100.33.161:8089",
+    ossHost: "https://aha-public.oss-cn-hangzhou.aliyuncs.com/", // OSS Host域名
     gCodeTime: 0, // 用户允许发送验证码的倒计时
     gCodeMaxTime: 10, // 倒计时时长
     gUserInfo: {}, // 用户信息

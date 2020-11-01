@@ -82,8 +82,9 @@
 <script>
 export default {
 	data() {
+		const projectExperiences = [...getApp().globalData.gResume.projectExperiences] || []
 		return {
-			projectExperiences: [],
+			projectExperiences,
 			isProjectExper: true
 		}
 	},
@@ -121,11 +122,6 @@ export default {
 				 this.projectExperiences.splice(index,1)
 			 })
 		 },
-	},
-	created() {
-		/* 读取本地数据 */
-		const story = JSON.parse(uni.getStorageSync("resume"))
-		this.projectExperiences = story.projectExperiences || []
 	}
 }
 </script>

@@ -7,8 +7,26 @@
   font-size: 30rpx;
   text-indent: 60rpx;
 }
-.contract image {
-  width: 100%;
+.contract .name,
+.contract .signature-view {
+  margin-bottom: 5px;
+  white-space: nowrap;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.contract .name input,
+.contract .signature-view input {
+  margin-left: 10px;
+  border-bottom: var(--border1);
+}
+.contract .name image,
+.contract .signature-view image {
+  width: 150rpx;
+  border: var(--border1);
 }
 .contract button {
   margin: 10px 0;

@@ -142,20 +142,19 @@
 <script>
 export default {
 	data() {
-		/* 读取本地数据 */
-		const story = JSON.parse(uni.getStorageSync("resume"))
+		/* 读取全局 */
+		const story = {...getApp().globalData.gResume}
 		return {
-			name: "",
-			phone: "",
-			email: "",
-			gender: "男",
-			birth: "",
-			highestDegree: "",
-			identity: "学生",
-			currentGrade: "",
-			workPlace: "",
-			profession: "",
-			...story,
+			name: story.name || "",
+			phone: story.phone || "",
+			email: story.email || "",
+			gender: story.gender || "男",
+			birth: story.birth || "",
+			highestDegree: story.highestDegree || "",
+			identity: story.identity || "学生",
+			currentGrade: story.currentGrade || "",
+			workPlace: story.workPlace || "",
+			profession: story.profession || "",
 			// 是否展示
 			isBaseInfo: true,
 			// 选框列表 & 选中下标

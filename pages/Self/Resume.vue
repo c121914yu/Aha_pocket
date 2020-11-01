@@ -1,6 +1,6 @@
 <template>
 	<!-- 个人简历 -->
-	<view class="resume">
+	<view class="resume" v-if="loaded">
 		<!-- 基本信息卡片 -->
 		<BaseInfo ref="baseInfo"></BaseInfo>
 		<!-- 教育经历 -->
@@ -20,13 +20,14 @@
 		<!-- 按键 -->
 		<view class="btns">
 			<button class="preview" @click="preview">预览</button>
-			<button class="save" @click="commitResume">保存</button>
+			<button class="save" @click="commitResume(true)">保存</button>
 			<text class="small center">{{storyText}}</text>
 		</view>
 	</view>
 </template>
 
 <script>
+import { getResume,putResume } from "@/static/request/api_resume.js"
 import BaseInfo from "./ResumeComp/BaseInfo.vue"
 import EduExperience from "./ResumeComp/EduExperience.vue"
 import SchoolExperience from "./ResumeComp/SchoolExperience.vue"
@@ -35,23 +36,22 @@ import PracticeExperience from "./ResumeComp/PracticeExperience.vue"
 import ProSkill from "./ResumeComp/ProSkill.vue"
 import Honors from "./ResumeComp/Honors.vue"
 import SelfDescription from "./ResumeComp/SelfDescription.vue"
-import { putResume } from "@/static/request/api_resume.js"
 export default {
 	data() {
 		return {
 			storyText: "",
+			loaded: false
 		}
 	},
 	methods: {
-		/*
-			name: 保存个人简历
-			description: 保存个人简历至本地
+		/* 
+			name: 提交个人简历
+			description: 提交个人简历至服务器
 			input: null
 			return: null
 		*/
-		save()
+		commitResume(isToast=false)
 		{
-			this.storyText = "保存中"
 			const data = {
 				// 基础信息表
 				name: this.$refs.baseInfo.name || "",
@@ -79,31 +79,13 @@ export default {
 				// 自我描述
 				intro: this.$refs.selfDescription.intro
 			}
-			uni.setStorage({
-				key: "resume",
-				data: JSON.stringify(data),
-				success: () => {
-					this.storyText = "已保存\n至本地"
-					setTimeout(() => {
-						this.storyText = ""
-					},2000)
-				}
-			})
-			return data
-		},
-		/* 
-			name: 提交个人简历
-			description: 提交个人简历至服务器
-			input: null
-			return: null
-		*/
-		commitResume()
-		{
-			const data = this.save()
-			console.log(data)
+			getApp().globalData.gResume = {...data}
 			putResume(data)
 			.then(res => {
-				this.gToastSuccess("保存成功")
+				if(isToast)
+				{
+					this.gToastSuccess("简历保存成功")
+				}
 			})
 		},
 		/*
@@ -114,17 +96,23 @@ export default {
 		*/
 		preview()
 		{
-			this.save()
+			this.commitResume()
 			uni.navigateTo({
 				url: "./ResumePreview"
 			})
 		}
 	},
-	mounted() {
-		/* 每10s保存一次数据至本地 */
-		setInterval(() => {
-			this.save()
-		},10000)
+	created() {
+		getResume(getApp().globalData.gUserInfo.phone)
+		.then(res => {
+			getApp().globalData.gResume = res.data
+			this.loaded = true
+		  console.log("简历↓")
+			console.log(res)
+		})
+	},
+	beforeDestroy() {
+		this.commitResume(true)
 	},
 	components:{
 		BaseInfo,

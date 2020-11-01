@@ -159,6 +159,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var _api_resume = __webpack_require__(/*! @/static/request/api_resume.js */ 60);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var BaseInfo = function BaseInfo() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/BaseInfo */ "pages/Self/ResumeComp/BaseInfo").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/BaseInfo.vue */ 133));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var EduExperience = function EduExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/EduExperience */ "pages/Self/ResumeComp/EduExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/EduExperience.vue */ 140));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var SchoolExperience = function SchoolExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/SchoolExperience */ "pages/Self/ResumeComp/SchoolExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/SchoolExperience.vue */ 145));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProjectExperience = function ProjectExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/ProjectExperience */ "pages/Self/ResumeComp/ProjectExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/ProjectExperience.vue */ 152));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PracticeExperience = function PracticeExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/PracticeExperience */ "pages/Self/ResumeComp/PracticeExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/PracticeExperience.vue */ 159));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProSkill = function ProSkill() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/ProSkill */ "pages/Self/ResumeComp/ProSkill").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/ProSkill.vue */ 166));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Honors = function Honors() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/Honors */ "pages/Self/ResumeComp/Honors").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/Honors.vue */ 171));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var SelfDescription = function SelfDescription() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/SelfDescription */ "pages/Self/ResumeComp/SelfDescription").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/SelfDescription.vue */ 178));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -167,23 +168,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _api_resume = __webpack_require__(/*! @/static/request/api_resume.js */ 60);var BaseInfo = function BaseInfo() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/BaseInfo */ "pages/Self/ResumeComp/BaseInfo").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/BaseInfo.vue */ 132));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var EduExperience = function EduExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/EduExperience */ "pages/Self/ResumeComp/EduExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/EduExperience.vue */ 139));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var SchoolExperience = function SchoolExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/SchoolExperience */ "pages/Self/ResumeComp/SchoolExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/SchoolExperience.vue */ 144));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProjectExperience = function ProjectExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/ProjectExperience */ "pages/Self/ResumeComp/ProjectExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/ProjectExperience.vue */ 151));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PracticeExperience = function PracticeExperience() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/PracticeExperience */ "pages/Self/ResumeComp/PracticeExperience").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/PracticeExperience.vue */ 158));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProSkill = function ProSkill() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/ProSkill */ "pages/Self/ResumeComp/ProSkill").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/ProSkill.vue */ 165));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Honors = function Honors() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/Honors */ "pages/Self/ResumeComp/Honors").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/Honors.vue */ 170));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var SelfDescription = function SelfDescription() {__webpack_require__.e(/*! require.ensure | pages/Self/ResumeComp/SelfDescription */ "pages/Self/ResumeComp/SelfDescription").then((function () {return resolve(__webpack_require__(/*! ./ResumeComp/SelfDescription.vue */ 177));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   data: function data() {
     return {
-      storyText: "" };
+      storyText: "",
+      loaded: false };
 
   },
   methods: {
-    /*
-             	name: 保存个人简历
-             	description: 保存个人简历至本地
+    /* 
+             	name: 提交个人简历
+             	description: 提交个人简历至服务器
              	input: null
              	return: null
              */
-    save: function save()
-    {var _this = this;
-      this.storyText = "保存中";
+    commitResume: function commitResume()
+    {var _this = this;var isToast = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var data = {
         // 基础信息表
         name: this.$refs.baseInfo.name || "",
@@ -211,31 +211,13 @@ var _api_resume = __webpack_require__(/*! @/static/request/api_resume.js */ 60);
         // 自我描述
         intro: this.$refs.selfDescription.intro };
 
-      uni.setStorage({
-        key: "resume",
-        data: JSON.stringify(data),
-        success: function success() {
-          _this.storyText = "已保存\n至本地";
-          setTimeout(function () {
-            _this.storyText = "";
-          }, 2000);
-        } });
-
-      return data;
-    },
-    /* 
-       	name: 提交个人简历
-       	description: 提交个人简历至服务器
-       	input: null
-       	return: null
-       */
-    commitResume: function commitResume()
-    {var _this2 = this;
-      var data = this.save();
-      console.log(data);
+      getApp().globalData.gResume = _objectSpread({}, data);
       (0, _api_resume.putResume)(data).
       then(function (res) {
-        _this2.gToastSuccess("保存成功");
+        if (isToast)
+        {
+          _this.gToastSuccess("简历保存成功");
+        }
       });
     },
     /*
@@ -246,17 +228,23 @@ var _api_resume = __webpack_require__(/*! @/static/request/api_resume.js */ 60);
        */
     preview: function preview()
     {
-      this.save();
+      this.commitResume();
       uni.navigateTo({
         url: "./ResumePreview" });
 
     } },
 
-  mounted: function mounted() {var _this3 = this;
-    /* 每10s保存一次数据至本地 */
-    setInterval(function () {
-      _this3.save();
-    }, 10000);
+  created: function created() {var _this2 = this;
+    (0, _api_resume.getResume)(getApp().globalData.gUserInfo.phone).
+    then(function (res) {
+      getApp().globalData.gResume = res.data;
+      _this2.loaded = true;
+      console.log("简历↓");
+      console.log(res);
+    });
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.commitResume(true);
   },
   components: {
     BaseInfo: BaseInfo,

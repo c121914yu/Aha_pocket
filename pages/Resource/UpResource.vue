@@ -3,7 +3,10 @@
 	<view class="up-resource">
 		<!-- 标题 -->
 		<view class="info title">
-			<input type="text" placeholder="资源标题" v-model="title"/>
+			<input 
+				type="text" 
+				placeholder="资源标题" 
+				v-model="title"/>
 		</view>
 		<!-- 选择容器 -->
 		<view class="info picker-content">
@@ -15,9 +18,9 @@
 					v-model="finishRate">
 				</SPicker>
 			</view>
-			<!-- 分类 -->
+			<!-- 资源类型 -->
 			<view class="classify">
-				<text class="head">资源分类</text>
+				<text class="head">资源类型</text>
 				<SPicker
 					:range="AccessoriesClassify"
 					v-model="classify">
@@ -71,7 +74,7 @@
 					<text class="title">获奖等级</text>
 					<SPicker
 						:range="prizeGrades"
-						v-model="prize.prize">
+						v-model="prize.level">
 					</SPicker>
 					<!-- 未选择图片 -->
 					<view 
@@ -113,7 +116,7 @@
 					type="text" 
 					placeholder-class="placeholderStyle" 
 					placeholder="联系方式" 
-					v-model="authorContace" />
+					v-model="authorContace"/>
 			</view>
 		</view>
 		<!-- 文件选择 -->
@@ -154,11 +157,12 @@
 			v-model="description"/>
 		</view>
 		<!-- 上传 -->
-		<button class="publish" @click="publish">发布</button>
+		<button class="publish" @click="uploadFiles">发布</button>
 	</view>
 </template>
 
 <script>
+import { getOssSignature,postResource } from "@/static/request/api_resource.js"
 export default {
 	data() {
 		const AccessoriesClassify = getApp().globalData.AccessoriesClassify
@@ -209,7 +213,7 @@ export default {
 				name: "",
 				matchClassify: "",
 				isShowClassify: false,
-				prize: "",
+				level: "",
 				testifyUrl: ""
 			})
 		},
@@ -228,8 +232,7 @@ export default {
 				count: 1, //默认9
 				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 				success:  (img) => {
-					this.prizeList[index].testifyUrl = img.tempFiles[0].path
-					console.log(this.prizeList[index])
+					this.prizeList[index].testifyUrl = img.tempFilePaths[0]
 				}
 			})
 		},
@@ -345,29 +348,177 @@ export default {
 				}
 			)
 		},
-		/*
-			name: 发布资源
-			desc: 获取所有内容，提交数据
-			time: 2020/10/26
+		/* 
+			name: 验证输入内容
+			desc: 验证输入的资源内容
+						若是已存在分类则选择分类填充matchClassify的值
+						去掉isShowClassify
+						添加testifyName值，取名为 /联系方式/时间戳
 		*/
-		publish()
+	  verifyInfo()
 		{
-			/* 获取签名 */
-			/* 上传文件 */
 			/* 整合数据 */
 			const data = {
 				title: this.title,
 				finishRate: this.finishRate,
 				classify: this.classify,
 				tags: this.tags,
-				prizeList: this.prizeList,
+				prizeList:  JSON.parse(JSON.stringify(this.prizeList)),
 				authorName: this.authorName,
 				authorContace: this.authorContace,
-				accessories: this.accessories
+				accessories: JSON.parse(JSON.stringify(this.accessories)),
+				description: this.description
 			}
-			console.log(data);
+			if(data.title === "")
+			{
+				this.gToastError("请输入资源标题")
+				return false
+			}
+			if(data.finishRate === "")
+			{
+				this.gToastError("请选择完成程度")
+				return false
+			}
+			if(data.classify === "")
+			{
+				this.gToastError("请选择资源类型")
+				return false
+			}
+			if(data.authorName === "")
+			{
+				this.gToastError("请输入作者姓名")
+				return false
+			}
+			if(data.authorContace === "")
+			{
+				this.gToastError("请输入联系方式")
+				return false
+			}
+			if(data.accessories.length === 0)
+			{
+				this.gToastError("请选择附件")
+				return false
+			}
+			/* 判断获奖证明 */
+			for(let i=0;i<data.prizeList.length;i++){
+				const prize = data.prizeList[i]
+				if(prize.name === "")
+				{
+					this.gToastError("获奖名称为空")
+					return false
+				}
+				if(prize.level === "")
+				{
+					this.gToastError("获奖等级为空")
+					return false
+				}
+				if(prize.testifyUrl === "")
+				{
+					this.gToastError("获奖证明为空")
+					return false
+				}
+				delete data.prizeList[i].isShowClassify
+			}
+			return data
+		},
+		/*
+			name: 上传文件
+			desc: 上传证明材料，附件，并对需要提交的数据进行整理
+			time: 2020/10/26
+		*/
+		uploadFiles()
+		{
+			uni.showLoading({
+				title: "获取签名中...",
+				mask: true
+			})
+			const data = this.verifyInfo()
+			if(!data)
+			{
+				return
+			}
+			
+			/* 获取签名 */
+			getOssSignature()
+			.then(signature => {
+				uni.showLoading({
+					title: "上传文件中...",
+					mask: true
+				})
+				/* 上传证明材料 */
+				let successAmount = 0
+				data.prizeList.forEach((prize,i) => {
+					/* 检测类型，仅支持jpg,jpeg,png */
+					const temp = prize.testifyUrl.split(".")
+					const filename = `${Date.now()}.${temp[temp.length-1]}`
+					this.gUploadFile(prize.testifyUrl,filename,signature.data)
+					.then(res => {
+						/* 修改testifyUrl */
+						prize.testifyUrl = res.url
+						successAmount++
+						if(successAmount === (data.prizeList.length + data.accessories.length))
+						{
+							this.publish(data)
+						}
+					})
+					.catch(err => {
+						this.gToastError("上传出现错误")
+						console.log(err)
+					})
+				})
+				
+				/* 上传附件 */
+				data.accessories.forEach((item,i) => {
+					this.gUploadFile(item.url,item.name,signature.data)
+					.then(res => {
+						/* 修改url，指向对应地址 */
+						item.url = res.url
+						successAmount++
+						if(successAmount === (data.prizeList.length + data.accessories.length))
+						{
+							this.publish(data)
+						}
+					})
+					.catch(err => {
+						this.gToastError("上传出现错误")
+						console.log(err)
+					})
+				})
+			})
+			.catch(err => {
+				console.log(err);
+				this.gToastError("获取签名错误")
+			})
+		},
+		/* 
+			name: 发表资源
+			desc: 上传证明和附件后向服务器提交表单
+			input:
+						data: Object,需要提交的数据
+		*/
+		publish(data)
+		{
+			uni.hideLoading()
+			/* 请求服务器 */
+			postResource(data)
+			.then(res => {
+				console.log(res);
+				this.gToastSuccess("上传成功")
+			})
+			console.log(data)
 		}
 	},
+	onLoad() {
+		if(!getApp().globalData.gUserInfo.signedContract)
+		{
+			uni.redirectTo({
+				url: "./Contract",
+				success: () => {
+					this.gToastError("请先签署合同")
+				}
+			})
+		}
+	}
 }
 </script>
 

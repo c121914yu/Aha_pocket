@@ -56,9 +56,72 @@ function gShowModal(content,success,cancel){
 	})
 }
 
+/* 
+	name: uploadFile
+	description: 上传文件至OSS存储空间
+	input: 
+				url: String,待上传的临时路径
+				name: String,待上传文件的文件名
+				signature: Object,签名
+	return: 
+				fileName: String,最终的文件名
+				fileUrl: String,文件路径
+*/
+function gUploadFile(url,name,signature){
+	const fileName = `${signature.dir}/${Date.now()}/${name}`
+	return new Promise((resolve,reject) => {
+		uni.uploadFile({
+			url: signature.host,
+			filePath: url,
+			name: "file",
+			formData: {
+				key: fileName, // 文件名
+				policy: signature.policy,
+				OSSAccessKeyId: signature.accessid,
+				signature: signature.signature
+			},
+			success: (file) => {
+				if(file.statusCode === 204)
+				{
+					resolve({
+						res: file,
+						fileName,
+						url: getApp().globalData.ossHost + fileName
+					})
+				}
+				else
+				{
+					reject(file)
+				}
+			},
+			fail: (err) => {
+				reject(err)
+			},
+		})
+	})
+}
+
+/* 
+	name: putUserInfo
+	description: 修改用户信息
+	input: userInfo里的任意字段
+	return: 
+					userInfo: Object,新的userInfo
+*/
+function gPutUserInfo(data){
+	for(let key in data)
+	{
+		getApp().globalData.gUserInfo.userInfo[key] = data[key]
+	}
+	console.log(getApp().globalData.gUserInfo);
+	return {...getApp().globalData.gUserInfo}
+}
+
 const globalFun = {
 	gToastSuccess,
 	gToastError,
-	gShowModal
+	gShowModal,
+	gUploadFile,
+	gPutUserInfo
 }
 export default globalFun

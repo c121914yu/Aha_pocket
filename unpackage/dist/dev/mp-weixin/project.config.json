@@ -68,9 +68,9 @@
           "pathName": "pages/app"
         },
         {
-          "name": "个人简历",
+          "name": "资源上传",
           "id": 2,
-          "pathName": "pages/Self/Resume"
+          "pathName": "pages/Resource/UpResource"
         },
         {
           "name": "合同",

@@ -65,9 +65,6 @@ export default {
 			]
 		};
 	},
-	created() {
-		console.log(getApp().globalData.gUserInfo)
-	}
 }
 </script>
 

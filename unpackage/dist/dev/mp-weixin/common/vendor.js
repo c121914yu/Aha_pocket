@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1956,14 +1956,14 @@ function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /* 
-                                                                                                     	name: showSuccess
-                                                                                                     	description: 展示成功提示
-                                                                                                     	input: 
-                                                                                                     				title: String,提示文字
-                                                                                                     				mask: Boolean,是否展示蒙层
-                                                                                                     	return: null
-                                                                                                     */
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} /* 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	name: showSuccess
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	description: 展示成功提示
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	input: 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                				title: String,提示文字
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                				mask: Boolean,是否展示蒙层
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	return: null
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 function gToastSuccess(title) {var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;var mask = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
   uni.showToast({
     title: title,
@@ -2014,10 +2014,73 @@ function gShowModal(content, _success, cancel) {
 
 }
 
+/* 
+  	name: uploadFile
+  	description: 上传文件至OSS存储空间
+  	input: 
+  				url: String,待上传的临时路径
+  				name: String,待上传文件的文件名
+  				signature: Object,签名
+  	return: 
+  				fileName: String,最终的文件名
+  				fileUrl: String,文件路径
+  */
+function gUploadFile(url, name, signature) {
+  var fileName = "".concat(signature.dir, "/").concat(Date.now(), "/").concat(name);
+  return new Promise(function (resolve, reject) {
+    uni.uploadFile({
+      url: signature.host,
+      filePath: url,
+      name: "file",
+      formData: {
+        key: fileName, // 文件名
+        policy: signature.policy,
+        OSSAccessKeyId: signature.accessid,
+        signature: signature.signature },
+
+      success: function success(file) {
+        if (file.statusCode === 204)
+        {
+          resolve({
+            res: file,
+            fileName: fileName,
+            url: getApp().globalData.ossHost + fileName });
+
+        } else
+
+        {
+          reject(file);
+        }
+      },
+      fail: function fail(err) {
+        reject(err);
+      } });
+
+  });
+}
+
+/* 
+  	name: putUserInfo
+  	description: 修改用户信息
+  	input: userInfo里的任意字段
+  	return: 
+  					userInfo: Object,新的userInfo
+  */
+function gPutUserInfo(data) {
+  for (var key in data)
+  {
+    getApp().globalData.gUserInfo.userInfo[key] = data[key];
+  }
+  console.log(getApp().globalData.gUserInfo);
+  return _objectSpread({}, getApp().globalData.gUserInfo);
+}
+
 var globalFun = {
   gToastSuccess: gToastSuccess,
   gToastError: gToastError,
-  gShowModal: gShowModal };var _default =
+  gShowModal: gShowModal,
+  gUploadFile: gUploadFile,
+  gPutUserInfo: gPutUserInfo };var _default =
 
 globalFun;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
@@ -7620,7 +7683,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7641,14 +7704,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7734,7 +7797,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8150,7 +8213,7 @@ internalMixin(Vue);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _globalFun = _interopRequireDefault(__webpack_require__(/*! ../js/globalFun.js */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-var baseUrl = "http://hdustea.f3322.net:8089";
+var baseUrl = getApp().globalData.baseUrl;
 
 function myRequest(url, method, data) {
   uni.showLoading({
@@ -8173,6 +8236,7 @@ function myRequest(url, method, data) {
       header: headers,
       success: function success(result)
       {
+        uni.hideLoading();
         /* 请求成功 */
         if (result.data.code === 200)
         {
@@ -8185,21 +8249,20 @@ function myRequest(url, method, data) {
             _globalFun.default.gToastError(result.data.msg);
             rej(result.data);
           }
+      },
+      fail: function fail(err)
+      {
+        uni.hideLoading();
+        console.log("请求错误");
+        _globalFun.default.gToastError("请求错误");
+        rej(err);
+      },
+      complete: function complete(result) {
         /* 判断是否有新token,有则替换旧的token */
         if (result.header.Authorization)
         {
           uni.setStorageSync("token", result.header.Authorization);
         }
-      },
-      fail: function fail(err)
-      {
-        console.log("请求错误");
-        _globalFun.default.gToastError("请求错误");
-        rej(err);
-      },
-      complete: function complete()
-      {
-        uni.hideLoading();
       } });
 
   });
@@ -8217,14 +8280,28 @@ myRequest;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.putMe = exports.getAvatarOssSignature = exports.signNotice = exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 
-                                                                                                                                                                                                                                                               	description: 获取个人信息
-                                                                                                                                                                                                                                                               	input: null
-                                                                                                                                                                                                                                                               	return: null
-                                                                                                                                                                                                                                                               */
-var getMe = function getMe(data) {return (0, _request.default)("/userInfo/me", "GET", data);};exports.getMe = getMe;
+                                                                                                                                                                                                                                                                                                                                    	description: 获取个人信息
+                                                                                                                                                                                                                                                                                                                                    	input: null
+                                                                                                                                                                                                                                                                                                                                    	return: null
+                                                                                                                                                                                                                                                                                                                                    */
+var getMe = function getMe(data) {return (0, _request.default)("/userInfo/me", "GET", data);};
+/* 
+                                                                                               	description: 签署须知协议
+                                                                                               */exports.getMe = getMe;
+var signNotice = function signNotice(data) {return (0, _request.default)("/sign/notice", "GET", data);};
+/* 
+                                                                                                         	description: 获取头像上传签名
+                                                                                                         */exports.signNotice = signNotice;
+var getAvatarOssSignature = function getAvatarOssSignature(data) {return (0, _request.default)("/resource/sign/upload/public", "GET", data);};
+/* 
+                                                                                                                                               	description: 修改个人基本资料
+                                                                                                                                               	input:
+                                                                                                                                               				nickname: String,昵称
+                                                                                                                                               */exports.getAvatarOssSignature = getAvatarOssSignature;
+var putMe = function putMe(data) {return (0, _request.default)("/userInfo/me", "PUT", data);};exports.putMe = putMe;
 
 /***/ }),
 
@@ -8290,6 +8367,27 @@ var putResume = function putResume(data) {return (0, _request.default)("/resume"
                                                                                                   	input: resume: Object,简历的所有字段
                                                                                                   */exports.putResume = putResume;
 var getResume = function getResume(phone) {return (0, _request.default)("/resume/" + phone, "GET", {});};exports.getResume = getResume;
+
+/***/ }),
+
+/***/ 77:
+/*!***************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_resource.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.postResource = exports.getOssSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 
+                                                                                                                                                                                                                                                                                                	description: 获取上传文件签名
+                                                                                                                                                                                                                                                                                                */
+var getOssSignature = function getOssSignature(data) {return (0, _request.default)("/resource/sign/upload/private", "GET", {});};
+/* 
+                                                                                                                                  	desc: 创建资源数据，保存至数据库
+                                                                                                                                  */exports.getOssSignature = getOssSignature;
+var postResource = function postResource(data) {return (0, _request.default)("/resource", "POST", data);};exports.postResource = postResource;
 
 /***/ })
 

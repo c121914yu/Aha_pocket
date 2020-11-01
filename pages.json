@@ -74,8 +74,8 @@
 			"name": "主页",
 			"path": "pages/app"
 		}, {
-			"name": "个人简历",
-			"path": "pages/Self/Resume"
+			"name": "资源上传",
+			"path": "pages/Resource/UpResource"
 		}, {
 			"name": "合同",
 			"path": "pages/Resource/Contract"

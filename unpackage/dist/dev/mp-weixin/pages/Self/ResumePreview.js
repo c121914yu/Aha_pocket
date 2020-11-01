@@ -98,8 +98,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   var l0 =
-    _vm.eduExper.length > 0
-      ? _vm.__map(_vm.eduExper, function(edu, index) {
+    _vm.eduExperiences.length > 0
+      ? _vm.__map(_vm.eduExperiences, function(edu, index) {
           var $orig = _vm.__get_orig(edu)
 
           var g0 = edu.startTime.replace("-", ".")
@@ -112,8 +112,8 @@ var render = function() {
         })
       : null
   var l1 =
-    _vm.practiceExper.length > 0
-      ? _vm.__map(_vm.practiceExper, function(exper, index) {
+    _vm.practiceExperiences.length > 0
+      ? _vm.__map(_vm.practiceExperiences, function(exper, index) {
           var $orig = _vm.__get_orig(exper)
 
           var g2 = exper.startTime.replace("-", ".")
@@ -126,8 +126,8 @@ var render = function() {
         })
       : null
   var l2 =
-    _vm.projectExper.length > 0
-      ? _vm.__map(_vm.projectExper, function(exper, index) {
+    _vm.projectExperiences.length > 0
+      ? _vm.__map(_vm.projectExperiences, function(exper, index) {
           var $orig = _vm.__get_orig(exper)
 
           var g4 = exper.startTime.replace("-", ".")
@@ -140,8 +140,8 @@ var render = function() {
         })
       : null
   var l3 =
-    _vm.schoolExper.length > 0
-      ? _vm.__map(_vm.schoolExper, function(exper, index) {
+    _vm.schoolExperiences.length > 0
+      ? _vm.__map(_vm.schoolExperiences, function(exper, index) {
           var $orig = _vm.__get_orig(exper)
 
           var g6 = exper.startTime.replace("-", ".")
@@ -210,7 +210,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -331,9 +331,10 @@ var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _i
 {
   data: function data() {
     /* 批量导入简历数据 */
-    var resume = JSON.parse(uni.getStorageSync("resume"));
+    var resume = _objectSpread({}, getApp().globalData.gResume);
+    console.log(resume);
     // 计算年龄
-    var age = Math.floor((Date.now() - new Date(resume.both)) / 1000 / 60 / 60 / 24 / 365);
+    var age = Math.floor((Date.now() - new Date(resume.birth)) / 1000 / 60 / 60 / 24 / 365);
     age += "岁";
     return _objectSpread({
       age: age },
@@ -352,7 +353,6 @@ var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _i
     {
 
     } } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

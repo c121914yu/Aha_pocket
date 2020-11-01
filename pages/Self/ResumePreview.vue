@@ -17,7 +17,7 @@
 			<view class="center">(工作意愿: {{workPlace}} {{profession}})</view>
 			<!-- 基础信息1 -->
 			<view>
-				{{gender}}&emsp;{{age}}&emsp;{{hDegree}}{{identity === "学生" ? "在读" : "毕业"}}&emsp;{{currentGrade}}
+				{{gender}}&emsp;{{age}}&emsp;{{highestDegree}}{{identity === "学生" ? "在读" : "毕业"}}&emsp;{{currentGrade}}
 			</view>
 			<!-- 基础信息2 -->
 			<view>
@@ -26,12 +26,12 @@
 		</view>
 		<!-- 教育经历 -->
 		<view 
-			v-if="eduExper.length > 0"
+			v-if="eduExperiences.length > 0"
 			class="part eduExper">
 			<view class="h3">教育经历</view>
 			<view 
 				class="item"
-				v-for="(edu,index) in eduExper"
+				v-for="(edu,index) in eduExperiences"
 				:key="index">
 				<view>
 					{{edu.startTime.replace("-",".")}} - {{edu.endTime.replace("-",".")}}&emsp;{{edu.degree}}&emsp;{{edu.school}}
@@ -43,12 +43,12 @@
 		</view>
 		<!-- 实习经历 -->
 		<view 
-			v-if="practiceExper.length > 0"
+			v-if="practiceExperiences.length > 0"
 			class="part practiceExper">
 			<view class="h3">实习经历</view>
 			<view 
 				class="item"
-				v-for="(exper,index) in practiceExper"
+				v-for="(exper,index) in practiceExperiences"
 				:key="index">
 				<view>{{exper.startTime.replace("-",".")}} - {{exper.endTime.replace("-",".")}}</view>
 				<view class="main">{{exper.company}}&emsp;{{exper.post}}</view>
@@ -57,12 +57,12 @@
 		</view>
 		<!-- 项目经历 -->
 		<view 
-			v-if="projectExper.length > 0"
+			v-if="projectExperiences.length > 0"
 			class="part projectExper">
 			<view class="h3">项目经历</view>
 			<view 
 				class="item"
-				v-for="(exper,index) in projectExper"
+				v-for="(exper,index) in projectExperiences"
 				:key="index">
 				<view>{{exper.startTime.replace("-",".")}} - {{exper.endTime.replace("-",".")}}</view>
 				<view class="main">项目名称: {{exper.name}}</view>
@@ -72,12 +72,12 @@
 		</view>
 		<!-- 校园经历 -->
 		<view 
-			v-if="schoolExper.length > 0"
+			v-if="schoolExperiences.length > 0"
 			class="part schoolExper">
 			<view class="h3">校园经历</view>
 			<view 
 				class="item"
-				v-for="(exper,index) in schoolExper"
+				v-for="(exper,index) in schoolExperiences"
 				:key="index">
 				<view>{{exper.startTime.replace("-",".")}} - {{exper.endTime.replace("-",".")}}</view>
 				<view class="main">{{exper.organization}}&emsp;{{exper.post}}</view>
@@ -119,9 +119,10 @@ import Vue from 'vue'
 export default {
 	data(){
 		/* 批量导入简历数据 */
-		const resume = JSON.parse(uni.getStorageSync("resume"))
+		const resume = {...getApp().globalData.gResume}
+		console.log(resume)
 		// 计算年龄
-		let age = Math.floor((Date.now() - new Date(resume.both)) / 1000 / 60 / 60 / 24 / 365)
+		let age = Math.floor((Date.now() - new Date(resume.birth)) / 1000 / 60 / 60 / 24 / 365)
 		age += "岁"
 		return{
 			age,

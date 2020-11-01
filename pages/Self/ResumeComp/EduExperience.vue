@@ -90,12 +90,16 @@
 <script>
 export default {
 	data() {
+		/* 读取全局 */
 		const Schools = getApp().globalData.Schools
+		const Degress = getApp().globalData.Degress
+		const Grades = getApp().globalData.Grads
+		const eduExperiences = [...getApp().globalData.gResume.eduExperiences] || []
 		return {
-			eduExperiences: [], // 教育经历
+			eduExperiences, // 教育经历
 			isEduExperience: true,
-			Degress: [], // 学历数组
-			Grades: [], // 成绩等级
+			Degress, // 学历数组
+			Grades, // 成绩等级
 			Schools,
 		}
 	},
@@ -134,14 +138,7 @@ export default {
 					 this.eduExperiences.splice(index,1)
 				 })
 		},
-	},
-	created() {
-		this.Degress = getApp().globalData.Degress
-		this.Grades = getApp().globalData.Grads
-		/* 读取本地数据 */
-		const story = JSON.parse(uni.getStorageSync("resume"))
-		this.eduExperiences = story.eduExperiences || []
-	},
+	}
 }
 </script>
 
