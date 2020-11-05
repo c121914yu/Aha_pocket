@@ -1,172 +1,82 @@
 <!-- 资源分享 -->
 <template>
 	<view class="up-resource">
-		<!-- 标题 -->
-		<view class="info title">
-			<input 
-				type="text" 
-				placeholder="资源标题" 
-				v-model="title"/>
-		</view>
-		<!-- 选择容器 -->
-		<view class="info picker-content">
-			<!-- 完成度 -->
-			<view class="finish-rate">
-				<text class="head">完成程度</text>
-				<SPicker
-					:range="finishRates"
-					v-model="finishRate">
-				</SPicker>
-			</view>
-			<!-- 资源类型 -->
-			<view class="classify">
-				<text class="head">资源类型</text>
-				<SPicker
-					:range="AccessoriesClassify"
-					v-model="classify">
-				</SPicker>
-			</view>
-		</view>
-		<!-- 标签 -->
-		<view class="info tags">
-			<text class="head">标签</text>
-			<input 
-				type="text" 
-				placeholder-class="placeholderStyle" 
-				placeholder="不同标签间空格隔开."
-				@input="inputTags"/>
-			<view 
-				class="tag"
-				v-for="(tag,index) in tags"
-				:key="index">
-				{{tag}}
-			</view>
-		</view>
-		<!-- 获奖情况 -->
-		<view class="info prizes">
-			<view class="head">
-				获奖情况
-				<text class="iconfont icon-tianjia" @click="addPrize"></text>
-			</view>
-			<view 
-				class="prize"
-				v-for="(prize,index) in prizeList"
-				:key="index">
-				<!-- 带搜索的输入框 -->
-				<SearchInput 
-					:allResults="MatchName"
-					placeholder="获奖名称"
-					v-model="prize.name"
-					@blur="blurMathName($event,index)">
-				</SearchInput>
-				<!-- 分类，如果该赛事不存在MatchName中 -->
+		<view class="content">
+			<view class="h3">资源信息</view>
+			<inputInfo 
+				title="标题"
+				contentWidth="80%"
+				v-model="title">
+			</inputInfo>
+			<inputInfo
+				title="作者"
+				contentWidth="200rpx"
+				v-model="authorName">
+			</inputInfo>
+			<inputInfo
+				title="联系方式"
+				v-model="authorContact">
+			</inputInfo>
+			<inputInfo
+				title="完成程度"
+				type="select"
+				contentWidth="350rpx"
+				:range="finishRates"
+				v-model="finishRate">
+			</inputInfo>
+			<inputInfo
+				title="资源类型"
+				type="select"
+				contentWidth="350rpx"
+				:range="AccessoriesClassify"
+				v-model="classify">
+			</inputInfo>
+			<inputInfo
+				title="标签"
+				contentWidth="80%"
+				remark="(注: 不同标签用空格隔开)"
+				v-model="tagText">
+			</inputInfo>
+			<view class="tags">
 				<view 
-					v-if="prize.isShowClassify"
-					class="classify">
-					<text class="title">赛事分类</text>
-					<SPicker
-						:range="finishRates"
-						v-model="prize.matchClassify">
-					</SPicker>
-				</view>
-				<!-- 获奖等级 -->
-				<view class="prize-grade">
-					<text class="title">获奖等级</text>
-					<SPicker
-						:range="prizeGrades"
-						v-model="prize.level">
-					</SPicker>
-					<!-- 未选择图片 -->
-					<view 
-						class="testify" 
-						v-if="!prize.testifyUrl"
-						@click="addTestify(index)">
-						<text class="iconfont icon-tianjia"></text>
-						<text>添加证明</text>
-					</view>
-					<!-- 已选择图片 -->
-					<view 
-						v-else
-						class="testify"
-						@click="readTestify(prize.testifyUrl)">
-						<text class="iconfont icon-readed" ></text>
-						<text>查看证明</text>
-					</view>
-					<icon
-						class="remove"
-						type="clear" 
-						size="24" 
-						color="#ff0000"
-						@click="removePrize(index)"/>
-				</view>
-			</view>
-		</view>
-		<!-- 作者信息  -->
-		<view class="info author">
-			<text class="head">作者信息</text>
-			<view class="input">
-				<input 
-					class="name" 
-					type="text" 
-					placeholder-class="placeholderStyle" 
-					placeholder="作者名称" 
-					v-model="authorName"/>
-				<input 
-					class="contact" 
-					type="text" 
-					placeholder-class="placeholderStyle" 
-					placeholder="联系方式" 
-					v-model="authorContace"/>
-			</view>
-		</view>
-		<!-- 文件选择 -->
-		<view class="info files">
-			<view class="head">
-				附件列表
-				<text class="iconfont icon-tianjia" @click="chooseFile"></text>
-			</view>
-			<text class="remark">*手机选择文件需要先发送至文件助手或从聊天记录中选择,超过25M的文件请用电脑选择。</text>
-			<view 
-				v-if="accessories.length > 0"
-				class="list">
-				<view
-					class="file"
-					v-for="(file,index) in accessories"
+					class="tag"
+					v-for="(tag,index) in tags"
 					:key="index">
-					<view class="file-info small">
-						<view>{{file.name}}</view>
-						<view class="size">{{file.size}}</view>
-					</view>
-					<icon 
-						class="remove"
-						type="clear" 
-						size="22" 
-						color="#ff0000"
-						@click="removeFile(index)"/>
+					{{tag}}
 				</view>
 			</view>
+		
+			<!-- 获奖情况 -->
+			<view class="input-info">
+				<view class="h4">获奖情况:</view>
+				<view class="prize">
+					<view class="left">
+						<view class="name">比赛名称</view>
+						<view class="date">获奖日期</view>
+						<view class="level">获奖等级</view>
+					</view>
+					<view class="right">
+						<text class="add iconfont icon-tianjia"></text>
+					</view>
+				</view>
+			</view>
+			<!-- 附件列表 -->
+			<view class="input-info">
+				<view class="h4">附件列表:</view>
+				<view class="accessories">
+					<text class="iconfont icon-tianjia" @click="chooseFile"></text>
+				</view>
+				<view class="remark">(注:手机选择文件可从文件助手或聊天记录中选取，超过25M文件请用电脑选取。)</view>
+			</view>
+			<!-- 资源描述 -->
+			<view class="h4">资源描述:</view>
 		</view>
-		<!-- 介绍，支持Markdown -->
-		<view class="info description">
-			<text class="head">资源描述</text>
-			<button @click="isEdit=true">进入markdown编辑</button>
-		</view>
-		<view v-if="isEdit" class="edit-content">
-			<MdEdit 
-				placeholder="请输入内容"
-				:delta="descriptionMD"
-				@editOk="editOk"
-				@input="descriptionMD=$event">
-			</MdEdit>
-		</view>
-		<view v-html="descriptionHTML"></view>
-		<!-- 上传 -->
-		<button class="publish" @click="uploadFiles">发布</button>
 	</view>
 </template>
 
 <script>
 import { getOssSignature,postResource } from "@/static/request/api_resource.js"
+import inputInfo from "./components/inputInfo.vue"
 export default {
 	data() {
 		const AccessoriesClassify = getApp().globalData.AccessoriesClassify
@@ -174,38 +84,36 @@ export default {
 		const prizeGrades = getApp().globalData.prizeGrades
 		return {
 			title: "",
+			authorName: "", // 作者名称
+			authorContact: "", // 作者联系方式
 			finishRate: "",
 			classify: "",
-			tags: [], // 标签
+			tagText: "",
+			prizeList: [], // 获奖情况
 			descriptionHTML: "",
 			descriptionMD: "",
-			prizeList: [], // 获奖情况
-			authorName: "", // 作者名称
-			authorContace: "", // 作者联系方式
 			accessories: [], // 附件
 			finishRates: ["100%","80%-100%","50%-80%","0%-50%"], // 完成度数组
-			AccessoriesClassify,
+			AccessoriesClassify, // 资源类型
 			MatchName,
 			prizeGrades,
 			isEdit: false
 		}
 	},
-	methods: {
-		/* 
-			name: 输入标签
-			desc: 监听输入标签，获取输入内容根据空格分隔
+	computed: {
+		/*
+			desc: 监听输入标签内容改变，根据空格分隔
 			input: 
-						e: Object,input参数,e.detail.value:输入的值
+						tagText: String,标签输入框内容
 			return: null
-			change: 
-							this.tags: Array,标签数组
-			time: 2020/10/25
+			time: 2020/11/5
 		*/
-		inputTags(e)
+		tags()
 		{
-			const val = e.detail.value
-			this.tags = val.split(" ").filter(tag => tag !== "")
+			return this.tagText.split(" ").filter(tag => tag !== "")
 		},
+	},
+	methods: {
 		/*
 			name: 添加获奖
 			desc: 追加一个获奖情况，包括名称，赛事，获奖等级，如果是自建赛事还需要选择赛事分类。
@@ -531,6 +439,9 @@ export default {
 		// 	})
 		// }
 	},
+	components: {
+		inputInfo
+	}
 }
 </script>
 
@@ -538,115 +449,89 @@ export default {
 .up-resource
 	position relative
 	min-height 100vh
-	padding 10rpx 30rpx
-	input
-		background-color var(--origin2)
-		border-radius 10px
-	/* 不同容器间共同样式 */
-	.info
-		margin 10px 0
-		/* 提示文字 */
-		.head
-			font-weight 600
-			color var(--origin4)
-			display flex
-			align-items center
-		/* 图标 */
-		.iconfont
-			margin-left 10px
-			font-size 42rpx
-			font-weight 400
-			color var(--origin4)
-	/* 需要flex布局的容器 */
-	.picker-content
-		display grid
-		grid-template-columns 1fr 1fr
-		grid-gap 20rpx
-		text-align center
-		line-height 2
-	/* 标签 */
-	.tags .tag
-		margin 5px
-		padding 0 10px
-		border var(--border1)
-		border-radius 20px
-		display inline-block
-	/* 获奖 */
-	.prizes .prize
-		font-size 28rpx
-		margin 10px 0
-		.title
-			margin-right 5px
-			color var(--origin4)
-		.search-input
-			margin-bottom 10px
-			padding 10px 5px
-			background-color var(--origin2)			border-radius 10px 
-		.classify
-			margin 5px 0
-			text-align center
-			display flex
-			align-items center
-		.prize-grade
-			position relative
-			text-align center
-			display flex
-			align-items center
-			.testify
-				margin-left 10px
-				color var(--origin4)
-				display flex
-				align-items center
-				text
-					margin-right 2px
-			.remove
-				position absolute
-				right 0
-	/* 作者信息 */
-	.author .input
-		display grid
-		grid-template-columns 2fr 3fr
-		grid-gap 10px
-	/* 添加附件 */
-	.files
-		.remark
-			font-size 28rpx
-			color var(--gray)
-		.list
-			border 1px solid var(--origin4)
-			border-radius 10px
-			.file
-				position relative
-				padding 5px
-				border-bottom 1px dotted var(--origin4)
-				&:last-of-type
-					border 0
-				.file-info
-					width calc(100% - 30px)
-					white-space pre-wrap
-					.size
-						color var(--origin4)
-						text-align end
-				.remove
-					position absolute
-					top 50%
-					transform translateY(-50%)
-					right 5rpx
-	/* 描述 */
-	.description button
-		color #FFFFFF
-		background-color var(--button-bg)
-	.edit-content
-		z-index 20
-		position fixed
-		top 0
-		left 0
-		width 100%
-		height 100%
+	padding 20rpx
+	background-color var(--origin3)
+	.content
+		padding 20rpx 60rpx
 		background-color #FFFFFF
-	/* 上传资源 */
-	.publish
-		margin 10px auto
-		background-color var(--button-bg)
-		color #FFFFFF
+		border-radius 44rpx
+		/* 大标题 */
+		.h3
+			padding 20rpx 0
+			color var(--origin1)
+		/* 小标题 */
+		.h4
+			color var(--origin1)
+		/* 输入框 */
+		.input-info
+			margin 15rpx 0
+		/* 标签框 */
+		.tags
+			width 100%
+			display flex
+			flex-wrap wrap
+			.tag
+				margin 0 5px 5px 0
+				padding 0 10rpx
+				border 1px solid var(--origin2)
+				border-radius 20rpx
+		/* 备注信息 */
+		.remark
+			color var(--origin2)
+			font-size 20rpx
+		/* 资源列表 */
+		.accessories
+			position relative
+			width 100%
+			min-height 100px
+			padding 15rpx
+			background-color var(--origin3)
+			border-radius 20rpx
+			.iconfont
+				position absolute
+				top 50%
+				left 50%
+				transform translate(-50%,-50%)
+				color var(--origin2)
+				font-size 40rpx
+				font-weight 600
+		/* 获奖列表 */
+		.prize
+			background-color var(--origin2)
+			border-radius 10px
+			display flex
+			.left
+				flex 1
+				padding 10px
+				background-color var(--origin3)
+				border-radius 10px
+				display flex
+				flex-wrap wrap
+				view
+					padding 5px 0
+					background-color #FFFFFF
+					color var(--origin2)
+					border-radius 22px
+					text-align center
+					font-size 24rpx
+				.name
+					width 100%
+				.date
+					margin 10px 10px 0 0
+					flex 1
+				.level
+					margin-top 10px
+					flex 1
+			.right
+				width 50px
+				display flex
+				flex-direction column
+				align-items center
+				justify-content space-around
+				.iconfont
+					font-size 40rpx
+					font-weight 600
+					border-radius 50%
+					&.add
+						color var(--origin1)
 </style>

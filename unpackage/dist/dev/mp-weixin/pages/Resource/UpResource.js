@@ -92,30 +92,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components = {
-  SPicker: function() {
-    return __webpack_require__.e(/*! import() | components/SPicker/SPicker */ "components/SPicker/SPicker").then(__webpack_require__.bind(null, /*! @/components/SPicker/SPicker.vue */ 242))
-  },
-  SearchInput: function() {
-    return __webpack_require__.e(/*! import() | components/SearchInput/SearchInput */ "components/SearchInput/SearchInput").then(__webpack_require__.bind(null, /*! @/components/SearchInput/SearchInput.vue */ 249))
-  },
-  MdEdit: function() {
-    return __webpack_require__.e(/*! import() | components/MdEdit/MdEdit */ "components/MdEdit/MdEdit").then(__webpack_require__.bind(null, /*! @/components/MdEdit/MdEdit.vue */ 200))
-  }
-}
+var components
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  if (!_vm._isMounted) {
-    _vm.e0 = function($event) {
-      _vm.isEdit = true
-    }
-
-    _vm.e1 = function($event) {
-      _vm.descriptionMD = $event
-    }
-  }
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -226,98 +207,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 77);function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var inputInfo = function inputInfo() {__webpack_require__.e(/*! require.ensure | pages/Resource/components/inputInfo */ "pages/Resource/components/inputInfo").then((function () {return resolve(__webpack_require__(/*! ./components/inputInfo.vue */ 200));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 77);function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var _default =
 {
   data: function data() {
     var AccessoriesClassify = getApp().globalData.AccessoriesClassify;
@@ -325,45 +216,43 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
     var prizeGrades = getApp().globalData.prizeGrades;
     return {
       title: "",
+      authorName: "", // 作者名称
+      authorContact: "", // 作者联系方式
       finishRate: "",
       classify: "",
-      tags: [], // 标签
+      tagText: "",
+      prizeList: [], // 获奖情况
       descriptionHTML: "",
       descriptionMD: "",
-      prizeList: [], // 获奖情况
-      authorName: "", // 作者名称
-      authorContace: "", // 作者联系方式
       accessories: [], // 附件
       finishRates: ["100%", "80%-100%", "50%-80%", "0%-50%"], // 完成度数组
-      AccessoriesClassify: AccessoriesClassify,
+      AccessoriesClassify: AccessoriesClassify, // 资源类型
       MatchName: MatchName,
       prizeGrades: prizeGrades,
       isEdit: false };
 
   },
+  computed: {
+    /*
+              	desc: 监听输入标签内容改变，根据空格分隔
+              	input: 
+              				tagText: String,标签输入框内容
+              	return: null
+              	time: 2020/11/5
+              */
+    tags: function tags()
+    {
+      return this.tagText.split(" ").filter(function (tag) {return tag !== "";});
+    } },
+
   methods: {
-    /* 
-             	name: 输入标签
-             	desc: 监听输入标签，获取输入内容根据空格分隔
-             	input: 
-             				e: Object,input参数,e.detail.value:输入的值
-             	return: null
+    /*
+             	name: 添加获奖
+             	desc: 追加一个获奖情况，包括名称，赛事，获奖等级，如果是自建赛事还需要选择赛事分类。
              	change: 
-             					this.tags: Array,标签数组
+             					this.prizeList: Array,获奖数组
              	time: 2020/10/25
              */
-    inputTags: function inputTags(e)
-    {
-      var val = e.detail.value;
-      this.tags = val.split(" ").filter(function (tag) {return tag !== "";});
-    },
-    /*
-       	name: 添加获奖
-       	desc: 追加一个获奖情况，包括名称，赛事，获奖等级，如果是自建赛事还需要选择赛事分类。
-       	change: 
-       					this.prizeList: Array,获奖数组
-       	time: 2020/10/25
-       */
     addPrize: function addPrize()
     {
       this.prizeList.push({
@@ -681,7 +570,9 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
     // 		}
     // 	})
     // }
-  } };exports.default = _default;
+  },
+  components: {
+    inputInfo: inputInfo } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

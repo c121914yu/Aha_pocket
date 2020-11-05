@@ -78,10 +78,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   SlideCard: function() {
-    return __webpack_require__.e(/*! import() | components/SlideCard/SlideCard */ "components/SlideCard/SlideCard").then(__webpack_require__.bind(null, /*! @/components/SlideCard/SlideCard.vue */ 228))
+    return __webpack_require__.e(/*! import() | components/SlideCard/SlideCard */ "components/SlideCard/SlideCard").then(__webpack_require__.bind(null, /*! @/components/SlideCard/SlideCard.vue */ 214))
   },
   ListCompetition: function() {
-    return __webpack_require__.e(/*! import() | components/ListCompetition/ListCompetition */ "components/ListCompetition/ListCompetition").then(__webpack_require__.bind(null, /*! @/components/ListCompetition/ListCompetition.vue */ 235))
+    return __webpack_require__.e(/*! import() | components/ListCompetition/ListCompetition */ "components/ListCompetition/ListCompetition").then(__webpack_require__.bind(null, /*! @/components/ListCompetition/ListCompetition.vue */ 221))
   }
 }
 var render = function() {
