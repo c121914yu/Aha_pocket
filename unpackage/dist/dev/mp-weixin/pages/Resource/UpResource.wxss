@@ -1,158 +1,131 @@
 .up-resource {
   position: relative;
   min-height: 100vh;
-  padding: 10rpx 30rpx;
-/* 不同容器间共同样式 */
-/* 需要flex布局的容器 */
-/* 标签 */
-/* 获奖 */
-/* 作者信息 */
-/* 添加附件 */
-/* 描述 */
-/* 上传资源 */
+  padding: 20rpx;
+  background-color: var(--origin3);
 }
-.up-resource input {
-  background-color: var(--origin2);
-  border-radius: 10px;
+.up-resource .content {
+  padding: 20rpx 60rpx;
+  background-color: #fff;
+  border-radius: 44rpx;
+/* 大标题 */
+/* 小标题 */
+/* 输入框 */
+/* 标签框 */
+/* 备注信息 */
+/* 资源列表 */
+/* 获奖列表 */
 }
-.up-resource .info {
-  margin: 10px 0;
-/* 提示文字 */
-/* 图标 */
+.up-resource .content .h3 {
+  padding: 20rpx 0;
+  color: var(--origin1);
 }
-.up-resource .info .head {
-  font-weight: 600;
-  color: var(--origin4);
+.up-resource .content .h4 {
+  color: var(--origin1);
+}
+.up-resource .content .input-info {
+  margin: 15rpx 0;
+}
+.up-resource .content .tags {
+  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
 }
-.up-resource .info .iconfont {
-  margin-left: 10px;
-  font-size: 42rpx;
-  font-weight: 400;
-  color: var(--origin4);
+.up-resource .content .tags .tag {
+  margin: 0 5px 5px 0;
+  padding: 0 10rpx;
+  border: 1px solid var(--origin2);
+  border-radius: 20rpx;
 }
-.up-resource .picker-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 20rpx;
-  text-align: center;
-  line-height: 2;
+.up-resource .content .remark {
+  color: var(--origin2);
+  font-size: 20rpx;
 }
-.up-resource .tags .tag {
-  margin: 5px;
-  padding: 0 10px;
-  border: var(--border1);
-  border-radius: 20px;
-  display: inline-block;
-}
-.up-resource .prizes .prize {
-  font-size: 28rpx;
-  margin: 10px 0;
-}
-.up-resource .prizes .prize .title {
-  margin-right: 5px;
-  color: var(--origin4);
-}
-.up-resource .prizes .prize .search-input {
-  margin-bottom: 10px;
-  padding: 10px 5px;
-  background-color: var(--origin2);
-  border-radius: 10px;
-}
-.up-resource .prizes .prize .classify {
-  margin: 5px 0;
-  text-align: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-}
-.up-resource .prizes .prize .prize-grade {
+.up-resource .content .accessories {
   position: relative;
-  text-align: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  width: 100%;
+  min-height: 100px;
+  padding: 15rpx;
+  background-color: var(--origin3);
+  border-radius: 20rpx;
 }
-.up-resource .prizes .prize .prize-grade .testify {
-  margin-left: 10px;
-  color: var(--origin4);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-}
-.up-resource .prizes .prize .prize-grade .testify text {
-  margin-right: 2px;
-}
-.up-resource .prizes .prize .prize-grade .remove {
-  position: absolute;
-  right: 0;
-}
-.up-resource .author .input {
-  display: grid;
-  grid-template-columns: 2fr 3fr;
-  grid-gap: 10px;
-}
-.up-resource .files .remark {
-  font-size: 28rpx;
-  color: var(--gray);
-}
-.up-resource .files .list {
-  border: 1px solid var(--origin4);
-  border-radius: 10px;
-}
-.up-resource .files .list .file {
-  position: relative;
-  padding: 5px;
-  border-bottom: 1px dotted var(--origin4);
-}
-.up-resource .files .list .file:last-of-type {
-  border: 0;
-}
-.up-resource .files .list .file .file-info {
-  width: calc(100% - 30px);
-  white-space: pre-wrap;
-}
-.up-resource .files .list .file .file-info .size {
-  color: var(--origin4);
-  text-align: end;
-}
-.up-resource .files .list .file .remove {
+.up-resource .content .accessories .iconfont {
   position: absolute;
   top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  right: 5rpx;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  color: var(--origin2);
+  font-size: 40rpx;
+  font-weight: 600;
 }
-.up-resource .description button {
-  color: #fff;
-  background-color: var(--button-bg);
+.up-resource .content .prize {
+  background-color: var(--origin2);
+  border-radius: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
 }
-.up-resource .edit-content {
-  z-index: 20;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.up-resource .content .prize .left {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  padding: 10px;
+  background-color: var(--origin3);
+  border-radius: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+}
+.up-resource .content .prize .left view {
+  padding: 5px 0;
   background-color: #fff;
+  color: var(--origin2);
+  border-radius: 22px;
+  text-align: center;
+  font-size: 24rpx;
 }
-.up-resource .publish {
-  margin: 10px auto;
-  background-color: var(--button-bg);
-  color: #fff;
+.up-resource .content .prize .left .name {
+  width: 100%;
+}
+.up-resource .content .prize .left .date {
+  margin: 10px 10px 0 0;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
+.up-resource .content .prize .left .level {
+  margin-top: 10px;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
+.up-resource .content .prize .right {
+  width: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+}
+.up-resource .content .prize .right .iconfont {
+  font-size: 40rpx;
+  font-weight: 600;
+  border-radius: 50%;
+}
+.up-resource .content .prize .right .iconfont.add {
+  color: var(--origin1);
 }
 
