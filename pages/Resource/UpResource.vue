@@ -149,13 +149,17 @@
 		<!-- 介绍，支持Markdown -->
 		<view class="info description">
 			<text class="head">资源描述</text>
-			<textarea 
-			placeholder-class="placeholderStyle"
-			placeholder="资源描述"
-			auto-height
-			maxlength="-1"
-			v-model="description"/>
+			<button @click="isEdit=true">进入markdown编辑</button>
 		</view>
+		<view v-if="isEdit" class="edit-content">
+			<MdEdit 
+				placeholder="请输入内容"
+				:delta="descriptionMD"
+				@editOk="editOk"
+				@input="descriptionMD=$event">
+			</MdEdit>
+		</view>
+		<view v-html="descriptionHTML"></view>
 		<!-- 上传 -->
 		<button class="publish" @click="uploadFiles">发布</button>
 	</view>
@@ -173,7 +177,8 @@ export default {
 			finishRate: "",
 			classify: "",
 			tags: [], // 标签
-			description: "",
+			descriptionHTML: "",
+			descriptionMD: "",
 			prizeList: [], // 获奖情况
 			authorName: "", // 作者名称
 			authorContace: "", // 作者联系方式
@@ -181,7 +186,8 @@ export default {
 			finishRates: ["100%","80%-100%","50%-80%","0%-50%"], // 完成度数组
 			AccessoriesClassify,
 			MatchName,
-			prizeGrades
+			prizeGrades,
+			isEdit: false
 		}
 	},
 	methods: {
@@ -348,6 +354,11 @@ export default {
 				}
 			)
 		},
+		editOk(html)
+		{
+			this.descriptionHTML = html
+			this.isEdit = false
+		},
 		/* 
 			name: 验证输入内容
 			desc: 验证输入的资源内容
@@ -509,16 +520,17 @@ export default {
 		}
 	},
 	onLoad() {
-		if(!getApp().globalData.gUserInfo.signedContract)
-		{
-			uni.redirectTo({
-				url: "./Contract",
-				success: () => {
-					this.gToastError("请先签署合同")
-				}
-			})
-		}
-	}
+		/* 判断用户是否签署合同，若为签署则跳转签署界面 */
+		// if(!getApp().globalData.gUserInfo.signedContract)
+		// {
+		// 	uni.redirectTo({
+		// 		url: "./Contract",
+		// 		success: () => {
+		// 			this.gToastError("请先签署合同")
+		// 		}
+		// 	})
+		// }
+	},
 }
 </script>
 
@@ -621,13 +633,17 @@ export default {
 					transform translateY(-50%)
 					right 5rpx
 	/* 描述 */
-	.description textarea
-		margin 5px auto
+	.description button
+		color #FFFFFF
+		background-color var(--button-bg)
+	.edit-content
+		z-index 20
+		position fixed
+		top 0
+		left 0
 		width 100%
-		min-height 100px
-		padding 10rpx
-		border-radius 20rpx
-		background-color var(--origin2)
+		height 100%
+		background-color #FFFFFF
 	/* 上传资源 */
 	.publish
 		margin 10px auto

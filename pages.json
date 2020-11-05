@@ -51,6 +51,18 @@
 				"navigationBarTitleText": "资源上传"
 			}
 		},
+		{
+			"path": "pages/Resource/MyResources",
+			"style": {
+				"navigationBarTitleText": "我的资源"
+			}
+		},
+		{
+			"path": "pages/Resource/Resource",
+			"style": {
+				"navigationBarTitleText": "资源详情"
+			}
+		},
 		/* 合同 & 电子签名 */
 		{
 			"path": "pages/Resource/Contract",

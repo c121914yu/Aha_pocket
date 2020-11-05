@@ -92,10 +92,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   UserAgreement: function() {
-    return Promise.all(/*! import() | components/UserAgreement/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/UserAgreement/UserAgreement")]).then(__webpack_require__.bind(null, /*! @/components/UserAgreement/UserAgreement.vue */ 95))
+    return Promise.all(/*! import() | components/UserAgreement/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/UserAgreement/UserAgreement")]).then(__webpack_require__.bind(null, /*! @/components/UserAgreement/UserAgreement.vue */ 107))
   },
   TabBar: function() {
-    return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 102))
+    return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 114))
   }
 }
 var render = function() {
@@ -140,7 +140,8 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Home = function Home() {__webpack_require__.e(/*! require.ensure | pages/Home/Home */ "pages/Home/Home").then((function () {return resolve(__webpack_require__(/*! ./Home/Home */ 109));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Life = function Life() {__webpack_require__.e(/*! require.ensure | pages/Life/Life */ "pages/Life/Life").then((function () {return resolve(__webpack_require__(/*! ./Life/Life */ 116));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Member = function Member() {__webpack_require__.e(/*! require.ensure | pages/Member/Member */ "pages/Member/Member").then((function () {return resolve(__webpack_require__(/*! ./Member/Member */ 121));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 126));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var mdEdit = function mdEdit() {__webpack_require__.e(/*! require.ensure | pages/Resource/components/mdEdit */ "pages/Resource/components/mdEdit").then((function () {return resolve(__webpack_require__(/*! ./Resource/components/mdEdit.vue */ 121));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Home = function Home() {__webpack_require__.e(/*! require.ensure | pages/Home/Home */ "pages/Home/Home").then((function () {return resolve(__webpack_require__(/*! ./Home/Home */ 126));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Life = function Life() {__webpack_require__.e(/*! require.ensure | pages/Life/Life */ "pages/Life/Life").then((function () {return resolve(__webpack_require__(/*! ./Life/Life */ 133));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Member = function Member() {__webpack_require__.e(/*! require.ensure | pages/Member/Member */ "pages/Member/Member").then((function () {return resolve(__webpack_require__(/*! ./Member/Member */ 138));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 143));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
 
 
 
@@ -193,7 +194,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       { name: "Member", loaded: false },
       { name: "Self", loaded: false }],
 
-      currentNav: 0,
+      currentNav: 3,
       signedNotice: signedNotice };
 
   },
@@ -231,7 +232,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     Home: Home,
     Life: Life,
     Member: Member,
-    Self: Self } };exports.default = _default;
+    Self: Self,
+    mdEdit: mdEdit } };exports.default = _default;
 
 /***/ })
 

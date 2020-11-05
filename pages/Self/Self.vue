@@ -101,7 +101,7 @@ export default {
 			tasks: [
 				{name: "进行中",icon: "icon-shouye",to: "/pages/Self/AccountInfo"},
 				{name: "已完成",icon: "icon-yiwancheng",to: "/pages/Self/AccountInfo"},
-				{name: "贡献详情",icon: "icon-icon",to: "/pages/Self/AccountInfo"},
+				{name: "贡献详情",icon: "icon-icon",to: "/pages/Resource/MyResources"},
 			],
 			/* 功能列表 */
 			funtions: [

@@ -137,13 +137,18 @@
           transform: translateY(-50%);
   right: 5rpx;
 }
-.up-resource .description textarea {
-  margin: 5px auto;
+.up-resource .description button {
+  color: #fff;
+  background-color: var(--button-bg);
+}
+.up-resource .edit-content {
+  z-index: 20;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  min-height: 100px;
-  padding: 10rpx;
-  border-radius: 20rpx;
-  background-color: var(--origin2);
+  height: 100%;
+  background-color: #fff;
 }
 .up-resource .publish {
   margin: 10px auto;

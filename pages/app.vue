@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import mdEdit from "./Resource/components/mdEdit.vue"
 import Home from "./Home/Home"
 import Life from "./Life/Life"
 import Member from "./Member/Member"
@@ -51,7 +52,7 @@ export default {
 				{name: "Member",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 0,
+			currentNav: 3,
 			signedNotice
 		}
 	},
@@ -89,7 +90,8 @@ export default {
 		Home,
 		Life,
 		Member,
-		Self
+		Self,
+		mdEdit
 	}
 }
 </script>
