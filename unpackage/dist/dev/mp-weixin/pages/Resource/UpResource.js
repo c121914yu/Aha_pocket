@@ -97,6 +97,15 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  if (!_vm._isMounted) {
+    _vm.e0 = function($event) {
+      _vm.setPrized = true
+    }
+
+    _vm.e1 = function($event) {
+      _vm.setPrized = true
+    }
+  }
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -207,39 +216,104 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 77);function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var inputInfo = function inputInfo() {__webpack_require__.e(/*! require.ensure | pages/Resource/components/inputInfo */ "pages/Resource/components/inputInfo").then((function () {return resolve(__webpack_require__(/*! ./components/inputInfo.vue */ 195));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 77);function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var inputInfo = function inputInfo() {__webpack_require__.e(/*! require.ensure | pages/Resource/components/inputInfo */ "pages/Resource/components/inputInfo").then((function () {return resolve(__webpack_require__(/*! ./components/inputInfo.vue */ 195));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var setTeamMember = function setTeamMember() {__webpack_require__.e(/*! require.ensure | pages/Resource/components/setTeamMember */ "pages/Resource/components/setTeamMember").then((function () {return resolve(__webpack_require__(/*! ./components/setTeamMember.vue */ 202));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var setPrize = function setPrize() {__webpack_require__.e(/*! require.ensure | pages/Resource/components/setPrize */ "pages/Resource/components/setPrize").then((function () {return resolve(__webpack_require__(/*! ./components/setPrize.vue */ 209));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
 
 {
   data: function data() {
     var AccessoriesClassify = getApp().globalData.AccessoriesClassify;
-    var MatchName = getApp().globalData.MatchName;
-    var prizeGrades = getApp().globalData.prizeGrades;
     return {
       title: "",
       authorName: "", // 作者名称
       authorContact: "", // 作者联系方式
+      team: [],
       finishRate: "",
       classify: "",
       tagText: "",
-      prizeList: [], // 获奖情况
+      prize: null, // 获奖情况
       descriptionHTML: "",
       descriptionMD: "",
       accessories: [], // 附件
       finishRates: ["100%", "80%-100%", "50%-80%", "0%-50%"], // 完成度数组
       AccessoriesClassify: AccessoriesClassify, // 资源类型
-      MatchName: MatchName,
-      prizeGrades: prizeGrades,
+      setMember: false,
+      setPrized: false,
       isEdit: false };
 
   },
   computed: {
-    /*
-              	desc: 监听输入标签内容改变，根据空格分隔
-              	input: 
-              				tagText: String,标签输入框内容
-              	return: null
-              	time: 2020/11/5
+    /* 
+              	desc: 计算队员名称
+              	input:
+              				this.team: Array,队伍队员信息
+              	return 
+              				teamNames: String,队员名称，按,隔开
+              	time: 2020/11/9
               */
+    teamName: function teamName()
+    {
+      if (this.team.length === 0)
+      {
+        return "点击添加队友";
+      }
+      return this.team.map(function (item) {return item.name;}).split(",");
+    },
+    /*
+       	desc: 监听输入标签内容改变，根据空格分隔
+       	input: 
+       				tagText: String,标签输入框内容
+       	return: 
+       				tagArray: Array,标签数组
+       	time: 2020/11/9
+       */
     tags: function tags()
     {
       return this.tagText.split(" ").filter(function (tag) {return tag !== "";});
@@ -247,91 +321,35 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
 
   methods: {
     /*
-             	name: 添加获奖
+             	name: 设置获奖
              	desc: 追加一个获奖情况，包括名称，赛事，获奖等级，如果是自建赛事还需要选择赛事分类。
              	change: 
              					this.prizeList: Array,获奖数组
              	time: 2020/10/25
              */
-    addPrize: function addPrize()
+    editPrize: function editPrize(e)
     {
-      this.prizeList.push({
-        name: "",
-        matchClassify: "",
-        isShowClassify: false,
-        level: "",
-        testifyUrl: "" });
-
+      this.prize = e;
+      this.setPrized = false;
     },
-    /*
-       	name: 添加获奖证明
-       	desc: 添加一个获奖证明图片
-       	input:
-       				index: Number,获奖数组下标
-       	change: 
-       					this.prizeList[index].testifyUrl: String,获奖证明
-       	time: 2020/10/25
-       */
-    addTestify: function addTestify(index)
-    {var _this = this;
-      uni.chooseImage({
-        count: 1, //默认9
-        sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-        success: function success(img) {
-          _this.prizeList[index].testifyUrl = img.tempFilePaths[0];
-        } });
-
-    },
-    /*
-       	name: 输入比赛名称结束
-       	description: 获取比赛名称，与库中已有比赛配对，若不存在则表示为自建，需要用户选择分类
-       	input: 
-       				val: String,输入内容
-       				index: Numnber,对应数组 下标
-       	change:
-       					prizeList[index].isShowClassify: Boolean,是否展示分类
-       	time: 2020/10/24
-       */
-    blurMathName: function blurMathName(val, index)
+    closeSetprize: function closeSetprize()
     {
-      if (this.MatchName.indexOf(val) === -1 && val !== "")
-      {
-        this.prizeList[index].isShowClassify = true;
-      } else
-
-      {
-        this.prizeList[index].isShowClassify = false;
-      }
-    },
-    /*
-       	name: 查看获奖证明
-       	desc: 查看获奖证明图片
-       	input:
-       				url: String,证明链接地址
-       	change: 
-       	time: 2020/10/26
-       */
-    readTestify: function readTestify(url)
-    {
-      uni.previewImage({
-        urls: [url] });
-
+      this.setPrized = false;
     },
     /*
        	name: 删除获奖情况
-       	desc: 根据下标删除获奖列表,需要先调用modal提示框
+       	desc: 删除获奖情况,需要先调用modal提示框
        	input:
-       				index: Number,下标
        	change: 
-       				this.prizeList: Array,获奖列表
-       	time: 2020/10/25
+       				this.prize: Object,获奖情况
+       	time: 2020/11/9
        */
-    removePrize: function removePrize(index)
-    {var _this2 = this;
+    removePrize: function removePrize()
+    {var _this = this;
       this.gShowModal(
       '确认删除该获奖记录?',
       function () {
-        _this2.prizeList.splice(index, 1);
+        _this.prize = null;
       });
 
     },
@@ -341,7 +359,7 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
        	time: 2020/10/24
        */
     chooseFile: function chooseFile()
-    {var _this3 = this;
+    {var _this2 = this;
       function renderSize(fsize) {
         var unitArr = new Array("Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
         var index = 0;
@@ -356,10 +374,10 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
 
       /* 选择文件API */
       wx.chooseMessageFile({
-        count: 5,
+        count: 10,
         type: 'all',
-        success: function success(res) {var _this3$accessories;
-          (_this3$accessories = _this3.accessories).push.apply(_this3$accessories, _toConsumableArray(res.tempFiles.map(function (file) {
+        success: function success(res) {var _this2$accessories;
+          (_this2$accessories = _this2.accessories).push.apply(_this2$accessories, _toConsumableArray(res.tempFiles.map(function (file) {
             return {
               name: file.name,
               url: file.path,
@@ -369,7 +387,10 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
         },
         fail: function fail(err) {
           console.log(err);
-          _this3.gToastError(err.errMsg);
+          if (err.errMsg !== "chooseMessageFile:fail cancel")
+          {
+            _this2.gToastError(err.errMsg);
+          }
         },
         complete: function complete() {
           uni.hideLoading();
@@ -386,11 +407,11 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
        	time: 2020/10/25
        */
     removeFile: function removeFile(index)
-    {var _this4 = this;
+    {var _this3 = this;
       this.gShowModal("\u786E\u8BA4\u5220\u9664 ".concat(
       this.accessories[index].name, "?"),
       function () {
-        _this4.accessories.splice(index, 1);
+        _this3.accessories.splice(index, 1);
       });
 
     },
@@ -414,9 +435,9 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
         finishRate: this.finishRate,
         classify: this.classify,
         tags: this.tags,
-        prizeList: JSON.parse(JSON.stringify(this.prizeList)),
+        prize: JSON.parse(JSON.stringify(this.prize)),
         authorName: this.authorName,
-        authorContace: this.authorContace,
+        authorContact: this.authorContact,
         accessories: JSON.parse(JSON.stringify(this.accessories)),
         description: this.description };
 
@@ -440,7 +461,7 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
         this.gToastError("请输入作者姓名");
         return false;
       }
-      if (data.authorContace === "")
+      if (data.authorContact === "")
       {
         this.gToastError("请输入联系方式");
         return false;
@@ -450,26 +471,6 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
         this.gToastError("请选择附件");
         return false;
       }
-      /* 判断获奖证明 */
-      for (var i = 0; i < data.prizeList.length; i++) {
-        var prize = data.prizeList[i];
-        if (prize.name === "")
-        {
-          this.gToastError("获奖名称为空");
-          return false;
-        }
-        if (prize.level === "")
-        {
-          this.gToastError("获奖等级为空");
-          return false;
-        }
-        if (prize.testifyUrl === "")
-        {
-          this.gToastError("获奖证明为空");
-          return false;
-        }
-        delete data.prizeList[i].isShowClassify;
-      }
       return data;
     },
     /*
@@ -478,7 +479,7 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
        	time: 2020/10/26
        */
     uploadFiles: function uploadFiles()
-    {var _this5 = this;
+    {var _this4 = this;
       uni.showLoading({
         title: "获取签名中...",
         mask: true });
@@ -502,43 +503,43 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
           /* 检测类型，仅支持jpg,jpeg,png */
           var temp = prize.testifyUrl.split(".");
           var filename = "".concat(Date.now(), ".").concat(temp[temp.length - 1]);
-          _this5.gUploadFile(prize.testifyUrl, filename, signature.data).
+          _this4.gUploadFile(prize.testifyUrl, filename, signature.data).
           then(function (res) {
             /* 修改testifyUrl */
             prize.testifyUrl = res.url;
             successAmount++;
             if (successAmount === data.prizeList.length + data.accessories.length)
             {
-              _this5.publish(data);
+              _this4.publish(data);
             }
           }).
           catch(function (err) {
-            _this5.gToastError("上传出现错误");
+            _this4.gToastError("上传出现错误");
             console.log(err);
           });
         });
 
         /* 上传附件 */
         data.accessories.forEach(function (item, i) {
-          _this5.gUploadFile(item.url, item.name, signature.data).
+          _this4.gUploadFile(item.url, item.name, signature.data).
           then(function (res) {
             /* 修改url，指向对应地址 */
             item.url = res.url;
             successAmount++;
             if (successAmount === data.prizeList.length + data.accessories.length)
             {
-              _this5.publish(data);
+              _this4.publish(data);
             }
           }).
           catch(function (err) {
-            _this5.gToastError("上传出现错误");
+            _this4.gToastError("上传出现错误");
             console.log(err);
           });
         });
       }).
       catch(function (err) {
         console.log(err);
-        _this5.gToastError("获取签名错误");
+        _this4.gToastError("获取签名错误");
       });
     },
     /* 
@@ -548,13 +549,13 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
        				data: Object,需要提交的数据
        */
     publish: function publish(data)
-    {var _this6 = this;
+    {var _this5 = this;
       uni.hideLoading();
       /* 请求服务器 */
       (0, _api_resource.postResource)(data).
       then(function (res) {
         console.log(res);
-        _this6.gToastSuccess("上传成功");
+        _this5.gToastSuccess("上传成功");
       });
       console.log(data);
     } },
@@ -572,7 +573,9 @@ var _api_resource = __webpack_require__(/*! @/static/request/api_resource.js */ 
     // }
   },
   components: {
-    inputInfo: inputInfo } };exports.default = _default;
+    inputInfo: inputInfo,
+    setPrize: setPrize,
+    setTeamMember: setTeamMember } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

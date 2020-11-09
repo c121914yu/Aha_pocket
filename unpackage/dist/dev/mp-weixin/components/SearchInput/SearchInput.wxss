@@ -4,7 +4,8 @@
 .search-input input.data-v-1945f34a {
   padding: 5rpx 15rpx;
   background-color: var(--origin2);
-  border-radius: 20px;
+  -webkit-border-radius: 20px;
+          border-radius: 20px;
 }
 .search-input .search-result.data-v-1945f34a {
   z-index: 5;
@@ -15,8 +16,10 @@
   max-height: 350rpx;
   overflow: hidden;
   background-color: #fff;
-  box-shadow: 0 0 5px var(--origin2);
-  border-radius: 20rpx;
+  -webkit-box-shadow: 0 0 5px var(--origin2);
+          box-shadow: 0 0 5px var(--origin2);
+  -webkit-border-radius: 20rpx;
+          border-radius: 20rpx;
 }
 .search-input .search-result .result.data-v-1945f34a {
   text-align: center;

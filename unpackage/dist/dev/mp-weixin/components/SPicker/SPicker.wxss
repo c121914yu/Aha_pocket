@@ -1,7 +1,8 @@
 .picker.data-v-72af98f0 {
   position: relative;
   padding-left: 20rpx;
-  border-radius: 15px;
+  -webkit-border-radius: 15px;
+          border-radius: 15px;
   background-color: var(--origin2);
 }
 .picker .content.data-v-72af98f0 {

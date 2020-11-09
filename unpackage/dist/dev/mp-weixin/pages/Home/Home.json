@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "slide-card": "/components/SlideCard/SlideCard",
-    "list-competition": "/components/ListCompetition/ListCompetition"
-  },
-  "component": true
-}

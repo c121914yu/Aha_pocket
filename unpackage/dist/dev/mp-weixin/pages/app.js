@@ -137,9 +137,106 @@ __webpack_require__.r(__webpack_exports__);
   !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!D:/服务外包/竞赛统计/pages/app.vue?vue&type=script&lang=js& ***!
   \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js):\nError: Can't resolve './Resource/components/mdEdit.vue' in 'D:\\服务外包\\竞赛统计\\pages'\n    at doResolve (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\enhanced-resolve\\lib\\Resolver.js:209:21)\n    at hook.callAsync (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5)\n    at _fn0 (eval at create (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:15:1)\n    at resolver.doResolve (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\enhanced-resolve\\lib\\UnsafeCachePlugin.js:44:7)\n    at hook.callAsync (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5)\n    at _fn0 (eval at create (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:15:1)\n    at hook.callAsync (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5)\n    at _fn1 (eval at create (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:16:1)\n    at hook.callAsync (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5)\n    at _fn43 (eval at create (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:16:1)\n    at hook.callAsync (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5)\n    at _fn1 (eval at create (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:16:1)\n    at hook.callAsync (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5)\n    at _fn1 (eval at create (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:16:1)\n    at hook.callAsync (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5)\n    at _fn0 (eval at create (G:\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:15:1)");
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var ResourceHome = function ResourceHome() {__webpack_require__.e(/*! require.ensure | pages/Resource/ResourceHome */ "pages/Resource/ResourceHome").then((function () {return resolve(__webpack_require__(/*! ./Resource/ResourceHome.vue */ 121));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Life = function Life() {__webpack_require__.e(/*! require.ensure | pages/Life/Life */ "pages/Life/Life").then((function () {return resolve(__webpack_require__(/*! ./Life/Life */ 128));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Member = function Member() {__webpack_require__.e(/*! require.ensure | pages/Member/Member */ "pages/Member/Member").then((function () {return resolve(__webpack_require__(/*! ./Member/Member */ 133));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 138));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+  data: function data() {
+    var signedNotice = getApp().globalData.gUserInfo.signedNotice;
+    return {
+      /* 
+             	第一次不直接加载界面，防止加载时间过长
+             	切换到未缓存的界面时再进行加载
+             */
+      navs: [
+      { name: "ResourceHome", loaded: false },
+      { name: "Life", loaded: false },
+      { name: "Member", loaded: false },
+      { name: "Self", loaded: false }],
+
+      currentNav: 3,
+      signedNotice: signedNotice };
+
+  },
+  methods: {
+    /* 
+             	name: 路由加载
+             	description: 加载指定下标的路由
+             	input:
+             				this.currentNav: Number,当前路由下标
+             	change:
+             				this.navs[].loaded: Boolean,路由是否加载标识符
+             	return: null
+             */
+    loadNav: function loadNav() {
+      this.navs[this.currentNav].loaded = true;
+    },
+    /*
+       	name: 路由跳转
+       	description: 跳转指定下标的路由
+       	input:
+       				this.currentNav: Number,需要跳转的路由下标
+       	change: null
+       	return: null
+       */
+    navigate: function navigate(name) {
+      uni.pageScrollTo({
+        duration: 0,
+        scrollTop: 0 });
+
+      this.currentNav = this.navs.findIndex(function (item) {return item.name === name;});
+      this.loadNav();
+    } },
+
+  onLoad: function onLoad() {
+    this.loadNav();
+    console.log(getApp().globalData.gUserInfo);
+  },
+  components: {
+    ResourceHome: ResourceHome,
+    Life: Life,
+    Member: Member,
+    Self: Self } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ })
 

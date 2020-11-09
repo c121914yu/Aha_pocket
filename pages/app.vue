@@ -10,10 +10,10 @@
 			@navigate="navigate">
 		</TabBar>
 		<!-- 主页 -->
-		<Home 
+		<ResourceHome 
 			v-show="currentNav === 0"
 			v-if="navs[currentNav].loaded">
-		</Home>
+		</ResourceHome>
 		<!-- 生活 -->
 		<Life
 			v-show="currentNav === 1"
@@ -33,8 +33,7 @@
 </template>
 
 <script>
-import mdEdit from "./Resource/components/mdEdit.vue"
-import Home from "./Home/Home"
+import ResourceHome from "./Resource/ResourceHome.vue"
 import Life from "./Life/Life"
 import Member from "./Member/Member"
 import Self from "./Self/Self"
@@ -47,7 +46,7 @@ export default {
 				切换到未缓存的界面时再进行加载
 			*/
 			navs: [
-				{name: "Home",loaded: false},
+				{name: "ResourceHome",loaded: false},
 				{name: "Life",loaded: false},
 				{name: "Member",loaded: false},
 				{name: "Self",loaded: false},
@@ -78,6 +77,10 @@ export default {
 			return: null
 		*/
 		navigate(name){
+			uni.pageScrollTo({ 　　　　　　
+				duration: 0,
+				scrollTop: 0 
+			})
 			this.currentNav = this.navs.findIndex(item => item.name === name)
 			this.loadNav()
 		}
@@ -87,11 +90,10 @@ export default {
 		console.log(getApp().globalData.gUserInfo)
 	},
 	components:{
-		Home,
+		ResourceHome,
 		Life,
 		Member,
 		Self,
-		mdEdit
 	}
 }
 </script>

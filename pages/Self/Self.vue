@@ -25,7 +25,7 @@
 					@click="isCheckTags=true"
 					>
 					<view 
-						class="tag small"
+						class="tag"
 						v-for="(tag,index) in tags"
 						:key="index">
 						{{tag}}
@@ -50,6 +50,12 @@
 				hover-class="hoverScale"
 				hover-stay-time	="50"
 				url="/pages/Resource/UpResource">
+				我的资源
+			</navigator>
+			<navigator
+				hover-class="hoverScale"
+				hover-stay-time	="50"
+				url="/pages/Resource/UpResource">
 				资源分享
 			</navigator>
 		</view>
@@ -62,7 +68,7 @@
 				hover-class="none"
 				:url="task.to">
 				<text :class="'iconfont ' + task.icon"></text>
-				<view>{{task.name}}</view>
+				<view class="small strong">{{task.name}}</view>
 			</navigator>
 		</view>
 		<!-- 功能列表 -->
@@ -77,8 +83,8 @@
 				hover-stay-time	="50"
 				:url="item.to">
 				<text :class="'iconfont ' + item.icon"></text>
-				<text class="name">{{item.name}}</text>
-				<text v-if="item.val" class="val">{{item.val}}</text>
+				<text class="name small">{{item.name}}</text>
+				<text v-if="item.val" class="small val">{{item.val}}</text>
 				<text v-else class="right iconfont icon-arrow-right"></text>
 			</navigator>
 		</view>
@@ -105,7 +111,7 @@ export default {
 			],
 			/* 功能列表 */
 			funtions: [
-				{name: "贡献值",icon: "icon-icon;",val: "160",to:""},
+				{name: "贡献值",icon: "icon-icon;",val: getApp().globalData.gUserInfo.contribPoint,to:""},
 				{name: "实名认证",icon: "icon-shimingrenzheng",to:"/pages/Self/AccountInfo"},
 				{name: "个人简历",icon: "icon-personal",to:"/pages/Self/Resume"},
 				{name: "邀请好友",icon: "icon-iconfontzhizuobiaozhun49",to:"/pages/Self/AccountInfo"},
@@ -212,12 +218,12 @@ bgSetting(size,color)
 	min-height 100vh
 	width 100%
 	padding-bottom 140rpx
-	background-color var(--origin2)
+	background-color var(--white1)
 	/* 头部 */
 	.head
 		position relative
 		height 45vw
-		background-color #FFFFFF
+		background-color var(--origin3)
 		/* 头像 */
 		.avatar
 			position absolute
@@ -238,20 +244,21 @@ bgSetting(size,color)
 				position absolute
 				border-radius 50%
 			.bg1
-				bgSetting(40vw,var(--origin2))
+				bgSetting(40vw,var(--origin4))
 			.bg2
 				bgSetting(50vw,var(--origin3))
 			.bg3
-				bgSetting(60vw,var(--origin4))
+				bgSetting(60vw,var(--origin2))
 		/* 右侧 */
 		.right
 			margin-left 50vw
 			width 50vw
 			padding 10px
 			.name
-				color var(--origin4)
+				color var(--origin1)
 				font-weight 600
-				border-bottom 1px solid rgba(144,140,139,0.65)
+				font-size 38rpx
+				border-bottom 2px solid var(--origin2)
 			.tags
 				display flex
 				flex-wrap wrap
@@ -259,7 +266,9 @@ bgSetting(size,color)
 					margin 5px
 					padding 3px 10px
 					border-radius 10px
-					background-color var(--origin3)
+					background-color var(--origin1)
+					color #FFFFFF
+					font-size 20rpx
 		/* 幕布 */
 		.curtain
 			position absolute
@@ -284,15 +293,28 @@ bgSetting(size,color)
 	.navs
 		margin 10vw 0 20px
 		display flex
-		justify-content space-around
+		justify-content center
 		navigator
-			width 35%
+			margin 0 5px
+			width 28%
 			padding 10px 0
 			text-align center
-			background-color var(--origin4)
+			background-color var(--origin2)
+			box-shadow 4px 4px 1px var(--origin1)
 			color #FFFFFF
-			border-radius 30px
 			font-weight 600
+			&:nth-of-type(1)
+				border-top-left-radius 22px
+				border-bottom-left-radius 22px
+				border-top-right-radius 10px
+				border-bottom-right-radius 10px
+			&:nth-of-type(2)
+				border-radius 10px
+			&:nth-of-type(3)
+				border-top-left-radius 10px
+				border-bottom-left-radius 10px
+				border-top-right-radius 22px
+				border-bottom-right-radius 22px
 	/* 任务列表 */
 	.tasks
 		margin 0 auto
@@ -305,11 +327,9 @@ bgSetting(size,color)
 		.task
 			text-align center
 			text
-				font-size 70rpx
-				color var(--origin3)
-			view
-				color var(--origin4)
-				font-weight 600
+				line-height 1.2
+				font-size 54rpx
+				color var(--origin2)
 	/* 功能列表 */
 	.list
 		margin 10px auto
@@ -330,17 +350,15 @@ bgSetting(size,color)
 				border-bottom-right-radius 20px
 			.iconfont
 				font-size 50rpx
-				color var(--origin4)
+				color var(--origin2)
 			.right
 				font-size 60rpx
 			.name
 				margin-left 25rpx
 				flex 1
-				color var(--origin3)
-				font-weight 800
+				color var(--gray1)
 			.val
-				font-size 30rpx
-				color var(--gray-font)
+				color var(--origin2)
 /* 动画 */
 @keyframes curtain1
 	to

@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "slide-card": "/components/SlideCard/SlideCard",
-    "resource-card": "/components/resourceCard/resourceCard"
-  },
-  "component": true
-}

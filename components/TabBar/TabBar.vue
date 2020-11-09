@@ -21,24 +21,24 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				navs: [
-					{icon: "icon-canjiaxiaowaijingsai",text: "竞赛",name: "Home"},
-					{icon: "icon-shenghuofuwu",text: "生活服务",name: "Life"},
-					{icon: "icon-huiyuan1",text: "会员",name: "Member"},
-					{icon: "icon-user",text: "我的",name: "Self"},
-				]
-			}
-		},
-		props:{
-			currentNav: {
-				type: Number,
-				default: 0
-			}
+export default {
+	data() {
+		return {
+			navs: [
+				{icon: "icon-canjiaxiaowaijingsai",text: "竞赛",name: "ResourceHome"},
+				{icon: "icon-shenghuofuwu",text: "生活服务",name: "Life"},
+				{icon: "icon-huiyuan1",text: "会员",name: "Member"},
+				{icon: "icon-user",text: "我的",name: "Self"},
+			]
+		}
+	},
+	props:{
+		currentNav: {
+			type: Number,
+			default: 0
 		}
 	}
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -48,7 +48,7 @@
 	bottom 0
 	height 140rpx
 	width 100%
-	background-color var(--origin4)
+	background-color var(--origin2)
 	display flex
 	align-items center
 	justify-content space-around
@@ -67,8 +67,7 @@
 		position absolute
 		width 25vw
 		height 90%
-		background-color var(--origin2)
-		opacity 0.5
+		background-color var(--origin1)
 		border-radius 10px
 		transition .3s
 </style>

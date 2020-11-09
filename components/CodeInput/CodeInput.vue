@@ -149,14 +149,14 @@ export default {
 			margin 0 10rpx
 			width 80rpx
 			height 80rpx
-			border 1px solid #000000
+			border 1px solid var(--black)
 			border-radius 10px
 			font-size 40rpx
 			text-align center
 			line-height 80rpx
 			&.focus
-				border-color var(--origin5)
-				box-shadow 0 0 5px var(--origin5)
+				border-color var(--origin2)
+				box-shadow 0 0 5px var(--origin2)
 	.sendCode
 		text-align end
 </style>

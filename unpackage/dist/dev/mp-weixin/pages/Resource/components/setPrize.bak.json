@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "data-picker": "/components/DataPicker/DataPicker",
-    "input-info": "/pages/Resource/components/inputInfo"
-  },
-  "component": true
-}

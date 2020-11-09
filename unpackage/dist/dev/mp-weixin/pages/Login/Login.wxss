@@ -18,7 +18,7 @@
   top: 0;
   height: 70%;
   width: 100%;
-  background-image: var(--bg-color3);
+  background-image: var(--bg-linear);
 }
 .login .bottom.data-v-3a2da0cc {
   z-index: 2;
@@ -26,7 +26,7 @@
   bottom: 0;
   height: 70%;
   width: 100%;
-  background-color: var(--bg-color1);
+  background-color: var(--white1);
   -webkit-border-top-left-radius: 60rpx;
           border-top-left-radius: 60rpx;
   -webkit-border-top-right-radius: 60rpx;
@@ -41,16 +41,18 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
 }
 .login .bottom .card.data-v-3a2da0cc {
-  left: 10%;
   -webkit-transform: translateY(-5vh);
           transform: translateY(-5vh);
-  width: 80%;
+  width: 75%;
   padding: 5%;
-  background-color: var(--bg-color2);
-  -webkit-border-radius: 50rpx;
-          border-radius: 50rpx;
+  background-color: var(--white2);
+  -webkit-border-radius: 22px;
+          border-radius: 22px;
   -webkit-box-shadow: var(--shadow1);
           box-shadow: var(--shadow1);
 }
@@ -61,8 +63,8 @@
   padding: 0 5px;
   -webkit-border-radius: 40px;
           border-radius: 40px;
-  -webkit-box-shadow: 0 4px 3px #dcdddd;
-          box-shadow: 0 4px 3px #dcdddd;
+  -webkit-box-shadow: var(--shadow-beside);
+          box-shadow: var(--shadow-beside);
   font-size: 30rpx;
   display: -webkit-box;
   display: -webkit-flex;
@@ -75,7 +77,7 @@
   position: absolute;
   margin-left: 8px;
   font-size: 46rpx;
-  color: var(--gray);
+  color: var(--gray1);
 }
 .login .bottom .card .input text.readed.data-v-3a2da0cc {
   right: 10px;
@@ -86,18 +88,22 @@
 }
 .login .bottom .card .forget-password.data-v-3a2da0cc {
   text-align: end;
-  color: var(--origin-font);
+  color: var(--origin2);
 }
 .login .bottom .card button.data-v-3a2da0cc {
   margin: 20px 0 15px;
   color: #fff;
-  background-color: var(--button-bg);
+  background-color: var(--origin2);
 }
 .login .bottom .card .register.data-v-3a2da0cc {
-  color: var(--gray);
+  color: var(--gray2);
 }
 .login .bottom .other.data-v-3a2da0cc {
-  margin-top: 15rpx;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.login .bottom .other .strong.data-v-3a2da0cc {
+  margin-bottom: 15px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -107,30 +113,30 @@
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
-  color: var(--gray-font);
+  color: var(--gray2);
 }
-.login .bottom .other.data-v-3a2da0cc::before {
+.login .bottom .other .strong.data-v-3a2da0cc::before {
   content: '';
   position: absolute;
   margin-left: -100px;
   width: 22%;
-  height: 2px;
-  background-color: #dcdddd;
+  height: 1px;
+  background-color: var(--gray2);
   -webkit-border-radius: 10px;
           border-radius: 10px;
 }
-.login .bottom .other.data-v-3a2da0cc::after {
+.login .bottom .other .strong.data-v-3a2da0cc::after {
   content: '';
   position: absolute;
   margin-left: 100px;
   width: 22%;
-  height: 2px;
-  background-color: #dcdddd;
+  height: 1px;
+  background-color: var(--gray2);
   -webkit-border-radius: 10px;
           border-radius: 10px;
 }
 .login .bottom .weixin.data-v-3a2da0cc {
-  line-height: 1.5;
+  line-height: 1;
   color: #04be02;
   background-color: transparent;
   font-size: 80rpx;

@@ -25,7 +25,7 @@
 			<view 
 				class="dot"
 				:style="{
-					backgroundColor: index === dotIndex ? 'var(--origin5)' : 'var(--origin4)'
+					backgroundColor: index === dotIndex ? 'var(--origin1)' : 'var(--origin2)'
 				}"
 				v-for="index in images.length" 
 				:key="index">
@@ -187,25 +187,26 @@ export default {
 .slide-card
 	margin 0 auto
 	position relative
-	height 45vw
+	height 50.625vw
 	width 90vw
 	display flex
 	align-items center
 	justify-content center
+	transform translateY(5vw)
 	// 外边框样式
 	.out-border
 		position absolute
 		width 100%
 		height 100%
 		border-radius 22px
-		background-color var(--origin3)
+		background-color var(--origin1)
 	// 主体内容
 	.content
 		z-index 2
 		width calc(100% - 20rpx)
 		height calc(100% - 20rpx)
 		border-radius 19px
-		background-color #f7daaf
+		background-color var(--origin4)
 		overflow hidden
 		display flex
 		image

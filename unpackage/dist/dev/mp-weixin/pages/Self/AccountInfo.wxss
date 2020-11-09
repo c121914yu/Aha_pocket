@@ -9,7 +9,8 @@
   margin: 10px auto;
   width: 250rpx;
   height: 250rpx;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   display: block;
 }
 .account-info .item.data-v-1789aa9e {
@@ -22,7 +23,8 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  border-radius: 20px;
+  -webkit-border-radius: 20px;
+          border-radius: 20px;
   opacity: 0;
   -webkit-animation: itemShow-data-v-1789aa9e 0.6s ease forwards;
           animation: itemShow-data-v-1789aa9e 0.6s ease forwards;
@@ -82,8 +84,10 @@
   padding: 5px 0;
   width: 100%;
   background-color: var(--button-bg);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  -webkit-border-top-left-radius: 20px;
+          border-top-left-radius: 20px;
+  -webkit-border-top-right-radius: 20px;
+          border-top-right-radius: 20px;
 }
 .account-info .save button.data-v-1789aa9e {
   margin: 10px auto;

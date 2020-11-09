@@ -36,12 +36,12 @@
 				</view>
 			</view>
 			<!-- 第三方登录内容 -->
-			<view class="other small strong">
-				第三方登录
+			<view class="small other">
+				<view class="strong">第三方登录</view>
+				<button class="iconfont icon-weixin weixin" open-type="getUserInfo" @getuserinfo="wxLogin"></button>
+				<view style="color: var(--gray2);">微信登录</view>
+				<view style="margin-top:10rpx;color:var(--gray2);">登录后需要同意<text style="color: var(--origin2);">Aha口袋用户使用协议</text>才可使用</view>
 			</view>
-			<button class="iconfont icon-weixin weixin" open-type="getUserInfo" @getuserinfo="wxLogin"></button>
-			<text class="small" style="color: var(--gray-font);">微信登录</text>
-			<text class="small" style="margin-top:10rpx;color:var(--gray-font);">登录后需要同意<text style="color: var(--origin-font);">Aha口袋用户使用协议</text>才可使用</text>
 		</view>
 	</view>
 </template>
@@ -64,7 +64,7 @@ export default {
 				uni.reLaunch({
 					url: "../app",
 				})
-			},1000)
+			},10)
 		},
 		login(){
 			if(this.phone === "")
@@ -148,26 +148,26 @@ export default {
 		top 0
 		height 70%
 		width 100%
-		background-image var(--bg-color3)
+		background-image var(--bg-linear)
 	.bottom
 		z-index 2
 		position absolute
 		bottom 0
 		height 70%
 		width 100%
-		background-color var(--bg-color1)
+		background-color var(--white1)
 		border-top-left-radius 60rpx
 		border-top-right-radius 60rpx
 		display flex
 		flex-direction column
 		align-items center
+		justify-content space-between
 		.card
-			left 10%
 			transform translateY(-5vh)
-			width 80%
+			width 75%
 			padding 5%
-			background-color var(--bg-color2)
-			border-radius 50rpx
+			background-color var(--white2)
+			border-radius 22px
 			box-shadow var(--shadow1)
 			.input
 				position relative
@@ -175,7 +175,7 @@ export default {
 				width 100%
 				padding 0 5px
 				border-radius 40px
-				box-shadow 0 4px 3px #dcdddd
+				box-shadow var(--shadow-beside)
 				font-size 30rpx
 				display flex
 				align-items center
@@ -183,7 +183,7 @@ export default {
 					position absolute
 					margin-left 8px
 					font-size 46rpx
-					color var(--gray)
+					color var(--gray1)
 					 &.readed
 						right 10px
 				input
@@ -191,37 +191,40 @@ export default {
 					padding-left 40px
 			.forget-password
 				text-align end
-				color var(--origin-font)
+				color var(--origin2)
 			button
 				margin 20px 0 15px
 				color #FFFFFF
-				background-color var(--button-bg)
+				background-color var(--origin2)
 			.register
-				color var(--gray)
+				color var(--gray2)
 		.other
-			margin-top 15rpx
-			display flex
-			align-items center
-			justify-content center
-			color var(--gray-font)
-			&::before
-				content ''
-				position absolute
-				margin-left -100px
-				width 22%
-				height 2px
-				background-color #dcdddd
-				border-radius 10px
-			&::after
-				content ''
-				position absolute
-				margin-left 100px
-				width 22%
-				height 2px
-				background-color #dcdddd
-				border-radius 10px
+			margin-bottom 10px
+			text-align center
+			.strong
+				margin-bottom 15px
+				display flex
+				align-items center
+				justify-content center
+				color var(--gray2)
+				&::before
+					content ''
+					position absolute
+					margin-left -100px
+					width 22%
+					height 1px
+					background-color var(--gray2)
+					border-radius 10px
+				&::after
+					content ''
+					position absolute
+					margin-left 100px
+					width 22%
+					height 1px
+					background-color var(--gray2)
+					border-radius 10px
 		.weixin
-			line-height 1.5
+			line-height 1
 			color #04BE02
 			background-color transparent
 			font-size 80rpx

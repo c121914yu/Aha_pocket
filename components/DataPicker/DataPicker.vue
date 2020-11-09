@@ -44,5 +44,6 @@ export default {
 	padding 0 15rpx
 	text-align center
 	border-radius 15px
-	background-color var(--origin2)
+	background-color var(--origin3)
+	font-size 24rpx
 </style>

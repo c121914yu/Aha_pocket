@@ -79,9 +79,6 @@ __webpack_require__.r(__webpack_exports__);
 var components = {
   SlideCard: function() {
     return __webpack_require__.e(/*! import() | components/SlideCard/SlideCard */ "components/SlideCard/SlideCard").then(__webpack_require__.bind(null, /*! @/components/SlideCard/SlideCard.vue */ 223))
-  },
-  resourceCard: function() {
-    return __webpack_require__.e(/*! import() | components/resourceCard/resourceCard */ "components/resourceCard/resourceCard").then(__webpack_require__.bind(null, /*! @/components/resourceCard/resourceCard.vue */ 230))
   }
 }
 var render = function() {

@@ -4,7 +4,7 @@
   bottom: 0;
   height: 140rpx;
   width: 100%;
-  background-color: var(--origin4);
+  background-color: var(--origin2);
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -34,8 +34,7 @@
   position: absolute;
   width: 25vw;
   height: 90%;
-  background-color: var(--origin2);
-  opacity: 0.5;
+  background-color: var(--origin1);
   -webkit-border-radius: 10px;
           border-radius: 10px;
   -webkit-transition: 0.3s;

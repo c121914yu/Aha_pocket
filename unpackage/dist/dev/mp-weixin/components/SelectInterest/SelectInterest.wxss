@@ -22,10 +22,13 @@
   margin-top: 10vh;
   height: 90vh;
   width: 100%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fffef7), to(#f7d7b9));
   background-image: -webkit-linear-gradient(#fffef7, #f7d7b9);
   background-image: linear-gradient(#fffef7, #f7d7b9);
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
+  -webkit-border-top-left-radius: 30px;
+          border-top-left-radius: 30px;
+  -webkit-border-top-right-radius: 30px;
+          border-top-right-radius: 30px;
 }
 .select-interest .content.data-v-4e539e84 ::-webkit-scrollbar {
   width: 0;
@@ -88,7 +91,8 @@
   width: 22%;
   height: 2px;
   background-color: var(--origin-font);
-  border-radius: 10px;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
 }
 .select-interest .content .select .title.data-v-4e539e84::after {
   content: '';
@@ -97,7 +101,8 @@
   width: 22%;
   height: 2px;
   background-color: var(--origin-font);
-  border-radius: 10px;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
 }
 .select-interest .content .select .select-box.data-v-4e539e84 {
   margin-bottom: 40rpx;
@@ -109,8 +114,10 @@
   height: 45px;
   padding: 0 10px 0 15px;
   background-color: #f8d99f;
-  border-radius: 15px;
-  box-shadow: var(--shadow2);
+  -webkit-border-radius: 15px;
+          border-radius: 15px;
+  -webkit-box-shadow: var(--shadow2);
+          box-shadow: var(--shadow2);
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -141,7 +148,8 @@
   width: 30px;
   height: 30px;
   opacity: 0.6;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   background-color: var(--bg-color1);
   display: -webkit-box;
   display: -webkit-flex;
@@ -157,7 +165,8 @@
   width: 22px;
   height: 22px;
   border: 1px solid #999;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
 }
 .select-interest .content .bottom.data-v-4e539e84 {
   position: absolute;
@@ -165,8 +174,10 @@
   padding: 5px 0;
   width: 100%;
   background-color: #fff;
-  border-top-left-radius: 40px;
-  border-top-right-radius: 40px;
+  -webkit-border-top-left-radius: 40px;
+          border-top-left-radius: 40px;
+  -webkit-border-top-right-radius: 40px;
+          border-top-right-radius: 40px;
 }
 .select-interest .content .bottom button.data-v-4e539e84 {
   margin: 10px auto;

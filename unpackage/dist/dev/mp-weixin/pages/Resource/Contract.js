@@ -135,7 +135,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Signature = function Signature() {__webpack_require__.e(/*! require.ensure | pages/Resource/components/Signature */ "pages/Resource/components/Signature").then((function () {return resolve(__webpack_require__(/*! ./components/Signature.vue */ 207));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Signature = function Signature() {__webpack_require__.e(/*! require.ensure | pages/Resource/components/Signature */ "pages/Resource/components/Signature").then((function () {return resolve(__webpack_require__(/*! ./components/Signature.vue */ 216));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 

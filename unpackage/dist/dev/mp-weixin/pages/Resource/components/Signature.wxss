@@ -28,7 +28,8 @@
   display: flex;
   -webkit-justify-content: space-around;
           justify-content: space-around;
-  border-radius: 5px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
 }
 .signature .btns button.data-v-1e3d3e77 {
   width: 30%;
