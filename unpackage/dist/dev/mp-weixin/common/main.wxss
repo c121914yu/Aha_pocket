@@ -18,7 +18,8 @@ page {
   --border1: 1px solid #9fa0a0;
   --speed-slide: 0.8s ease-in-out;
   --speed-hover: 0.5s;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 page {
   margin: 0;
@@ -34,7 +35,8 @@ input {
 }
 button {
   border: none;
-  border-radius: 12px;
+  -webkit-border-radius: 12px;
+          border-radius: 12px;
 }
 button::after {
   border: none;

@@ -1,0 +1,105 @@
+.set-member {
+  z-index: 5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.2);
+}
+.set-member .conetent {
+  position: absolute;
+  top: 50%;
+  left: 2.5%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  width: 90%;
+  padding: 10px;
+  background-color: #fff;
+  -webkit-border-radius: 12px;
+          border-radius: 12px;
+}
+.set-member .conetent .h3 {
+  color: var(--origin1);
+}
+.set-member .conetent .input {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.set-member .conetent .input input {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  padding-right: 20px;
+  border: 1px solid var(--gray2);
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+}
+.set-member .conetent .input .iconfont {
+  z-index: 2;
+  position: absolute;
+  right: 10px;
+  color: var(--origin2);
+  font-size: 40rpx;
+}
+.set-member .conetent .warn {
+  color: #f00;
+  text-align: end;
+}
+.set-member .conetent .remind {
+  color: var(--origin1);
+}
+.set-member .conetent .members {
+  margin-bottom: 10px;
+  min-height: 100px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+.set-member .conetent .members .member {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.set-member .conetent .members .member .mask {
+  position: absolute;
+  width: 28vw;
+  height: 28vw;
+  background-color: rgba(0,0,0,0.4);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.set-member .conetent .members .member .mask .iconfont {
+  color: #fff;
+  font-size: 40rpx;
+}
+.set-member .conetent .members .member image {
+  width: 28vw;
+  height: 28vw;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+}
+.set-member .conetent button {
+  color: #fff;
+  background-color: var(--origin2);
+}
+

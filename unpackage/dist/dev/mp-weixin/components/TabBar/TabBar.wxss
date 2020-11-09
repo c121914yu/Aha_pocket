@@ -36,7 +36,8 @@
   height: 90%;
   background-color: var(--origin2);
   opacity: 0.5;
-  border-radius: 10px;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }

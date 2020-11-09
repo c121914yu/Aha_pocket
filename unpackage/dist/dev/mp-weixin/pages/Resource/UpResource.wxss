@@ -7,7 +7,8 @@
 .up-resource .content {
   padding: 20rpx 60rpx;
   background-color: #fff;
-  border-radius: 44rpx;
+  -webkit-border-radius: 44rpx;
+          border-radius: 44rpx;
 /* 大标题 */
 /* 小标题 */
 /* 输入框 */
@@ -38,7 +39,8 @@
   margin: 0 5px 5px 0;
   padding: 0 10rpx;
   border: 1px solid var(--origin2);
-  border-radius: 20rpx;
+  -webkit-border-radius: 20rpx;
+          border-radius: 20rpx;
 }
 .up-resource .content .remark {
   color: var(--origin2);
@@ -50,7 +52,8 @@
   min-height: 100px;
   padding: 15rpx;
   background-color: var(--origin3);
-  border-radius: 20rpx;
+  -webkit-border-radius: 20rpx;
+          border-radius: 20rpx;
 }
 .up-resource .content .accessories .iconfont {
   position: absolute;
@@ -64,7 +67,8 @@
 }
 .up-resource .content .prize {
   background-color: var(--origin2);
-  border-radius: 10px;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -75,7 +79,8 @@
           flex: 1;
   padding: 10px;
   background-color: var(--origin3);
-  border-radius: 10px;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -86,7 +91,8 @@
   padding: 5px 0;
   background-color: #fff;
   color: var(--origin2);
-  border-radius: 22px;
+  -webkit-border-radius: 22px;
+          border-radius: 22px;
   text-align: center;
   font-size: 24rpx;
 }
@@ -123,7 +129,8 @@
 .up-resource .content .prize .right .iconfont {
   font-size: 40rpx;
   font-weight: 600;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
 }
 .up-resource .content .prize .right .iconfont.add {
   color: var(--origin1);
