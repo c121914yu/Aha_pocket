@@ -182,14 +182,14 @@ export default {
 		top 0
 		height 70%
 		width 100%
-		background-image var(--bg-color3)
+		background-image var(--bg-linear)
 	.bottom
 		z-index 2
 		position absolute
 		bottom 0
 		height 70%
 		width 100%
-		background-color var(--bg-color1)
+		background-color var(--white1)
 		border-top-left-radius 60rpx
 		border-top-right-radius 60rpx
 		display flex
@@ -199,7 +199,7 @@ export default {
 			transform translateY(-5vh)
 			width 80%
 			padding 5%
-			background-color var(--bg-color2)
+			background-color var(--white2)
 			border-radius 50rpx
 			box-shadow var(--shadow1)
 			.input
@@ -208,7 +208,7 @@ export default {
 				width 100%
 				padding 0 5px
 				border-radius 10px
-				box-shadow 0 4px 3px #dcdddd
+				box-shadow var(--shadow-beside)
 				font-size 30rpx
 				display flex
 				align-items center
@@ -216,7 +216,7 @@ export default {
 					position absolute
 					margin-left 8px
 					font-size 46rpx
-					color var(--gray)
+					color var(--gray1)
 					 &.readed
 						right 10px
 				input
@@ -234,11 +234,11 @@ export default {
 			button
 				margin 20px 0 15px
 				color #FFFFFF
-				background-color var(--button-bg)
+				background-color var(--origin2)
 		.code-input
 			margin-top 20rpx
 			width 100%
 			.strong
 				color var(--origin5)
-			button				margin 10px 10%				color #FFFFFF				background-color var(--button-bg)
+			button				margin 10px 10%				color #FFFFFF				background-color var(--origin2)
 </style>

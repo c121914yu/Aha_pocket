@@ -5,7 +5,9 @@
   line-height: 54rpx;
   padding: 0 15rpx;
   text-align: center;
-  border-radius: 15px;
-  background-color: var(--origin2);
+  -webkit-border-radius: 15px;
+          border-radius: 15px;
+  background-color: var(--origin3);
+  font-size: 24rpx;
 }
 

@@ -21,7 +21,8 @@
   padding: 0 10rpx;
   font-size: 28rpx;
   background-color: var(--origin3);
-  border-radius: 30rpx;
+  -webkit-border-radius: 30rpx;
+          border-radius: 30rpx;
 }
 .input-info .select.data-v-93e57d12 {
   position: relative;

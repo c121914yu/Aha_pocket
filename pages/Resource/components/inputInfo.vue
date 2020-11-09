@@ -8,6 +8,7 @@
 				width: contentWidth
 			}"
 			type="text"
+			:value="value"
 			@input="$emit('input',$event.target.value)">
 		<picker 
 			v-if="type === 'select'" 

@@ -241,7 +241,7 @@ var _api_userInfo = __webpack_require__(/*! ../..//static/request/api_userInfo.j
 //
 //
 var _default = { data: function data() {return { phone: "", password: "", isPassword: true // 是否展示密码
-    };}, methods: { loginSuccess: function loginSuccess() {this.gToastSuccess("登录成功");setTimeout(function () {uni.reLaunch({ url: "../app" });}, 1000);}, login: function login() {var _this = this;if (this.phone === "") {this.gToastError("手机号不能为空");} else {(0, _api_login.Login)({ phone: this.phone, password: this.password }).then(function (res) {uni.setStorageSync("token", res.data.token);getApp().globalData.gUserInfo = res.data.personalUserInfo;_this.loginSuccess();});}}, wxLogin: function wxLogin() {var _this2 = this;uni.getUserInfo({ provider: 'weixin', withCredentials: true, lang: "zh_CN", success: function success(res) {// 获取code，请求openid
+    };}, methods: { loginSuccess: function loginSuccess() {this.gToastSuccess("登录成功");setTimeout(function () {uni.reLaunch({ url: "../app" });}, 10);}, login: function login() {var _this = this;if (this.phone === "") {this.gToastError("手机号不能为空");} else {(0, _api_login.Login)({ phone: this.phone, password: this.password }).then(function (res) {uni.setStorageSync("token", res.data.token);getApp().globalData.gUserInfo = res.data.personalUserInfo;_this.loginSuccess();});}}, wxLogin: function wxLogin() {var _this2 = this;uni.getUserInfo({ provider: 'weixin', withCredentials: true, lang: "zh_CN", success: function success(res) {// 获取code，请求openid
           uni.login({ provider: 'weixin', success: function success(loginRes) {var data = { code: loginRes.code, avatarUrl: res.userInfo.avatarUrl, nickName: res.userInfo.nickName };
               // 调用wx登录接口，获取token
               (0, _api_login.WXLogin)(data).

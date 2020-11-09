@@ -3,7 +3,8 @@
 }
 .honor .honor-name .input.data-v-4b043d9c {
   margin-top: 5px;
-  border-radius: 5px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
 }
 .honor .description.data-v-4b043d9c {
   -webkit-box-align: start;

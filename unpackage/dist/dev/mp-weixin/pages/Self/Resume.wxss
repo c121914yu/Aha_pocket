@@ -11,7 +11,8 @@
   background-color: #fff;
   -webkit-filter: brightness(99%);
           filter: brightness(99%);
-  border-radius: 22px;
+  -webkit-border-radius: 22px;
+          border-radius: 22px;
   overflow: hidden;
 /* 折叠图标 */
 /* 小字提示 */
@@ -52,14 +53,16 @@
 .resume .card .item .input {
   padding: 5rpx 15rpx;
   background-color: var(--origin2);
-  border-radius: 20px;
+  -webkit-border-radius: 20px;
+          border-radius: 20px;
 }
 .resume .card textarea {
   margin-top: 15rpx;
   width: 100%;
   padding: 15rpx;
   background-color: var(--origin2);
-  border-radius: 15px;
+  -webkit-border-radius: 15px;
+          border-radius: 15px;
   font-size: 28rpx;
 }
 .resume .card .add-btn {
@@ -94,8 +97,10 @@
   width: 100%;
   padding: 0 5%;
   background-color: var(--origin4);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  -webkit-border-top-left-radius: 20px;
+          border-top-left-radius: 20px;
+  -webkit-border-top-right-radius: 20px;
+          border-top-right-radius: 20px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -121,7 +126,8 @@
 }
 .resume .btns .preview {
   background-color: transparent;
-  border-radius: 12px;
+  -webkit-border-radius: 12px;
+          border-radius: 12px;
   color: #fff;
   border: 1px dotted #fff;
 }

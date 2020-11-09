@@ -3,10 +3,9 @@
   "usingComponents": {
     "user-agreement": "/components/UserAgreement/UserAgreement",
     "tab-bar": "/components/TabBar/TabBar",
-    "home": "/pages/Home/Home",
+    "resource-home": "/pages/Resource/ResourceHome",
     "life": "/pages/Life/Life",
     "member": "/pages/Member/Member",
-    "self": "/pages/Self/Self",
-    "md-edit": "/pages/Resource/components/mdEdit"
+    "self": "/pages/Self/Self"
   }
 }
