@@ -141,7 +141,7 @@ var _default =
   data: function data() {
     return {
       navs: [
-      { icon: "icon-canjiaxiaowaijingsai", text: "竞赛", name: "ResourceHome" },
+      { icon: "icon-canjiaxiaowaijingsai", text: "项目分享", name: "ProjectHome" },
       { icon: "icon-shenghuofuwu", text: "生活服务", name: "Life" },
       { icon: "icon-huiyuan1", text: "会员", name: "Member" },
       { icon: "icon-user", text: "我的", name: "Self" }] };

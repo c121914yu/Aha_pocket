@@ -1,7 +1,7 @@
 <template>
 	<picker
 		class="picker"
-		:class="value === '' ? 'placeholderStyle' : ''"
+		:class="value === '' ? 'input-placeholder' : ''"
 		mode="date"
 		:start="startTime"
 		:end="endTime"

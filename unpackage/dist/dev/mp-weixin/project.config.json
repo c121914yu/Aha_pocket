@@ -4,14 +4,41 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
+    "es6": true,
+    "enhance": false,
     "postcss": true,
-    "minified": true
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": false,
+    "coverView": true,
+    "nodeModules": true,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "useMultiFrameRuntime": false,
+    "useApiHook": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useIsolateContext": true,
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": []
   },
   "compileType": "miniprogram",
   "libVersion": "",
   "appid": "wxafd522b076e38be0",
   "projectname": "竞赛统计",
+  "cloudfunctionRoot": "static/cloudfunction/",
   "condition": {
     "search": {
       "current": -1,
@@ -41,15 +68,14 @@
         {
           "name": "资源上传",
           "id": 2,
-          "pathName": "pages/Resource/UpResource"
+          "pathName": "pages/Project/UpResource"
         },
         {
           "name": "合同",
           "id": 3,
-          "pathName": "pages/Resource/Contract"
+          "pathName": "pages/Project/Contract"
         }
       ]
     }
-  },
-  "cloudfunctionRoot": "static/cloudfunction/"
+  }
 }

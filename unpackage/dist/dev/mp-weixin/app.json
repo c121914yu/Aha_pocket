@@ -7,10 +7,10 @@
     "pages/Self/AccountInfo",
     "pages/Self/Resume",
     "pages/Self/ResumePreview",
-    "pages/Resource/UpResource",
-    "pages/Resource/MyResources",
-    "pages/Resource/Resource",
-    "pages/Resource/Contract"
+    "pages/Project/UpProject/UpProject",
+    "pages/Project/MyProject",
+    "pages/Project/Project",
+    "pages/Project/Contract"
   ],
   "subPackages": [],
   "window": {

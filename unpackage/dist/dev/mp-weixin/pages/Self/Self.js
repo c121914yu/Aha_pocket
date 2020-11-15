@@ -236,7 +236,7 @@ var _api_userInfo = __webpack_require__(/*! @/static/request/api_userInfo.js */ 
       tasks: [
       { name: "进行中", icon: "icon-shouye", to: "/pages/Self/AccountInfo" },
       { name: "已完成", icon: "icon-yiwancheng", to: "/pages/Self/AccountInfo" },
-      { name: "贡献详情", icon: "icon-icon", to: "/pages/Resource/MyResources" }],
+      { name: "贡献详情", icon: "icon-icon", to: "/pages/Project/Project" }],
 
       /* 功能列表 */
       funtions: [
@@ -274,6 +274,7 @@ var _api_userInfo = __webpack_require__(/*! @/static/request/api_userInfo.js */ 
        	description: 点击头像打开操作菜单，可选择预览或者修改头像
        							 点击预览，触发预览效果
        							 点击修改头像，进入选择头像模式，选择完成后上传头像至oss，然后将链接存储到数据库中。
+           time: 2020/11/15
        */
     clickAvatar: function clickAvatar()
     {var _this2 = this;

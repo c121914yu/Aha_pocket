@@ -1,0 +1,93 @@
+.resource-card.data-v-6c2d7b78 {
+  background-color: #fff;
+  padding: 5px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+/* 资源信息 */
+}
+.resource-card .ranking.data-v-6c2d7b78 {
+  color: var(--origin2);
+  font-size: 40rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.resource-card .logo.data-v-6c2d7b78 {
+  margin: 0 10px 0 5px;
+  width: 160rpx;
+  height: 160rpx;
+  background-color: var(--origin3);
+  -webkit-border-radius: 8px;
+          border-radius: 8px;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.resource-card .logo image.data-v-6c2d7b78 {
+  width: 100%;
+  height: 100%;
+}
+.resource-card .info.data-v-6c2d7b78 {
+  position: relative;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  height: 100%;
+  font-size: 24rpx;
+/* 统计量 */
+/* 收藏按键 */
+}
+.resource-card .info.border.data-v-6c2d7b78 {
+  border-bottom: 1px solid var(--origin2);
+}
+.resource-card .info .name.data-v-6c2d7b78 {
+  color: var(--origin2);
+  font-size: 26rpx;
+}
+.resource-card .info .tags.data-v-6c2d7b78 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+}
+.resource-card .info .tags .tag.data-v-6c2d7b78 {
+  margin-right: 5px;
+}
+.resource-card .info .statistics.data-v-6c2d7b78 {
+  color: var(--origin2);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.resource-card .info .statistics view.data-v-6c2d7b78 {
+  margin-right: 5px;
+}
+.resource-card .info .statistics .iconfont.data-v-6c2d7b78 {
+  margin-right: 3px;
+}
+.resource-card .info .collection.data-v-6c2d7b78 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 44rpx;
+  color: var(--origin1);
+}
+

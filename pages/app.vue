@@ -10,10 +10,10 @@
 			@navigate="navigate">
 		</TabBar>
 		<!-- 主页 -->
-		<ResourceHome 
+		<ProjectHome 
 			v-show="currentNav === 0"
 			v-if="navs[currentNav].loaded">
-		</ResourceHome>
+		</ProjectHome>
 		<!-- 生活 -->
 		<Life
 			v-show="currentNav === 1"
@@ -33,7 +33,8 @@
 </template>
 
 <script>
-import ResourceHome from "./Resource/ResourceHome.vue"
+import { getAllCompetition } from "@/static/request/api_competition.js"
+import ProjectHome from "./Project/ProjectHome.vue"
 import Life from "./Life/Life"
 import Member from "./Member/Member"
 import Self from "./Self/Self"
@@ -46,7 +47,7 @@ export default {
 				切换到未缓存的界面时再进行加载
 			*/
 			navs: [
-				{name: "ResourceHome",loaded: false},
+				{name: "ProjectHome",loaded: false},
 				{name: "Life",loaded: false},
 				{name: "Member",loaded: false},
 				{name: "Self",loaded: false},
@@ -86,11 +87,15 @@ export default {
 		}
 	},
 	onLoad() {
+		getAllCompetition()
+		.then(res => {
+			getApp().globalData.Matches = res.data
+		})
 		this.loadNav()
 		console.log(getApp().globalData.gUserInfo)
 	},
 	components:{
-		ResourceHome,
+		ProjectHome,
 		Life,
 		Member,
 		Self,

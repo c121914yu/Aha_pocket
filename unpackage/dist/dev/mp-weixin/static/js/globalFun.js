@@ -68,37 +68,29 @@ function gShowModal(content,success,cancel){
 				fileUrl: String,文件路径
 */
 function gUploadFile(url,name,signature){
-	const fileName = `${signature.dir}/${Date.now()}/${name}`
-	return new Promise((resolve,reject) => {
-		uni.uploadFile({
-			url: signature.host,
-			filePath: url,
-			name: "file",
-			formData: {
-				key: fileName, // 文件名
-				policy: signature.policy,
-				OSSAccessKeyId: signature.accessid,
-				signature: signature.signature
-			},
-			success: (file) => {
-				if(file.statusCode === 204)
-				{
-					resolve({
-						res: file,
-						fileName,
-						url: getApp().globalData.ossHost + fileName
-					})
-				}
-				else
-				{
-					reject(file)
-				}
-			},
-			fail: (err) => {
-				reject(err)
-			},
-		})
-	})
+  const filename = `${signature.dir}/${name}`
+  return new Promise((resolve,reject) => {
+    uni.uploadFile({
+      url: signature.host,
+      filePath: url,
+      name: "file",
+      formData: {
+        key: filename, // 文件名
+        policy: signature.policy,
+        OSSAccessKeyId: signature.accessid,
+        signature: signature.signature
+      },
+      success: (res) => {
+        if(res.statusCode === 204)
+          resolve(res)
+         else
+          reject(err)
+      },
+      fail: (err) => {
+        reject(err)
+      }
+    })
+  })
 }
 
 /* 

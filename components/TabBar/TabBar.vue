@@ -25,7 +25,7 @@ export default {
 	data() {
 		return {
 			navs: [
-				{icon: "icon-canjiaxiaowaijingsai",text: "竞赛",name: "ResourceHome"},
+				{icon: "icon-canjiaxiaowaijingsai",text: "项目分享",name: "ProjectHome"},
 				{icon: "icon-shenghuofuwu",text: "生活服务",name: "Life"},
 				{icon: "icon-huiyuan1",text: "会员",name: "Member"},
 				{icon: "icon-user",text: "我的",name: "Self"},
@@ -59,9 +59,9 @@ export default {
 		color #FFFFFF
 		line-height 1.2
 		.iconfont
-			font-size 46rpx
+			font-size 44rpx
 		.text
-			font-size 30rpx
+			font-size 28rpx
 	.slide-card
 		z-index 1
 		position absolute
