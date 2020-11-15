@@ -39,8 +39,6 @@
   "appid": "wxafd522b076e38be0",
   "projectname": "竞赛统计",
   "cloudfunctionRoot": "static/cloudfunction/",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "current": -1,
@@ -70,12 +68,12 @@
         {
           "name": "资源上传",
           "id": 2,
-          "pathName": "pages/Resource/UpResource"
+          "pathName": "pages/Project/UpResource"
         },
         {
           "name": "合同",
           "id": 3,
-          "pathName": "pages/Resource/Contract"
+          "pathName": "pages/Project/Contract"
         }
       ]
     }

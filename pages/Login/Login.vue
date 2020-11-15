@@ -59,12 +59,12 @@ export default {
 	},
 	methods: {
 		loginSuccess(){
-			this.gToastSuccess("登录成功")
-			setTimeout(() => {
-				uni.reLaunch({
-					url: "../app",
-				})
-			},10)
+			uni.reLaunch({
+				url: "../app",
+				success: () => {
+					this.gToastSuccess("登录成功")
+				}
+			})
 		},
 		login(){
 			if(this.phone === "")

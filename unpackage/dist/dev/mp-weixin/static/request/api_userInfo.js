@@ -6,14 +6,10 @@ import request from "./request.js"
 	return: null
 */
 const getMe = (data) => request("/userInfo/me","GET",data)
-/* 
-	description: 签署须知协议
-*/
+/* 签署须知协议 */
 const signNotice = (data) => request("/sign/notice","GET",data)
-/* 
-	description: 获取头像上传签名
-*/
-const getAvatarOssSignature = (data) => request("/resource/sign/upload/public","GET",data)
+/* 获取头像上传签名 */
+const getAvatarOssSignature = (data) => request("/userInfo/avatar/sign/upload","GET",data)
 /* 
 	description: 修改个人基本资料
 	input:

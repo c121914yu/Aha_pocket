@@ -24,10 +24,10 @@
   line-height: 1.2;
 }
 .tabBar .nav .iconfont.data-v-43a9aa84 {
-  font-size: 46rpx;
+  font-size: 44rpx;
 }
 .tabBar .nav .text.data-v-43a9aa84 {
-  font-size: 30rpx;
+  font-size: 28rpx;
 }
 .tabBar .slide-card.data-v-43a9aa84 {
   z-index: 1;

@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "资源上传",
-  "usingComponents": {
-    "input-info": "/pages/Resource/components/inputInfo",
-    "set-prize": "/pages/Resource/components/setPrize",
-    "set-team-member": "/pages/Resource/components/setTeamMember"
-  }
-}

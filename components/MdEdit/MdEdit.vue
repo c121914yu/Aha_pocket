@@ -248,8 +248,10 @@ export default {
 			this.showSettingLayer = false;
 			this.editorCtx.getContents({
 				success: res => {
-					console.log(res);
-					this.$emit('editOk', res.html);
+					this.$emit('editOk', {
+						html: res.html,
+						delta: res.delta
+					});
 				} 
 			})
 		},

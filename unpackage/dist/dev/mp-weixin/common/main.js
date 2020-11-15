@@ -103,7 +103,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
      getApp().globalData 获取
    */
   globalData: {
-    baseUrl: "http://47.100.33.161:8089",
+    baseUrl: "http://47.93.224.217:8089",
     ossHost: "https://aha-public.oss-cn-hangzhou.aliyuncs.com/", // OSS Host域名
     gCodeTime: 0, // 用户允许发送验证码的倒计时
     gCodeMaxTime: 10, // 倒计时时长
@@ -113,7 +113,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     Grads: ["前1%", "1%-5%", "5%-20%", "20%-50%", "50%-100%"], // 成绩等级
     AccessoriesClassify: ["商业计划书", "PPT", "论文", "演示视频", "个人心得", "数据集"], // 文章分类
     TagsList: ["前端", "挑战杯", "互联网+", "运河杯", "数据集"],
-    MatchName: ["挑战杯", "运河杯", "互联网+", "服务外包"], // 比赛名称
+    Matches: [], // 所有比赛
     prizeGrades: ["国一", "国二", "国三", "省一", "省二", "省三", "校一", "校二", "校三", "参与奖"],
     resourceData: [
     {

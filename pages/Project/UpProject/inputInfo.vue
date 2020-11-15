@@ -9,6 +9,7 @@
 			}"
 			type="text"
 			:value="value"
+			:placeholder="placeholder"
 			@input="$emit('input',$event.target.value)">
 		<picker 
 			v-if="type === 'select'" 
@@ -91,7 +92,6 @@ export default {
 		height 48.484rpx
 		line-height 48.484rpx
 		padding 0 10rpx
-		font-size 28rpx
 		background-color var(--origin3)
 		border-radius 30rpx
 	.select

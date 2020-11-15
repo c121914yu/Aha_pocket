@@ -10,7 +10,7 @@
 		<view class="content">
 			<view 
 				class="value"
-				:class="value === '' ? 'placeholderStyle' : ''">
+				:class="value === '' ? 'input-placeholder' : ''">
 				{{value === "" ? placeholder : value}}
 			</view>
 			<text class="iconfont icon-xiala"></text>
