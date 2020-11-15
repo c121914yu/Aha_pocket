@@ -1,6 +1,3 @@
 {
-  "navigationBarTitleText": "Aha口袋用户合同",
-  "usingComponents": {
-    "signature": "/pages/Resource/components/Signature"
-  }
+  "navigationBarTitleText": "Aha口袋用户合同"
 }

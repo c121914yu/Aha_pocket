@@ -92,10 +92,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   UserAgreement: function() {
-    return Promise.all(/*! import() | components/UserAgreement/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/UserAgreement/UserAgreement")]).then(__webpack_require__.bind(null, /*! @/components/UserAgreement/UserAgreement.vue */ 107))
-  },
-  TabBar: function() {
-    return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 114))
+    return Promise.all(/*! import() | components/UserAgreement/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/UserAgreement/UserAgreement")]).then(__webpack_require__.bind(null, /*! @/components/UserAgreement/UserAgreement.vue */ 108))
   }
 }
 var render = function() {
@@ -140,7 +137,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var ResourceHome = function ResourceHome() {__webpack_require__.e(/*! require.ensure | pages/Resource/ResourceHome */ "pages/Resource/ResourceHome").then((function () {return resolve(__webpack_require__(/*! ./Resource/ResourceHome.vue */ 121));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Life = function Life() {__webpack_require__.e(/*! require.ensure | pages/Life/Life */ "pages/Life/Life").then((function () {return resolve(__webpack_require__(/*! ./Life/Life */ 128));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Member = function Member() {__webpack_require__.e(/*! require.ensure | pages/Member/Member */ "pages/Member/Member").then((function () {return resolve(__webpack_require__(/*! ./Member/Member */ 133));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 138));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var ResourceHome = function ResourceHome() {__webpack_require__.e(/*! require.ensure | pages/Resource/ResourceHome */ "pages/Resource/ResourceHome").then((function () {return resolve(__webpack_require__(/*! ./Resource/ResourceHome.vue */ 46));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Life = function Life() {__webpack_require__.e(/*! require.ensure | pages/Life/Life */ "pages/Life/Life").then((function () {return resolve(__webpack_require__(/*! ./Life/Life */ 129));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Member = function Member() {__webpack_require__.e(/*! require.ensure | pages/Member/Member */ "pages/Member/Member").then((function () {return resolve(__webpack_require__(/*! ./Member/Member */ 134));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 139));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
