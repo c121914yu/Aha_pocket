@@ -93,6 +93,9 @@ __webpack_require__.r(__webpack_exports__);
 var components = {
   UserAgreement: function() {
     return Promise.all(/*! import() | components/UserAgreement/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/UserAgreement/UserAgreement")]).then(__webpack_require__.bind(null, /*! @/components/UserAgreement/UserAgreement.vue */ 108))
+  },
+  TabBar: function() {
+    return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 115))
   }
 }
 var render = function() {
