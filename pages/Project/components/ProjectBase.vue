@@ -15,16 +15,16 @@
 				@click="showMenu('avatarUrl')">
 			</image>
 		</div>
-		<inputInfo 
+		<InputInfo 
 			title="题目"
 			v-model="name">
-		</inputInfo>
+		</InputInfo>
 		<!-- 标签 -->
-		<inputInfo
+		<InputInfo
 			title="标签"
 			remark="(注: 不同标签用空格隔开)"
 			v-model="tags">
-		</inputInfo>
+		</InputInfo>
 		<view class="tags">
 			<view 
 				class="tag"
@@ -36,19 +36,19 @@
 		<!-- 获奖情况 -->
 		<view class="input-info set-prize">
 			<view class="h4">获奖情况: </view>
-			<inputInfo
+			<InputInfo
 				title="比赛名称"
 				type="search"
 				:allResults="Matches"
 				v-model="compName">
-			</inputInfo>
-			<inputInfo
+			</InputInfo>
+			<InputInfo
 				title="获奖等级"
 				type="select"
 				contentWidth="200rpx"
 				:range="prizeGrades"
 				v-model="awardLevel">
-			</inputInfo>
+			</InputInfo>
 			<view class="date">
 				<text>获奖日期: </text>
 				<DataPicker
@@ -86,7 +86,6 @@
 </template>
 
 <script>
-import inputInfo from "./inputInfo.vue"
 export default {
 	data() {
 		const Matches = getApp().globalData.Matches.map(item => item.name)
@@ -173,9 +172,6 @@ export default {
 			this.intro = e.delta
 			this.editMD = false
 		}
-	},
-	components: {
-		inputInfo
 	}
 }
 </script>

@@ -1,13 +1,14 @@
 <template>
 	<view class="input-info">
-		<text class="title">{{title}}:</text>
+		<view class="title" v-html="title"></view>
 		<view class="main">
 			<!-- 输入内容 -->
 			<input
 				v-if="type !== 'select'"
 				class="input"
 				:style="{ width: contentWidth }"
-				type="text"
+				:type="inputType"
+				:disabled="disable"
 				:value="value"
 				:placeholder="placeholder"
 				@input="inputing"
@@ -65,12 +66,22 @@ export default {
 			type: String,
 			default: "input"
 		},
+		/* 是否禁止 */
+		disable: {
+			type: Boolean,
+			default: false
+		},
+		/* 文本类型 */
+		inputType: {
+			type: String,
+			default: "text"
+		},
 		/* 选择框内容 */
 		range: {
 			type: Array,
 			default: () => []
 		},
-		/* 输入框内容 */
+		/* 输入框宽度 */
 		contentWidth: {
 			type: String,
 			default: "100%"
@@ -174,6 +185,7 @@ export default {
 			.iconfont
 				color var(--origin2)
 		.input
+			max-width 100%
 			padding 0 10rpx
 			background-color var(--origin3)
 			border-radius 30rpx

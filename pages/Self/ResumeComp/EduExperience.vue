@@ -3,7 +3,7 @@
 	<view
 		class="card"
 		:style="{
-			'height': isEduExperience ? 'auto' : '110rpx'
+			'height': isEduExperience ? 'auto' : '14px'
 		}">
 		<text
 			class="fold iconfont icon-xiala"
@@ -30,11 +30,13 @@
 			</view>
 			<!-- 学校选择，可选择输入框 -->
 			<view class="item school">
-				<text>学校</text>
-				<SearchInput
+				<InputInfo
+					title="学校"
+					type="search"
 					:allResults="Schools"
+					contentWidth="400rpx"
 					v-model="edu.school">
-				</SearchInput>
+				</InputInfo>
 			</view>
 			<!-- 专业 -->
 			<view class="item specialty">
@@ -42,7 +44,6 @@
 				<input 
 					class="input"
 					type="text"
-					hold-keyboard="true"
 					v-model="edu.specialty"/>
 			</view>
 			<!-- 成绩 -->
@@ -71,13 +72,7 @@
 				</DataPicker>
 			</view>
 			<!-- 删除按键 -->
-			<icon 
-				class="remove" 
-				type="clear" 
-				size="22" 
-				color="#e86452"
-				@click="removeEdu(index)">
-			</icon>
+			<text class="remove iconfont icon-remove" @click="removeEdu(index)"></text>
 		</view>
 		<button 
 			class="add-btn"
@@ -94,7 +89,8 @@ export default {
 		const Schools = getApp().globalData.Schools
 		const Degress = getApp().globalData.Degress
 		const Grades = getApp().globalData.Grads
-		const eduExperiences = [...getApp().globalData.gResume.eduExperiences] || []
+		let eduExperiences = getApp().globalData.gResume.eduExperiences
+		eduExperiences = eduExperiences ? JSON.parse(JSON.stringify(eduExperiences)) : []
 		return {
 			eduExperiences, // 教育经历
 			isEduExperience: true,

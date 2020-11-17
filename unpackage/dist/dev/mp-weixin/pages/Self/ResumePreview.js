@@ -332,7 +332,6 @@ var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _i
   data: function data() {
     /* 批量导入简历数据 */
     var resume = _objectSpread({}, getApp().globalData.gResume);
-    console.log(resume);
     // 计算年龄
     var age = Math.floor((Date.now() - new Date(resume.birth)) / 1000 / 60 / 60 / 24 / 365);
     age += "岁";

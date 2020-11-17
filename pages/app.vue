@@ -15,15 +15,15 @@
 			v-if="navs[currentNav].loaded">
 		</ProjectHome>
 		<!-- 生活 -->
-		<Life
+		<Competition
 			v-show="currentNav === 1"
 			v-if="navs[currentNav].loaded">
-		</Life>
+		</Competition>
 		<!-- 会员 -->
-		<Member
+		<Epiboly
 			v-show="currentNav === 2"
 			v-if="navs[currentNav].loaded">
-		</Member>
+		</Epiboly>
 		<!-- 个人 -->
 		<Self
 			v-show="currentNav === 3"
@@ -35,8 +35,8 @@
 <script>
 import { getAllCompetition } from "@/static/request/api_competition.js"
 import ProjectHome from "./Project/ProjectHome.vue"
-import Life from "./Life/Life"
-import Member from "./Member/Member"
+import Competition from "./Competition/Competition"
+import Epiboly from "./Epiboly/Epiboly"
 import Self from "./Self/Self"
 export default {
 	data() {
@@ -48,8 +48,8 @@ export default {
 			*/
 			navs: [
 				{name: "ProjectHome",loaded: false},
-				{name: "Life",loaded: false},
-				{name: "Member",loaded: false},
+				{name: "Competition",loaded: false},
+				{name: "Epiboly",loaded: false},
 				{name: "Self",loaded: false},
 			],
 			currentNav: 3,
@@ -96,8 +96,8 @@ export default {
 	},
 	components:{
 		ProjectHome,
-		Life,
-		Member,
+		Competition,
+		Epiboly,
 		Self,
 	}
 }

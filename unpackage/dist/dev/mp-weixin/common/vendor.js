@@ -8271,18 +8271,39 @@ myRequest;exports.default = _default;
 
 /***/ }),
 
-/***/ 208:
+/***/ 21:
+/*!***************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_userInfo.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 获取个人信息 */
+var getMe = function getMe(data) {return (0, _request.default)("/userInfo/me", "GET", data);};
+/* 修改个人基本资料 */exports.getMe = getMe;
+var putMe = function putMe(data) {return (0, _request.default)("/userInfo/me", "PUT", data);};
+/* 签署须知协议 */exports.putMe = putMe;
+var signNotice = function signNotice(data) {return (0, _request.default)("/sign/notice", "GET", data);};
+/* 获取头像上传签名 */exports.signNotice = signNotice;
+var getAvatarOssSignature = function getAvatarOssSignature(data) {return (0, _request.default)("/userInfo/avatar/sign/upload", "GET", data);};exports.getAvatarOssSignature = getAvatarOssSignature;
+
+/***/ }),
+
+/***/ 210:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 209);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 211);
 
 /***/ }),
 
-/***/ 209:
+/***/ 211:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -8313,7 +8334,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 210);
+module.exports = __webpack_require__(/*! ./runtime */ 212);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -8330,28 +8351,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 21:
-/*!***************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_userInfo.js ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/* 获取个人信息 */
-var getMe = function getMe(data) {return (0, _request.default)("/userInfo/me", "GET", data);};
-/* 修改个人基本资料 */exports.getMe = getMe;
-var putMe = function putMe(data) {return (0, _request.default)("/userInfo/me", "PUT", data);};
-/* 签署须知协议 */exports.putMe = putMe;
-var signNotice = function signNotice(data) {return (0, _request.default)("/sign/notice", "GET", data);};
-/* 获取头像上传签名 */exports.signNotice = signNotice;
-var getAvatarOssSignature = function getAvatarOssSignature(data) {return (0, _request.default)("/userInfo/avatar/sign/upload", "GET", data);};exports.getAvatarOssSignature = getAvatarOssSignature;
-
-/***/ }),
-
-/***/ 210:
+/***/ 212:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -9173,7 +9173,7 @@ var getResume = function getResume(phone) {return (0, _request.default)("/resume
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteResource = exports.postResource = exports.getProjects = exports.postProject = exports.getPublicSignature = exports.getFilesSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteResource = exports.postResource = exports.getProject = exports.getProjects = exports.postProject = exports.getPublicSignature = exports.getFilesSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 获取上传文件签名 */
 var getFilesSignature = function getFilesSignature(projectId) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private"), "GET", {});};
@@ -9190,9 +9190,11 @@ var postProject = function postProject(data) {return (0, _request.default)("/pro
                                                                                                         				排序模式
                                                                                                         				筛选模式
                                                                                                         */exports.postProject = postProject;
-var getProjects = function getProjects() {return (0, _request.default)("/project", "GET", {});};
+var getProjects = function getProjects() {return (0, _request.default)("/project/getAllProjectPageable ", "GET", {});};
+/* 获取项目详细信息 */exports.getProjects = getProjects;
+var getProject = function getProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
 
-/* 创建项目的资源信息 */exports.getProjects = getProjects;
+/* 创建项目的资源信息 */exports.getProject = getProject;
 var postResource = function postResource(projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
 /* 删除项目 */exports.postResource = postResource;
 var deleteResource = function deleteResource(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "DELETE", {});};

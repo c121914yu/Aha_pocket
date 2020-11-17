@@ -3,7 +3,7 @@
 	<view
 		class="card honor"
 		:style="{
-			'height': isHonors ? 'auto' : '110rpx'
+			'height': isHonors ? 'auto' : '14px'
 		}">
 		<text
 			class="fold iconfont icon-xiala"
@@ -44,18 +44,12 @@
 				<textarea
 					style="height: 200rpx;" 
 					placeholder="简单描述下项目内容及个人负责的内容."
-					placeholder-class="placeholderStyle"
+					placeholder-style="font-size:24rpx"
 					hold-keyboard="true"
 					v-model="honor.description"/>
 			</view>
 			<!-- 删除按键 -->
-			<icon 
-				class="remove" 
-				type="clear" 
-				size="22" 
-				color="#e86452"
-				@click="removeHonor(index)">
-			</icon>
+			<text class="remove iconfont icon-remove" @click="removeHonor(index)"></text>
 		</view>
 		<button
 			class="add-btn"
@@ -69,7 +63,8 @@
 export default {
 	data() {
 		/* 读取全局 */
-		const honors = [...getApp().globalData.gResume.honors] || []
+		let honors = getApp().globalData.gResume.honors
+		honors = honors ? JSON.parse(JSON.stringify(honors)) : []
 		return {
 			honors,
 			isHonors: true

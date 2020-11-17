@@ -7,7 +7,8 @@
     "pages/Self/AccountInfo",
     "pages/Self/Resume",
     "pages/Self/ResumePreview",
-    "pages/Project/UpProject/UpProject",
+    "pages/Self/Authentication",
+    "pages/Project/UpProject",
     "pages/Project/MyProject",
     "pages/Project/Project",
     "pages/Project/Contract"

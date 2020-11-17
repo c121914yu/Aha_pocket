@@ -60,7 +60,7 @@ export default {
 	position relative
 	padding-left 20rpx
 	border-radius 15px
-	background-color var(--origin2)
+	background-color var(--origin3)
 	.content
 		display flex
 		align-items center
@@ -70,5 +70,5 @@ export default {
 		flex 1
 	.iconfont
 		margin 0 5px
-		color var(--origin4)
+		color var(--origin2)
 </style>

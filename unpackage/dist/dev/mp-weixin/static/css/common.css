@@ -12,7 +12,7 @@ page {
   --bg-linear: linear-gradient(#f8b86b, #956134);
   --shadow-beside: 0 5px 2px #efefef;
   --shadow1: 1px 1px 15px rgba(144,140,139,0.65);
-  --shadow2: 3px 2px 8px rgba(144,140,139,0.65);
+  --shadow2: 1px 1px 2px rgba(144,140,139,0.65);
   --font-dark: #595757;
   --gray: #9fa0a0;
   --gray-font: #b5b5b6;
@@ -78,4 +78,8 @@ navigator {
 .h3 {
   font-size: 32rpx;
   font-weight: 700;
+}
+.label {
+  font-size: 24rpx;
+  color: var(--origin2);
 }

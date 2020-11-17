@@ -1,7 +1,7 @@
 {
   "usingComponents": {
     "s-picker": "/components/SPicker/SPicker",
-    "search-input": "/components/SearchInput/SearchInput",
+    "input-info": "/components/InputInfo/InputInfo",
     "data-picker": "/components/DataPicker/DataPicker"
   },
   "component": true

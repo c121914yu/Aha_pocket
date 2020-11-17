@@ -66,9 +66,9 @@
           "pathName": "pages/app"
         },
         {
-          "name": "资源上传",
+          "name": "我的项目",
           "id": 2,
-          "pathName": "pages/Project/UpResource"
+          "pathName": "pages/Project/MyProject"
         },
         {
           "name": "合同",

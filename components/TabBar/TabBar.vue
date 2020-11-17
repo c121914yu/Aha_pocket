@@ -2,7 +2,7 @@
 	<!-- 自定义底部导航栏 -->
 	<view class="tabBar">
 		<view 
-			class="nav"
+			class="bar"
 			:class="nav.name === navs[currentNav].name ? 'active' : ''"
 			v-for="(nav,index) in navs"
 			:key="index"
@@ -26,8 +26,8 @@ export default {
 		return {
 			navs: [
 				{icon: "icon-canjiaxiaowaijingsai",text: "项目分享",name: "ProjectHome"},
-				{icon: "icon-shenghuofuwu",text: "生活服务",name: "Life"},
-				{icon: "icon-huiyuan1",text: "会员",name: "Member"},
+				{icon: "icon-shenghuofuwu",text: "竞赛消息",name: "Competition"},
+				{icon: "icon-huiyuan1",text: "服务外包",name: "Epiboly"},
 				{icon: "icon-user",text: "我的",name: "Self"},
 			]
 		}
@@ -53,7 +53,7 @@ export default {
 	align-items center
 	justify-content space-around
 	text-align center
-	.nav
+	.bar
 		z-index 2
 		flex 1
 		color #FFFFFF

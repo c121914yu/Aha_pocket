@@ -3,7 +3,7 @@
   padding-left: 20rpx;
   -webkit-border-radius: 15px;
           border-radius: 15px;
-  background-color: var(--origin2);
+  background-color: var(--origin3);
 }
 .picker .content.data-v-72af98f0 {
   display: -webkit-box;
@@ -22,6 +22,6 @@
 }
 .picker .iconfont.data-v-72af98f0 {
   margin: 0 5px;
-  color: var(--origin4);
+  color: var(--origin2);
 }
 

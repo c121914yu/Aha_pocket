@@ -21,7 +21,6 @@
 		<view class="btns">
 			<button class="preview" @click="preview">预览</button>
 			<button class="save" @click="commitResume(true)">保存</button>
-			<text class="small center">{{storyText}}</text>
 		</view>
 	</view>
 </template>
@@ -36,10 +35,10 @@ import PracticeExperience from "./ResumeComp/PracticeExperience.vue"
 import ProSkill from "./ResumeComp/ProSkill.vue"
 import Honors from "./ResumeComp/Honors.vue"
 import SelfDescription from "./ResumeComp/SelfDescription.vue"
+var timer
 export default {
 	data() {
 		return {
-			storyText: "",
 			loaded: false
 		}
 	},
@@ -50,7 +49,7 @@ export default {
 			input: null
 			return: null
 		*/
-		commitResume(isToast=false)
+		commitResume()
 		{
 			const data = {
 				// 基础信息表
@@ -82,10 +81,7 @@ export default {
 			getApp().globalData.gResume = {...data}
 			putResume(data)
 			.then(res => {
-				if(isToast)
-				{
-					this.gToastSuccess("简历保存成功")
-				}
+				this.gToastSuccess("简历保存成功")
 			})
 		},
 		/*
@@ -102,17 +98,19 @@ export default {
 			})
 		}
 	},
-	created() {
+	onLoad() {
 		getResume(getApp().globalData.gUserInfo.phone)
 		.then(res => {
 			getApp().globalData.gResume = res.data
 			this.loaded = true
-		  console.log("简历↓")
-			console.log(res)
+			timer = setInterval(() => {
+				this.commitResume()
+			},30000)
 		})
 	},
 	beforeDestroy() {
-		this.commitResume(true)
+		clearInterval(timer)
+		this.commitResume()
 	},
 	components:{
 		BaseInfo,
@@ -129,15 +127,15 @@ export default {
 
 <style lang="stylus">
 .resume
-	min-height 100vh
+	position relative
 	padding 30rpx 30rpx 100rpx 
-	background-color var(--origin2)
+	background-color var(--white1)
 	/* 不同种类卡片 */
 	.card
 		margin-bottom 15px
 		padding 40rpx 60rpx
 		background-color #FFFFFF
-		filter brightness(99%)
+		filter brightness(98%)
 		border-radius 22px
 		overflow hidden
 		/* 折叠图标 */
@@ -145,16 +143,16 @@ export default {
 			position absolute
 			right 30rpx
 			top 30rpx
-			color var(--origin4)
+			color var(--origin1)
 			font-size 40rpx
 			transition .4s
 		// 大标题
 		.h3
-			color #F39800
+			color var(--origin1)
 		/* 小字提示 */
 		.small
 			margin-top 10px
-			color var(--gray-font)
+			color var(--gray2)
 		// 子元素
 		.item
 			position relative
@@ -164,39 +162,42 @@ export default {
 			// 开头提示文字
 			text
 				margin-right 20rpx
-				color var(--origin4)
+				color var(--origin2)
 				white-space nowrap
 			// 输入框
 			.input
-				padding 5rpx 15rpx
-				background-color var(--origin2)
+				padding 0 15rpx
+				background-color var(--origin3)
 				border-radius 20px
+				font-size 28rpx
 		/* textarea输入 */
 		textarea
 			margin-top 15rpx
 			width 100%
 			padding 15rpx
-			background-color var(--origin2)
+			background-color var(--origin3)
 			border-radius 15px
 			font-size 28rpx
 		// 添加按键
 		.add-btn
 			margin-top 30rpx
-			border 1px solid var(--origin4)
+			border 1px solid var(--origin2)
 			background-color transparent
-			color var(--origin4)
+			color var(--origin2)
 			font-size 28rpx
 			padding 5rpx
 		/* 多组中单个样式 */
 		.list-itme
 			position relative
 			margin-bottom 0 30px
-			border-bottom 2px dotted var(--origin4)
+			border-bottom 2px dotted var(--origin2)
 			/* 删除图标 */
 			.remove
 				position absolute
 				right -20rpx
 				top 0
+				color #e86452
+				font-size 40rpx
 			/* 最后一项不加边框 */
 			&:last-of-type
 				border none
@@ -206,12 +207,10 @@ export default {
 		bottom 0
 		left 0
 		right 0
-		height 100rpx
-		width 100%
-		padding 0 5%
-		background-color var(--origin4)
-		border-top-left-radius 20px
-		border-top-right-radius 20px
+		height 120rpx
+		background-color var(--origin2)
+		border-top-left-radius 22px
+		border-top-right-radius 22px
 		display flex
 		align-items center
 		justify-content space-around
@@ -220,13 +219,12 @@ export default {
 		button
 			height 80rpx
 			width 30%
-			line-height 80rpx
-			font-size 30rpx
-		.save
-			margin 0 10px
 		.preview
 			background-color transparent
 			border-radius 12px
 			color #FFFFFF
 			border 1px dotted #FFFFFF
+		.save
+			background-color #FFFFFF
+			color var(--origin2)
 </style>

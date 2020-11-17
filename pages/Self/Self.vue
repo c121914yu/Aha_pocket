@@ -55,7 +55,7 @@
 			<navigator
 				hover-class="hoverScale"
 				hover-stay-time	="50"
-				url="/pages/Project/UpProject/UpProject">
+				url="/pages/Project/UpProject">
 				项目分享
 			</navigator>
 		</view>
@@ -105,7 +105,7 @@ import { loginOut } from "@/static/request/api_login.js"
 export default {
 	data() {
 		const userInfo = {...getApp().globalData.gUserInfo.userInfo}
-		userInfo.avatarUrl = userInfo.avatarUrl || "/static/icon/logo.png"
+		userInfo.avatarUrl = userInfo.avatarUrl || "https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png"
 		return {
 			userInfo,
 			/* 标签 */
@@ -119,7 +119,7 @@ export default {
 			/* 功能列表 */
 			funtions: [
 				{name: "贡献值",icon: "icon-icon;",val: getApp().globalData.gUserInfo.contribPoint,to:""},
-				{name: "实名认证",icon: "icon-shimingrenzheng",to:"/pages/Self/AccountInfo"},
+				{name: "实名认证",icon: "icon-shimingrenzheng",to:"/pages/Self/Authentication"},
 				{name: "个人简历",icon: "icon-personal",to:"/pages/Self/Resume"},
 				{name: "邀请好友",icon: "icon-iconfontzhizuobiaozhun49",to:"/pages/Self/AccountInfo"},
 				{name: "联系管理员",icon: "icon-lianxikefu",to:"/pages/Self/AccountInfo"},

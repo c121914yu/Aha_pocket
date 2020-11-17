@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import drawList from "../components/drawList.vue"
-import SetMember from "../components/SetMember.vue"
+import drawList from "./drawList.vue"
+import SetMember from "./SetMember.vue"
 import { postMember,putMember,deleteMember } from "@/static/request/api_project.js"
 export default {
   data() {

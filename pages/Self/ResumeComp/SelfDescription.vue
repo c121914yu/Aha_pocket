@@ -3,7 +3,7 @@
 	<view 
 		class="card"
 		:style="{
-			'height': isIntro ? 'auto' : '110rpx'
+			'height': isIntro ? 'auto' : '14px'
 		}">
 		<text
 			class="fold iconfont icon-xiala"
@@ -33,3 +33,7 @@ export default {
 }
 </script>
 
+<style lang="stylus" scoped>
+.h3
+	margin-bottom 10px
+</style>

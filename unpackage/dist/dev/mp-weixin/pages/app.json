@@ -4,8 +4,8 @@
     "user-agreement": "/components/UserAgreement/UserAgreement",
     "tab-bar": "/components/TabBar/TabBar",
     "project-home": "/pages/Project/ProjectHome",
-    "life": "/pages/Life/Life",
-    "member": "/pages/Member/Member",
+    "competition": "/pages/Competition/Competition",
+    "epiboly": "/pages/Epiboly/Epiboly",
     "self": "/pages/Self/Self"
   }
 }

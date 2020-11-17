@@ -25,13 +25,13 @@
 			</view>
 			<!-- 列表 -->
 			<view class="list">
-				<resourceCard 
+				<projectCard 
 					v-for="(resource,index) in RankingData"
 					:key="index"
 					:ranking="index+1"
 					:resource="resource"
 					:border="index === 2 ? false : true">
-				</resourceCard>
+				</projectCard>
 			</view>
 		</view>
 		<!-- 比赛推荐 -->
@@ -48,13 +48,13 @@
 			</view>
 			<!-- 推荐比赛列表 -->
 			<view class="list">
-				<resourceCard 
+				<projectCard 
 					v-for="(resource,index) in RankingData"
 					:key="index"
 					:resource="resource"
 					margin="0 0 5px 0"
 					:radius="index === 0 ? '0 0 22px 22px' : '22px'">
-				</resourceCard>
+				</projectCard>
 			</view>
 		</view>
 	</view>

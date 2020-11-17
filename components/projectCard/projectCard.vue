@@ -1,27 +1,31 @@
 <!-- 资源卡片 -->
 <template>
 	<view 
-		class="resource-card"
+		class="project-card"
 		:style="{
 			'margin': margin,
 			'border-radius': radius
-		}">
+		}"
+		@click="$emit('click')">
 		<!-- 排名图标 -->
 		<text v-if="ranking!==0" :class="'ranking iconfont ' + rankingIcon"></text>	
 		<!-- 头像 -->
 		<view class="logo">
-			<image :src="resource.logoUrl" mode="widthFix"></image>
+			<image 
+				:src="project.logoUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'" 
+				mode="widthFix">
+			</image>
 		</view>
 		<!-- 资源信息 -->
 		<view 
 			class="info"
 			:class="border ? 'border' : ''">
 			<!-- 资源名称 -->
-			<view class="name strong">{{resource.name}}</view>
+			<view class="name strong">{{project.name}}</view>
 			<!-- 获奖信息 -->
-			<view class="prize">
-				<view class="prize-name"><text class="strong">获奖赛事: </text>{{resource.prize.name}}</view>
-				<view class="grade">{{resource.prize.time}} {{resource.prize.grade}}</view>
+			<view class="prize" v-if="project.compName">
+				<view class="prize-name"><text class="strong">获奖赛事: </text>{{project.compName}}</view>
+				<view class="grade">{{project.prize.time}} {{project.awardLevel}}</view>
 			</view>
 			<!-- 标签 -->
 			<view class="tags">{{tags}}</view>
@@ -29,11 +33,11 @@
 			<view class="statistics">
 				<view>
 					<text class="iconfont icon-readed"></text>
-					<text>1000</text>
+					<text>{{project.read}}</text>
 				</view>
 				<view>
 					<text class="iconfont icon-collection"></text>
-					<text>{{resource.collection}}</text>
+					<text>{{project.collect}}</text>
 				</view>
 			</view>
 			<!-- 收藏按键 -->
@@ -45,7 +49,7 @@
 <script>
 export default {
 	props: {
-		resource: {
+		project: {
 			type: Object,
 			default: () => {}
 		},
@@ -76,14 +80,16 @@ export default {
 			}
 		},
 		tags(){
-			return this.resource.tags.join(",")
+			if(!this.project.tags)
+				return ""
+			return this.project.tags.replace(" ",",")
 		}
 	}
 }
 </script>
 
 <style lang="stylus" scoped>
-.resource-card
+.project-card
 	background-color #FFFFFF
 	padding 5px
 	display flex
@@ -91,7 +97,6 @@ export default {
 		color var(--origin2)
 		font-size 40rpx
 		display flex
-		align-items center
 		justify-content center
 	.logo
 		margin 0 10px 0 5px 
@@ -110,25 +115,28 @@ export default {
 	.info
 		position relative
 		flex 1
-		height 100%
+		min-height 160rpx
 		font-size 24rpx
+		display flex
+		flex-direction column
 		&.border
 			border-bottom 1px solid var(--origin2)
 		.name
+			flex 1
 			color var(--origin2)
 			font-size 26rpx
 		.tags
 			display flex
 			flex-wrap wrap
 			.tag
-				margin-right 5px
+				margin 2px
 		/* 统计量 */
 		.statistics
 			color var(--origin2)
 			display flex
 			align-items center
 			view
-				margin-right 5px
+				margin-right 10px
 			.iconfont
 				margin-right 3px
 		/* 收藏按键 */

@@ -1,6 +1,7 @@
+<!-- 比赛 -->
 <template>
-	<view class="">
-		会员
+	<view>
+		比赛
 	</view>
 </template>
 
@@ -9,14 +10,11 @@
 		data() {
 			return {
 				
-			}
-		},
-		methods: {
-			
+			};
 		}
 	}
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 
 </style>

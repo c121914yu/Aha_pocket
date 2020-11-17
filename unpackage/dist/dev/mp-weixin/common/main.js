@@ -123,41 +123,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     { label: "校一", value: 31 },
     { label: "校二", value: 32 },
     { label: "校三", value: 33 },
-    { label: "参与奖", value: 41 }],
-
-    resourceData: [
-    {
-      logoUrl: "http://blogs.jinlongyuchitang.cn/background.jpg",
-      name: "僵尸企业判别系统",
-      prize: {
-        time: "2020.11",
-        name: "服务外包大赛",
-        grade: "国一" },
-
-      tags: ["随机森林", "Echarts", "多模型融合"],
-      collection: 500 },
-
-    {
-      logoUrl: "http://blogs.jinlongyuchitang.cn/background.jpg",
-      name: "僵尸企业判别系统",
-      prize: {
-        time: "2020.11",
-        name: "服务外包大赛",
-        grade: "国一" },
-
-      tags: ["随机森林", "Echarts", "多模型融合"],
-      collection: 500 },
-
-    {
-      logoUrl: "http://blogs.jinlongyuchitang.cn/background.jpg",
-      name: "僵尸企业判别系统",
-      prize: {
-        time: "2020.11",
-        name: "服务外包大赛",
-        grade: "国一" },
-
-      tags: ["随机森林", "Echarts", "多模型融合"],
-      collection: 500 }] } };exports.default = _default;
+    { label: "参与奖", value: 41 }] } };exports.default = _default;
 
 /***/ }),
 /* 8 */

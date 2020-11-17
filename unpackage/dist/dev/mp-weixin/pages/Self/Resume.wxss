@@ -1,7 +1,7 @@
 .resume {
-  min-height: 100vh;
+  position: relative;
   padding: 30rpx 30rpx 100rpx;
-  background-color: var(--origin2);
+  background-color: var(--white1);
 /* 不同种类卡片 */
 /* 功能按键 */
 }
@@ -9,8 +9,8 @@
   margin-bottom: 15px;
   padding: 40rpx 60rpx;
   background-color: #fff;
-  -webkit-filter: brightness(99%);
-          filter: brightness(99%);
+  -webkit-filter: brightness(98%);
+          filter: brightness(98%);
   -webkit-border-radius: 22px;
           border-radius: 22px;
   overflow: hidden;
@@ -23,17 +23,17 @@
   position: absolute;
   right: 30rpx;
   top: 30rpx;
-  color: var(--origin4);
+  color: var(--origin1);
   font-size: 40rpx;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 .resume .card .h3 {
-  color: #f39800;
+  color: var(--origin1);
 }
 .resume .card .small {
   margin-top: 10px;
-  color: var(--gray-font);
+  color: var(--gray2);
 }
 .resume .card .item {
   position: relative;
@@ -47,36 +47,37 @@
 }
 .resume .card .item text {
   margin-right: 20rpx;
-  color: var(--origin4);
+  color: var(--origin2);
   white-space: nowrap;
 }
 .resume .card .item .input {
-  padding: 5rpx 15rpx;
-  background-color: var(--origin2);
+  padding: 0 15rpx;
+  background-color: var(--origin3);
   -webkit-border-radius: 20px;
           border-radius: 20px;
+  font-size: 28rpx;
 }
 .resume .card textarea {
   margin-top: 15rpx;
   width: 100%;
   padding: 15rpx;
-  background-color: var(--origin2);
+  background-color: var(--origin3);
   -webkit-border-radius: 15px;
           border-radius: 15px;
   font-size: 28rpx;
 }
 .resume .card .add-btn {
   margin-top: 30rpx;
-  border: 1px solid var(--origin4);
+  border: 1px solid var(--origin2);
   background-color: transparent;
-  color: var(--origin4);
+  color: var(--origin2);
   font-size: 28rpx;
   padding: 5rpx;
 }
 .resume .card .list-itme {
   position: relative;
   margin-bottom: 0 30px;
-  border-bottom: 2px dotted var(--origin4);
+  border-bottom: 2px dotted var(--origin2);
 /* 删除图标 */
 /* 最后一项不加边框 */
 }
@@ -84,6 +85,8 @@
   position: absolute;
   right: -20rpx;
   top: 0;
+  color: #e86452;
+  font-size: 40rpx;
 }
 .resume .card .list-itme:last-of-type {
   border: none;
@@ -93,14 +96,12 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100rpx;
-  width: 100%;
-  padding: 0 5%;
-  background-color: var(--origin4);
-  -webkit-border-top-left-radius: 20px;
-          border-top-left-radius: 20px;
-  -webkit-border-top-right-radius: 20px;
-          border-top-right-radius: 20px;
+  height: 120rpx;
+  background-color: var(--origin2);
+  -webkit-border-top-left-radius: 22px;
+          border-top-left-radius: 22px;
+  -webkit-border-top-right-radius: 22px;
+          border-top-right-radius: 22px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -118,11 +119,6 @@
 .resume .btns button {
   height: 80rpx;
   width: 30%;
-  line-height: 80rpx;
-  font-size: 30rpx;
-}
-.resume .btns .save {
-  margin: 0 10px;
 }
 .resume .btns .preview {
   background-color: transparent;
@@ -130,5 +126,9 @@
           border-radius: 12px;
   color: #fff;
   border: 1px dotted #fff;
+}
+.resume .btns .save {
+  background-color: #fff;
+  color: var(--origin2);
 }
 

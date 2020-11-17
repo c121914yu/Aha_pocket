@@ -1,6 +1,7 @@
+<!-- 外包 -->
 <template>
-	<view class="">
-		生活
+	<view>
+		外包
 	</view>
 </template>
 
@@ -9,14 +10,11 @@
 		data() {
 			return {
 				
-			}
-		},
-		methods: {
-			
+			};
 		}
 	}
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 
 </style>

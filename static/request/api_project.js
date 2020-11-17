@@ -15,7 +15,9 @@ const postProject = (data) => request("/project","POST",data)
 				排序模式
 				筛选模式
 */
-const getProjects = () => request("/project","GET",{})
+const getProjects = () => request("/project/getAllProjectPageable ","GET",{})
+/* 获取项目详细信息 */
+const getProject = (projectId) => request(`/project/${projectId}`,"GET",{})
 
 /* 创建项目的资源信息 */
 const postResource = (projectId,data) => request(`/project/resource/${projectId}`	,"POST",data)
@@ -37,6 +39,7 @@ export {
 	
 	postProject,
 	getProjects,
+	getProject,
 	
 	postResource,
 	deleteResource,

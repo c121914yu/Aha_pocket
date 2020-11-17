@@ -2,14 +2,10 @@
 	<!-- 基本信息表 -->
 	<view
 		class="card"
-		:style="{
-			'height': isBaseInfo ? 'auto' : '110rpx'
-		}">
+		:style="{ height: isBaseInfo ? 'auto' : '14px' }">
 		<text 
 			class="fold iconfont icon-xiala"
-			:style="{
-				'transform': isBaseInfo ? 'rotate(0)' : 'rotate(180deg)'
-			}"
+			:style="{ 'transform': isBaseInfo ? 'rotate(0)' : 'rotate(180deg)' }"
 			@click="isBaseInfo=!isBaseInfo">
 		</text>
 		<view class="h3">基本信息</view>
@@ -31,7 +27,6 @@
 				class="input" 
 				style="flex: 1" 
 				type="number"
-				hold-keyboard="true"
 				v-model="phone"/>
 		</view>
 		<!-- 邮箱地址 -->
@@ -41,7 +36,6 @@
 				class="input" 
 				style="flex: 1" 
 				type="text"
-				hold-keyboard="true"
 				v-model="email"/>
 		</view>
 		<!-- 性别 -->

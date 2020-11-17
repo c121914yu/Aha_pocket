@@ -3,7 +3,7 @@
 	<view 
 		class="card"
 		:style="{
-			'height': isProjectSkill ? 'auto' : '110rpx'
+			'height': isProjectSkill ? 'auto' : '14px'
 		}">
 		<text
 			class="fold iconfont icon-xiala"
@@ -15,8 +15,8 @@
 		<view class="h3">专业技能</view>
 		<textarea 
 			style="height: 300rpx;" 
+			placeholder-style="font-size:24rpx"
 			placeholder="IT技能: 前端开发,java……不同技能换行更美观!"
-			placeholder-class="placeholderStyle"
 			hold-keyboard="true"
 			v-model="projectSkill"/>
 	</view>
@@ -35,5 +35,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
+.h3
+	margin-bottom 10px
 </style>

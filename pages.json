@@ -43,10 +43,15 @@
 			"style": {
 				"navigationBarTitleText": "简历预览"
 			}
+		}, {
+			"path": "pages/Self/Authentication",
+			"style": {
+				"navigationBarTitleText": "实名认证"
+			}
 		},
 		/* 项目相关 */
 		{
-			"path": "pages/Project/UpProject/UpProject",
+			"path": "pages/Project/UpProject",
 			"style": {
 				"navigationBarTitleText": "项目创建"
 			}
@@ -86,8 +91,8 @@
 			"name": "主页",
 			"path": "pages/app"
 		}, {
-			"name": "资源上传",
-			"path": "pages/Project/UpResource"
+			"name": "我的项目",
+			"path": "pages/Project/MyProject"
 		}, {
 			"name": "合同",
 			"path": "pages/Project/Contract"

@@ -120,7 +120,6 @@ export default {
 	data(){
 		/* 批量导入简历数据 */
 		const resume = {...getApp().globalData.gResume}
-		console.log(resume)
 		// 计算年龄
 		let age = Math.floor((Date.now() - new Date(resume.birth)) / 1000 / 60 / 60 / 24 / 365)
 		age += "岁"
