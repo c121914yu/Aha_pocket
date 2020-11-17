@@ -17,13 +17,11 @@
 		</div>
 		<inputInfo 
 			title="题目"
-			contentWidth="80%"
 			v-model="name">
 		</inputInfo>
 		<!-- 标签 -->
 		<inputInfo
 			title="标签"
-			contentWidth="80%"
 			remark="(注: 不同标签用空格隔开)"
 			v-model="tags">
 		</inputInfo>
@@ -40,19 +38,14 @@
 			<view class="h4">获奖情况: </view>
 			<inputInfo
 				title="比赛名称"
-				contentWidth="70%"
-				v-model="awardName">
-			</inputInfo>
-			<inputInfo
-				title="比赛分类"
-				type="select"
-				contentWidth="430rpx"
-				:range="Matches"
-				v-model="compId">
+				type="search"
+				:allResults="Matches"
+				v-model="compName">
 			</inputInfo>
 			<inputInfo
 				title="获奖等级"
 				type="select"
+				contentWidth="200rpx"
 				:range="prizeGrades"
 				v-model="awardLevel">
 			</inputInfo>
@@ -96,19 +89,13 @@
 import inputInfo from "./inputInfo.vue"
 export default {
 	data() {
-		const Matches = getApp().globalData.Matches.map(item => {
-      return {
-        label: item.name,
-        value: item.compTagId
-      }
-    })
+		const Matches = getApp().globalData.Matches.map(item => item.name)
 		const prizeGrades = getApp().globalData.prizeGrades
 		return {
 			name: "", // 项目名称
 			avatarUrl: "", // 团队头像
 			tags: "", // 标签
-			compId: "", // 赛事外键
-			awardName: "", // 获奖名称
+			compName: "", // 比赛名称
 			awardLevel: "", // 获奖等级
 			awardTime: "", // 获奖时间
       awardProveUrl: "", // 获奖证明

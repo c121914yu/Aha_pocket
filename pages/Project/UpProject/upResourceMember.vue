@@ -25,20 +25,10 @@ import SetMember from "../components/SetMember.vue"
 import { postMember,putMember,deleteMember } from "@/static/request/api_project.js"
 export default {
   data() {
-		const userInfo = getApp().globalData.gUserInfo
     return {
       searchText: "",
 			memberInfo: null,
-      members: [{
-				memberPhone: userInfo.phone,
-        nickname: userInfo.userInfo.nickname,
-				trueName: userInfo.userInfo.trueName,
-        avatarUrl: userInfo.userInfo.avatarUrl,
-				school: userInfo.userInfo.school,
-				job: "",
-				editable: false,
-				memberIndex: 0,
-      }],
+      members: [],
     }
   },
   props: {
@@ -87,10 +77,14 @@ export default {
 		},
 		sureMember(e)
 		{
-			/* 0关闭，1删除，2确认修改 */
+			/* 0关闭，1删除，2确认修改/添加 */
 			if(e.type === 0)
 				this.memberInfo = null
 			else if(e.type === 1){
+				if(this.members.length === 1){
+					this.gToastError("成员不能为空")
+					return
+				}
 				deleteMember(this.projectId,e.member.memberPhone)
 				.then(res => {
 					this.members.splice(e.member.memberIndex,1)
@@ -102,7 +96,7 @@ export default {
 			/* 新成员 */
 			else if(e.member.memberIndex === -1){
 				const data = {
-					projectId: 5,
+					projectId: this.projectId,
 					memberPhone: e.member.memberPhone,
 					nickname: e.member.nickname,
 					nickname: e.member.nickname,
@@ -113,6 +107,7 @@ export default {
 					rank: this.members.length+1,
 					editable: e.member.editable,
 				}
+				console.log(data);
 				postMember(this.projectId,data)
 				.then(res => {
 					this.members.push(data)
@@ -138,6 +133,24 @@ export default {
 			}
 		}
   },
+	created() {
+		/* 创建者默认为负责人 */
+		const userInfo = getApp().globalData.gUserInfo
+		const data = {
+			memberPhone: userInfo.phone,
+			nickname: userInfo.userInfo.nickname,
+			trueName: userInfo.userInfo.trueName,
+			avatarUrl: userInfo.userInfo.avatarUrl,
+			school: userInfo.userInfo.school,
+			job: "负责人",
+			editable: true,
+			memberIndex: -1,
+		}
+		this.sureMember({
+			type: 2,
+			member: data
+		})
+	},
   components: {
     drawList,
 		SetMember

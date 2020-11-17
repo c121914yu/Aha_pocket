@@ -188,12 +188,13 @@ export default {
 											/* 上传文件 */
 											this.gUploadFile(res.tempFilePath,"avatar.JPG",sign.data)
 											.then(upRes => {
+												const url = getApp().globalData.ossHost + upRes
 												/* 更新头像 */
 												putMe({
-													avatarUrl: upRes.url
+													avatarUrl: url
 												})
 												.then(putRes => {
-													this.userInfo = this.gPutUserInfo({avatarUrl: upRes.url}).userInfo,
+													this.userInfo = this.gPutUserInfo({avatarUrl: url}).userInfo,
 													uni.hideLoading()
 													this.gToastSuccess("修改头像成功!")
 												})

@@ -7,8 +7,15 @@ const getPublicSignature = () => request("/project/sign/upload/public","GET",{})
 
 /* 创建项目数据，保存至数据库 */
 const postProject = (data) => request("/project","POST",data)
-/* 获取个人项目信息 */
-const getSelfProject = () => request("/project","GET",{})
+/* 
+	获取所有项目粗略信息表
+	params:
+				获取范围（某个用户或全部)
+				分页
+				排序模式
+				筛选模式
+*/
+const getProjects = () => request("/project","GET",{})
 
 /* 创建项目的资源信息 */
 const postResource = (projectId,data) => request(`/project/resource/${projectId}`	,"POST",data)
@@ -29,7 +36,7 @@ export {
   getPublicSignature,
 	
 	postProject,
-	getSelfProject,
+	getProjects,
 	
 	postResource,
 	deleteResource,

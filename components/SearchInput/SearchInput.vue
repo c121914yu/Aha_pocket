@@ -5,7 +5,6 @@
 			type="text" 
 			:value="value"
 			hold-keyboard="true"
-			placeholder-class="placeholderStyle"
 			:placeholder="placeholder"
 			@input="inputing"
 			@blur="$emit('blur',$event.detail.value)"/>
@@ -98,21 +97,5 @@ export default {
 		padding 5rpx 15rpx
 		background-color var(--origin2)
 		border-radius 20px
-	.search-result
-		z-index 5
-		position absolute
-		left 0
-		margin-top 5px
-		width 100%
-		max-height 350rpx
-		overflow hidden
-		background-color #FFFFFF
-		box-shadow 0 0 5px var(--origin2)
-		border-radius 20rpx
-		.result
-			text-align center
-			height 70rpx
-			line-height 70rpx
-			&.active
-				background-color rgba(144,140,139,0.5)
+	
 </style>

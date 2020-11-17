@@ -39,8 +39,6 @@
   "appid": "wxafd522b076e38be0",
   "projectname": "竞赛统计",
   "cloudfunctionRoot": "static/cloudfunction/",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "current": -1,

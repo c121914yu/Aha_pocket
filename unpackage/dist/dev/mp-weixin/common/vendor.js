@@ -9172,7 +9172,7 @@ var getResume = function getResume(phone) {return (0, _request.default)("/resume
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteResource = exports.postResource = exports.getSelfProject = exports.postProject = exports.getPublicSignature = exports.getFilesSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteResource = exports.postResource = exports.getProjects = exports.postProject = exports.getPublicSignature = exports.getFilesSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 获取上传文件签名 */
 var getFilesSignature = function getFilesSignature(projectId) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private"), "GET", {});};
@@ -9181,10 +9181,17 @@ var getPublicSignature = function getPublicSignature() {return (0, _request.defa
 
 /* 创建项目数据，保存至数据库 */exports.getPublicSignature = getPublicSignature;
 var postProject = function postProject(data) {return (0, _request.default)("/project", "POST", data);};
-/* 获取个人项目信息 */exports.postProject = postProject;
-var getSelfProject = function getSelfProject() {return (0, _request.default)("/project", "GET", {});};
+/* 
+                                                                                                        	获取所有项目粗略信息表
+                                                                                                        	params:
+                                                                                                        				获取范围（某个用户或全部)
+                                                                                                        				分页
+                                                                                                        				排序模式
+                                                                                                        				筛选模式
+                                                                                                        */exports.postProject = postProject;
+var getProjects = function getProjects() {return (0, _request.default)("/project", "GET", {});};
 
-/* 创建项目的资源信息 */exports.getSelfProject = getSelfProject;
+/* 创建项目的资源信息 */exports.getProjects = getProjects;
 var postResource = function postResource(projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
 /* 删除项目 */exports.postResource = postResource;
 var deleteResource = function deleteResource(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "DELETE", {});};

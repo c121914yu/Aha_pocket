@@ -1,9 +1,9 @@
 <!-- 资源分享 -->
 <template>
 	<view class="up-resource">
-		<baseInfo ref="baseInfo" v-if="step === 0" :projectId="projectInfo.id"></baseInfo>
-		<fileInfo ref="fileInfo" v-if="step === 1" :projectId="projectInfo.id"></fileInfo>
-		<MemberInfo ref="memberInfo" v-if="step === 2" :projectId="projectInfo.id"></MemberInfo>
+		<baseInfo ref="baseInfo" v-if="step === 0" :projectId="projectId"></baseInfo>
+		<fileInfo ref="fileInfo" v-if="step === 1" :projectId="projectId"></fileInfo>
+		<MemberInfo ref="memberInfo" v-if="step === 2" :projectId="projectId"></MemberInfo>
 		<view class="btn">
 			<!-- step0 只能进行下一步 -->
 			<button v-if="step===0" @click="createResource">添加附件</button>
@@ -26,7 +26,7 @@ export default {
 	data() {
 		return {
 			step: 0,
-			projectInfo: null
+			projectId: null
 		}
 	},
 	methods: {
@@ -38,26 +38,27 @@ export default {
 	  {
 		  const base = this.$refs.baseInfo
       /* 赛事类型和获奖等级需要转化成数值 */
-      let awardLevel = ""
-      let compId = ""
+			let awardLevel = ""
       getApp().globalData.prizeGrades.find(item => {
         if(item.label === base.awardLevel){
           awardLevel = item.value
           return
         }
       })
+			let compId = ""
       getApp().globalData.Matches.find(item => {
-        if(item.name === base.compId){
+        if(item.name === base.compName){
           compId = item.compTagId
           return
         }
       })
+			compId = compId ? compId : 0
 		  let data = {
 			  name: base.name,
 			  avatarUrl: base.avatarUrl,
 			  compId,
         tags: base.tags,
-			  awardName: base.awardName,
+			  compName: base.compName,
 			  awardLevel,
 			  awardTime: base.awardTime,
         awardProveUrl: base.awardProveUrl,
@@ -73,11 +74,9 @@ export default {
       let status = 0
       const postProj = () => {
         if(status === 2){
-          console.log(data);
           postProject(data)
           .then(res => {
-            this.projectInfo = res.data
-            console.log(res.data)
+            this.projectId = res.data.id
             /* 进入下一步*/
             this.step = 1
           })
@@ -158,16 +157,11 @@ export default {
 					editable: item.editable
 				}
 			})
-			if(data.length === 0){
-				this.gToastError("成员不能为空")
-				return
-			}
-			this.finish()
-			// putMembers(this.$refs.memberInfo.members[0].projectId,data)
-			// .then(res => {
-			// 	console.log(res)
-			// 	this.finish()
-			// })
+			putMembers(this.$refs.memberInfo.members[0].projectId,data)
+			.then(res => {
+				console.log(res)
+				this.finish()
+			})
 		},
 		/* 
 			name: 完成创建

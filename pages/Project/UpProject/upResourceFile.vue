@@ -116,7 +116,11 @@ export default {
 			this.gShowModal(
 				`确认删除 ${this.files[index].name}?`,
 				() => {
-					this.files.splice(index,1)
+					deleteResource(this.files[index].id)
+					.then(res => {
+						console.log(res)
+						this.files.splice(index,1)
+					})
 				}
 			)
 		},
@@ -134,12 +138,10 @@ export default {
 		 const api_postResource = async (file) => {
 			 try{
 				 const data = await postResource(this.projectId,{
-					 type: 0,
 					 name: file.name,
 					 filename: file.filename
 				 })
-				 console.log(data)
-				 return true
+				 return data.data.id
 			 }
 			 catch(err){
 				 return false
@@ -183,8 +185,11 @@ export default {
 							/* 上传文件成功 */
 							if(res.statusCode === 204){
 								/* 判断更新资源文件是否成功 */
-								if(await api_postResource(this.files[i]))
+								const postRes = await api_postResource(this.files[i])
+								if(postRes !== false){
+									this.files[i].id = postRes
 									this.files[i].status = 2
+								}
 								else
 									this.files[i].status = 3
 							}

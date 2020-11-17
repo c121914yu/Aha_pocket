@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { getSelfProject } from "@/static/request/api_project.js"
+import { getProjects } from "@/static/request/api_project.js"
 export default {
 	data() {
 		return {
@@ -14,7 +14,7 @@ export default {
 		}
 	},
   created() {
-    getSelfProject()
+    getProjects()
     .then(res => {
 			this.projects = res.data
 			console.log(res.data);

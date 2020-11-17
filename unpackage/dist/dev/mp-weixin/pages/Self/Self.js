@@ -317,12 +317,13 @@ var _api_login = __webpack_require__(/*! @/static/request/api_login.js */ 19);fu
                         /* 上传文件 */
                         _this2.gUploadFile(res.tempFilePath, "avatar.JPG", sign.data).
                         then(function (upRes) {
+                          var url = getApp().globalData.ossHost + upRes;
                           /* 更新头像 */
                           (0, _api_userInfo.putMe)({
-                            avatarUrl: upRes.url }).
+                            avatarUrl: url }).
 
                           then(function (putRes) {
-                            _this2.userInfo = _this2.gPutUserInfo({ avatarUrl: upRes.url }).userInfo,
+                            _this2.userInfo = _this2.gPutUserInfo({ avatarUrl: url }).userInfo,
                             uni.hideLoading();
                             _this2.gToastSuccess("修改头像成功!");
                           });
