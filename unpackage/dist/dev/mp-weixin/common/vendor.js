@@ -1983,6 +1983,7 @@ function gToastError(title) {var mask = arguments.length > 1 && arguments[1] !==
   uni.showToast({
     title: title,
     image: "/static/icon/close.png",
+    // image: "/static/icon/close.png",
     mask: mask,
     duration: duration });
 

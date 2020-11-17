@@ -1,6 +1,6 @@
 <template>
 	<view class="register">
-		<image class="logo" src="/static/icon/logo.png" mode="widthFix" />
+		<image class="logo" src="https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png" mode="widthFix" />
 		<view class="top"></view>
 		<view class="bottom">
 			<view class="card" v-if="!codeInput">

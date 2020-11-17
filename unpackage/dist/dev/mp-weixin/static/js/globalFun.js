@@ -25,6 +25,7 @@ function gToastError(title,mask=false,duration=1500){
 	uni.showToast({
 		title,
 		image: "/static/icon/close.png",
+		// image: "/static/icon/close.png",
 		mask,
 		duration
 	})
