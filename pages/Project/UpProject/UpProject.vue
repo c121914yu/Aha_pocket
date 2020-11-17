@@ -1,9 +1,9 @@
 <!-- 资源分享 -->
 <template>
 	<view class="up-resource">
-		<baseInfo ref="baseInfo" v-if="step === 0" :projectId="projectInfo.projectId"></baseInfo>
-		<fileInfo ref="fileInfo" v-if="step === 1" :projectId="projectInfo.projectId"></fileInfo>
-		<MemberInfo ref="memberInfo" v-if="step === 2" :projectId="projectInfo.projectId"></MemberInfo>
+		<baseInfo ref="baseInfo" v-if="step === 0" :projectId="projectInfo.id"></baseInfo>
+		<fileInfo ref="fileInfo" v-if="step === 1" :projectId="projectInfo.id"></fileInfo>
+		<MemberInfo ref="memberInfo" v-if="step === 2" :projectId="projectInfo.id"></MemberInfo>
 		<view class="btn">
 			<!-- step0 只能进行下一步 -->
 			<button v-if="step===0" @click="createResource">添加附件</button>
@@ -20,7 +20,7 @@
 import baseInfo from "./upResourceBase.vue"
 import fileInfo from "./upResourceFile.vue"
 import MemberInfo from "./upResourceMember.vue"
-import { postProject,postResource } from "@/static/request/api_project.js"
+import { getPublicSignature,postProject,postResource,putMembers } from "@/static/request/api_project.js"
 
 export default {
 	data() {
@@ -32,18 +32,35 @@ export default {
 	methods: {
 		/* 
 			name: 创建项目资源
-			desc: 获取资源基本信息，调用接口创建一个项目
+			desc: 获取资源基本信息，上传头像和证明图片后，调用接口创建一个项目
 	  */
 	  createResource()
 	  {
 		  const base = this.$refs.baseInfo
-		  const data = {
+      /* 赛事类型和获奖等级需要转化成数值 */
+      let awardLevel = ""
+      let compId = ""
+      getApp().globalData.prizeGrades.find(item => {
+        if(item.label === base.awardLevel){
+          awardLevel = item.value
+          return
+        }
+      })
+      getApp().globalData.Matches.find(item => {
+        if(item.name === base.compId){
+          compId = item.compTagId
+          return
+        }
+      })
+		  let data = {
 			  name: base.name,
 			  avatarUrl: base.avatarUrl,
-			  compId: base.compId,
+			  compId,
+        tags: base.tags,
 			  awardName: base.awardName,
-			  awardLevel: base.awardLevel,
+			  awardLevel,
 			  awardTime: base.awardTime,
+        awardProveUrl: base.awardProveUrl,
 			  intro: base.intro
 		  }
 			/* 空值检验 */
@@ -52,14 +69,57 @@ export default {
 				this.gToastError("请输入资源标题")
 				return false
 			}
-		  
-			postProject(data)
-		  .then(res => {
-			  this.projectInfo = res.data
-			  console.log(res.data)
-			  /* 进入下一步*/
-			  this.step = 1
-		  })
+      
+      let status = 0
+      const postProj = () => {
+        if(status === 2){
+          console.log(data);
+          postProject(data)
+          .then(res => {
+            this.projectInfo = res.data
+            console.log(res.data)
+            /* 进入下一步*/
+            this.step = 1
+          })
+        }
+      }
+      
+      if(data.avatarUrl || data.awardProveUrl)
+        /* 获取上传文件签名*/
+        getPublicSignature()
+        .then(sign => {
+          uni.showLoading({ title: "上传图片中" })
+          /* 检查是否是临时路径*/
+          const reg = /\/tmp\//
+          /* 上传头像*/
+          if(data.avatarUrl && reg.test(data.avatarUrl))
+            this.gUploadFile(data.avatarUrl,`avatar/${data.name}`,sign.data)
+            .then(res => {
+              console.log("头像上传成功")
+              data.avatarUrl = res
+              status++
+              postProj()
+            })
+          else
+            status++
+          /* 上传证明*/
+          if(data.awardProveUrl && reg.test(data.awardProveUrl))
+            this.gUploadFile(data.awardProveUrl,`awardProve/${data.name}`,sign.data)
+            .then(res => {
+              console.log("证明上传成功")
+              data.awardProveUrl = res
+              status++
+              postProj()
+            })
+          else{
+            status++
+            postProj()
+          }
+        })
+       else{
+         status = 2
+         postProj()
+       }
 	  },
 	  /* 
 			name: 创建资源文件
@@ -90,19 +150,39 @@ export default {
 		*/
 		putMembers()
 		{
-			const members = [...this.$refs.memberInfo.members]
-			console.log(members)
+			const data = this.$refs.memberInfo.members.map((item,i) => {
+				return {
+					memberPhone: item.memberPhone,
+					rank: i+1,
+					job: item.job,
+					editable: item.editable
+				}
+			})
+			if(data.length === 0){
+				this.gToastError("成员不能为空")
+				return
+			}
 			this.finish()
+			// putMembers(this.$refs.memberInfo.members[0].projectId,data)
+			// .then(res => {
+			// 	console.log(res)
+			// 	this.finish()
+			// })
 		},
 		/* 
-			name: 发表资源
-			desc: 上传证明和附件后向服务器提交表单
-			input:
-						data: Object,需要提交的数据
+			name: 完成创建
+			desc: 完成项目创建，跳转个人项目管理界面
+			time: 2020/11/16
 		*/
 		finish()
 		{
-			console.log("发布")
+			this.gToastSuccess("项目创建成功!",true)
+			setTimeout(() => {
+				uni.redirectTo({
+					url: "../MyProject"
+				})
+			},1000)
+			
 		}
 	},
 	onLoad() {

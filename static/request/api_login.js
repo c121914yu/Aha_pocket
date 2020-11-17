@@ -58,6 +58,9 @@ const Login = (data) => request("/login","POST",data)
 */
 const WXLogin = (data) => request("/wxLogin","POST",data)
 
+/* 退出登录 */
+const loginOut = () => request("/logout ","GET",{})
+
 export {
 	sendRegisterCode,
 	sendChangePswCode,
@@ -65,4 +68,5 @@ export {
 	ChangePassword,
 	Login,
 	WXLogin,
+  loginOut
 }

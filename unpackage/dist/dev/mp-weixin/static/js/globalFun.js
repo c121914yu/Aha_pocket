@@ -6,7 +6,7 @@
 				mask: Boolean,是否展示蒙层
 	return: null
 */
-function gToastSuccess(title,duration=1500,mask=false){
+function gToastSuccess(title,mask=false,duration=1500){
 	uni.showToast({
 		title,
 		mask,
@@ -21,7 +21,7 @@ function gToastSuccess(title,duration=1500,mask=false){
 				mask: Boolean,是否展示蒙层
 	return: null
 */
-function gToastError(title,duration=1500,mask=false){
+function gToastError(title,mask=false,duration=1500){
 	uni.showToast({
 		title,
 		image: "/static/icon/close.png",
@@ -82,7 +82,7 @@ function gUploadFile(url,name,signature){
       },
       success: (res) => {
         if(res.statusCode === 204)
-          resolve(res)
+          resolve(filename)
          else
           reject(err)
       },

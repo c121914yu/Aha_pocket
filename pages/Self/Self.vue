@@ -90,11 +90,18 @@
 		</view>
 		<!-- 兴趣选择 -->
 		<SelectInterest v-if="isCheckTags" @close="isCheckTags=false"></SelectInterest>
+    <!-- 登出 -->
+    <button 
+      style="width: 90%;margin: auto;background-color: #e86452;" 
+      @click="out">
+      退出登录
+    </button>
 	</view>
 </template>
 
 <script>
 import { getAvatarOssSignature,putMe } from "@/static/request/api_userInfo.js"
+import { loginOut } from "@/static/request/api_login.js"
 export default {
 	data() {
 		const userInfo = {...getApp().globalData.gUserInfo.userInfo}
@@ -203,9 +210,22 @@ export default {
 				}
 			})
 		},
-	},
-	created() {
-		
+    /* 退出登录，调用modal确认*/
+    out()
+    {
+      this.gShowModal("确认退出登录?",() => {
+        loginOut()
+        .then(res => {
+          uni.clearStorageSync("token")
+          uni.reLaunch({
+            url: "Login/Login",
+            success: () => {
+              this.gToastSuccess("已退出登录")
+            }
+          })
+        })
+      })
+    }
 	}
 }
 </script>
@@ -289,7 +309,6 @@ bgSetting(size,color)
 				background-color var(--origin2)
 				transform-origin left top
 				animation curtain2 .8s forwards
-				
 	/* 核心导航 招募队友 & 资源分享 */
 	.navs
 		margin 10vw 0 20px

@@ -32,6 +32,8 @@ function myRequest(url,method,data){
 				/* 请求错误 */
 				else
 				{
+					console.log("请求错误")
+					console.log(result.data)
 					globalFun.gToastError(result.data.msg)
 					rej(result.data)
 				}
@@ -39,7 +41,8 @@ function myRequest(url,method,data){
 			fail(err) 
 			{
 				uni.hideLoading()
-				console.log("请求错误")
+				console.log("服务器错误")
+				console.log(err.data)
 				globalFun.gToastError("请求错误")
 				rej(err)
 			},

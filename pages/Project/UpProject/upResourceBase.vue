@@ -16,45 +16,21 @@
 			</image>
 		</div>
 		<inputInfo 
-			title="标题"
+			title="题目"
 			contentWidth="80%"
 			v-model="name">
-		</inputInfo>
-		<inputInfo
-			title="完成程度"
-			type="select"
-			contentWidth="350rpx"
-			:range="finishRates"
-			v-model="finishRate">
-		</inputInfo>
-		<inputInfo
-			title="资源类型"
-			type="select"
-			contentWidth="350rpx"
-			:range="AccessoriesClassify"
-			v-model="classify">
-		</inputInfo>
-		<inputInfo
-			title="作者名称"
-			contentWidth="200rpx"
-			v-model="authorName">
-		</inputInfo>
-		<inputInfo
-			title="联系方式"
-			placeholder="选填"
-			v-model="authorContact">
 		</inputInfo>
 		<!-- 标签 -->
 		<inputInfo
 			title="标签"
 			contentWidth="80%"
 			remark="(注: 不同标签用空格隔开)"
-			v-model="tagText">
+			v-model="tags">
 		</inputInfo>
 		<view class="tags">
 			<view 
 				class="tag"
-				v-for="(tag,index) in tags"
+				v-for="(tag,index) in tagList"
 				:key="index">
 				{{tag}}
 			</view>
@@ -70,8 +46,8 @@
 			<inputInfo
 				title="比赛分类"
 				type="select"
-				contentWidth="400rpx"
-				:range="MatchName"
+				contentWidth="430rpx"
+				:range="Matches"
 				v-model="compId">
 			</inputInfo>
 			<inputInfo
@@ -90,15 +66,15 @@
 			<view class="title">获奖证明: <text>长按可删除证明</text></view>
 			<view class="prove">
 				<image 
-					v-if="awardUrl"
-					:src="awardUrl"
+					v-if="awardProveUrl"
+					:src="awardProveUrl"
 					mode="widthFix"
-					@click="showMenu('awardUrl')">
+					@click="showMenu('awardProveUrl')">
 				</image>
 				<text 
 					v-else 
 					class="iconfont icon-tianjia" 
-					@click="chooseImg('awardUrl')">
+					@click="chooseImg('awardProveUrl')">
 				</text>
 			</view>
 		</view>
@@ -120,25 +96,23 @@
 import inputInfo from "./inputInfo.vue"
 export default {
 	data() {
-		const AccessoriesClassify = getApp().globalData.AccessoriesClassify
-		const Matches = getApp().globalData.Matches
+		const Matches = getApp().globalData.Matches.map(item => {
+      return {
+        label: item.name,
+        value: item.compTagId
+      }
+    })
 		const prizeGrades = getApp().globalData.prizeGrades
 		return {
 			name: "", // 项目名称
 			avatarUrl: "", // 团队头像
-			authorName: "", // 作者名称
-			authorContact: "", // 作者联系方式
-			finishRate: "", // 完成度
-			classify: "",
-			tagText: "",
-			compId: "1",
-			awardName: "",
-			awardLevel: "",
-			awardTime: "",
-      awardUrl: "",
-			intro: "",
-			finishRates: ["100%","80%-100%","50%-80%","0%-50%"], // 完成度数组
-			AccessoriesClassify, // 资源类型
+			tags: "", // 标签
+			compId: "", // 赛事外键
+			awardName: "", // 获奖名称
+			awardLevel: "", // 获奖等级
+			awardTime: "", // 获奖时间
+      awardProveUrl: "", // 获奖证明
+			intro: "", // 描述
 			Matches, // 比赛名称
 			prizeGrades, // 获奖等级
 			editMD: false
@@ -148,14 +122,14 @@ export default {
 		/*
 			desc: 监听输入标签内容改变，根据空格分隔
 			input: 
-						tagText: String,标签输入框内容
+						tags: String,标签输入框内容
 			return: 
 						tagArray: Array,标签数组
 			time: 2020/11/9
 		*/
-		tags()
+		tagList()
 		{
-			return this.tagText.split(" ").filter(tag => tag !== "")
+			return this.tags.split(" ").filter(tag => tag !== "")
 		},
 	},
 	methods: {

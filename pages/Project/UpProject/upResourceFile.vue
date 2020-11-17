@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { getFilesSignature,postResource } from "@/static/request/api_project.js"
+import { getFilesSignature,postResource,deleteResource } from "@/static/request/api_project.js"
 export default {
 	data() {
 		return {
@@ -138,6 +138,7 @@ export default {
 					 name: file.name,
 					 filename: file.filename
 				 })
+				 console.log(data)
 				 return true
 			 }
 			 catch(err){
@@ -146,7 +147,7 @@ export default {
 		 }
 		 
 		 /* 获取签名 */
-		 getFilesSignature(8)
+		 getFilesSignature(this.projectId)
 		 .then(sign => {
 			 const signature = sign.data
 			 /* 开始上传任务，传入对应资源的下标 */

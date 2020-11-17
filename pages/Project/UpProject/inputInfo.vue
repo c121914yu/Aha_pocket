@@ -15,7 +15,7 @@
 			v-if="type === 'select'" 
 			class="select"
 			mode="selector" 
-			:range="range" 
+			:range="list" 
 			@change="select">
 			<view
 				class="input"
@@ -71,9 +71,14 @@ export default {
 	},
 	methods: {
 		select(e){
-			this.$emit('input',this.range[e.target.value])
+			this.$emit('input',this.list[e.target.value])
 		}
-	}
+	},
+  computed: {
+    list(){
+      return this.range.map(item => item.label)
+    }
+  }
 }
 </script>
 
@@ -94,6 +99,7 @@ export default {
 		padding 0 10rpx
 		background-color var(--origin3)
 		border-radius 30rpx
+		font-size 24rpx
 	.select
 		position relative
 		display flex

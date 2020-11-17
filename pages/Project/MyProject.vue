@@ -10,13 +10,14 @@ import { getSelfProject } from "@/static/request/api_project.js"
 export default {
 	data() {
 		return {
-			
+			projects: []
 		}
 	},
   created() {
     getSelfProject()
     .then(res => {
-      console.log(res);
+			this.projects = res.data
+			console.log(res.data);
     })
   }
 }

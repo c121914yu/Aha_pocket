@@ -111,10 +111,20 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     Schools: ["浙江工业大学", "杭州电子科技大学", "浙江大学", "杭州师范大学"], // 学校列表
     Degress: ["博士后", "博士", "硕士", "本科", "专科", "高中", "初中"], // 学历列表
     Grads: ["前1%", "1%-5%", "5%-20%", "20%-50%", "50%-100%"], // 成绩等级
-    AccessoriesClassify: ["商业计划书", "PPT", "论文", "演示视频", "个人心得", "数据集"], // 文章分类
     TagsList: ["前端", "挑战杯", "互联网+", "运河杯", "数据集"],
     Matches: [], // 所有比赛
-    prizeGrades: ["国一", "国二", "国三", "省一", "省二", "省三", "校一", "校二", "校三", "参与奖"],
+    prizeGrades: [
+    { label: "国一", value: 11 },
+    { label: "国二", value: 12 },
+    { label: "国三", value: 13 },
+    { label: "省一", value: 21 },
+    { label: "省二", value: 22 },
+    { label: "省三", value: 23 },
+    { label: "校一", value: 31 },
+    { label: "校二", value: 32 },
+    { label: "校三", value: 33 },
+    { label: "参与奖", value: 41 }],
+
     resourceData: [
     {
       logoUrl: "http://blogs.jinlongyuchitang.cn/background.jpg",
