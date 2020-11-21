@@ -5,7 +5,8 @@
       <input type="text" placeholder="添加队友" v-model="searchText"/>
       <text class="iconfont icon-sousuo" @click="search"></text>
     </view>
-    <drawList 
+    <drawList
+			v-if="members.length > 0"
 			ref="drawList" 
 			:list="members" 
 			@confirm="members=$event"
@@ -107,14 +108,16 @@ export default {
 					rank: this.members.length+1,
 					editable: e.member.editable,
 				}
-				console.log(data);
+				// console.log(data);
 				postMember(this.projectId,data)
 				.then(res => {
 					this.members.push(data)
-					this.$refs.drawList.tempList.push(data)
-					this.searchText = ""
-					this.memberInfo = null
-					this.gToastSuccess("添加成员成功!")
+					setTimeout(() => {
+						this.$refs.drawList.tempList = JSON.parse(JSON.stringify(this.members))
+						this.searchText = ""
+						this.memberInfo = null
+						this.gToastSuccess("添加成员成功!")
+					})
 				})
 			}
 			/* 修改成员 */
@@ -134,22 +137,24 @@ export default {
 		}
   },
 	created() {
-		/* 创建者默认为负责人 */
-		const userInfo = getApp().globalData.gUserInfo
-		const data = {
-			memberPhone: userInfo.phone,
-			nickname: userInfo.userInfo.nickname,
-			trueName: userInfo.userInfo.trueName,
-			avatarUrl: userInfo.userInfo.avatarUrl,
-			school: userInfo.userInfo.school,
-			job: "负责人",
-			editable: true,
-			memberIndex: -1,
+		if(this.projectId){
+			/* 创建者默认为负责人 */
+			const userInfo = getApp().globalData.gUserInfo
+			const data = {
+				memberPhone: userInfo.phone,
+				nickname: userInfo.userInfo.nickname,
+				trueName: userInfo.userInfo.trueName,
+				avatarUrl: userInfo.userInfo.avatarUrl,
+				school: userInfo.userInfo.school,
+				job: "负责人",
+				editable: true,
+				memberIndex: -1,
+			}
+			this.sureMember({
+				type: 2,
+				member: data
+			})
 		}
-		this.sureMember({
-			type: 2,
-			member: data
-		})
 	},
   components: {
     drawList,

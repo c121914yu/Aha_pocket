@@ -48,10 +48,8 @@ export default {
 			.then(res => {
 				uni.setStorageSync("token",res.data.token)
 				this.gToastSuccess(res.msg)
+				getApp().globalData.gUserInfo.signedNotice = true
 				this.$emit("readed")
-			})
-			.catch(err => {
-				this.gToastError("服务器错误 ")
 			})
 		}
 	}
@@ -107,11 +105,11 @@ export default {
 				align-items center
 				justify-content center
 				&.active
-					border-color var(--origin4)
-					color var(--origin4)
+					border-color var(--origin2)
+					color var(--origin2)
 					font-weight 600
 			.strong
-				color var(--origin4)
+				color var(--origin2)
 		/* 已阅读按键 */
 		.readed-btn
 			margin-top 10px
@@ -121,6 +119,6 @@ export default {
 			&.noReady:active
 				transform none
 			&.already
-				background-color var(--button-bg)
+				background-color var(--origin2)
 				color #FFFFFF
 </style>

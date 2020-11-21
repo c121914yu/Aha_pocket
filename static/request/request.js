@@ -43,15 +43,13 @@ function myRequest(url,method,data){
 				uni.hideLoading()
 				console.log("服务器错误")
 				console.log(err.data)
-				globalFun.gToastError("请求错误")
+				globalFun.gToastError("服务器错误")
 				rej(err)
 			},
 			complete(result) {
 				/* 判断是否有新token,有则替换旧的token */
 				if(result.header.Authorization)
-				{
 					uni.setStorageSync("token",result.header.Authorization)
-				}
 			}
 		})
 	})

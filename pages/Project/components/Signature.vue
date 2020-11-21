@@ -155,8 +155,8 @@ export default {
 	position fixed
 	top 0
 	left 0
-	width 100vw
-	height 100vh
+	right 0
+	bottom 0
 	padding 2px
 	background-color #FFFFFF
 	display flex
@@ -165,14 +165,15 @@ export default {
 		width calc(100% - 4px)
 		flex 1
 		border 1px solid rgba(144,140,139,0.65)
+		border-radius 5px
 	.btns
+		padding 10px
 		display flex
 		justify-content space-around
-		border-radius 5px
 		button
 			width 30%
 		.clear
 			background-color transparent
-			color var(--origin4)
-			border 1px solid var(--origin4)
+			color var(--origin3)
+			border 1px solid var(--origin3)
 </style>

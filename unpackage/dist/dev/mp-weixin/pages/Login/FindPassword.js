@@ -272,10 +272,12 @@ var timer;var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	return: null
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            */changePassword: function changePassword() {var _this2 = this; /* 前端校验数据格式 */if (!reg.test(this.phone)) this.gToastError("手机格式错误");else if (this.password === "") this.gToastError("请填写密码");else if (this.password !== this.password2) this.gToastError("密码不一致");else if (this.code.length !== 4) this.gToastError("验证码错误");else {var data = { phone: this.phone, newPassword: this.password, code: this.code };(0, _api_login.ChangePassword)(data).
         then(function (res) {
-          uni.navigateBack({
-            delta: 1 });
-
           _this2.gToastSuccess(res.msg);
+          setTimeout(function () {
+            uni.navigateBack({
+              delta: 1 });
+
+          }, 500);
         });
       }
     } },

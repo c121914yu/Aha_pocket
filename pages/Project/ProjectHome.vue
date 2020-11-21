@@ -25,12 +25,14 @@
 			</view>
 			<!-- 列表 -->
 			<view class="list">
-				<projectCard 
-					v-for="(resource,index) in RankingData"
+				<projectCard
+					v-for="(project,index) in RankingData"
 					:key="index"
 					:ranking="index+1"
-					:resource="resource"
-					:border="index === 2 ? false : true">
+					showCollect
+					:border="index === 2 ? false : true"
+					:project="project"
+					@click="readProject(project.id)">
 				</projectCard>
 			</view>
 		</view>
@@ -49,18 +51,22 @@
 			<!-- 推荐比赛列表 -->
 			<view class="list">
 				<projectCard 
-					v-for="(resource,index) in RankingData"
+					v-for="(project,index) in commands"
 					:key="index"
-					:resource="resource"
 					margin="0 0 5px 0"
-					:radius="index === 0 ? '0 0 22px 22px' : '22px'">
+					:radius="index === 0 ? '0 0 22px 22px' : '22px'"
+					showCollect
+					:project="project"
+					@click="readProject(project.id)">
 				</projectCard>
 			</view>
 		</view>
+		<view class="center small">{{loadText}}</view>
 	</view>
 </template>
 
 <script>
+import { getProjects } from "@/static/request/api_project.js"
 export default {
 	data() {
 		return {
@@ -73,10 +79,82 @@ export default {
 			rankType: "week",
 			sortList: ["综合","收藏量","最新","获奖等级"],
 			sortIndex: 0,
-			RankingData: getApp().globalData.resourceData,
+			page: {
+				pageNum: 1,
+				pageSize: 10,
+				all: false
+			},
+			loadText: "",
+			RankingData: [],
 			commands: [],
 		}
 	},
+	methods: {
+		/*
+			name: 初始化项目
+			desc: 请求个人项目数据，并重新赋值commands和page
+			time: 2020/11/20
+		*/
+		initProjects()
+		{
+			this.page = {
+				pageNum: 1,
+				pageSize: 10,
+				all: false
+			}
+			getProjects(this.page)
+			.then(res => {
+				this.page.pageNum++
+				this.commands = res.data.pageData
+				
+				this.RankingData.push(this.commands[0])
+				this.RankingData.push(this.commands[1])
+				this.RankingData.push(this.commands[2])
+				
+				uni.stopPullDownRefresh()
+				console.log(this.commands)
+			})
+			.catch(() => uni.stopPullDownRefresh())
+		},
+		/* 
+			name: 加载更多数据
+			time: 2020/11/20
+		*/
+		loadMore()
+		{
+			if(this.page.all)
+				this.loadText = "已加载全部"
+			else{
+				this.loadText = "加载中..."
+				getProjects(this.page)
+				.then(res => {
+					const data = res.data.pageData
+					if(data.length === 0){
+						this.page.all = true
+						this.loadText = "已加载全部"
+					}
+					else{
+						this.page.pageNum++
+						this.commands = this.commands.concat(data)
+						this.loadText = ""
+					}
+				})
+				.catch(err => {
+					this.loadText = ""
+				})
+			}
+		},
+		/* 进入项目详细 */
+		readProject(id)
+		{
+			uni.navigateTo({
+				url: `Project/Project?id=${id}`
+			})
+		}
+	},
+	mounted() {
+		this.initProjects()
+	}
 }
 </script>
 
@@ -144,4 +222,7 @@ export default {
 				align-items center
 				.iconfont
 					font-size 40rpx
+	.center
+		transform translateY(-15px)
+		color var(--gray1)
 </style>

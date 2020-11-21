@@ -10,18 +10,27 @@ const postProject = (data) => request("/project","POST",data)
 /* 
 	获取所有项目粗略信息表
 	params:
+				pageNum： 第几页
+				pageSize: 每页的条数
 				获取范围（某个用户或全部)
-				分页
 				排序模式
 				筛选模式
 */
-const getProjects = () => request("/project/getAllProjectPageable ","GET",{})
+const getProjects = ({pageNum,pageSize}) => request(`/project?pageNum=${pageNum}&pageSize=${pageSize}`,"GET",{})
 /* 获取项目详细信息 */
 const getProject = (projectId) => request(`/project/${projectId}`,"GET",{})
+/* 更新项目详细信息 */
+const putProject = (projectId,data) => request(`/project/${projectId}`,"PUT",data)
+/* 删除项目 */
+const deleteProject = (projectId) => request(`/project/${projectId}`,"DELETE",{})
+/* 收藏项目 */
+const collectProject = (projectId) => request(`/project/collection/{projectId} `,"POST",{})
+/* 取消项目 */
+const cancleCollectProject = (projectId) => request(`/project/collection/{projectId} `,"DELECT",{})
 
 /* 创建项目的资源信息 */
 const postResource = (projectId,data) => request(`/project/resource/${projectId}`	,"POST",data)
-/* 删除项目 */
+/* 删除资源 */
 const deleteResource = (projectResourceId) => request(`/project/resource/${projectResourceId}`,"DELETE",{})
 
 /* 创建成员 */
@@ -40,6 +49,10 @@ export {
 	postProject,
 	getProjects,
 	getProject,
+	putProject,
+	deleteProject,
+	collectProject,
+	cancleCollectProject,
 	
 	postResource,
 	deleteResource,

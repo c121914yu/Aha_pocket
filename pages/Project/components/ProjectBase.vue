@@ -74,10 +74,11 @@
 		<!-- md编辑 -->
 		<view class="input-info">
 			<view class="h4">自定义描述: </view>
+			<view class="intro" v-if="intro" v-html="intro"></view>
 			<button @click="editMD=true">编辑</button>
 			<view v-if="editMD" class="editMD">
 				<MdEdit 
-					:delta="intro"
+					:html="intro"
 					@editOk="editOk">
 				</MdEdit>
 			</view>
@@ -169,7 +170,7 @@ export default {
 		*/
 		editOk(e)
 		{
-			this.intro = e.delta
+			this.intro = e
 			this.editMD = false
 		}
 	}
@@ -254,4 +255,7 @@ export default {
 	right 0
 	bottom 0
 	background-color #FFFFFF
+.intro 
+	*
+		white-space pre-wrap
 </style>

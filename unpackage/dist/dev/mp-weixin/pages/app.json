@@ -1,5 +1,8 @@
 {
-  "navigationBarTitleText": "竞赛",
+  "navigationBarTitleText": "项目分享",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "onReachBottomDistance": 200,
   "usingComponents": {
     "user-agreement": "/components/UserAgreement/UserAgreement",
     "tab-bar": "/components/TabBar/TabBar",

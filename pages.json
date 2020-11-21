@@ -24,7 +24,10 @@
 		{
 			"path": "pages/app",
 			"style": {
-				"navigationBarTitleText": "竞赛"
+				"navigationBarTitleText": "项目分享",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle": "dark",
+				"onReachBottomDistance": 200
 			}
 		},
 		/* 次界面，不含主导航 */
@@ -57,9 +60,18 @@
 			}
 		},
 		{
-			"path": "pages/Project/MyProject",
+			"path": "pages/Project/EditProject",
 			"style": {
-				"navigationBarTitleText": "我的项目"
+				"navigationBarTitleText": "项目编辑"
+			}
+		},
+		{
+			"path": "pages/Project/MyProjects",
+			"style": {
+				"navigationBarTitleText": "我的项目",
+				"enablePullDownRefresh": true, 
+				"backgroundTextStyle": "dark",
+				"onReachBottomDistance": 200
 			}
 		},
 		{

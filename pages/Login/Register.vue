@@ -124,21 +124,16 @@ export default {
 			}
 			Register(data)
 			.then(res => {
+				this.gToastSuccess(res.msg)
 				console.log(res)
 				/* 储存token */
 				uni.setStorageSync("token",res.data.token)
 				/* 储存个人信息 */
-				getApp().globalData.gUserInfo = res.data.userInfo
+				getApp().globalData.gUserInfo = res.data.personalUserInfo
 				/* 跳转主页 */
 				uni.reLaunch({
-					url: "../app",
-					success: () => {
-						this.gToastSuccess(res.msg)
-					}
+					url: "../app"
 				})
-			})
-			.catch(err => {
-				console.log(err)
 			})
 		}
 	},
@@ -197,7 +192,7 @@ export default {
 		align-items center
 		.card
 			transform translateY(-5vh)
-			width 80%
+			width 75%
 			padding 5%
 			background-color var(--white2)
 			border-radius 50rpx

@@ -59,11 +59,9 @@ export default {
 	},
 	methods: {
 		loginSuccess(){
+			this.gToastSuccess("登录成功")
 			uni.reLaunch({
 				url: "../app",
-				success: () => {
-					this.gToastSuccess("登录成功")
-				}
 			})
 		},
 		login(){

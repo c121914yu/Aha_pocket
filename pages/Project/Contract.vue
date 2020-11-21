@@ -17,7 +17,7 @@
 				<image v-if="signUrl" :src="signUrl" mode="widthFix"></image>
 			</view>
 		</view>
-		<button @click="showSign = true">进入签名</button>
+		<button style="background-color: #5d7092;" @click="showSign = true">进入签名</button>
 		<button v-if="signUrl" @click="confirm">确认</button>
 		<Signature 
 			v-if="showSign"
@@ -77,11 +77,9 @@ export default {
 					const data = JSON.parse(res.data)
 					uni.setStorageSync("token",data.data.token)
 					getApp().globalData.gUserInfo.signedContract = true
+					this.gToastSuccess(data.msg)
 					uni.redirectTo({
-						url: "./UpResource",
-						success: () => {
-							this.gToastSuccess(data.msg)
-						}
+						url: "UpProject"
 					})
 				},
 				fail: (err) => {
@@ -96,7 +94,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .contract
 	min-height 100
 	padding 10px
@@ -111,12 +109,12 @@ export default {
 		align-items center
 		input
 			margin-left 10px
-			border-bottom var(--border1)
+			border-bottom 1px solid var(--gray1)
+			border-radius 0
 		image
 			width 150rpx
-			border var(--border1)
 	button
 		margin 10px 0
 		color #FFFFFF
-		background-color var(--button-bg)
+		background-color var(--origin2)
 </style>

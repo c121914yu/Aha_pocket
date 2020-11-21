@@ -1,6 +1,6 @@
 <!-- 资源分享 -->
 <template>
-	<view class="up-resource">
+	<view class="up-project">
 		<baseInfo ref="baseInfo" v-if="step === 0" :projectId="projectId"></baseInfo>
 		<fileInfo ref="fileInfo" v-if="step === 1" :projectId="projectId"></fileInfo>
 		<MemberInfo ref="memberInfo" v-if="step === 2" :projectId="projectId"></MemberInfo>
@@ -87,7 +87,7 @@ export default {
         /* 获取上传文件签名*/
         getPublicSignature()
         .then(sign => {
-          uni.showLoading({ title: "上传图片中" })
+          uni.showLoading({ title: "请求中..." })
           /* 检查是否是临时路径*/
           const reg = /\/tmp\//
           /* 上传头像*/
@@ -173,7 +173,7 @@ export default {
 			this.gToastSuccess("项目创建成功!",true)
 			setTimeout(() => {
 				uni.redirectTo({
-					url: "../MyProject"
+					url: "./MyProjects"
 				})
 			},1000)
 			
@@ -184,7 +184,7 @@ export default {
 		if(!getApp().globalData.gUserInfo.signedContract)
 		{
 			uni.redirectTo({
-				url: "../Contract",
+				url: "Contract",
 				success: () => {
 					this.gToastError("请先签署合同")
 				}
@@ -200,7 +200,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.up-resource
+.up-project
 	position relative
 	min-height 96vh
 	padding 20rpx 0
@@ -224,6 +224,7 @@ export default {
 			color var(--origin2)
 			font-size 30rpx
 			font-weight 600
+	/* 每个模块共同样式 */
 	.content
 		margin 0 20rpx 66px
 		padding 20rpx 60rpx

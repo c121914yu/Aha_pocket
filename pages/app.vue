@@ -3,7 +3,7 @@
 		<!-- 用户须知 -->
 		<UserAgreement 
 			v-if="!signedNotice"
-			@readed="signedNotice=true">
+			@readed="successSign">
 		</UserAgreement>
 		<TabBar 
 			:currentNav="currentNav"
@@ -11,6 +11,7 @@
 		</TabBar>
 		<!-- 主页 -->
 		<ProjectHome 
+			ref="projectHome"
 			v-show="currentNav === 0"
 			v-if="navs[currentNav].loaded">
 		</ProjectHome>
@@ -40,7 +41,7 @@ import Epiboly from "./Epiboly/Epiboly"
 import Self from "./Self/Self"
 export default {
 	data() {
-		const signedNotice = getApp().globalData.gUserInfo.signedNotice
+		const signedNotice = getApp().globalData.gUserInfo.signedNotice || false
 		return {
 			/* 
 				第一次不直接加载界面，防止加载时间过长
@@ -52,11 +53,27 @@ export default {
 				{name: "Epiboly",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 3,
+			currentNav: 0,
 			signedNotice
 		}
 	},
 	methods: {
+		/* 完成协议签署 */
+		successSign()
+		{
+			this.signedNotice = true
+			this.loadCompetitionInfo()
+			this.$refs.projectHome.initProjects()
+		},
+		/* 加载比赛信息 */
+		loadCompetitionInfo()
+		{
+			if(this.signedNotice)
+				getAllCompetition()
+				.then(res => {
+					getApp().globalData.Matches = res.data
+				})
+		},
 		/* 
 			name: 路由加载
 			description: 加载指定下标的路由
@@ -87,12 +104,21 @@ export default {
 		}
 	},
 	onLoad() {
-		getAllCompetition()
-		.then(res => {
-			getApp().globalData.Matches = res.data
-		})
-		this.loadNav()
 		console.log(getApp().globalData.gUserInfo)
+		this.loadCompetitionInfo()
+		this.loadNav()
+	},
+	/* 仅主页允许下拉刷新和触底加载 */
+	onPullDownRefresh() {
+		if(this.currentNav === 0)
+			this.$refs.projectHome.initProjects()
+		else
+			uni.stopPullDownRefresh()
+	},
+	onReachBottom(){
+		if(this.currentNav !== 0)
+			return
+		this.$refs.projectHome.loadMore()
 	},
 	components:{
 		ProjectHome,

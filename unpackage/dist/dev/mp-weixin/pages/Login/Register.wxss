@@ -45,7 +45,7 @@
 .register .bottom .card.data-v-c728e9fc {
   -webkit-transform: translateY(-5vh);
           transform: translateY(-5vh);
-  width: 80%;
+  width: 75%;
   padding: 5%;
   background-color: var(--white2);
   -webkit-border-radius: 50rpx;

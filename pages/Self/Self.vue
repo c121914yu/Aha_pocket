@@ -49,7 +49,7 @@
 			<navigator
 				hover-class="hoverScale"
 				hover-stay-time	="50"
-				url="/pages/Project/MyProject">
+				url="/pages/Project/MyProjects">
 				我的资源
 			</navigator>
 			<navigator

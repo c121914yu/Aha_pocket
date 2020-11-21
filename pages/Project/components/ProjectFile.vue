@@ -26,7 +26,8 @@
 				backgroundColor="#FFFFFF"
 				activeColor="#f8b86b"
 				active="true"
-				active-mode="forwards"/>
+				active-mode="forwards"
+				duration="5"/>
 			<!-- 操作及提示 -->
 			<view class="control">
 				<text v-if="file.status === 0" class="text">待上传</text>
@@ -118,8 +119,8 @@ export default {
 				() => {
 					deleteResource(this.files[index].id)
 					.then(res => {
-						console.log(res)
 						this.files.splice(index,1)
+						this.gToastSuccess("删除成功")
 					})
 				}
 			)

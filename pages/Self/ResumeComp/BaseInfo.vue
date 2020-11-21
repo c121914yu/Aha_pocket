@@ -49,14 +49,14 @@
 						class="female iconfont icon-icfemale"
 						style="color: #188cc9">
 					</text>
-					<radio class="radio" value="男" color="#f8b86b" checked="true"/>
+					<radio class="radio" value="男" color="#f8b86b" :checked="gender === '男'"/>
 				</label>
 				<label>
 					<text 
 						class="male iconfont icon-icmale"
 						style="color: #ce5d91">
 					</text>
-					<radio class="radio" value="女" color="#f8b86b"/>
+					<radio class="radio" value="女" color="#f8b86b" :checked="gender === '女'"/>
 				</label>
 			</radio-group>
 		</view>

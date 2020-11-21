@@ -25,7 +25,6 @@ function gToastError(title,mask=false,duration=1500){
 	uni.showToast({
 		title,
 		image: "/static/icon/close.png",
-		// image: "/static/icon/close.png",
 		mask,
 		duration
 	})
@@ -83,7 +82,7 @@ function gUploadFile(url,name,signature){
       },
       success: (res) => {
         if(res.statusCode === 204)
-          resolve(filename)
+          resolve(getApp().globalData.ossHost + filename)
          else
           reject(err)
       },
@@ -103,9 +102,7 @@ function gUploadFile(url,name,signature){
 */
 function gPutUserInfo(data){
 	for(let key in data)
-	{
 		getApp().globalData.gUserInfo.userInfo[key] = data[key]
-	}
 	console.log(getApp().globalData.gUserInfo);
 	return {...getApp().globalData.gUserInfo}
 }

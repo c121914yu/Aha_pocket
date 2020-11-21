@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   CodeInput: function() {
-    return __webpack_require__.e(/*! import() | components/CodeInput/CodeInput */ "components/CodeInput/CodeInput").then(__webpack_require__.bind(null, /*! @/components/CodeInput/CodeInput.vue */ 103))
+    return __webpack_require__.e(/*! import() | components/CodeInput/CodeInput */ "components/CodeInput/CodeInput").then(__webpack_require__.bind(null, /*! @/components/CodeInput/CodeInput.vue */ 119))
   }
 }
 var render = function() {
@@ -269,21 +269,16 @@ var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {return { p
       };
       (0, _api_login.Register)(data).
       then(function (res) {
+        _this2.gToastSuccess(res.msg);
         console.log(res);
         /* 储存token */
         uni.setStorageSync("token", res.data.token);
         /* 储存个人信息 */
-        getApp().globalData.gUserInfo = res.data.userInfo;
+        getApp().globalData.gUserInfo = res.data.personalUserInfo;
         /* 跳转主页 */
         uni.reLaunch({
-          url: "../app",
-          success: function success() {
-            _this2.gToastSuccess(res.msg);
-          } });
+          url: "../app" });
 
-      }).
-      catch(function (err) {
-        console.log(err);
       });
     } },
 

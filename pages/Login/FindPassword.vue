@@ -135,10 +135,12 @@ export default {
 				}
 				ChangePassword(data)
 				.then(res => {
-					uni.navigateBack({
-						delta: 1
-					})
 					this.gToastSuccess(res.msg)
+					setTimeout(() => {
+						uni.navigateBack({
+							delta: 1,
+						})
+					},500)
 				})
 			}
 		}
@@ -216,7 +218,7 @@ export default {
 		align-items center
 		.card
 			transform translateY(-5vh)
-			width 80%
+			width 75%
 			padding 5%
 			background-color var(--white2)
 			border-radius 50rpx

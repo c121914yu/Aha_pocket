@@ -1983,7 +1983,6 @@ function gToastError(title) {var mask = arguments.length > 1 && arguments[1] !==
   uni.showToast({
     title: title,
     image: "/static/icon/close.png",
-    // image: "/static/icon/close.png",
     mask: mask,
     duration: duration });
 
@@ -2041,7 +2040,7 @@ function gUploadFile(url, name, signature) {
 
       success: function success(res) {
         if (res.statusCode === 204)
-        resolve(filename);else
+        resolve(getApp().globalData.ossHost + filename);else
 
         reject(err);
       },
@@ -2060,10 +2059,8 @@ function gUploadFile(url, name, signature) {
   					userInfo: Object,新的userInfo
   */
 function gPutUserInfo(data) {
-  for (var key in data)
-  {
-    getApp().globalData.gUserInfo.userInfo[key] = data[key];
-  }
+  for (var key in data) {
+    getApp().globalData.gUserInfo.userInfo[key] = data[key];}
   console.log(getApp().globalData.gUserInfo);
   return _objectSpread({}, getApp().globalData.gUserInfo);
 }
@@ -8253,15 +8250,13 @@ function myRequest(url, method, data) {
         uni.hideLoading();
         console.log("服务器错误");
         console.log(err.data);
-        _globalFun.default.gToastError("请求错误");
+        _globalFun.default.gToastError("服务器错误");
         rej(err);
       },
       complete: function complete(result) {
         /* 判断是否有新token,有则替换旧的token */
         if (result.header.Authorization)
-        {
-          uni.setStorageSync("token", result.header.Authorization);
-        }
+        uni.setStorageSync("token", result.header.Authorization);
       } });
 
   });
@@ -8292,18 +8287,18 @@ var getAvatarOssSignature = function getAvatarOssSignature(data) {return (0, _re
 
 /***/ }),
 
-/***/ 210:
+/***/ 237:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 211);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 238);
 
 /***/ }),
 
-/***/ 211:
+/***/ 238:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -8334,7 +8329,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 212);
+module.exports = __webpack_require__(/*! ./runtime */ 239);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -8351,7 +8346,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 212:
+/***/ 239:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -9165,7 +9160,7 @@ var getResume = function getResume(phone) {return (0, _request.default)("/resume
 
 /***/ }),
 
-/***/ 78:
+/***/ 86:
 /*!**************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
   \**************************************************/
@@ -9173,7 +9168,7 @@ var getResume = function getResume(phone) {return (0, _request.default)("/resume
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteResource = exports.postResource = exports.getProject = exports.getProjects = exports.postProject = exports.getPublicSignature = exports.getFilesSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteResource = exports.postResource = exports.cancleCollectProject = exports.collectProject = exports.deleteProject = exports.putProject = exports.getProject = exports.getProjects = exports.postProject = exports.getPublicSignature = exports.getFilesSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 获取上传文件签名 */
 var getFilesSignature = function getFilesSignature(projectId) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private"), "GET", {});};
@@ -9185,18 +9180,27 @@ var postProject = function postProject(data) {return (0, _request.default)("/pro
 /* 
                                                                                                         	获取所有项目粗略信息表
                                                                                                         	params:
+                                                                                                        				pageNum： 第几页
+                                                                                                        				pageSize: 每页的条数
                                                                                                         				获取范围（某个用户或全部)
-                                                                                                        				分页
                                                                                                         				排序模式
                                                                                                         				筛选模式
                                                                                                         */exports.postProject = postProject;
-var getProjects = function getProjects() {return (0, _request.default)("/project/getAllProjectPageable ", "GET", {});};
+var getProjects = function getProjects(_ref) {var pageNum = _ref.pageNum,pageSize = _ref.pageSize;return (0, _request.default)("/project?pageNum=".concat(pageNum, "&pageSize=").concat(pageSize), "GET", {});};
 /* 获取项目详细信息 */exports.getProjects = getProjects;
 var getProject = function getProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
+/* 更新项目详细信息 */exports.getProject = getProject;
+var putProject = function putProject(projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
+/* 删除项目 */exports.putProject = putProject;
+var deleteProject = function deleteProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
+/* 收藏项目 */exports.deleteProject = deleteProject;
+var collectProject = function collectProject(projectId) {return (0, _request.default)("/project/collection/{projectId} ", "POST", {});};
+/* 取消项目 */exports.collectProject = collectProject;
+var cancleCollectProject = function cancleCollectProject(projectId) {return (0, _request.default)("/project/collection/{projectId} ", "DELECT", {});};
 
-/* 创建项目的资源信息 */exports.getProject = getProject;
+/* 创建项目的资源信息 */exports.cancleCollectProject = cancleCollectProject;
 var postResource = function postResource(projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
-/* 删除项目 */exports.postResource = postResource;
+/* 删除资源 */exports.postResource = postResource;
 var deleteResource = function deleteResource(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "DELETE", {});};
 
 /* 创建成员 */exports.deleteResource = deleteResource;

@@ -12,7 +12,7 @@
 		<!-- 头像 -->
 		<view class="logo">
 			<image 
-				:src="project.logoUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'" 
+				:src="project.avatarUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'" 
 				mode="widthFix">
 			</image>
 		</view>
@@ -41,12 +41,17 @@
 				</view>
 			</view>
 			<!-- 收藏按键 -->
-			<text class="collection iconfont icon-collection"></text>	
+			<text 
+				v-if="showCollect" 
+				class="collection iconfont icon-collection" 
+				@click.stop="collect">
+			</text>	
 		</view>
 	</view>
 </template>
 
 <script>
+import { collectProject,cancleCollectProject } from "@/static/request/api_project.js"
 export default {
 	props: {
 		project: {
@@ -68,6 +73,10 @@ export default {
 		radius: {
 			type: String,
 			default: "0"
+		},
+		showCollect: {
+			type: Boolean,
+			default: false
 		}
 	},
 	computed: {
@@ -84,6 +93,12 @@ export default {
 				return ""
 			return this.project.tags.replace(" ",",")
 		}
+	},
+	methods: {
+		collect()
+		{
+			console.log(this.project);
+		}
 	}
 }
 </script>
@@ -93,6 +108,7 @@ export default {
 	background-color #FFFFFF
 	padding 5px
 	display flex
+	align-items center
 	.ranking
 		color var(--origin2)
 		font-size 40rpx
