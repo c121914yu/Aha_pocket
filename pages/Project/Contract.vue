@@ -2,7 +2,7 @@
 <template>
 	<view class="contract">
 		<view class="center h3">Aha口袋用户合同</view>
-		<view class="content">
+		<view class="content" v-if="!showSign">
 			<view class="strong">一、总则</view>
 			<view>Aha口袋是面向浙江工业大学在读学生的科研项目及衍生孵化作品分享平台，主要运营模式是由用户在本平台上传资源，继而由平台对上传内容在一定范围内进行资源共享，以实现浙江工业大学相关科研项目的可持续发展，满足浙江工业大学在校师生和校友的科研需求。本合同手写部分与打印部分具有相同效力。</view>
 			<view>（1）甲方为乙方提供上传空间及在线分享渠道，并基于上传资源价值给予乙方平台贡献点，乙方向甲方提供上传资源。</view>
@@ -14,7 +14,11 @@
 			</view>
 			<view class="signature-view">
 				签名：
-				<image v-if="signUrl" :src="signUrl" mode="widthFix"></image>
+				<image 
+					v-if="signUrl" 
+					:src="signUrl" 
+					mode="widthFix">
+				</image>
 			</view>
 		</view>
 		<button style="background-color: #5d7092;" @click="showSign = true">进入签名</button>
@@ -77,9 +81,11 @@ export default {
 					const data = JSON.parse(res.data)
 					uni.setStorageSync("token",data.data.token)
 					getApp().globalData.gUserInfo.signedContract = true
-					this.gToastSuccess(data.msg)
 					uni.redirectTo({
-						url: "UpProject"
+						url: "UpProject",
+						success: () => {
+							this.gToastSuccess(data.msg)
+						}
 					})
 				},
 				fail: (err) => {

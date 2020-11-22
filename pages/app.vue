@@ -53,8 +53,22 @@ export default {
 				{name: "Epiboly",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 0,
+			currentNav: 3,
 			signedNotice
+		}
+	},
+	watch:{
+		currentNav: (newNav) => {
+			let text = ""
+			switch(newNav){
+				case 0: text="项目分享";break;
+				case 1: text="竞赛信息";break;
+				case 2: text="服务外包";break;
+				case 3: text="个人信息";break;
+			}
+			uni.setNavigationBarTitle({
+				title: text
+			})
 		}
 	},
 	methods: {
@@ -107,13 +121,6 @@ export default {
 		console.log(getApp().globalData.gUserInfo)
 		this.loadCompetitionInfo()
 		this.loadNav()
-	},
-	/* 仅主页允许下拉刷新和触底加载 */
-	onPullDownRefresh() {
-		if(this.currentNav === 0)
-			this.$refs.projectHome.initProjects()
-		else
-			uni.stopPullDownRefresh()
 	},
 	onReachBottom(){
 		if(this.currentNav !== 0)

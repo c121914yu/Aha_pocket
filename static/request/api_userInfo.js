@@ -9,9 +9,14 @@ const signNotice = (data) => request("/sign/notice","GET",data)
 /* 获取头像上传签名 */
 const getAvatarOssSignature = (data) => request("/userInfo/avatar/sign/upload","GET",data)
 
+/* 根据手机号获取用户详细信息 */
+const getUser = (phone) => request("/userInfo/" + phone,"GET",{})
+
 export {
 	getMe,
 	putMe,
 	signNotice,
 	getAvatarOssSignature,
+	
+	getUser
 }

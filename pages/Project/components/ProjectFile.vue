@@ -133,6 +133,8 @@ export default {
 	 {
 		 if(this.files.length === 0)
 			 return
+		 if(this.btnText === "已全部上传")
+			return
 		 this.uploading = true
 		 
 		 /* 请求服务器更新资源状态 */

@@ -23,9 +23,9 @@
 			<!-- 资源名称 -->
 			<view class="name strong">{{project.name}}</view>
 			<!-- 获奖信息 -->
-			<view class="prize" v-if="project.compName">
-				<view class="prize-name"><text class="strong">获奖赛事: </text>{{project.compName}}</view>
-				<view class="grade">{{project.prize.time}} {{project.awardLevel}}</view>
+			<view class="prize" v-if="project.compId !== 0">
+				<view class="strong">{{compName}}</view>
+				<view>{{project.awardTime}} {{awardLevel}}</view>
 			</view>
 			<!-- 标签 -->
 			<view class="tags">{{tags}}</view>
@@ -87,6 +87,19 @@ export default {
 				case 3: return "icon-third"
 				default: return ""
 			}
+		},
+		compName(){
+			if(this.project.compId !== 0){
+				const match = getApp().globalData.Matches.find(match => match.compTagId === this.project.compId)
+				if(match)
+					return match.name
+			}
+			return ""
+		},
+		awardLevel(){
+			if(!this.project.awardLevel)
+				return ""
+			return getApp().globalData.prizeGrades.find(item => item.value === this.project.awardLevel).label
 		},
 		tags(){
 			if(!this.project.tags)

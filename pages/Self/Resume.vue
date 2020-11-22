@@ -49,7 +49,7 @@ export default {
 			input: null
 			return: null
 		*/
-		commitResume()
+		commitResume(show=false)
 		{
 			const data = {
 				// 基础信息表
@@ -81,7 +81,8 @@ export default {
 			getApp().globalData.gResume = {...data}
 			putResume(data)
 			.then(res => {
-				this.gToastSuccess("简历保存成功")
+				if(show)
+					this.gToastSuccess("简历保存成功")
 			})
 		},
 		/*
@@ -94,7 +95,7 @@ export default {
 		{
 			this.commitResume()
 			uni.navigateTo({
-				url: "./ResumePreview"
+				url: "./ResumePreview?load=0"
 			})
 		}
 	},
@@ -103,14 +104,19 @@ export default {
 		.then(res => {
 			getApp().globalData.gResume = res.data
 			this.loaded = true
-			timer = setInterval(() => {
-				this.commitResume()
-			},30000)
 		})
+	},
+	onShow() {
+		timer = setInterval(() => {
+			this.commitResume()
+		},30000)
 	},
 	beforeDestroy() {
 		clearInterval(timer)
 		this.commitResume()
+	},
+	onHide() {
+		clearInterval(timer)
 	},
 	components:{
 		BaseInfo,

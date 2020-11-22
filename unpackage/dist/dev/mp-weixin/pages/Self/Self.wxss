@@ -80,13 +80,13 @@
           flex-wrap: wrap;
 }
 .self .head .right .tags .tag.data-v-bf8d8ef4 {
-  margin: 5px;
-  padding: 3px 10px;
+  margin: 3px;
+  padding: 0 5px;
   -webkit-border-radius: 10px;
           border-radius: 10px;
   background-color: var(--origin1);
   color: #fff;
-  font-size: 20rpx;
+  font-size: 22rpx;
 }
 .self .head .curtain.data-v-bf8d8ef4 {
   position: absolute;

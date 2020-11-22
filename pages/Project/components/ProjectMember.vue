@@ -24,6 +24,7 @@
 import drawList from "./drawList.vue"
 import SetMember from "./SetMember.vue"
 import { postMember,putMember,deleteMember } from "@/static/request/api_project.js"
+import { getUser } from "@/static/request/api_userInfo.js"
 export default {
   data() {
     return {
@@ -49,17 +50,25 @@ export default {
     {
 			if(this.searchText === "")
 				return
+			/* 判断是否已经在成员列表中 */
+			const judge = this.members.find(item => item.memberPhone === this.searchText)
+			if(judge){
+				this.gToastError("改成员已存在")
+				return
+			}
 			/* 搜索用户 */
-      this.memberInfo = {
-				memberPhone: this.searchText,
-        nickname: "edagf",
-				trueName: "余金隆",
-        avatarUrl: getApp().globalData.gUserInfo.userInfo.avatarUrl,
-				school: "浙江工业大学",
-				job: "",
-				editable: false,
-				memberIndex: -1, // -1代表新成员
-      }
+			getUser(this.searchText)
+			.then(res => {
+				const data = res.data
+				this.memberInfo = {
+					memberPhone: this.searchText,
+				  nickname: data.nickname,
+				  avatarUrl: data.avatarUrl || "https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png",
+					job: "",
+					editable: false,
+					memberIndex: -1, // -1代表新成员
+				}
+			})
     },
 		/* 
 			name: 设置成员信息
@@ -97,13 +106,7 @@ export default {
 			/* 新成员 */
 			else if(e.member.memberIndex === -1){
 				const data = {
-					projectId: this.projectId,
 					memberPhone: e.member.memberPhone,
-					nickname: e.member.nickname,
-					nickname: e.member.nickname,
-					trueName: e.member.trueName,
-					avatarUrl: e.member.avatarUrl,
-					school: e.member.school,
 					job: e.member.job,
 					rank: this.members.length+1,
 					editable: e.member.editable,
@@ -111,7 +114,11 @@ export default {
 				// console.log(data);
 				postMember(this.projectId,data)
 				.then(res => {
-					this.members.push(data)
+					this.members.push({
+						...data,
+						nickname: e.member.nickname,
+						avatarUrl: e.member.avatarUrl
+					})
 					setTimeout(() => {
 						this.$refs.drawList.tempList = JSON.parse(JSON.stringify(this.members))
 						this.searchText = ""

@@ -1,8 +1,6 @@
 {
   "navigationBarTitleText": "项目分享",
-  "enablePullDownRefresh": true,
-  "backgroundTextStyle": "dark",
-  "onReachBottomDistance": 200,
+  "onReachBottomDistance": 100,
   "usingComponents": {
     "user-agreement": "/components/UserAgreement/UserAgreement",
     "tab-bar": "/components/TabBar/TabBar",

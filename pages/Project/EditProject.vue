@@ -209,7 +209,7 @@ export default {
 					editable: item.editable
 				}
 			})
-			putMembers(this.project.projectId,data)
+			putMembers(this.project.id,data)
 			.then(res => {
 				this.gToastSuccess("更新成员成功!")
 			})

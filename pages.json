@@ -25,18 +25,11 @@
 			"path": "pages/app",
 			"style": {
 				"navigationBarTitleText": "项目分享",
-				"enablePullDownRefresh": true,
-				"backgroundTextStyle": "dark",
-				"onReachBottomDistance": 200
+				"onReachBottomDistance": 100
 			}
 		},
 		/* 次界面，不含主导航 */
 		{
-			"path": "pages/Self/AccountInfo",
-			"style": {
-				"navigationBarTitleText": "账号信息"
-			}
-		}, {
 			"path": "pages/Self/Resume",
 			"style": {
 				"navigationBarTitleText": "个人简历"
@@ -52,29 +45,32 @@
 				"navigationBarTitleText": "实名认证"
 			}
 		},
+		{
+			"path": "pages/Self/UserHome",
+			"style": {
+				"navigationBarTitleText": "用户信息"
+			}
+		},
 		/* 项目相关 */
 		{
 			"path": "pages/Project/UpProject",
 			"style": {
 				"navigationBarTitleText": "项目创建"
 			}
-		},
-		{
+		}, {
 			"path": "pages/Project/EditProject",
 			"style": {
 				"navigationBarTitleText": "项目编辑"
 			}
-		},
-		{
+		}, {
 			"path": "pages/Project/MyProjects",
 			"style": {
 				"navigationBarTitleText": "我的项目",
 				"enablePullDownRefresh": true, 
 				"backgroundTextStyle": "dark",
-				"onReachBottomDistance": 200
+				"onReachBottomDistance": 100
 			}
-		},
-		{
+		}, {
 			"path": "pages/Project/Project",
 			"style": {
 				"navigationBarTitleText": "项目详情"
@@ -85,6 +81,13 @@
 			"path": "pages/Project/Contract",
 			"style": {
 				"navigationBarTitleText": "Aha口袋用户合同"
+			}
+		},
+		/* 外包 */
+		{
+			"path": "pages/Epiboly/EpibolyDetail",
+			"style": {
+				"navigationBarTitleText": "外包信息"
 			}
 		}
 	],

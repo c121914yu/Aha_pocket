@@ -81,7 +81,7 @@ export default {
 			sortIndex: 0,
 			page: {
 				pageNum: 1,
-				pageSize: 10,
+				pageSize: 20,
 				all: false
 			},
 			loadText: "",
@@ -99,7 +99,7 @@ export default {
 		{
 			this.page = {
 				pageNum: 1,
-				pageSize: 10,
+				pageSize: 20,
 				all: false
 			}
 			getProjects(this.page)
@@ -129,13 +129,13 @@ export default {
 				getProjects(this.page)
 				.then(res => {
 					const data = res.data.pageData
-					if(data.length === 0){
+					this.commands = this.commands.concat(data)
+					if(data.length < this.page.pageSize){
 						this.page.all = true
 						this.loadText = "已加载全部"
 					}
 					else{
 						this.page.pageNum++
-						this.commands = this.commands.concat(data)
 						this.loadText = ""
 					}
 				})
@@ -152,7 +152,7 @@ export default {
 			})
 		}
 	},
-	mounted() {
+	created() {
 		this.initProjects()
 	}
 }

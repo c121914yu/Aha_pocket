@@ -40,7 +40,7 @@ export default {
 			loadText: "",
 			page: {
 				pageNum: 1,
-				pageSize: 10,
+				pageSize: 20,
 				all: false
 			}
 		}
@@ -55,10 +55,15 @@ export default {
 		{
 			this.page = {
 				pageNum: 1,
-				pageSize: 10,
+				pageSize: 20,
 				all: false
 			}
-			getProjects(this.page)
+			console.log(getApp().globalData)
+			getProjects({
+				phone: getApp().globalData.gUserInfo.phone,
+				pageNum: this.page.pageNum,
+				pageSize: this.page.pageSize,
+			})
 			.then(res => {
 				this.page.pageNum++
 				this.projects = res.data.pageData
@@ -117,13 +122,13 @@ export default {
 			getProjects(this.page)
 			.then(res => {
 				const data = res.data.pageData
-				if(data.length === 0){
+				this.projects = this.projects.concat(data)
+				if(data.length < this.page.pageSize){
 					this.page.all = true
 					this.loadText = "已加载全部"
 				}
 				else{
 					this.page.pageNum++
-					this.projects = this.projects.concat(data)
 					this.loadText = ""
 				}
 			})

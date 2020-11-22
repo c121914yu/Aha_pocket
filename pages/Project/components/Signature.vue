@@ -117,13 +117,13 @@ export default {
 			this.ctx.clearRect(0, 0, this.canvasW, this.canvasH)
 			this.ctx.draw(true)
 		},
+		toJSON(){},
 		confirm() {
 			uni.showLoading({
 				title: "生成签名中..."
 			})
 			this.ctx.draw(false,uni.canvasToTempFilePath({
 				canvasId: "signatureCanvas",
-				fileType: "jpg",
 				quality: 1,
 				success: (res) => {
 					this.$emit("confirm",res.tempFilePath)
@@ -140,8 +140,8 @@ export default {
 	created() {
 		uni.getSystemInfo({
 			success: (res) => {
-				this.canvasW = res.windowWidth
-			  this.canvasH = res.windowHeight
+				this.canvasW = res.screenWidth
+			  this.canvasH = res.screenHeight
 			}
 		})
 		this.initCanvas()
@@ -166,6 +166,7 @@ export default {
 		flex 1
 		border 1px solid rgba(144,140,139,0.65)
 		border-radius 5px
+		background-color #FFFFFF
 	.btns
 		padding 10px
 		display flex

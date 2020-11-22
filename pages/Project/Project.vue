@@ -10,7 +10,7 @@
 				class="member"
 				v-for="(member,index) in project.members"
 				:key="index">
-				{{member.trueName}}
+				{{member.nickname}}
 			</view>
 		</view>
 		<!-- 获奖情况 -->
@@ -62,13 +62,12 @@ export default {
 	},
 	computed: {
 		awardLevel(){
-			const grade = getApp().globalData.prizeGrades.find(item => item.value === this.project.awardLevel)
-			if(grade)
-				return grade.label
-			return ""
+			if(!this.project || !this.project.awardLevel)
+				return ""
+			return getApp().globalData.prizeGrades.find(item => item.value === this.project.awardLevel).label
 		},
 		tags(){
-			if(!this.project.tags)
+			if(!this.project || !this.project.tags)
 				return ""
 			return this.project.tags.replace(" ",",")
 		}

@@ -7,7 +7,7 @@
 				<view class="bg bg3"></view>
 				<view class="bg bg2"></view>
 				<view class="bg bg1"></view>
-				<image :src="userInfo.avatarUrl">
+				<image :src="userInfo.avatarUrl|| 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'">
 				</image>
 			</view>
 			<!-- 右侧昵称 & 标签 -->
@@ -50,7 +50,7 @@
 				hover-class="hoverScale"
 				hover-stay-time	="50"
 				url="/pages/Project/MyProjects">
-				我的资源
+				我的项目
 			</navigator>
 			<navigator
 				hover-class="hoverScale"
@@ -84,7 +84,7 @@
 				:url="item.to">
 				<text :class="'iconfont ' + item.icon"></text>
 				<text class="name small">{{item.name}}</text>
-				<text v-if="item.val" class="small val">{{item.val}}</text>
+				<text v-if="!item.to" class="small val">{{item.val}}</text>
 				<text v-else class="right iconfont icon-arrow-right"></text>
 			</navigator>
 		</view>
@@ -105,15 +105,14 @@ import { loginOut } from "@/static/request/api_login.js"
 export default {
 	data() {
 		const userInfo = {...getApp().globalData.gUserInfo.userInfo}
-		userInfo.avatarUrl = userInfo.avatarUrl || "https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png"
 		return {
 			userInfo,
 			/* 标签 */
 			tags: ["前端","挑战杯","商业计划书","运河杯","服务外包"],
 			/* 任务列表 */
 			tasks: [
-				{name: "进行中",icon: "icon-shouye",to: "/pages/Self/AccountInfo"},
-				{name: "已完成",icon: "icon-yiwancheng",to: "/pages/Self/AccountInfo"},
+				{name: "进行中",icon: "icon-shouye",to: "/pages/Self/Authentication"},
+				{name: "已完成",icon: "icon-yiwancheng",to: "/pages/Self/Authentication"},
 				{name: "贡献详情",icon: "icon-icon",to: "/pages/Project/Project"},
 			],
 			/* 功能列表 */
@@ -121,8 +120,8 @@ export default {
 				{name: "贡献值",icon: "icon-icon;",val: getApp().globalData.gUserInfo.contribPoint,to:""},
 				{name: "实名认证",icon: "icon-shimingrenzheng",to:"/pages/Self/Authentication"},
 				{name: "个人简历",icon: "icon-personal",to:"/pages/Self/Resume"},
-				{name: "邀请好友",icon: "icon-iconfontzhizuobiaozhun49",to:"/pages/Self/AccountInfo"},
-				{name: "联系管理员",icon: "icon-lianxikefu",to:"/pages/Self/AccountInfo"},
+				{name: "邀请好友",icon: "icon-iconfontzhizuobiaozhun49",to:"/pages/Self/Authentication"},
+				{name: "联系管理员",icon: "icon-lianxikefu",to:"/pages/Self/Authentication"},
 			],
 			isCheckTags: false, // 是否进入选择标签
 		}
@@ -158,7 +157,7 @@ export default {
 		{
 			/* 进入操作菜单 */
 			uni.showActionSheet({
-				itemList: ['预览头像', '修改头像'],
+				itemList: ["预览头像", "修改头像","查看个人信息"],
 				success:  (res) => {
 					/* 预览头像 */
 					if(res.tapIndex === 0)
@@ -203,6 +202,11 @@ export default {
 								  }
 								})
 							}
+						})
+					}
+					else if(res.tapIndex === 2){
+						uni.navigateTo({
+							url: "Self/UserHome?phone=" + getApp().globalData.gUserInfo.phone
 						})
 					}
 				},
@@ -285,12 +289,12 @@ bgSetting(size,color)
 				display flex
 				flex-wrap wrap
 				.tag
-					margin 5px
-					padding 3px 10px
+					margin 3px
+					padding 0 5px
 					border-radius 10px
 					background-color var(--origin1)
 					color #FFFFFF
-					font-size 20rpx
+					font-size 22rpx
 		/* 幕布 */
 		.curtain
 			position absolute

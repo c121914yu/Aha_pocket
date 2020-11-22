@@ -4,7 +4,7 @@
 		<view class="content">
 			<view class="head">
 				<text class="h3">实名信息</text>
-				<text class="state unauth">*未验证</text>
+				<text class="state" :class="stateObj.class">*{{stateObj.msg}}</text>
 			</view>
 			<InputInfo
 				title="姓&emsp;名"
@@ -61,13 +61,23 @@
 export default {
 	data() {
 		return {
-			state: 3, // 0未验证，1验证中，2验证失败，3验证通过
+			state: 0, // 0未验证，1验证中，2验证失败，3验证通过
 			name: "",
 			phone: getApp().globalData.gUserInfo.phone,
 			identify: "学生",
 			identifyFront: "",
 			identifyBack: "",
 			identifyStu: "",
+		}
+	},
+	computed: {
+		stateObj(){
+			switch(this.state){
+				case 0: return{msg:"未验证",class:"unauth"};break;
+				case 1: return{msg:"验证中",class:"authing"};break;
+				case 2: return{msg:"验证失败",class:"authErr"};break;
+				case 3: return{msg:"验证通过",class:"authed"};break;
+			}
 		}
 	},
 	methods: {

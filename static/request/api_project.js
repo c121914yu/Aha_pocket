@@ -16,7 +16,7 @@ const postProject = (data) => request("/project","POST",data)
 				排序模式
 				筛选模式
 */
-const getProjects = ({pageNum,pageSize}) => request(`/project?pageNum=${pageNum}&pageSize=${pageSize}`,"GET",{})
+const getProjects = ({phone,pageNum,pageSize}) => request(`/project?phone=${phone}&pageNum=${pageNum}&pageSize=${pageSize}`,"GET",{})
 /* 获取项目详细信息 */
 const getProject = (projectId) => request(`/project/${projectId}`,"GET",{})
 /* 更新项目详细信息 */

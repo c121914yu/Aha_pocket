@@ -1,6 +1,6 @@
 <!-- 简历预览 -->
 <template>
-	<view class="preview">
+	<view v-if="loaded" class="preview">
 		<!-- 下载按键 -->
 		<icon 
 			class="download" 
@@ -115,17 +115,33 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import { getResume } from '@/static/request/api_resume.js'
 export default {
 	data(){
-		/* 批量导入简历数据 */
-		const resume = {...getApp().globalData.gResume}
-		// 计算年龄
-		let age = Math.floor((Date.now() - new Date(resume.birth)) / 1000 / 60 / 60 / 24 / 365)
-		age += "岁"
 		return{
-			age,
-			...resume
+			loaded: false,
+			name: "",
+			phone: "",
+			email: "",
+			gender: "",
+			birth: "",
+			highestDegree: "",
+			identity: "",
+			currentGrade: "",
+			workPlace: "",
+			profession: "",
+			eduExperiences: [],
+			schoolExperiences: [],
+			projectExperiences: [],
+			practiceExperiences: [],
+			projectSkill: "",
+			honors: [],
+			intro: ""
+		}
+	},
+	computed: {
+		age(){
+			return Math.floor((Date.now() - new Date(this.birth)) / 1000 / 60 / 60 / 24 / 365)
 		}
 	},
 	methods: {
@@ -139,6 +155,17 @@ export default {
 		download()
 		{
 			
+		}
+	},
+	onLoad(e) {
+		if(e.load == 0){
+			const resume = getApp().globalData.gResume
+			for(let key in resume)
+				this[key] = resume[key]
+			this.loaded = true
+		}
+		else{
+			console.log(e);
 		}
 	}
 }

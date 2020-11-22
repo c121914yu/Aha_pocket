@@ -16,7 +16,7 @@
 				<view class="select-box">
 					<view 
 						class="item" 
-						v-for="(tag,index) in selfTags" 
+						v-for="(tag,index) in specialtyTags" 
 						:key="index"
 						@click="selectTag(tag)">
 						<text class="strong">{{tag.text}}</text>
@@ -34,7 +34,7 @@
 				<view class="select-box">
 					<view 
 						class="item compete" 
-						v-for="(tag,index) in competeTags" 
+						v-for="(tag,index) in compTags" 
 						:key="index"
 						@click="selectTag(tag)">
 						<view class="strong">{{tag.text}}</view>
@@ -58,42 +58,52 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				selfTags: [
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-				],
-				competeTags: [
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-					{text: "标签",select: false},
-				],
-			}
+import { putMe } from "@/static/request/api_userInfo.js"
+export default {
+	data() {
+		return {
+			specialtyTags: [
+				{text: "前端",select: false},
+				{text: "后端",select: false},
+				{text: "爬虫",select: false},
+				{text: "视觉",select: false},
+				{text: "图像处理",select: false},
+				{text: "大数据分析",select: false},
+				{text: "PPT",select: false},
+				{text: "商业模式",select: false},
+			],
+			compTags: [
+				{text: "互联网+",select: false},
+				{text: "挑战杯",select: false},
+				{text: "服务外包",select: false},
+				{text: "电子商务",select: false},
+				{text: "数据挖掘大赛",select: false},
+				{text: "智能车竞赛",select: false},
+				{text: "机器人竞赛",select: false},
+				{text: "运河杯",select: false},
+			],
+		}
+	},
+	methods: {
+		/* 点击标签，切换选中状态 */
+		selectTag(tag){
+			tag.select = !tag.select
 		},
-		methods: {
-			selectTag(tag){
-				tag.select=!tag.select
-			},
-			sure(){
-				const interest = this.selfTags.concat(this.competeTags).filter(item => item.select)
-				console.log(interest)
-				this.$emit("close")
-			}
+		/* 点击确认 */
+		sure(){
+			const specialtyTags = this.specialtyTags.filter(item => item.select).map(item => item.text).join(",")
+			const compTags = this.compTags.filter(item => item.select).map(item => item.text).join(",")
+			putMe({
+				specialtyTags,
+				compTags
+			})
+			.then(res => {
+				console.log(res);
+			})
+			// this.$emit("close")
 		}
 	}
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -102,8 +112,8 @@
 	position fixed
 	top 0
 	left 0
-	height 100vh
-	width 100vw
+	right 0
+	bottom 0
 	animation show .6s ease
 	@keyframes show
 		0%
@@ -119,21 +129,21 @@
 		background-color rgba(0,0,0,0.3)
 	.content
 		position relative
-		z-index 999
+		z-index 100
 		margin-top 10vh
 		height 90vh
 		width 100%
 		background-image linear-gradient(#fffef7, #f7d7b9)
-		border-top-left-radius 30px
-		border-top-right-radius 30px
-		::-webkit-scrollbar
+		border-top-left-radius 22px
+		border-top-right-radius 22px
+		::.
 			width 0
 			height 0
 			color transparent
 		.h3
-			margin-bottom 70rpx
+			margin-bottom 20rpx
 			padding 20px
-			color var(--font-dark)
+			color var(--origin1)
 		.arrow-right
 			position absolute
 			right 20px
@@ -144,14 +154,13 @@
 			.icon
 				line-height 0.8
 				font-size 100rpx
-				color var(--button-bg)
+				color var(--origin2)
 				text-shadow var(--shadow2)
 			.text
-				color var(--origin-font)
+				color var(--origin2)
 		.select
 			width 100%
 			height 100%
-			padding 0 40rpx 340rpx
 			overflow-y scroll
 			.title
 				position relative
@@ -159,14 +168,14 @@
 				display flex
 				align-items center
 				justify-content center
-				color #f39800
+				color var(--origin2)
 				&::before
 					content ''
 					position absolute
 					margin-left -80px
 					width 22%
 					height 2px
-					background-color var(--origin-font)
+					background-color var(--origin2)
 					border-radius 10px
 				&::after
 					content ''
@@ -174,24 +183,29 @@
 					margin-left 80px
 					width 22%
 					height 2px
-					background-color var(--origin-font)
+					background-color var(--origin2)
 					border-radius 10px
 			.select-box
-				margin-bottom 40rpx
+				margin-bottom 20px
+				&:last-child
+					margin-bottom 170px
+				padding 0 20px
 				display grid
 				grid-template-columns 1fr 1fr
 				grid-gap 15px
 				.item
 					height 45px
+					width calc(100% - 25px)
 					padding 0 10px 0 15px
-					background-color #f8d99f
-					border-radius 15px
+					background-color var(--origin3)
+					border-radius 16px
 					box-shadow var(--shadow2)
+					font-size 26rpx
 					display flex
 					align-items center
 					justify-content space-between
 					&.compete
-						height 80px
+						height 70px
 						padding 10px 10px 10px 15px
 						align-items flex-start
 						.strong
@@ -225,5 +239,5 @@
 				width 70%
 				font-size 32rpx
 				color #FFFFFF
-				background-color var(--button-bg)
+				background-color var(--origin2)
 </style>

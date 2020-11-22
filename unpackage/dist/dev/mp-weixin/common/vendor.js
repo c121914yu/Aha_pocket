@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7676,7 +7676,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7697,14 +7697,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7790,7 +7790,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8274,7 +8274,7 @@ myRequest;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 获取个人信息 */
 var getMe = function getMe(data) {return (0, _request.default)("/userInfo/me", "GET", data);};
@@ -8283,22 +8283,25 @@ var putMe = function putMe(data) {return (0, _request.default)("/userInfo/me", "
 /* 签署须知协议 */exports.putMe = putMe;
 var signNotice = function signNotice(data) {return (0, _request.default)("/sign/notice", "GET", data);};
 /* 获取头像上传签名 */exports.signNotice = signNotice;
-var getAvatarOssSignature = function getAvatarOssSignature(data) {return (0, _request.default)("/userInfo/avatar/sign/upload", "GET", data);};exports.getAvatarOssSignature = getAvatarOssSignature;
+var getAvatarOssSignature = function getAvatarOssSignature(data) {return (0, _request.default)("/userInfo/avatar/sign/upload", "GET", data);};
+
+/* 根据手机号获取用户详细信息 */exports.getAvatarOssSignature = getAvatarOssSignature;
+var getUser = function getUser(phone) {return (0, _request.default)("/userInfo/" + phone, "GET", {});};exports.getUser = getUser;
 
 /***/ }),
 
-/***/ 237:
+/***/ 249:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 238);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 250);
 
 /***/ }),
 
-/***/ 238:
+/***/ 250:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -8329,7 +8332,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 239);
+module.exports = __webpack_require__(/*! ./runtime */ 251);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -8346,7 +8349,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 239:
+/***/ 251:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -9137,7 +9140,7 @@ var getAllCompetition = function getAllCompetition() {return (0, _request.defaul
 
 /***/ }),
 
-/***/ 61:
+/***/ 53:
 /*!*************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_resume.js ***!
   \*************************************************/
@@ -9186,7 +9189,7 @@ var postProject = function postProject(data) {return (0, _request.default)("/pro
                                                                                                         				排序模式
                                                                                                         				筛选模式
                                                                                                         */exports.postProject = postProject;
-var getProjects = function getProjects(_ref) {var pageNum = _ref.pageNum,pageSize = _ref.pageSize;return (0, _request.default)("/project?pageNum=".concat(pageNum, "&pageSize=").concat(pageSize), "GET", {});};
+var getProjects = function getProjects(_ref) {var phone = _ref.phone,pageNum = _ref.pageNum,pageSize = _ref.pageSize;return (0, _request.default)("/project?phone=".concat(phone, "&pageNum=").concat(pageNum, "&pageSize=").concat(pageSize), "GET", {});};
 /* 获取项目详细信息 */exports.getProjects = getProjects;
 var getProject = function getProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
 /* 更新项目详细信息 */exports.getProject = getProject;
