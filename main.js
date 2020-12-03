@@ -13,6 +13,7 @@ Vue.prototype.gToastSuccess = globalFun.gToastSuccess
 Vue.prototype.gShowModal = globalFun.gShowModal
 Vue.prototype.gUploadFile = globalFun.gUploadFile
 Vue.prototype.gPutUserInfo = globalFun.gPutUserInfo
+Vue.prototype.gLoading = globalFun.gLoading
 
 const app = new Vue({
 	...App

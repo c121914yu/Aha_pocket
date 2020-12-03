@@ -38,17 +38,23 @@
 			<!-- 第三方登录内容 -->
 			<view class="small other">
 				<view class="strong">第三方登录</view>
-				<button class="iconfont icon-weixin weixin" open-type="getUserInfo" @getuserinfo="wxLogin"></button>
+				<button 
+					class="iconfont icon-weixin weixin" 
+					open-type="getUserInfo" 
+					@getuserinfo="wxLogin">
+				</button>
 				<view style="color: var(--gray2);">微信登录</view>
 				<view style="margin-top:10rpx;color:var(--gray2);">登录后需要同意<text style="color: var(--origin2);">Aha口袋用户使用协议</text>才可使用</view>
 			</view>
 		</view>
+    <!-- 加载动画 -->
+    <Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { Login,WXLogin } from "../..//static/request/api_login.js"
-import { getMe } from "../..//static/request/api_userInfo.js"
+import { Login,WXLogin } from "@/static/request/api_login.js"
+import { getMe } from "@/static/request/api_userInfo.js"
 export default {
 	data() {
 		return {
@@ -58,31 +64,35 @@ export default {
 		}
 	},
 	methods: {
-		loginSuccess(){
+		loginSuccess(data){
+      getApp().globalData.gUserInfo = data
 			this.gToastSuccess("登录成功")
 			uni.reLaunch({
 				url: "../app",
 			})
+      this.gLoading(this,false)
 		},
 		login(){
 			if(this.phone === "")
-			{
 				this.gToastError("手机号不能为空")
-			}
 			else
 			{
+        this.gLoading(this,true)
 				Login({
 					phone: this.phone,
 					password: this.password
 				})
 				.then(res => {
 					uni.setStorageSync("token",res.data.token)
-					getApp().globalData.gUserInfo = res.data.personalUserInfo
-					this.loginSuccess()
+					this.loginSuccess(res.data.personalUserInfo)
 				})
+        .catch(err => {
+          this.gLoading(this,false)
+        })
 			}
 		},
 		wxLogin(){
+      this.gLoading(this,true)
 			uni.getUserInfo({
 				provider: 'weixin',
 				withCredentials: true,
@@ -92,19 +102,19 @@ export default {
 					uni.login({
 						provider: 'weixin',
 						success: (loginRes) => {
-							const data = {
-								code: loginRes.code,
-								avatarUrl: res.userInfo.avatarUrl,
-								nickName: res.userInfo.nickName,
-							}
 							// 调用wx登录接口，获取token
-							WXLogin(data)
+							WXLogin({
+                code: loginRes.code,
+                avatarUrl: res.userInfo.avatarUrl,
+                nickname: res.userInfo.nickName,
+              })
 							.then(res => {
-								if(res.success){
-									uni.setStorageSync("token",res.data.token)
-									this.loginSuccess()
-								}
+                uni.setStorageSync("token",res.data.token)
+                this.loginSuccess(res.data.personalUserInfo)
 							})
+              .catch(err => {
+                this.gLoading(this,false)
+              })
 						}
 					})
 				}
@@ -115,14 +125,14 @@ export default {
 		/* 检查是否有存储token，验证登录身份 */
 		if(uni.getStorageSync("token"))
 		{
+      this.gLoading(this,true)
 			getMe()
 			.then(res => {
-				getApp().globalData.gUserInfo = res.data
-				this.loginSuccess()
+				this.loginSuccess(res.data)
 			})
-			.catch(err => {
-				uni.clearStorageSync("token")
-			})
+      .catch(err => {
+        this.gLoading(this,false)
+      })
 		}
 	}
 }
@@ -162,7 +172,7 @@ export default {
 		justify-content space-between
 		.card
 			transform translateY(-5vh)
-			width 75%
+			width 80%
 			padding 5%
 			background-color var(--white2)
 			border-radius 22px
@@ -171,7 +181,7 @@ export default {
 				position relative
 				margin 30px 0 10px
 				width 100%
-				padding 0 5px
+				padding 5px
 				border-radius 40px
 				box-shadow var(--shadow-beside)
 				font-size 30rpx

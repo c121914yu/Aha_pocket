@@ -1,7 +1,7 @@
 .self.data-v-bf8d8ef4 {
   min-height: 100vh;
   width: 100%;
-  padding-bottom: 140rpx;
+  padding-bottom: 150rpx;
   background-color: var(--white1);
 /* 头部 */
 /* 核心导航 招募队友 & 资源分享 */
@@ -62,15 +62,17 @@
   background-color: var(--origin2);
 }
 .self .head .right.data-v-bf8d8ef4 {
-  margin-left: 50vw;
+  margin-left: 52vw;
   width: 50vw;
-  padding: 10px;
+  padding: 10px 0;
 }
 .self .head .right .name.data-v-bf8d8ef4 {
   color: var(--origin1);
   font-weight: 600;
   font-size: 38rpx;
   border-bottom: 2px solid var(--origin2);
+  -webkit-border-radius: 0;
+          border-radius: 0;
 }
 .self .head .right .tags.data-v-bf8d8ef4 {
   display: -webkit-box;
@@ -108,15 +110,15 @@
   background-color: var(--origin2);
   -webkit-transform-origin: right top;
           transform-origin: right top;
-  -webkit-animation: curtain1-data-v-bf8d8ef4 0.8s forwards;
-          animation: curtain1-data-v-bf8d8ef4 0.8s forwards;
+  -webkit-animation: curtain1-data-v-bf8d8ef4 0.5s forwards;
+          animation: curtain1-data-v-bf8d8ef4 0.5s forwards;
 }
 .self .head .curtain .two.data-v-bf8d8ef4 {
   background-color: var(--origin2);
   -webkit-transform-origin: left top;
           transform-origin: left top;
-  -webkit-animation: curtain2-data-v-bf8d8ef4 0.8s forwards;
-          animation: curtain2-data-v-bf8d8ef4 0.8s forwards;
+  -webkit-animation: curtain2-data-v-bf8d8ef4 0.5s forwards;
+          animation: curtain2-data-v-bf8d8ef4 0.5s forwards;
 }
 .self .navs.data-v-bf8d8ef4 {
   margin: 10vw 0 20px;
@@ -199,8 +201,8 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  -webkit-animation: funShow-data-v-bf8d8ef4 0.3s forwards;
-          animation: funShow-data-v-bf8d8ef4 0.3s forwards;
+  -webkit-animation: funShow-data-v-bf8d8ef4 0.2s forwards;
+          animation: funShow-data-v-bf8d8ef4 0.2s forwards;
 }
 .self .list .item.data-v-bf8d8ef4:first-child {
   -webkit-border-top-left-radius: 20px;
@@ -215,7 +217,7 @@
           border-bottom-right-radius: 20px;
 }
 .self .list .item .iconfont.data-v-bf8d8ef4 {
-  font-size: 50rpx;
+  font-size: 44rpx;
   color: var(--origin2);
 }
 .self .list .item .right.data-v-bf8d8ef4 {

@@ -1,19 +1,13 @@
 import request from "./request.js"
 
 /* 
-	description: 发送注册验证码
+	description: 发送验证码
 	input: 
 				phone: String,手机号
+        type: String,取值register、changePassword、bindPhone
 	return: null
 */
-const sendRegisterCode = (phone) => request("/sms/sendCode/register/"+phone,"GET",{})
-/* 
-	description: 发送修改密码验证码
-	input: 
-				phone: String,手机号
-	return: null
-*/
-const sendChangePswCode = (phone) => request("/sms/sendCode/changePassword/"+phone,"GET",{})
+const sendCode = (data) => request(`/sms/code/${data.phone}`,"POST",data)
 
 /* 
 	description: 用户注册
@@ -25,17 +19,16 @@ const sendChangePswCode = (phone) => request("/sms/sendCode/changePassword/"+pho
 				token: String
 				userInfo: Object,用户信息
 */
-const Register = (data) => request("/register","POST",data)
+const Register = (data) => request("/register/phone","POST",data)
 
 /* 
 	description: 修改密码
 	input: 
-				phone: String,手机号
-				password: String,密码
+				newPassword: String,新密码
 				code: String,验证码
 	return: null
 */
-const ChangePassword = (data) => request("/changePassword/"+data.phone,"POST",data)
+const ChangePassword = (data) => request(`/changePassword/phone/${data.phone} `,"POST",data)
 
 /* 
 	description: 用户手机登录
@@ -46,7 +39,7 @@ const ChangePassword = (data) => request("/changePassword/"+data.phone,"POST",da
 				token: String
 				userInfo: Object,用户信息
 */
-const Login = (data) => request("/login","POST",data)
+const Login = (data) => request("/login/phone","POST",data)
 
 /* 
 	description: 微信登录
@@ -56,14 +49,13 @@ const Login = (data) => request("/login","POST",data)
 				token: String
 				userInfo: Object,用户信息
 */
-const WXLogin = (data) => request("/wxLogin","POST",data)
+const WXLogin = (data) => request("/login/wechat","POST",data)
 
 /* 退出登录 */
 const loginOut = () => request("/logout ","GET",{})
 
 export {
-	sendRegisterCode,
-	sendChangePswCode,
+	sendCode,
 	Register,
 	ChangePassword,
 	Login,

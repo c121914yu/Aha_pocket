@@ -24,8 +24,8 @@
 			<view class="name strong">{{project.name}}</view>
 			<!-- 获奖信息 -->
 			<view class="prize" v-if="project.compId !== 0">
-				<view class="strong">{{compName}}</view>
 				<view>{{project.awardTime}} {{awardLevel}}</view>
+				<view class="strong">{{compName}}</view>
 			</view>
 			<!-- 标签 -->
 			<view class="tags">{{tags}}</view>
@@ -35,7 +35,7 @@
 					<text class="iconfont icon-readed"></text>
 					<text>{{project.read}}</text>
 				</view>
-				<view>
+				<view style="color: var(--origin1);">
 					<text class="iconfont icon-collection"></text>
 					<text>{{project.collect}}</text>
 				</view>
@@ -97,14 +97,17 @@ export default {
 			return ""
 		},
 		awardLevel(){
-			if(!this.project.awardLevel)
-				return ""
-			return getApp().globalData.prizeGrades.find(item => item.value === this.project.awardLevel).label
+			if(this.project.awardLevel){
+				let res = getApp().globalData.prizeLevels.find(item => item.value === this.project.awardLevel)
+				if(res)
+					return res.label
+			}
+			return ""
 		},
 		tags(){
 			if(!this.project.tags)
 				return ""
-			return this.project.tags.replace(" ",",")
+			return this.project.tags.replace(/\s+/g,",")
 		}
 	},
 	methods: {
@@ -118,6 +121,7 @@ export default {
 
 <style lang="stylus" scoped>
 .project-card
+	min-height 90px
 	background-color #FFFFFF
 	padding 5px
 	display flex

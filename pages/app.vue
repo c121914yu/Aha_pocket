@@ -1,10 +1,13 @@
 <template>
 	<view class="app">
+		<!-- 加载动画 -->
+		<Loading></Loading>
 		<!-- 用户须知 -->
 		<UserAgreement 
 			v-if="!signedNotice"
 			@readed="successSign">
 		</UserAgreement>
+		<!-- 导航 -->
 		<TabBar 
 			:currentNav="currentNav"
 			@navigate="navigate">
@@ -41,7 +44,6 @@ import Epiboly from "./Epiboly/Epiboly"
 import Self from "./Self/Self"
 export default {
 	data() {
-		const signedNotice = getApp().globalData.gUserInfo.signedNotice || false
 		return {
 			/* 
 				第一次不直接加载界面，防止加载时间过长
@@ -54,7 +56,7 @@ export default {
 				{name: "Self",loaded: false},
 			],
 			currentNav: 3,
-			signedNotice
+			signedNotice: getApp().globalData.gUserInfo.signedNotice
 		}
 	},
 	watch:{
@@ -82,11 +84,13 @@ export default {
 		/* 加载比赛信息 */
 		loadCompetitionInfo()
 		{
-			if(this.signedNotice)
-				getAllCompetition()
-				.then(res => {
-					getApp().globalData.Matches = res.data
-				})
+			if(this.signedNotice){
+                getAllCompetition()
+                .then(res => {
+                    console.log(res.data);
+                    getApp().globalData.Matches = res.data
+                })
+            }
 		},
 		/* 
 			name: 路由加载

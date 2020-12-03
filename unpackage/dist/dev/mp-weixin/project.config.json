@@ -28,6 +28,7 @@
       "disablePlugins": [],
       "outputPath": ""
     },
+    "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
@@ -39,6 +40,8 @@
   "appid": "wxafd522b076e38be0",
   "projectname": "竞赛统计",
   "cloudfunctionRoot": "static/cloudfunction/",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "current": -1,
@@ -71,9 +74,9 @@
           "pathName": "pages/Project/MyProject"
         },
         {
-          "name": "合同",
+          "name": "发送通知",
           "id": 3,
-          "pathName": "pages/Project/Contract"
+          "pathName": "pages/Self/Inform_send"
         }
       ]
     }

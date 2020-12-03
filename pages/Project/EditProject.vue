@@ -34,6 +34,8 @@
 		<view class="btn">
 			<button @click="save">保存</button>
 		</view>
+        <!-- 加载动画 -->
+        <Loading ref="loading"></Loading>
 	</view>
 </template>
 
@@ -59,7 +61,7 @@ export default {
 		{
 			/* 获取获奖等级名称 */
 			let awardLevel = ""
-			getApp().globalData.prizeGrades.forEach(item => {
+			getApp().globalData.prizeLevels.forEach(item => {
 				if(item.value === this.project.awardLevel)
 					awardLevel = item.label
 			})
@@ -82,8 +84,17 @@ export default {
 				}
 			})
 			/* 同步成员信息 */
-			this.$refs.memberInfo.members = [].concat(this.project.members)
+			this.$refs.memberInfo.members = this.project.members.map(item => {
+                return {
+                    ...item.memberUser,
+                    memberUserId: item.memberUser.userId,
+                    rank: item.rank,
+                    job: item.job,
+                    editable: item.editable,
+                }
+            })
 			console.log(this.project)
+            this.gLoading(this,false)
 		},
 		/* 
 			name: 保存信息
@@ -100,10 +111,11 @@ export default {
 		/* 更新基本信息 */
 		updateBaseInfo()
 		{
+            this.gLoading(this,true)
 			const base = this.$refs.baseInfo
 			/* 赛事类型和获奖等级需要转化成数值 */
 			let awardLevel = ""
-			getApp().globalData.prizeGrades.find(item => {
+			getApp().globalData.prizeLevels.find(item => {
 				if(item.label === base.awardLevel){
 					awardLevel = item.value
 					return
@@ -141,6 +153,7 @@ export default {
 					.then(res => {
 						this.gToastSuccess("修改成功")
 					})
+                    this.gLoading(this,false)
 				}
 			}
 			
@@ -148,7 +161,6 @@ export default {
 				  /* 获取上传文件签名*/
 				  getPublicSignature()
 				  .then(sign => {
-				    uni.showLoading({ title: "请求中..." })
 				    /* 检查是否是临时路径*/
 				    const reg = /\/tmp\//
 				    /* 上传头像*/
@@ -201,9 +213,10 @@ export default {
 		/* 更新成员信息 */
 		updateMembers()
 		{
+            this.gLoading(this,true)
 			const data = this.$refs.memberInfo.members.map((item,i) => {
 				return {
-					memberPhone: item.memberPhone,
+					memberUserId: item.memberUserId,
 					rank: i+1,
 					job: item.job,
 					editable: item.editable
@@ -211,16 +224,24 @@ export default {
 			})
 			putMembers(this.project.id,data)
 			.then(res => {
+                this.gLoading(this,false)
 				this.gToastSuccess("更新成员成功!")
 			})
+            .catch(err => {
+                this.gLoading(this,false)
+            })
 		}
 	},
 	onLoad(e) {
+        this.gLoading(this,true)
 		getProject(e.id)
 		.then(res => {
 			this.project = res.data
-			this.initPageInfo()
+            this.$nextTick(this.initPageInfo)
 		})
+        .catch(err => {
+            this.gLoading(this,false)
+        })
 	},
 	components: {
 		baseInfo,

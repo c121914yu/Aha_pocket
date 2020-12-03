@@ -17,7 +17,7 @@
 			<view class="center">(工作意愿: {{workPlace}} {{profession}})</view>
 			<!-- 基础信息1 -->
 			<view>
-				{{gender}}&emsp;{{age}}&emsp;{{highestDegree}}{{identity === "学生" ? "在读" : "毕业"}}&emsp;{{currentGrade}}
+				{{gender}}&emsp;{{age}}岁&emsp;{{highestDegree}}{{identity === "学生" ? "在读" : "毕业"}}&emsp;{{currentGrade}}
 			</view>
 			<!-- 基础信息2 -->
 			<view>
@@ -158,14 +158,17 @@ export default {
 		}
 	},
 	onLoad(e) {
-		if(e.load == 0){
-			const resume = getApp().globalData.gResume
+		if(e.userId){
+      getResume(e.userId)
+      .then(res => {
+        console.log(res.data)
+      })
+		}
+		else{
+      const resume = getApp().globalData.gResume
 			for(let key in resume)
 				this[key] = resume[key]
 			this.loaded = true
-		}
-		else{
-			console.log(e);
 		}
 	}
 }

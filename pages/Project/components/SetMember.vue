@@ -4,8 +4,8 @@
 		<view class="content">
 			<text class="h3">成员信息</text>
 			<image :src="member.avatarUrl"></image>
-			<view>姓&emsp;名: <text class="value">{{member.nickname}}</text></view>
-			<view>手机号: <text class="value">{{member.memberPhone}}</text></view>
+            <view>uid: <text class="value">{{member.memberUserId}}</text></view>
+			<view>姓名: <text class="value">{{member.nickname}}</text></view>
 			<!-- 是否允许编辑 -->
 			<view>
 				允许编辑项目: 

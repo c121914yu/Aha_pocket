@@ -2,7 +2,7 @@
 	<!-- 基本信息表 -->
 	<view
 		class="card"
-		:style="{ height: isBaseInfo ? 'auto' : '14px' }">
+		:style="{ height: isBaseInfo ? 'auto' : '50px' }">
 		<text 
 			class="fold iconfont icon-xiala"
 			:style="{ 'transform': isBaseInfo ? 'rotate(0)' : 'rotate(180deg)' }"

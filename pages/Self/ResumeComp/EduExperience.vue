@@ -3,7 +3,7 @@
 	<view
 		class="card"
 		:style="{
-			'height': isEduExperience ? 'auto' : '14px'
+			'height': isEduExperience ? 'auto' : '50px'
 		}">
 		<text
 			class="fold iconfont icon-xiala"

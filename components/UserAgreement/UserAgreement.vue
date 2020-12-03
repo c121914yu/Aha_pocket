@@ -24,6 +24,8 @@
 				我已阅读
 			</button>
 		</view>
+    <!-- 加载动画 -->
+    <Loading ref="loading"></Loading>
 	</view>
 </template>
 
@@ -44,13 +46,18 @@ export default {
 		{
 			if(!this.isReaded) return
 			/* 触发请求 */
+      this.gLoading(this,true)
 			signNotice()
 			.then(res => {
 				uni.setStorageSync("token",res.data.token)
 				this.gToastSuccess(res.msg)
 				getApp().globalData.gUserInfo.signedNotice = true
 				this.$emit("readed")
+        this.gLoading(this,false)
 			})
+      .catch(err => {
+        this.gLoading(this,false)
+      })
 		}
 	}
 }

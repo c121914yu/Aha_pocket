@@ -2,6 +2,7 @@
   "navigationBarTitleText": "项目分享",
   "onReachBottomDistance": 100,
   "usingComponents": {
+    "loading": "/components/Loading/Loading",
     "user-agreement": "/components/UserAgreement/UserAgreement",
     "tab-bar": "/components/TabBar/TabBar",
     "project-home": "/pages/Project/ProjectHome",

@@ -4,14 +4,18 @@
     "pages/Login/Register",
     "pages/Login/FindPassword",
     "pages/app",
+    "pages/Self/Informs",
+    "pages/Self/Inform",
+    "pages/Self/Inform_send",
     "pages/Self/Resume",
     "pages/Self/ResumePreview",
     "pages/Self/Authentication",
     "pages/Self/UserHome",
     "pages/Project/UpProject",
     "pages/Project/EditProject",
-    "pages/Project/MyProjects",
+    "pages/Project/Projects",
     "pages/Project/Project",
+    "pages/Project/ReadFile",
     "pages/Project/Contract",
     "pages/Epiboly/EpibolyDetail"
   ],
@@ -23,5 +27,6 @@
     "backgroundColor": "#FFFFFF"
   },
   "permission": {},
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap72.json"
 }

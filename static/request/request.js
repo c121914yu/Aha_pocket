@@ -2,11 +2,6 @@ import globalFun from "../js/globalFun.js"
 const baseUrl = getApp().globalData.baseUrl
 
 function myRequest(url,method,data){
-	uni.showLoading({
-		title: "请求中...",
-		mask: true
-	})
-	
 	/* 配置请求头 */
 	const token = uni.getStorageSync("token") || ''
 	const headers = {
@@ -22,7 +17,6 @@ function myRequest(url,method,data){
 			header: headers,
 			success(result) 
 			{
-				uni.hideLoading()
 				/* 请求成功 */
 				if(result.data.code === 200)
 				{
@@ -35,12 +29,21 @@ function myRequest(url,method,data){
 					console.log("请求错误")
 					console.log(result.data)
 					globalFun.gToastError(result.data.msg)
+					/* 如果是token过期，关闭所有界面回到登录页 */
+					if(result.data.code === 103){
+						uni.clearStorageSync("token")
+						uni.redirectTo({
+							url: "/pages/Login/Login",
+							success: () => {
+								globalFun.gToastError(result.data.msg)
+							}
+						})
+					}
 					rej(result.data)
 				}
 			},
 			fail(err) 
 			{
-				uni.hideLoading()
 				console.log("服务器错误")
 				console.log(err.data)
 				globalFun.gToastError("服务器错误")
@@ -48,8 +51,11 @@ function myRequest(url,method,data){
 			},
 			complete(result) {
 				/* 判断是否有新token,有则替换旧的token */
-				if(result.header.Authorization)
+					
+				if(result.header.Authorization){
+					console.log(result.header);
 					uni.setStorageSync("token",result.header.Authorization)
+				}
 			}
 		})
 	})

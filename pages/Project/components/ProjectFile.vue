@@ -41,6 +41,8 @@
 		<button v-if="!uploading" class="startUpload" @click="upload">{{btnText}}</button>
 		<button v-if="uploading" loading class="uploading">上传中,请勿离开界面</button>
 		<view v-if="uploading" class="mask"></view>
+        <!-- 加载动画 -->
+        <Loading ref="loading"></Loading>
 	</view>
 </template>
 
@@ -64,6 +66,7 @@ export default {
 		*/
 		chooseFile()
 		{
+            this.gLoading(this,true)
 			function renderSize(fsize){
 				const unitArr = new Array("Bytes","KB","MB","GB","TB","PB","EB","ZB","YB")
 				let index = 0
@@ -73,9 +76,6 @@ export default {
 				size = size.toFixed(2)
 				return size + unitArr[index]
 			}
-			uni.showLoading({
-				title: "选择中..."
-			})
 			/* 选择文件API */
 			wx.chooseMessageFile({
 				count: 10,
@@ -99,7 +99,7 @@ export default {
 					}
 				},
 				complete: () => {
-					uni.hideLoading()
+					this.gLoading(this,false)
 				}
 			})
 		},
@@ -117,11 +117,16 @@ export default {
 			this.gShowModal(
 				`确认删除 ${this.files[index].name}?`,
 				() => {
+                    this.gLoading(this,true)
 					deleteResource(this.files[index].id)
 					.then(res => {
 						this.files.splice(index,1)
 						this.gToastSuccess("删除成功")
+                        this.gLoading(this,false)
 					})
+                    .catch(err => {
+                        this.gLoading(this,false)
+                    })
 				}
 			)
 		},
@@ -136,7 +141,7 @@ export default {
 		 if(this.btnText === "已全部上传")
 			return
 		 this.uploading = true
-		 
+		 this.gLoading(this,true)
 		 /* 请求服务器更新资源状态 */
 		 const api_postResource = async (file) => {
 			 try{
@@ -208,6 +213,7 @@ export default {
 							if(i < this.files.length-1)
 							  startUpload(i+1)
 							else{
+                                this.gLoading(this,false)
 								this.gToastSuccess("已全部上传")
 								this.uploading = false
 							}
@@ -220,6 +226,7 @@ export default {
 		 .catch(err => {
 			 console.log("无法获取上传凭证")
 			 this.uploading = false
+             this.gLoading(this,false)
 		 })
 	 }
 	},

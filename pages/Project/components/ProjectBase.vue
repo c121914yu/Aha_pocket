@@ -43,32 +43,35 @@
 				v-model="compName">
 			</InputInfo>
 			<InputInfo
+				v-if="compName"
 				title="获奖等级"
 				type="select"
 				contentWidth="200rpx"
-				:range="prizeGrades"
+				:range="prizeLevels"
 				v-model="awardLevel">
 			</InputInfo>
-			<view class="date">
+			<view v-if="compName" class="date">
 				<text>获奖日期: </text>
 				<DataPicker
 					placeholder="2020-9"
 					v-model="awardTime">
 				</DataPicker>
 			</view>
-			<view class="title">获奖证明: <text>长按可删除证明</text></view>
-			<view class="prove">
-				<image 
-					v-if="awardProveUrl"
-					:src="awardProveUrl"
-					mode="widthFix"
-					@click="showMenu('awardProveUrl')">
-				</image>
-				<text 
-					v-else 
-					class="iconfont icon-tianjia" 
-					@click="chooseImg('awardProveUrl')">
-				</text>
+			<view v-if="compName">
+				<view class="title">获奖证明: <text>长按可删除证明</text></view>
+				<view class="prove">
+					<image 
+						v-if="awardProveUrl"
+						:src="awardProveUrl"
+						mode="widthFix"
+						@click="showMenu('awardProveUrl')">
+					</image>
+					<text 
+						v-else 
+						class="iconfont icon-tianjia" 
+						@click="chooseImg('awardProveUrl')">
+					</text>
+				</view>
 			</view>
 		</view>
 		<!-- md编辑 -->
@@ -90,7 +93,7 @@
 export default {
 	data() {
 		const Matches = getApp().globalData.Matches.map(item => item.name)
-		const prizeGrades = getApp().globalData.prizeGrades
+		const prizeLevels = getApp().globalData.prizeLevels
 		return {
 			name: "", // 项目名称
 			avatarUrl: "", // 团队头像
@@ -101,7 +104,7 @@ export default {
       awardProveUrl: "", // 获奖证明
 			intro: "", // 描述
 			Matches, // 比赛名称
-			prizeGrades, // 获奖等级
+			prizeLevels, // 获奖等级
 			editMD: false
 		}
 	},
@@ -190,6 +193,7 @@ export default {
 	image
 		border-color transparent
 	.addAvatar
+		line-height 1.2
 		color var(--origin2)
 		font-size 20rpx
 		display flex

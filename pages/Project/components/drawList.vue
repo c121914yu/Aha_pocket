@@ -8,7 +8,7 @@
 			:key="index">
 			<view class="info" @click="$emit('click',index)">
 				<image :src="item.avatarUrl"></image>
-				<text>{{item.nickname}} {{item.memberPhone}}</text>
+				<text>{{item.trueName || item.nickname}}</text>
 			</view>
 			<text
 				class="iconfont icon-sort"

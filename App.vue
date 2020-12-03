@@ -14,17 +14,20 @@ export default {
 		Degress: ["博士后","博士","硕士","本科","专科","高中","初中"], // 学历列表
 		Grads: ["前1%","1%-5%","5%-20%","20%-50%","50%-100%"], // 成绩等级
 		Matches: [], // 所有比赛
-		prizeGrades: [
-      {label: "国一",value:11},
-      {label: "国二",value:12},
-      {label: "国三",value:13},
-      {label: "省一",value:21},
-      {label: "省二",value:22},
-      {label: "省三",value:23},
-      {label: "校一",value:31},
-      {label: "校二",value:32},
-      {label: "校三",value:33},
-      {label: "参与奖",value:41},
+		prizeLevels: [
+      {label: "国一",value:53},
+      {label: "国二",value:52},
+      {label: "国三",value:51},
+      {label: "省一",value:43},
+      {label: "省二",value:42},
+      {label: "省三",value:41},
+			{label: "市一",value:33},
+			{label: "市二",value:32},
+			{label: "市三",value:31},
+      {label: "校一",value:23},
+      {label: "校二",value:22},
+      {label: "校三",value:21},
+      {label: "参与奖",value:10},
     ]
 	}
 }

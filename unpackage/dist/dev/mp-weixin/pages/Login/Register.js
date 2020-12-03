@@ -94,7 +94,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   CodeInput: function() {
-    return __webpack_require__.e(/*! import() | components/CodeInput/CodeInput */ "components/CodeInput/CodeInput").then(__webpack_require__.bind(null, /*! @/components/CodeInput/CodeInput.vue */ 129))
+    return __webpack_require__.e(/*! import() | components/CodeInput/CodeInput */ "components/CodeInput/CodeInput").then(__webpack_require__.bind(null, /*! @/components/CodeInput/CodeInput.vue */ 168))
+  },
+  Loading: function() {
+    return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 161))
   }
 }
 var render = function() {
@@ -144,6 +147,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
 
 
 
@@ -246,6 +251,8 @@ var _api_login = __webpack_require__(/*! ../../static/request/api_login.js */ 19
 //
 //
 //
+//
+//
 var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {return { phone: "", password: "", password2: "", isPassword: true, // 是否展示密码
       codeInput: false };}, methods: { /*
                                        	name: getCode
@@ -255,30 +262,40 @@ var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {return { p
                                        				this.password: String,密码
                                        				this.password2: String,确认密码
                                        	return: null
-                                       */getCode: function getCode() {var _this = this;if (!reg.test(this.phone)) {this.gToastError("手机格式错误");} else if (this.password === "") {this.gToastError("请填写密码");} else if (this.password !== this.password2) {this.gToastError("密码不一致");} else {/* 判断用户是否可以发送验证码 */if (getApp().globalData.gCodeTime <= 0) {/* 发送验证码 */(0, _api_login.sendRegisterCode)(this.phone).then(function (res) {_this.gToastSuccess(res.msg, 1000);_this.codeInput = true;_this.$refs.codeInput.setTimer();});} else {this.codeInput = true;this.$refs.codeInput.setTimer();}}}, /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	name: register
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	description: 注册账号
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	input: 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    				this.phone: String,手机号
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    				this.password: String,密码
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    				this.password2: String,第二次密码
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    				this.code: String,验证码
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	return: null
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    */register: function register(code) {var _this2 = this;var data = { phone: this.phone, password: this.password, code: code,
+                                       */getCode: function getCode() {var _this = this;if (!reg.test(this.phone)) {this.gToastError("手机格式错误");} else if (this.password === "") {this.gToastError("请填写密码");} else if (this.password !== this.password2) {this.gToastError("密码不一致");} else {/* 判断用户是否可以发送验证码 */if (getApp().globalData.gCodeTime <= 0) {this.gLoading(this, true); /* 发送验证码 */(0, _api_login.sendCode)({ phone: this.phone, type: "register" }).then(function (res) {_this.gToastSuccess(res.msg, 1000);_this.codeInput = true;_this.$refs.codeInput.setTimer();_this.gLoading(_this, false);}).catch(function (err) {_this.gLoading(_this, false);});} else {this.codeInput = true;this.$refs.codeInput.setTimer();}}},
+    /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	name: register
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	description: 注册账号
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	input: 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       				this.phone: String,手机号
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       				this.password: String,密码
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       				this.password2: String,第二次密码
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       				this.code: String,验证码
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	return: null
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
+    register: function register(code) {var _this2 = this;
+      var data = {
+        phone: this.phone,
+        password: this.password,
+        code: code,
         nickname: this.phone // 用户默认的昵称
       };
+      this.gLoading(this, true);
       (0, _api_login.Register)(data).
       then(function (res) {
         _this2.gToastSuccess(res.msg);
-        console.log(res);
         /* 储存token */
         uni.setStorageSync("token", res.data.token);
         /* 储存个人信息 */
         getApp().globalData.gUserInfo = res.data.personalUserInfo;
+        _this2.gLoading(_this2, false);
         /* 跳转主页 */
         uni.reLaunch({
           url: "../app" });
 
+      }).
+      catch(function (err) {
+        _this2.gLoading(_this2, false);
       });
     } },
 

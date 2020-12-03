@@ -3,7 +3,7 @@
 	<view
 		class="card honor"
 		:style="{
-			'height': isHonors ? 'auto' : '14px'
+			'height': isHonors ? 'auto' : '50px'
 		}">
 		<text
 			class="fold iconfont icon-xiala"

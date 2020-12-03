@@ -45,7 +45,7 @@
 .register .bottom .card.data-v-c728e9fc {
   -webkit-transform: translateY(-5vh);
           transform: translateY(-5vh);
-  width: 75%;
+  width: 80%;
   padding: 5%;
   background-color: var(--white2);
   -webkit-border-radius: 50rpx;
@@ -55,9 +55,9 @@
 }
 .register .bottom .card .input.data-v-c728e9fc {
   position: relative;
-  margin: 15px 0;
+  margin: 20px 0;
   width: 100%;
-  padding: 0 5px;
+  padding: 5px;
   -webkit-border-radius: 10px;
           border-radius: 10px;
   -webkit-box-shadow: var(--shadow-beside);

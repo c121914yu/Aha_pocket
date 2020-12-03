@@ -46,11 +46,13 @@
 				<button @click="codeInput=false">修改注册信息</button>
 			</view>
 		</view>
+    <!-- 加载动画 -->
+    <Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { Register,sendRegisterCode } from "../../static/request/api_login.js"
+import { Register,sendCode } from "../../static/request/api_login.js"
 var reg = /^1[3456789]\d{9}$/
 export default {
 	data() {
@@ -90,13 +92,21 @@ export default {
 				/* 判断用户是否可以发送验证码 */
 				if(getApp().globalData.gCodeTime <= 0)
 				{
+          this.gLoading(this,true)
 					/* 发送验证码 */
-					sendRegisterCode(this.phone)
+					sendCode({
+            phone: this.phone,
+            type: "register"
+          })
 					.then(res => {
 						this.gToastSuccess(res.msg,1000)
 						this.codeInput = true
 						this.$refs.codeInput.setTimer()
+            this.gLoading(this,false)
 					})
+          .catch(err => {
+            this.gLoading(this,false)
+          })
 				}
 				else
 				{
@@ -122,19 +132,23 @@ export default {
 				code,
 				nickname: this.phone // 用户默认的昵称
 			}
+      this.gLoading(this,true)
 			Register(data)
 			.then(res => {
 				this.gToastSuccess(res.msg)
-				console.log(res)
 				/* 储存token */
 				uni.setStorageSync("token",res.data.token)
 				/* 储存个人信息 */
 				getApp().globalData.gUserInfo = res.data.personalUserInfo
+        this.gLoading(this,false)
 				/* 跳转主页 */
 				uni.reLaunch({
 					url: "../app"
 				})
 			})
+      .catch(err => {
+        this.gLoading(this,false)
+      })
 		}
 	},
 	computed: {
@@ -192,16 +206,16 @@ export default {
 		align-items center
 		.card
 			transform translateY(-5vh)
-			width 75%
+			width 80%
 			padding 5%
 			background-color var(--white2)
 			border-radius 50rpx
 			box-shadow var(--shadow1)
 			.input
 				position relative
-				margin 15px 0
+				margin 20px 0
 				width 100%
-				padding 0 5px
+				padding 5px
 				border-radius 10px
 				box-shadow var(--shadow-beside)
 				font-size 30rpx
