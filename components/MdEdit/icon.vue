@@ -38,7 +38,7 @@ export default {
 @font-face
 	font-family 'jin'
 	/** 阿里巴巴矢量图标库的字体库地址，可以替换自己的字体库地址 **/
-	src url('https://at.alicdn.com/t/font_1491431_6m7ltjo8wi.ttf') format('truetype')
+	src url('https://at.alicdn.com/t/font_2219105_chputgdi6xe.ttf') format('truetype')
 .icon 
 	font-family jin !important
 	text-align center

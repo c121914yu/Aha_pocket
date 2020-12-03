@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "用户注册",
   "usingComponents": {
-    "code-input": "/components/CodeInput/CodeInput"
+    "code-input": "/components/CodeInput/CodeInput",
+    "loading": "/components/Loading/Loading"
   }
 }

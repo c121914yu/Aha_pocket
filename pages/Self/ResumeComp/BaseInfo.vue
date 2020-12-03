@@ -2,14 +2,10 @@
 	<!-- 基本信息表 -->
 	<view
 		class="card"
-		:style="{
-			'height': isBaseInfo ? 'auto' : '110rpx'
-		}">
+		:style="{ height: isBaseInfo ? 'auto' : '50px' }">
 		<text 
 			class="fold iconfont icon-xiala"
-			:style="{
-				'transform': isBaseInfo ? 'rotate(0)' : 'rotate(180deg)'
-			}"
+			:style="{ 'transform': isBaseInfo ? 'rotate(0)' : 'rotate(180deg)' }"
 			@click="isBaseInfo=!isBaseInfo">
 		</text>
 		<view class="h3">基本信息</view>
@@ -31,7 +27,6 @@
 				class="input" 
 				style="flex: 1" 
 				type="number"
-				hold-keyboard="true"
 				v-model="phone"/>
 		</view>
 		<!-- 邮箱地址 -->
@@ -41,7 +36,6 @@
 				class="input" 
 				style="flex: 1" 
 				type="text"
-				hold-keyboard="true"
 				v-model="email"/>
 		</view>
 		<!-- 性别 -->
@@ -55,14 +49,14 @@
 						class="female iconfont icon-icfemale"
 						style="color: #188cc9">
 					</text>
-					<radio class="radio" value="男" color="#f8b86b" checked="true"/>
+					<radio class="radio" value="男" color="#f8b86b" :checked="gender === '男'"/>
 				</label>
 				<label>
 					<text 
 						class="male iconfont icon-icmale"
 						style="color: #ce5d91">
 					</text>
-					<radio class="radio" value="女" color="#f8b86b"/>
+					<radio class="radio" value="女" color="#f8b86b" :checked="gender === '女'"/>
 				</label>
 			</radio-group>
 		</view>

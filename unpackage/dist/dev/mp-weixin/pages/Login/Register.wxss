@@ -55,9 +55,9 @@
 }
 .register .bottom .card .input.data-v-c728e9fc {
   position: relative;
-  margin: 15px 0;
+  margin: 20px 0;
   width: 100%;
-  padding: 0 5px;
+  padding: 5px;
   -webkit-border-radius: 10px;
           border-radius: 10px;
   -webkit-box-shadow: var(--shadow-beside);

@@ -24,14 +24,25 @@
 		{
 			"path": "pages/app",
 			"style": {
-				"navigationBarTitleText": "竞赛"
+				"navigationBarTitleText": "项目分享",
+				"onReachBottomDistance": 100
 			}
 		},
 		/* 次界面，不含主导航 */
 		{
-			"path": "pages/Self/AccountInfo",
+			"path": "pages/Self/Informs",
 			"style": {
-				"navigationBarTitleText": "账号信息"
+				"navigationBarTitleText": "通知管理"
+			}
+		}, {
+			"path": "pages/Self/Inform",
+			"style": {
+				"navigationBarTitleText": "通知信息"
+			}
+		}, {
+			"path": "pages/Self/Inform_send",
+			"style": {
+				"navigationBarTitleText": "发送消息"
 			}
 		}, {
 			"path": "pages/Self/Resume",
@@ -43,24 +54,46 @@
 			"style": {
 				"navigationBarTitleText": "简历预览"
 			}
+		}, {
+			"path": "pages/Self/Authentication",
+			"style": {
+				"navigationBarTitleText": "实名认证"
+			}
+		},
+		{
+			"path": "pages/Self/UserHome",
+			"style": {
+				"navigationBarTitleText": "用户信息"
+			}
 		},
 		/* 项目相关 */
 		{
-			"path": "pages/Project/UpProject/UpProject",
+			"path": "pages/Project/UpProject",
 			"style": {
 				"navigationBarTitleText": "项目创建"
 			}
-		},
-		{
-			"path": "pages/Project/MyProject",
+		}, {
+			"path": "pages/Project/EditProject",
 			"style": {
-				"navigationBarTitleText": "我的项目"
+				"navigationBarTitleText": "项目编辑"
 			}
-		},
-		{
+		}, {
+			"path": "pages/Project/Projects",
+			"style": {
+				"navigationBarTitleText": "我的项目",
+				"enablePullDownRefresh": true, 
+				"backgroundTextStyle": "dark",
+				"onReachBottomDistance": 100
+			}
+		}, {
 			"path": "pages/Project/Project",
 			"style": {
 				"navigationBarTitleText": "项目详情"
+			}
+		},{
+			"path": "pages/Project/ReadFile",
+			"style": {
+				"navigationBarTitleText": "文件阅读"
 			}
 		},
 		/* 合同 & 电子签名 */
@@ -68,6 +101,13 @@
 			"path": "pages/Project/Contract",
 			"style": {
 				"navigationBarTitleText": "Aha口袋用户合同"
+			}
+		},
+		/* 外包 */
+		{
+			"path": "pages/Epiboly/EpibolyDetail",
+			"style": {
+				"navigationBarTitleText": "外包信息"
 			}
 		}
 	],
@@ -86,11 +126,11 @@
 			"name": "主页",
 			"path": "pages/app"
 		}, {
-			"name": "资源上传",
-			"path": "pages/Project/UpResource"
+			"name": "我的项目",
+			"path": "pages/Project/MyProject"
 		}, {
-			"name": "合同",
-			"path": "pages/Project/Contract"
+			"name": "发送通知",
+			"path": "pages/Self/Inform_send"
 		}]
 	}
 }

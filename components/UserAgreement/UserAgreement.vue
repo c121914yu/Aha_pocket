@@ -24,6 +24,8 @@
 				我已阅读
 			</button>
 		</view>
+    <!-- 加载动画 -->
+    <Loading ref="loading"></Loading>
 	</view>
 </template>
 
@@ -44,15 +46,18 @@ export default {
 		{
 			if(!this.isReaded) return
 			/* 触发请求 */
+      this.gLoading(this,true)
 			signNotice()
 			.then(res => {
 				uni.setStorageSync("token",res.data.token)
 				this.gToastSuccess(res.msg)
+				getApp().globalData.gUserInfo.signedNotice = true
 				this.$emit("readed")
+        this.gLoading(this,false)
 			})
-			.catch(err => {
-				this.gToastError("服务器错误 ")
-			})
+      .catch(err => {
+        this.gLoading(this,false)
+      })
 		}
 	}
 }
@@ -107,11 +112,11 @@ export default {
 				align-items center
 				justify-content center
 				&.active
-					border-color var(--origin4)
-					color var(--origin4)
+					border-color var(--origin2)
+					color var(--origin2)
 					font-weight 600
 			.strong
-				color var(--origin4)
+				color var(--origin2)
 		/* 已阅读按键 */
 		.readed-btn
 			margin-top 10px
@@ -121,6 +126,6 @@ export default {
 			&.noReady:active
 				transform none
 			&.already
-				background-color var(--button-bg)
+				background-color var(--origin2)
 				color #FFFFFF
 </style>

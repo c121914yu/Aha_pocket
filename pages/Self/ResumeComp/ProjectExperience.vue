@@ -3,7 +3,7 @@
 	<view
 		class="card experience"
 		:style="{
-			'height': isProjectExper ? 'auto' : '110rpx'
+			'height': isProjectExper ? 'auto' : '50px'
 		}">
 		<text
 			class="fold iconfont icon-xiala"
@@ -63,13 +63,7 @@
 					v-model="exp.description"/>
 			</view>
 			<!-- 删除按键 -->
-			<icon 
-				class="remove" 
-				type="clear" 
-				size="22" 
-				color="#e86452"
-				@click="removeExperience(index)">
-			</icon>
+			<text class="remove iconfont icon-remove" @click="removeExperience(index)"></text>
 		</view>
 		<button
 			class="add-btn"
@@ -82,7 +76,8 @@
 <script>
 export default {
 	data() {
-		const projectExperiences = [...getApp().globalData.gResume.projectExperiences] || []
+		let projectExperiences = getApp().globalData.gResume.projectExperiences
+		projectExperiences = projectExperiences ? JSON.parse(JSON.stringify(projectExperiences)) : []
 		return {
 			projectExperiences,
 			isProjectExper: true

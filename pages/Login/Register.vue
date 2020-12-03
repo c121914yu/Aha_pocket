@@ -1,6 +1,6 @@
 <template>
 	<view class="register">
-		<image class="logo" src="/static/icon/logo.png" mode="widthFix" />
+		<image class="logo" src="https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png" mode="widthFix" />
 		<view class="top"></view>
 		<view class="bottom">
 			<view class="card" v-if="!codeInput">
@@ -46,11 +46,13 @@
 				<button @click="codeInput=false">修改注册信息</button>
 			</view>
 		</view>
+    <!-- 加载动画 -->
+    <Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { Register,sendRegisterCode } from "../../static/request/api_login.js"
+import { Register,sendCode } from "../../static/request/api_login.js"
 var reg = /^1[3456789]\d{9}$/
 export default {
 	data() {
@@ -90,13 +92,21 @@ export default {
 				/* 判断用户是否可以发送验证码 */
 				if(getApp().globalData.gCodeTime <= 0)
 				{
+          this.gLoading(this,true)
 					/* 发送验证码 */
-					sendRegisterCode(this.phone)
+					sendCode({
+            phone: this.phone,
+            type: "register"
+          })
 					.then(res => {
 						this.gToastSuccess(res.msg,1000)
 						this.codeInput = true
 						this.$refs.codeInput.setTimer()
+            this.gLoading(this,false)
 					})
+          .catch(err => {
+            this.gLoading(this,false)
+          })
 				}
 				else
 				{
@@ -122,24 +132,23 @@ export default {
 				code,
 				nickname: this.phone // 用户默认的昵称
 			}
+      this.gLoading(this,true)
 			Register(data)
 			.then(res => {
-				console.log(res)
+				this.gToastSuccess(res.msg)
 				/* 储存token */
 				uni.setStorageSync("token",res.data.token)
 				/* 储存个人信息 */
-				getApp().globalData.gUserInfo = res.data.userInfo
+				getApp().globalData.gUserInfo = res.data.personalUserInfo
+        this.gLoading(this,false)
 				/* 跳转主页 */
 				uni.reLaunch({
-					url: "../app",
-					success: () => {
-						this.gToastSuccess(res.msg)
-					}
+					url: "../app"
 				})
 			})
-			.catch(err => {
-				console.log(err)
-			})
+      .catch(err => {
+        this.gLoading(this,false)
+      })
 		}
 	},
 	computed: {
@@ -204,9 +213,9 @@ export default {
 			box-shadow var(--shadow1)
 			.input
 				position relative
-				margin 15px 0
+				margin 20px 0
 				width 100%
-				padding 0 5px
+				padding 5px
 				border-radius 10px
 				box-shadow var(--shadow-beside)
 				font-size 30rpx

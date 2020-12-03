@@ -75,12 +75,12 @@
           justify-content: center;
 }
 .user-agreement .content .sign .square.active.data-v-146c3178 {
-  border-color: var(--origin4);
-  color: var(--origin4);
+  border-color: var(--origin2);
+  color: var(--origin2);
   font-weight: 600;
 }
 .user-agreement .content .sign .strong.data-v-146c3178 {
-  color: var(--origin4);
+  color: var(--origin2);
 }
 .user-agreement .content .readed-btn.data-v-146c3178 {
   margin-top: 10px;
@@ -93,7 +93,7 @@
           transform: none;
 }
 .user-agreement .content .readed-btn.already.data-v-146c3178 {
-  background-color: var(--button-bg);
+  background-color: var(--origin2);
   color: #fff;
 }
 

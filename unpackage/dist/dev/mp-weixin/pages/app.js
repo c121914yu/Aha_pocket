@@ -91,22 +91,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
+  Loading: function() {
+    return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 161))
+  },
   UserAgreement: function() {
-    return Promise.all(/*! import() | components/UserAgreement/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/UserAgreement/UserAgreement")]).then(__webpack_require__.bind(null, /*! @/components/UserAgreement/UserAgreement.vue */ 108))
+    return Promise.all(/*! import() | components/UserAgreement/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/UserAgreement/UserAgreement")]).then(__webpack_require__.bind(null, /*! @/components/UserAgreement/UserAgreement.vue */ 175))
   },
   TabBar: function() {
-    return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 115))
+    return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 182))
   }
 }
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  if (!_vm._isMounted) {
-    _vm.e0 = function($event) {
-      _vm.signedNotice = true
-    }
-  }
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -175,6 +173,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 var _api_competition = __webpack_require__(/*! @/static/request/api_competition.js */ 46); //
 //
 //
@@ -209,37 +211,70 @@ var _api_competition = __webpack_require__(/*! @/static/request/api_competition.
 //
 //
 //
-var ProjectHome = function ProjectHome() {__webpack_require__.e(/*! require.ensure | pages/Project/ProjectHome */ "pages/Project/ProjectHome").then((function () {return resolve(__webpack_require__(/*! ./Project/ProjectHome.vue */ 122));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Life = function Life() {__webpack_require__.e(/*! require.ensure | pages/Life/Life */ "pages/Life/Life").then((function () {return resolve(__webpack_require__(/*! ./Life/Life */ 129));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Member = function Member() {__webpack_require__.e(/*! require.ensure | pages/Member/Member */ "pages/Member/Member").then((function () {return resolve(__webpack_require__(/*! ./Member/Member */ 134));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 139));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {var signedNotice = getApp().globalData.gUserInfo.signedNotice;return { /* 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             	第一次不直接加载界面，防止加载时间过长
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             	切换到未缓存的界面时再进行加载
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             */navs: [{ name: "ProjectHome", loaded: false }, { name: "Life", loaded: false }, { name: "Member", loaded: false }, { name: "Self", loaded: false }], currentNav: 3, signedNotice: signedNotice };}, methods: { /* 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              	name: 路由加载
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              	description: 加载指定下标的路由
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              	input:
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              				this.currentNav: Number,当前路由下标
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              	change:
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              				this.navs[].loaded: Boolean,路由是否加载标识符
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              	return: null
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              */loadNav: function loadNav() {this.navs[this.currentNav].loaded = true;}, /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         	name: 路由跳转
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         	description: 跳转指定下标的路由
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         	input:
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         				this.currentNav: Number,需要跳转的路由下标
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         	change: null
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         	return: null
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         */navigate: function navigate(name) {uni.pageScrollTo({ duration: 0, scrollTop: 0 });this.currentNav = this.navs.findIndex(function (item) {return item.name === name;});this.loadNav();} },
+//
+//
+//
+//
+var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages/Project/ProjectHome */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Project/ProjectHome")]).then((function () {return resolve(__webpack_require__(/*! ./Project/ProjectHome.vue */ 189));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Competition = function Competition() {__webpack_require__.e(/*! require.ensure | pages/Competition/Competition */ "pages/Competition/Competition").then((function () {return resolve(__webpack_require__(/*! ./Competition/Competition */ 196));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Epiboly = function Epiboly() {__webpack_require__.e(/*! require.ensure | pages/Epiboly/Epiboly */ "pages/Epiboly/Epiboly").then((function () {return resolve(__webpack_require__(/*! ./Epiboly/Epiboly */ 201));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 208));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { /* 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               	第一次不直接加载界面，防止加载时间过长
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               	切换到未缓存的界面时再进行加载
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */navs: [{ name: "ProjectHome", loaded: false }, { name: "Competition", loaded: false }, { name: "Epiboly", loaded: false }, { name: "Self", loaded: false }], currentNav: 3, signedNotice: getApp().globalData.gUserInfo.signedNotice };}, watch: { currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "竞赛信息";break;case 2:text = "服务外包";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });} }, methods: { /* 完成协议签署 */successSign: function successSign() {this.signedNotice = true;this.loadCompetitionInfo();
+      this.$refs.projectHome.initProjects();
+    },
+    /* 加载比赛信息 */
+    loadCompetitionInfo: function loadCompetitionInfo()
+    {
+      if (this.signedNotice) {
+        (0, _api_competition.getAllCompetition)().
+        then(function (res) {
+          console.log(res.data);
+          getApp().globalData.Matches = res.data;
+        });
+      }
+    },
+    /* 
+       	name: 路由加载
+       	description: 加载指定下标的路由
+       	input:
+       				this.currentNav: Number,当前路由下标
+       	change:
+       				this.navs[].loaded: Boolean,路由是否加载标识符
+       	return: null
+       */
+    loadNav: function loadNav() {
+      this.navs[this.currentNav].loaded = true;
+    },
+    /*
+       	name: 路由跳转
+       	description: 跳转指定下标的路由
+       	input:
+       				this.currentNav: Number,需要跳转的路由下标
+       	change: null
+       	return: null
+       */
+    navigate: function navigate(name) {
+      uni.pageScrollTo({
+        duration: 0,
+        scrollTop: 0 });
+
+      this.currentNav = this.navs.findIndex(function (item) {return item.name === name;});
+      this.loadNav();
+    } },
+
   onLoad: function onLoad() {
-    (0, _api_competition.getAllCompetition)().
-    then(function (res) {
-      getApp().globalData.Matches = res.data;
-    });
-    this.loadNav();
     console.log(getApp().globalData.gUserInfo);
+    this.loadCompetitionInfo();
+    this.loadNav();
+  },
+  onReachBottom: function onReachBottom() {
+    if (this.currentNav !== 0)
+    return;
+    this.$refs.projectHome.loadMore();
   },
   components: {
     ProjectHome: ProjectHome,
-    Life: Life,
-    Member: Member,
+    Competition: Competition,
+    Epiboly: Epiboly,
     Self: Self } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

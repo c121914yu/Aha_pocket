@@ -1,6 +1,6 @@
 <template>
 	<view class="find-psw">
-		<image class="logo" src="/static/icon/logo.png" mode="widthFix" />
+		<image class="logo" src="https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png" mode="widthFix" />
 		<view class="top"></view>
 		<view class="bottom">
 			<view class="card">
@@ -55,11 +55,13 @@
 				<button type="default" @click="changePassword">修改密码</button>
 			</view>
 		</view>
+    <!-- 加载动画 -->
+    <Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { sendChangePswCode,ChangePassword } from "../..//static/request/api_login.js"
+import { sendCode,ChangePassword } from "../..//static/request/api_login.js"
 var timer
 var reg = /^1[3456789]\d{9}$/
 export default {
@@ -91,8 +93,12 @@ export default {
 				}
 				else
 				{
+          this.gLoading(this,true)
 					/* 发送验证码 */
-					sendChangePswCode(this.phone)
+					sendCode({
+            phone: this.phone,
+            type: "changePassword"
+          })
 					.then(res => {
 						/* 设置全局倒计时 */
 						this.time = getApp().globalData.gCodeMaxTime
@@ -106,15 +112,17 @@ export default {
 							}
 						},1000)
 						this.gToastSuccess("验证码已发送")
+            this.gLoading(this,false)
 					})
+          .catch(err => {
+            this.gLoading(this,false)
+          })
 				}
 			}
 		},
 		/*
 			name: setPassword
 			description: 重置密码
-			input: null
-			return: null
 		*/
 		changePassword()
 		{
@@ -128,6 +136,7 @@ export default {
 			else if(this.code.length !== 4)
 				this.gToastError("验证码错误")
 			else{
+        this.gLoading(this,true)
 				const data = {
 					phone: this.phone,
 					newPassword: this.password,
@@ -135,11 +144,17 @@ export default {
 				}
 				ChangePassword(data)
 				.then(res => {
-					uni.navigateBack({
-						delta: 1
-					})
 					this.gToastSuccess(res.msg)
+					setTimeout(() => {
+						uni.navigateBack({
+							delta: 1,
+						})
+					},500)
+          this.gLoading(this,false)
 				})
+        .catch(err => {
+          this.gLoading(this,false)
+        })
 			}
 		}
 	},
@@ -223,9 +238,9 @@ export default {
 			box-shadow var(--shadow1)
 			.input
 				position relative
-				margin 15px 0
+				margin 20px 0
 				width 100%
-				padding 0 5px
+				padding 5px
 				border-radius 10px
 				box-shadow var(--shadow-beside)
 				font-size 30rpx
@@ -242,8 +257,9 @@ export default {
 					width 100%
 					padding-left 40px
 				&.code
+					padding 0 5px
 					input
-						width 250rpx
+						width 170px
 					.get-code
 						height 100%
 						width 100%

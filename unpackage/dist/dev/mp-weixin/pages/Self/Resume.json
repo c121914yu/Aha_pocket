@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "个人简历",
   "usingComponents": {
+    "loading": "/components/Loading/Loading",
     "base-info": "/pages/Self/ResumeComp/BaseInfo",
     "edu-experience": "/pages/Self/ResumeComp/EduExperience",
     "school-experience": "/pages/Self/ResumeComp/SchoolExperience",

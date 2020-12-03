@@ -6,20 +6,17 @@ page {
   --origin4: #feedcb;
   --black: #3e3a39;
   --gray1: #727171;
-  --gray2: #9fa0a0;
+  --gray2: #909399;
   --white1: #efefef;
   --white2: #fff;
   --bg-linear: linear-gradient(#f8b86b, #956134);
   --shadow-beside: 0 5px 2px #efefef;
   --shadow1: 1px 1px 15px rgba(144,140,139,0.65);
-  --shadow2: 3px 2px 8px rgba(144,140,139,0.65);
+  --shadow2: 1px 1px 2px rgba(144,140,139,0.65);
   --font-dark: #595757;
-  --gray: #9fa0a0;
-  --gray-font: #b5b5b6;
-  --border1: 1px solid #9fa0a0;
+  --border1: 1px solid #808080;
   --speed-slide: 0.8s ease-in-out;
   --speed-hover: 0.5s;
-  box-sizing: border-box;
 }
 body {
   margin: 0;
@@ -29,9 +26,14 @@ body {
   color: var(--black);
   letter-spacing: 2rpx;
 }
+body,
+view {
+  box-sizing: border-box;
+}
 input {
-  font-size: 30rpx;
-  padding: 10px 20px 10px 10px;
+  font-size: 28rpx;
+  padding: 5px;
+  border-radius: 10px;
 }
 button {
   border: none;
@@ -77,4 +79,8 @@ navigator {
 .h3 {
   font-size: 32rpx;
   font-weight: 700;
+}
+.label {
+  font-size: 24rpx;
+  color: var(--origin2);
 }

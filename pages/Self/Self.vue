@@ -7,7 +7,7 @@
 				<view class="bg bg3"></view>
 				<view class="bg bg2"></view>
 				<view class="bg bg1"></view>
-				<image :src="userInfo.avatarUrl">
+				<image :src="userInfo.avatarUrl|| 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'">
 				</image>
 			</view>
 			<!-- 右侧昵称 & 标签 -->
@@ -38,25 +38,25 @@
 				<view class="two"></view>
 			</view>
 		</view>
-		<!-- 核心导航 招募 & 资源分享 -->
+		<!-- 我的项目 & 外包管理 & 招募队友 -->
 		<view class="navs">
+			<navigator
+				hover-class="hoverScale"
+				hover-stay-time	="50"
+				url="/pages/Project/Projects">
+				我的项目
+			</navigator>
 			<navigator 
 				hover-class="hoverScale"
 				hover-stay-time	="50"
-				url="/pages/Project/Project">
+				url="/pages/Project/Projects">
+				外包管理
+			</navigator>
+			<navigator
+				hover-class="hoverScale"
+				hover-stay-time	="50"
+				url="/pages/Project/Projects">
 				招募队友
-			</navigator>
-			<navigator
-				hover-class="hoverScale"
-				hover-stay-time	="50"
-				url="/pages/Project/MyProject">
-				我的资源
-			</navigator>
-			<navigator
-				hover-class="hoverScale"
-				hover-stay-time	="50"
-				url="/pages/Project/UpProject/UpProject">
-				项目分享
 			</navigator>
 		</view>
 		<!-- 任务 进行中 & 已完成 & 贡献详情 -->
@@ -90,34 +90,56 @@
 		</view>
 		<!-- 兴趣选择 -->
 		<SelectInterest v-if="isCheckTags" @close="isCheckTags=false"></SelectInterest>
+    <!-- 登出 -->
+    <button 
+      style="width: 90%;margin: auto;background-color: #e86452;" 
+      @click="out">
+      退出登录
+    </button>
+    <!-- 加载动画 -->
+    <Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
 import { getAvatarOssSignature,putMe } from "@/static/request/api_userInfo.js"
+import { loginOut } from "@/static/request/api_login.js"
 export default {
 	data() {
-		const userInfo = {...getApp().globalData.gUserInfo.userInfo}
-		userInfo.avatarUrl = userInfo.avatarUrl || "/static/icon/logo.png"
 		return {
-			userInfo,
-			/* 标签 */
-			tags: ["前端","挑战杯","商业计划书","运河杯","服务外包"],
+			userInfo: {...getApp().globalData.gUserInfo.userInfo},
 			/* 任务列表 */
 			tasks: [
-				{name: "进行中",icon: "icon-shouye",to: "/pages/Self/AccountInfo"},
-				{name: "已完成",icon: "icon-yiwancheng",to: "/pages/Self/AccountInfo"},
+				{name: "进行中",icon: "icon-shouye",to: "/pages/Self/Authentication"},
+				{name: "已完成",icon: "icon-yiwancheng",to: "/pages/Self/Authentication"},
 				{name: "贡献详情",icon: "icon-icon",to: "/pages/Project/Project"},
 			],
 			/* 功能列表 */
 			funtions: [
-				{name: "贡献值",icon: "icon-icon;",val: getApp().globalData.gUserInfo.contribPoint,to:""},
-				{name: "实名认证",icon: "icon-shimingrenzheng",to:"/pages/Self/AccountInfo"},
-				{name: "个人简历",icon: "icon-personal",to:"/pages/Self/Resume"},
-				{name: "邀请好友",icon: "icon-iconfontzhizuobiaozhun49",to:"/pages/Self/AccountInfo"},
-				{name: "联系管理员",icon: "icon-lianxikefu",to:"/pages/Self/AccountInfo"},
+				{name: "贡献值",icon: "icon-icon;",to:"",val: getApp().globalData.gUserInfo.contribPoint},
+				{name: "消息通知",icon: "icon-tongzhi1",to:"/pages/Self/Informs",val: 10},
+				{name: "实名认证",icon: "icon-shimingrenzheng",to:"/pages/Self/Authentication"},
+				{name: "个人简历",icon: "icon-jianli",to:"/pages/Self/Resume"},
+				{name: "邀请好友",icon: "icon-iconfontzhizuobiaozhun49",to:"/pages/Self/Authentication"},
+				{name: "联系管理员",icon: "icon-lianxikefu",to:"/pages/Self/Authentication"},
 			],
 			isCheckTags: false, // 是否进入选择标签
+		}
+	},
+	computed: {
+		tags(){
+			let isCheckTags = this.isCheckTags // 检测标签更改
+			const userInfo = getApp().globalData.gUserInfo.userInfo
+			let specialtyTags = []
+			let compTags = []
+			if(userInfo.specialtyTags)
+				specialtyTags = userInfo.specialtyTags.split(",")
+			if(userInfo.compTags)
+				compTags = userInfo.compTags.split(",")
+			let res = specialtyTags.concat(compTags)
+			if(res.length === 0)
+				res = ["点击定制个人标签"]
+			return res
 		}
 	},
 	methods: {
@@ -151,7 +173,7 @@ export default {
 		{
 			/* 进入操作菜单 */
 			uni.showActionSheet({
-				itemList: ['预览头像', '修改头像'],
+				itemList: ["预览头像", "修改头像","查看个人信息"],
 				success:  (res) => {
 					/* 预览头像 */
 					if(res.tapIndex === 0)
@@ -172,29 +194,38 @@ export default {
 								  src: img.tempFilePaths[0],
 								  quality: 50,
 								  success: res => {
+                    this.gLoading(this,true)
 										/* 获取签名 */
 										getAvatarOssSignature()
 										.then(sign => {
-											uni.showLoading({
-												title: "上传头像中..."
-											})
 											/* 上传文件 */
 											this.gUploadFile(res.tempFilePath,"avatar.JPG",sign.data)
 											.then(upRes => {
 												/* 更新头像 */
 												putMe({
-													avatarUrl: upRes.url
+													avatarUrl: upRes
 												})
 												.then(putRes => {
-													this.userInfo = this.gPutUserInfo({avatarUrl: upRes.url}).userInfo,
-													uni.hideLoading()
+													this.userInfo = this.gPutUserInfo({avatarUrl: upRes}).userInfo,
 													this.gToastSuccess("修改头像成功!")
+                          this.gLoading(this,false)
 												})
+                        .catch(err => {
+                          this.gLoading(this,false)
+                        })
 											})
 										})
+                    .catch(err => {
+                      this.gLoading(this,false)
+                    })
 								  }
 								})
 							}
+						})
+					}
+					else if(res.tapIndex === 2){
+						uni.navigateTo({
+							url: "Self/UserHome?userId=" + this.userInfo.userId
 						})
 					}
 				},
@@ -203,9 +234,20 @@ export default {
 				}
 			})
 		},
-	},
-	created() {
-		
+    /* 退出登录，调用modal确认*/
+    out()
+    {
+      this.gShowModal("确认退出登录?",() => {
+        loginOut()
+        uni.clearStorageSync("token")
+        uni.reLaunch({
+          url: "Login/Login",
+          success: () => {
+            this.gToastSuccess("已退出登录")
+          }
+        })
+      })
+    }
 	}
 }
 </script>
@@ -218,7 +260,7 @@ bgSetting(size,color)
 .self
 	min-height 100vh
 	width 100%
-	padding-bottom 140rpx
+	padding-bottom 150rpx
 	background-color var(--white1)
 	/* 头部 */
 	.head
@@ -252,24 +294,25 @@ bgSetting(size,color)
 				bgSetting(60vw,var(--origin2))
 		/* 右侧 */
 		.right
-			margin-left 50vw
+			margin-left 52vw
 			width 50vw
-			padding 10px
+			padding 10px 0
 			.name
 				color var(--origin1)
 				font-weight 600
 				font-size 38rpx
 				border-bottom 2px solid var(--origin2)
+				border-radius 0
 			.tags
 				display flex
 				flex-wrap wrap
 				.tag
-					margin 5px
-					padding 3px 10px
+					margin 3px
+					padding 0 5px
 					border-radius 10px
 					background-color var(--origin1)
 					color #FFFFFF
-					font-size 20rpx
+					font-size 22rpx
 		/* 幕布 */
 		.curtain
 			position absolute
@@ -284,12 +327,11 @@ bgSetting(size,color)
 			.one
 				background-color var(--origin2)
 				transform-origin right top
-				animation curtain1 .8s forwards
+				animation curtain1 .5s forwards
 			.two
 				background-color var(--origin2)
 				transform-origin left top
-				animation curtain2 .8s forwards
-				
+				animation curtain2 .5s forwards
 	/* 核心导航 招募队友 & 资源分享 */
 	.navs
 		margin 10vw 0 20px
@@ -342,7 +384,7 @@ bgSetting(size,color)
 			background-color #FFFFFF
 			display flex
 			align-items center
-			animation funShow .3s forwards
+			animation funShow .2s forwards
 			&:first-child
 				border-top-left-radius 20px
 				border-top-right-radius 20px
@@ -350,7 +392,7 @@ bgSetting(size,color)
 				border-bottom-left-radius 20px
 				border-bottom-right-radius 20px
 			.iconfont
-				font-size 50rpx
+				font-size 44rpx
 				color var(--origin2)
 			.right
 				font-size 60rpx

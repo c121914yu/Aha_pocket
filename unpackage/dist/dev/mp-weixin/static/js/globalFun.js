@@ -4,9 +4,8 @@
 	input: 
 				title: String,提示文字
 				mask: Boolean,是否展示蒙层
-	return: null
 */
-function gToastSuccess(title,duration=1500,mask=false){
+function gToastSuccess(title,mask=false,duration=1500){
 	uni.showToast({
 		title,
 		mask,
@@ -19,9 +18,8 @@ function gToastSuccess(title,duration=1500,mask=false){
 	input: 
 				title: String,提示文字
 				mask: Boolean,是否展示蒙层
-	return: null
 */
-function gToastError(title,duration=1500,mask=false){
+function gToastError(title,mask=false,duration=1500){
 	uni.showToast({
 		title,
 		image: "/static/icon/close.png",
@@ -36,7 +34,6 @@ function gToastError(title,duration=1500,mask=false){
 				content: String,提示文字
 				success: Function,点击确认后的操作
 				cancel: Function,点击取消后的操作
-	return: null
 */
 function gShowModal(content,success,cancel){
 	uni.showModal({
@@ -65,7 +62,6 @@ function gShowModal(content,success,cancel){
 				signature: Object,签名
 	return: 
 				fileName: String,最终的文件名
-				fileUrl: String,文件路径
 */
 function gUploadFile(url,name,signature){
   const filename = `${signature.dir}/${name}`
@@ -82,7 +78,7 @@ function gUploadFile(url,name,signature){
       },
       success: (res) => {
         if(res.statusCode === 204)
-          resolve(res)
+          resolve(getApp().globalData.ossHost + filename)
          else
           reject(err)
       },
@@ -102,11 +98,21 @@ function gUploadFile(url,name,signature){
 */
 function gPutUserInfo(data){
 	for(let key in data)
-	{
 		getApp().globalData.gUserInfo.userInfo[key] = data[key]
-	}
 	console.log(getApp().globalData.gUserInfo);
 	return {...getApp().globalData.gUserInfo}
+}
+
+/* 展示/隐藏等待 */
+const gLoading = (that,type=false) => {
+  const dom = that.$refs.loading
+  const time = type ? 0 : 500
+  if(dom){
+    setTimeout(() => {
+      if(dom)
+        dom.show = type
+    },time)
+  }
 }
 
 const globalFun = {
@@ -114,6 +120,7 @@ const globalFun = {
 	gToastError,
 	gShowModal,
 	gUploadFile,
-	gPutUserInfo
+	gPutUserInfo,
+  gLoading
 }
 export default globalFun

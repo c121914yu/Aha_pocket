@@ -1,6 +1,6 @@
 <!-- 简历预览 -->
 <template>
-	<view class="preview">
+	<view v-if="loaded" class="preview">
 		<!-- 下载按键 -->
 		<icon 
 			class="download" 
@@ -17,7 +17,7 @@
 			<view class="center">(工作意愿: {{workPlace}} {{profession}})</view>
 			<!-- 基础信息1 -->
 			<view>
-				{{gender}}&emsp;{{age}}&emsp;{{highestDegree}}{{identity === "学生" ? "在读" : "毕业"}}&emsp;{{currentGrade}}
+				{{gender}}&emsp;{{age}}岁&emsp;{{highestDegree}}{{identity === "学生" ? "在读" : "毕业"}}&emsp;{{currentGrade}}
 			</view>
 			<!-- 基础信息2 -->
 			<view>
@@ -115,18 +115,33 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import { getResume } from '@/static/request/api_resume.js'
 export default {
 	data(){
-		/* 批量导入简历数据 */
-		const resume = {...getApp().globalData.gResume}
-		console.log(resume)
-		// 计算年龄
-		let age = Math.floor((Date.now() - new Date(resume.birth)) / 1000 / 60 / 60 / 24 / 365)
-		age += "岁"
 		return{
-			age,
-			...resume
+			loaded: false,
+			name: "",
+			phone: "",
+			email: "",
+			gender: "",
+			birth: "",
+			highestDegree: "",
+			identity: "",
+			currentGrade: "",
+			workPlace: "",
+			profession: "",
+			eduExperiences: [],
+			schoolExperiences: [],
+			projectExperiences: [],
+			practiceExperiences: [],
+			projectSkill: "",
+			honors: [],
+			intro: ""
+		}
+	},
+	computed: {
+		age(){
+			return Math.floor((Date.now() - new Date(this.birth)) / 1000 / 60 / 60 / 24 / 365)
 		}
 	},
 	methods: {
@@ -140,6 +155,20 @@ export default {
 		download()
 		{
 			
+		}
+	},
+	onLoad(e) {
+		if(e.userId){
+      getResume(e.userId)
+      .then(res => {
+        console.log(res.data)
+      })
+		}
+		else{
+      const resume = getApp().globalData.gResume
+			for(let key in resume)
+				this[key] = resume[key]
+			this.loaded = true
 		}
 	}
 }

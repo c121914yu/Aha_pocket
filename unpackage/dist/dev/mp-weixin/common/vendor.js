@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1935,6 +1935,67 @@ function normalizeComponent (
 
 /***/ }),
 
+/***/ 102:
+/*!**************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.getLoadSignature = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteProject = exports.putProject = exports.getProject = exports.getProjects = exports.postProject = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 获取上传头像/证明材料签名 */
+var getPublicSignature = function getPublicSignature() {return (0, _request.default)("/project/sign/upload/public", "GET", {});};
+
+/* 创建项目数据，保存至数据库 */exports.getPublicSignature = getPublicSignature;
+var postProject = function postProject(data) {return (0, _request.default)("/project", "POST", data);};
+/* 
+                                                                                                        	获取所有项目粗略信息表
+                                                                                                        	params:
+                                                                                                        				pageNum： 第几页
+                                                                                                        				pageSize: 每页的条数
+                                                                                                                userId: 用户userId
+                                                                                                                compId: 竞赛Id
+                                                                                                                awardLevel: 获奖等级
+                                                                                                                sortBy: 排序字段
+                                                                                                                orderBy: 排序方式
+                                                                                                        */exports.postProject = postProject;
+var getProjects = function getProjects(params) {return (0, _request.default)("/project", "GET", params);};
+/* 获取项目详细信息 */exports.getProjects = getProjects;
+var getProject = function getProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
+/* 更新项目详细信息 */exports.getProject = getProject;
+var putProject = function putProject(projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
+/* 删除项目 */exports.putProject = putProject;
+var deleteProject = function deleteProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
+
+/* 判断是否收藏 */exports.deleteProject = deleteProject;
+var isCollected = function isCollected(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "GET", {});};
+/* 收藏项目 */exports.isCollected = isCollected;
+var collectProject = function collectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "POST", {});};
+/* 取消收藏 */exports.collectProject = collectProject;
+var cancleCollectProject = function cancleCollectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "DELETE", {});};
+
+/* 获取上传文件签名 */exports.cancleCollectProject = cancleCollectProject;
+var getFilesSignature = function getFilesSignature(projectId) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private"), "GET", {});};
+/* 创建项目的资源信息 */exports.getFilesSignature = getFilesSignature;
+var postResource = function postResource(projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
+/* 删除资源 */exports.postResource = postResource;
+var deleteResource = function deleteResource(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "DELETE", {});};
+/* 获取下载签名 */exports.deleteResource = deleteResource;
+var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download"), "GET", {});};
+
+/* 创建成员 */exports.getLoadSignature = getLoadSignature;
+var postMember = function postMember(projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};
+/* 更新成员 */exports.postMember = postMember;
+var putMember = function putMember(projectId, memberUserId, data) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "PUT", data);};
+/* 批量更新成员 */exports.putMember = putMember;
+var putMembers = function putMembers(projectId, data) {return (0, _request.default)("/project/members/".concat(projectId), "PUT", data);};
+/* 删除成员 */exports.putMembers = putMembers;
+var deleteMember = function deleteMember(projectId, memberPhone) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberPhone), "DELETE", {});};exports.deleteMember = deleteMember;
+
+/***/ }),
+
 /***/ 11:
 /*!*********************************************!*\
   !*** D:/服务外包/竞赛统计/static/icon/iconfont.css ***!
@@ -1962,9 +2023,8 @@ function normalizeComponent (
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 	input: 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 				title: String,提示文字
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 				mask: Boolean,是否展示蒙层
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	return: null
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
-function gToastSuccess(title) {var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;var mask = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+function gToastSuccess(title) {var mask = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
   uni.showToast({
     title: title,
     mask: mask,
@@ -1977,9 +2037,8 @@ function gToastSuccess(title) {var duration = arguments.length > 1 && arguments[
   	input: 
   				title: String,提示文字
   				mask: Boolean,是否展示蒙层
-  	return: null
   */
-function gToastError(title) {var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;var mask = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+function gToastError(title) {var mask = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
   uni.showToast({
     title: title,
     image: "/static/icon/close.png",
@@ -1994,7 +2053,6 @@ function gToastError(title) {var duration = arguments.length > 1 && arguments[1]
   				content: String,提示文字
   				success: Function,点击确认后的操作
   				cancel: Function,点击取消后的操作
-  	return: null
   */
 function gShowModal(content, _success, cancel) {
   uni.showModal({
@@ -2023,7 +2081,6 @@ function gShowModal(content, _success, cancel) {
   				signature: Object,签名
   	return: 
   				fileName: String,最终的文件名
-  				fileUrl: String,文件路径
   */
 function gUploadFile(url, name, signature) {
   var filename = "".concat(signature.dir, "/").concat(name);
@@ -2040,7 +2097,7 @@ function gUploadFile(url, name, signature) {
 
       success: function success(res) {
         if (res.statusCode === 204)
-        resolve(res);else
+        resolve(getApp().globalData.ossHost + filename);else
 
         reject(err);
       },
@@ -2059,20 +2116,31 @@ function gUploadFile(url, name, signature) {
   					userInfo: Object,新的userInfo
   */
 function gPutUserInfo(data) {
-  for (var key in data)
-  {
-    getApp().globalData.gUserInfo.userInfo[key] = data[key];
-  }
+  for (var key in data) {
+    getApp().globalData.gUserInfo.userInfo[key] = data[key];}
   console.log(getApp().globalData.gUserInfo);
   return _objectSpread({}, getApp().globalData.gUserInfo);
 }
+
+/* 展示/隐藏等待 */
+var gLoading = function gLoading(that) {var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var dom = that.$refs.loading;
+  var time = type ? 0 : 500;
+  if (dom) {
+    setTimeout(function () {
+      if (dom)
+      dom.show = type;
+    }, time);
+  }
+};
 
 var globalFun = {
   gToastSuccess: gToastSuccess,
   gToastError: gToastError,
   gShowModal: gShowModal,
   gUploadFile: gUploadFile,
-  gPutUserInfo: gPutUserInfo };var _default =
+  gPutUserInfo: gPutUserInfo,
+  gLoading: gLoading };var _default =
 
 globalFun;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
@@ -2087,65 +2155,61 @@ globalFun;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.WXLogin = exports.Login = exports.ChangePassword = exports.Register = exports.sendChangePswCode = exports.sendRegisterCode = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.loginOut = exports.WXLogin = exports.Login = exports.ChangePassword = exports.Register = exports.sendCode = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 
-                                                                                                                                                                                                                                                                                                                                                                                    	description: 发送注册验证码
-                                                                                                                                                                                                                                                                                                                                                                                    	input: 
-                                                                                                                                                                                                                                                                                                                                                                                    				phone: String,手机号
-                                                                                                                                                                                                                                                                                                                                                                                    	return: null
-                                                                                                                                                                                                                                                                                                                                                                                    */
-var sendRegisterCode = function sendRegisterCode(phone) {return (0, _request.default)("/sms/sendCode/register/" + phone, "GET", {});};
-/* 
-                                                                                                                                       	description: 发送修改密码验证码
-                                                                                                                                       	input: 
-                                                                                                                                       				phone: String,手机号
-                                                                                                                                       	return: null
-                                                                                                                                       */exports.sendRegisterCode = sendRegisterCode;
-var sendChangePswCode = function sendChangePswCode(phone) {return (0, _request.default)("/sms/sendCode/changePassword/" + phone, "GET", {});};
+                                                                                                                                                                                                                                                                                                                                                                   	description: 发送验证码
+                                                                                                                                                                                                                                                                                                                                                                   	input: 
+                                                                                                                                                                                                                                                                                                                                                                   				phone: String,手机号
+                                                                                                                                                                                                                                                                                                                                                                           type: String,取值register、changePassword、bindPhone
+                                                                                                                                                                                                                                                                                                                                                                   	return: null
+                                                                                                                                                                                                                                                                                                                                                                   */
+var sendCode = function sendCode(data) {return (0, _request.default)("/sms/code/".concat(data.phone), "POST", data);};
 
 /* 
-                                                                                                                                               	description: 用户注册
-                                                                                                                                               	input: 
-                                                                                                                                               				phone: String,手机号
-                                                                                                                                               				password: String,密码
-                                                                                                                                               				code: String,验证码
-                                                                                                                                               	return: 
-                                                                                                                                               				token: String
-                                                                                                                                               				userInfo: Object,用户信息
-                                                                                                                                               */exports.sendChangePswCode = sendChangePswCode;
-var Register = function Register(data) {return (0, _request.default)("/register", "POST", data);};
+                                                                                                                       	description: 用户注册
+                                                                                                                       	input: 
+                                                                                                                       				phone: String,手机号
+                                                                                                                       				password: String,密码
+                                                                                                                       				code: String,验证码
+                                                                                                                       	return: 
+                                                                                                                       				token: String
+                                                                                                                       				userInfo: Object,用户信息
+                                                                                                                       */exports.sendCode = sendCode;
+var Register = function Register(data) {return (0, _request.default)("/register/phone", "POST", data);};
 
 /* 
-                                                                                                   	description: 修改密码
-                                                                                                   	input: 
-                                                                                                   				phone: String,手机号
-                                                                                                   				password: String,密码
-                                                                                                   				code: String,验证码
-                                                                                                   	return: null
-                                                                                                   */exports.Register = Register;
-var ChangePassword = function ChangePassword(data) {return (0, _request.default)("/changePassword/" + data.phone, "POST", data);};
+                                                                                                         	description: 修改密码
+                                                                                                         	input: 
+                                                                                                         				newPassword: String,新密码
+                                                                                                         				code: String,验证码
+                                                                                                         	return: null
+                                                                                                         */exports.Register = Register;
+var ChangePassword = function ChangePassword(data) {return (0, _request.default)("/changePassword/phone/".concat(data.phone, " "), "POST", data);};
 
 /* 
-                                                                                                                                   	description: 用户手机登录
-                                                                                                                                   	input: 
-                                                                                                                                   				phone: String,手机号
-                                                                                                                                   				password: String,密码
-                                                                                                                                   	return: 
-                                                                                                                                   				token: String
-                                                                                                                                   				userInfo: Object,用户信息
-                                                                                                                                   */exports.ChangePassword = ChangePassword;
-var Login = function Login(data) {return (0, _request.default)("/login", "POST", data);};
+                                                                                                                                                    	description: 用户手机登录
+                                                                                                                                                    	input: 
+                                                                                                                                                    				phone: String,手机号
+                                                                                                                                                    				password: String,密码
+                                                                                                                                                    	return: 
+                                                                                                                                                    				token: String
+                                                                                                                                                    				userInfo: Object,用户信息
+                                                                                                                                                    */exports.ChangePassword = ChangePassword;
+var Login = function Login(data) {return (0, _request.default)("/login/phone", "POST", data);};
 
 /* 
-                                                                                          	description: 微信登录
-                                                                                          	input: 
-                                                                                          				code: String,微信用户表示码
-                                                                                          	return: 
-                                                                                          				token: String
-                                                                                          				userInfo: Object,用户信息
-                                                                                          */exports.Login = Login;
-var WXLogin = function WXLogin(data) {return (0, _request.default)("/wxLogin", "POST", data);};exports.WXLogin = WXLogin;
+                                                                                                	description: 微信登录
+                                                                                                	input: 
+                                                                                                				code: String,微信用户表示码
+                                                                                                	return: 
+                                                                                                				token: String
+                                                                                                				userInfo: Object,用户信息
+                                                                                                */exports.Login = Login;
+var WXLogin = function WXLogin(data) {return (0, _request.default)("/login/wechat", "POST", data);};
+
+/* 退出登录 */exports.WXLogin = WXLogin;
+var loginOut = function loginOut() {return (0, _request.default)("/logout ", "GET", {});};exports.loginOut = loginOut;
 
 /***/ }),
 
@@ -7675,7 +7739,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7696,14 +7760,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7789,7 +7853,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8208,11 +8272,6 @@ internalMixin(Vue);
 var baseUrl = getApp().globalData.baseUrl;
 
 function myRequest(url, method, data) {
-  uni.showLoading({
-    title: "请求中...",
-    mask: true });
-
-
   /* 配置请求头 */
   var token = uni.getStorageSync("token") || '';
   var headers = {
@@ -8228,7 +8287,6 @@ function myRequest(url, method, data) {
       header: headers,
       success: function success(result)
       {
-        uni.hideLoading();
         /* 请求成功 */
         if (result.data.code === 200)
         {
@@ -8238,21 +8296,34 @@ function myRequest(url, method, data) {
         /* 请求错误 */else
 
           {
+            console.log("请求错误");
+            console.log(result.data);
             _globalFun.default.gToastError(result.data.msg);
+            /* 如果是token过期，关闭所有界面回到登录页 */
+            if (result.data.code === 103) {
+              uni.clearStorageSync("token");
+              uni.redirectTo({
+                url: "/pages/Login/Login",
+                success: function success() {
+                  _globalFun.default.gToastError(result.data.msg);
+                } });
+
+            }
             rej(result.data);
           }
       },
       fail: function fail(err)
       {
-        uni.hideLoading();
-        console.log("请求错误");
-        _globalFun.default.gToastError("请求错误");
+        console.log("服务器错误");
+        console.log(err.data);
+        _globalFun.default.gToastError("服务器错误");
         rej(err);
       },
       complete: function complete(result) {
         /* 判断是否有新token,有则替换旧的token */
-        if (result.header.Authorization)
-        {
+
+        if (result.header.Authorization) {
+          console.log(result.header);
           uni.setStorageSync("token", result.header.Authorization);
         }
       } });
@@ -8264,18 +8335,43 @@ myRequest;exports.default = _default;
 
 /***/ }),
 
-/***/ 208:
+/***/ 21:
+/*!***************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_userInfo.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getMessages = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 获取个人信息 */
+var getMe = function getMe(data) {return (0, _request.default)("/userInfo/me", "GET", data);};
+/* 修改个人基本资料 */exports.getMe = getMe;
+var putMe = function putMe(data) {return (0, _request.default)("/userInfo/me", "PUT", data);};
+/* 签署须知协议 */exports.putMe = putMe;
+var signNotice = function signNotice() {return (0, _request.default)("/sign/notice", "POST", {});};
+/* 获取头像上传签名 */exports.signNotice = signNotice;
+var getAvatarOssSignature = function getAvatarOssSignature(data) {return (0, _request.default)("/userInfo/avatar/sign/upload", "GET", data);};
+/* 根据userId获取用户详细信息 */exports.getAvatarOssSignature = getAvatarOssSignature;
+var getUser = function getUser(userId) {return (0, _request.default)("/userInfo/" + userId, "GET", {});};
+/* 获取消息通知列表 */exports.getUser = getUser;
+var getMessages = function getMessages(param) {return (0, _request.default)("/message", "GET", param);};exports.getMessages = getMessages;
+
+/***/ }),
+
+/***/ 295:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 209);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 296);
 
 /***/ }),
 
-/***/ 209:
+/***/ 296:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -8306,7 +8402,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 210);
+module.exports = __webpack_require__(/*! ./runtime */ 297);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -8323,36 +8419,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 21:
-/*!***************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_userInfo.js ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.putMe = exports.getAvatarOssSignature = exports.signNotice = exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/* 
-                                                                                                                                                                                                                                                                                                                                    	description: 获取个人信息
-                                                                                                                                                                                                                                                                                                                                    	input: null
-                                                                                                                                                                                                                                                                                                                                    	return: null
-                                                                                                                                                                                                                                                                                                                                    */
-var getMe = function getMe(data) {return (0, _request.default)("/userInfo/me", "GET", data);};
-/* 签署须知协议 */exports.getMe = getMe;
-var signNotice = function signNotice(data) {return (0, _request.default)("/sign/notice", "GET", data);};
-/* 获取头像上传签名 */exports.signNotice = signNotice;
-var getAvatarOssSignature = function getAvatarOssSignature(data) {return (0, _request.default)("/userInfo/avatar/sign/upload", "GET", data);};
-/* 
-                                                                                                                                               	description: 修改个人基本资料
-                                                                                                                                               	input:
-                                                                                                                                               				nickname: String,昵称
-                                                                                                                                               */exports.getAvatarOssSignature = getAvatarOssSignature;
-var putMe = function putMe(data) {return (0, _request.default)("/userInfo/me", "PUT", data);};exports.putMe = putMe;
-
-/***/ }),
-
-/***/ 210:
+/***/ 297:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -9136,14 +9203,12 @@ module.exports = g;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.getAllCompetition = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
-/* 
-                                                                                                                                                                                                                                                                           	description: 获取所有竞赛信息
-                                                                                                                                                                                                                                                                           */
+/*  获取所有竞赛信息 */
 var getAllCompetition = function getAllCompetition() {return (0, _request.default)("/competition", "GET", {});};exports.getAllCompetition = getAllCompetition;
 
 /***/ }),
 
-/***/ 61:
+/***/ 77:
 /*!*************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_resume.js ***!
   \*************************************************/
@@ -9151,41 +9216,20 @@ var getAllCompetition = function getAllCompetition() {return (0, _request.defaul
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getResume = exports.putResume = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.putResume = exports.getResume = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 
-                                                                                                                                                                                                                                                                                       	description: 更新简历信息
-                                                                                                                                                                                                                                                                                       	input: resume: Object,简历的所有字段
+                                                                                                                                                                                                                                                                                       	description: 获取简历信息
+                                                                                                                                                                                                                                                                                       	params:
+                                                                                                                                                                                                                                                                                               userId: String,用户标识码
                                                                                                                                                                                                                                                                                        */
-var putResume = function putResume(data) {return (0, _request.default)("/resume", "PUT", data);};
+var getResume = function getResume(userId) {return (0, _request.default)("/resume/".concat(userId), "GET", {});};
+
 /* 
-                                                                                                  	description: 获取简历信息
-                                                                                                  	input: resume: Object,简历的所有字段
-                                                                                                  */exports.putResume = putResume;
-var getResume = function getResume(phone) {return (0, _request.default)("/resume/" + phone, "GET", {});};exports.getResume = getResume;
-
-/***/ }),
-
-/***/ 78:
-/*!**************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getSelfProject = exports.postResource = exports.postProject = exports.getFilesSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/* description: 获取上传文件签名 */
-var getFilesSignature = function getFilesSignature(projectId) {return (0, _request.default)("/project/".concat(projectId, "/resource/sign/upload/private"), "GET", {});};
-/* desc: 创建项目数据，保存至数据库 */exports.getFilesSignature = getFilesSignature;
-var postProject = function postProject(data) {return (0, _request.default)("/project", "POST", data);};
-/* 创建项目的资源信息 */exports.postProject = postProject;
-var postResource = function postResource(projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
-
-/* 获取个人项目信息 */exports.postResource = postResource;
-var getSelfProject = function getSelfProject() {return (0, _request.default)("/project", "GET", {});};
-/* 获取全部项目信息 */exports.getSelfProject = getSelfProject;
+                                                                                                                  	description: 更新简历信息
+                                                                                                                  	input: resume: Object,简历的所有字段
+                                                                                                                  */exports.getResume = getResume;
+var putResume = function putResume(data) {return (0, _request.default)("/resume", "PUT", data);};exports.putResume = putResume;
 
 /***/ })
 

@@ -6,9 +6,9 @@
 			:style="'transform:translateY(' + item.translateY + 'px) translateZ(' + item.translateZ + 'px)'"
 			v-for="(item,index) in tempList"
 			:key="index">
-			<view class="info">
+			<view class="info" @click="$emit('click',index)">
 				<image :src="item.avatarUrl"></image>
-				<text>{{item.name}} {{item.phone}}</text>
+				<text>{{item.trueName || item.nickname}}</text>
 			</view>
 			<text
 				class="iconfont icon-sort"
@@ -102,8 +102,8 @@ export default {
 				return (a.translateY + a.position) - (b.translateY + b.position)
 			})
 			this.initSort(temp)
-			this.$emit("confirm",this.tempList)
-		}
+			this.$emit("confirm",JSON.parse(JSON.stringify(this.tempList)))
+		},
 	},
 	created() {
 		this.initSort(this.list)
