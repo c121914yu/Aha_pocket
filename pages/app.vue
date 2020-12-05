@@ -55,7 +55,7 @@ export default {
 				{name: "Epiboly",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 3,
+			currentNav: 0,
 			signedNotice: getApp().globalData.gUserInfo.signedNotice
 		}
 	},
@@ -79,7 +79,7 @@ export default {
 		{
 			this.signedNotice = true
 			this.loadCompetitionInfo()
-			this.$refs.projectHome.initProjects()
+			this.$refs.projectHome.loadProjects()
 		},
 		/* 加载比赛信息 */
 		loadCompetitionInfo()

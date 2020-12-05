@@ -4,7 +4,8 @@
 		class="project-card"
 		:style="{
 			'margin': margin,
-			'border-radius': radius
+			'border-radius': radius,
+			'background-color': project.passed ? '#ffffff' : 'rgba(248,184,107,0.1)'
 		}"
 		@click="$emit('click')">
 		<!-- 排名图标 -->

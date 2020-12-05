@@ -7,6 +7,8 @@
     "pages/Self/Informs",
     "pages/Self/Inform",
     "pages/Self/Inform_send",
+    "pages/Self/ContribPointRecord",
+    "pages/Self/NumberInfo",
     "pages/Self/Resume",
     "pages/Self/ResumePreview",
     "pages/Self/Authentication",
@@ -15,7 +17,7 @@
     "pages/Project/EditProject",
     "pages/Project/Projects",
     "pages/Project/Project",
-    "pages/Project/ReadFile",
+    "pages/Project/PurchasedProjects",
     "pages/Project/Contract",
     "pages/Epiboly/EpibolyDetail"
   ],
@@ -28,5 +30,5 @@
   },
   "permission": {},
   "usingComponents": {},
-  "sitemapLocation": "sitemap72.json"
+  "sitemapLocation": "sitemap76.json"
 }

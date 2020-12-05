@@ -7,7 +7,7 @@ import request from "./request.js"
         type: String,取值register、changePassword、bindPhone
 	return: null
 */
-const sendCode = (data) => request(`/sms/code/${data.phone}`,"POST",data)
+const sendCode = (data) => request(`/sms/code`,"POST",data)
 
 /* 
 	description: 用户注册

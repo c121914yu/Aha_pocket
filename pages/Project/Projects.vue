@@ -2,188 +2,218 @@
 <template>
 	<view class="my-projects">
 		<!-- 数据统计 -->
+		<!-- 上传项目 -->
 		<navigator 
-			class="up-project"
-			hover-class="none"
+			v-if="couldSet" 
+			class="up-project" 
+			hover-class="none" 
 			url="UpProject">
 			<text class="iconfont icon-add-fill"></text>
 		</navigator>
 		<!-- 项目卡片 -->
 		<view class="cards">
 			<view class="title">
-				<text
-					:class="index === sortIndex ? 'active' : ''"
-					v-for="(sort,index) in sortList"
+				<text 
+					:class="index === sortIndex ? 'active' : ''" 
+					v-for="(sort, index) in sortList" 
 					:key="sort"
-					@click="sortIndex=index">
-					{{sort.text}}
+					@click="sortIndex=index;loadProjects(true)">
+					{{ sort.text }}
 				</text>
-				<text class="filter">筛选<text class="iconfont icon-shaixuan"></text></text>
+				<text
+					class="filter"
+					:style="{
+						color: filterActive ? 'var(--origin2)' : ''
+					}"
+					@click="isFilter = true">
+					筛选
+					<text class="iconfont icon-shaixuan"></text>
+				</text>
 			</view>
 			<!-- 推荐比赛列表 -->
 			<view>
-				<projectCard 
-					v-for="(project,index) in projects"
+				<projectCard
+					v-for="(project, index) in projects"
 					:key="index"
 					margin="0 0 10px 0"
-					:radius="index === 0 ? '0 0 22px 22px' : '22px'"
+					:radius="index === 0 ? '0 0 16px 16px' : '16px'"
 					:project="project"
-					@click="projectSetting(project)">
-				</projectCard>
+					@click="projectSetting(project)"
+				></projectCard>
 			</view>
 		</view>
-		<view class="center small">{{loadText}}</view>
-        <!-- 加载动画 -->
-        <Loading ref="loading"></Loading>
+		<view class="center small">{{ loadText }}</view>
+		
+		<!-- 筛选组件 -->
+		<ProjectFilter v-if="isFilter" @sureFilter="sureFilter"></ProjectFilter>
+		<!-- 加载动画 -->
+		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { getProjects,deleteProject } from "@/static/request/api_project.js"
+import { getMeProjects, deleteProject } from '@/static/request/api_project.js';
 export default {
 	data() {
 		return {
-			userId: "",
+			userId: '',
 			couldSet: true,
 			sortList: [
-				{text: "综合",val: "read"},
-				{text: "收藏量",val: "collect"},
-				{text: "最新",val: "time"},
-				{text: "获奖等级",val: "awardLevel"},
+				{ text: '综合', val: 'read' }, 
+				{ text: '收藏量', val: 'collect' }, 
+				{ text: '最新', val: 'time' }, 
+				{ text: '获奖等级', val: 'awardLevel' },
 			],
 			sortIndex: 0,
 			projects: [],
 			pageNum: 1,
-			pageSize: 20,
-			showStatus: 0 //0未加载完成，1加载全部，2加载中
-		}
-	},
-	watch:{
-		sortIndex: "initProjects"
+			pageSize: 10,
+			compId: null,
+			awardLevel: null,
+			showStatus: 0, //0未加载完成，1加载全部，2加载中,3 无数据
+			isFilter: false,
+			filterActive: false,
+		};
 	},
 	computed: {
-		loadText(){
-			switch(this.showStatus){
-				case 0: return ""
-				case 1: return "已加载全部"
-				case 2: return "加载中..."
+		loadText() {
+			switch (this.showStatus) {
+				case 0: return ''
+				case 1: return '已加载全部'
+				case 2: return '加载中...'
+				case 3: return '没有相关数据'
 			}
 		}
 	},
 	methods: {
-		/* 
-			name: 初始化项目
-			desc: 请求个人项目数据，并重新赋值projects和page
-			time: 2020/11/20
-		*/
-		initProjects()
+		/* 判断是否加载全部 */
+		judgeLoadAll(size)
 		{
-            this.gLoading(this,true)
-			this.pageNum = 1
-			getProjects({
-				userId: this.userId,
+			this.showStatus = 0
+			if(size < this.pageSize)
+				this.showStatus = 1
+			else
+				this.pageNum++
+			if(this.projects.length === 0)
+				this.showStatus = 3
+		},
+		/*
+			name: 获取项目
+			desc: 请求项目数据，根据界面条件排序/筛选。传入init参数，判断是否初始化进行操作。
+			time: 2020/12/4
+		*/
+		loadProjects(init=false,loading=true) 
+		{
+			if (init) {
+				this.pageNum = 1
+			}
+			this.gLoading(this, loading)
+			let params = {
 				pageNum: this.pageNum,
 				pageSize: this.pageSize,
 				sortBy: this.sortList[this.sortIndex].val
-			})
+			}
+			if(this.compId !== null)
+				params.compId = this.compId
+			if(this.awardLevel!== null)
+				params.awardLevel = this.awardLevel
+			getMeProjects(params)
 			.then(res => {
-				this.projects = res.data.pageData
-				if(res.data.pageSize < this.pageSize)
-					this.showStatus = 1
-				else
-					this.page.pageNum++
+				this.projects = init ? res.data.pageData : this.projects.concat(res.data.pageData)
+				this.judgeLoadAll(res.data.pageSize)
+				this.gLoading(this, false)
 				uni.stopPullDownRefresh()
-                this.gLoading(this,false)
+				console.log(this.projects);
 			})
-			.catch(() => {
-                uni.stopPullDownRefresh()
-                this.gLoading(this,false)
-            })
+			.catch(err => {
+				this.gLoading(this, false)
+				uni.stopPullDownRefresh()
+			})
+		},
+		/*
+			name: 确认筛选
+			desc: 获取筛选模式，关闭弹窗，请求数据
+		*/
+		sureFilter(e)
+		{
+		    if(e.type === "all")
+				this.filterActive = false
+			else
+				this.filterActive = true
+			this.compId = null
+			this.awardLevel = null
+		   
+			this[e.type] = e.value
+			this.loadProjects(true)
+			this.isFilter = false
 		},
 		/* 
 			name: 项目设置
 			desc: 根据项目id进入项目编辑界面
 			time: 2020/11/20
 		*/
-		projectSetting(project)
+		projectSetting(project) 
 		{
 			/* 如果是查看其他人项目，直接进入阅读 */
-			if(!this.couldSet)
+			if (!this.couldSet){
 				uni.navigateTo({
 					url: `Project?id=${project.id}`
 				})
-			else{
+			}
+			else {
 				uni.showActionSheet({
-					itemList: ["阅读项目", "修改项目", "删除项目"],
-					success: (res) => {
+					itemList: ['阅读项目', '修改项目', '删除项目'],
+					success: res => {
 						/* 阅读项目，跳转阅读界面 */
-						if(res.tapIndex === 0)
+						if (res.tapIndex === 0){
 							uni.navigateTo({
 								url: `Project?id=${project.id}`
 							})
-						/* 编辑项目，跳转阅读界面 */
-						else if(res.tapIndex === 1)
+						}
+						/* 编辑项目，跳转阅读界面 */ 
+						else if (res.tapIndex === 1){
 							uni.navigateTo({
 								url: `EditProject?id=${project.id}`
 							})
-						/* 删除项目 */
-						else if(res.tapIndex === 2){
-							this.gShowModal("确认删除该项目?",() => {
-								console.log("删除项目");
-								const index = this.projects.indexOf(project)
-								deleteProject(project.id)
-								.then(res => {
-									this.gToastSuccess("删除成功")
-									this.projects.splice(index,1)
+						}
+						/* 删除项目 */ 
+						else if (res.tapIndex === 2) {
+							this.gShowModal('确认删除该项目?', () => {
+								console.log('删除项目');
+								const index = this.projects.indexOf(project);
+								deleteProject(project.id).then(res => {
+									this.gToastSuccess('删除成功');
+									this.projects.splice(index, 1);
 								})
 							})
 						}
 					}
-				})
+				});
 			}
 		}
 	},
-    onLoad(e) {
-		if(e.userId){
+	onLoad(e) {
+		if (e.userId) {
 			this.userId = e.userId
 			this.couldSet = false
 			uni.setNavigationBarTitle({
-				title: "用户项目列表"
+				title: '用户项目列表'
 			})
-		}
-		else{
-			this.userId = getApp().globalData.gUserInfo.userInfo.userId
+		} else {
+			this.userId = getApp().globalData.gUserInfo.userInfo.userId;
 			uni.setNavigationBarTitle({
-				title: "我的项目"
+				title: '我的项目'
 			})
 		}
-		this.initProjects()
-    },
-	onPullDownRefresh() {
-		this.initProjects()
+		this.loadProjects(true)
 	},
-	onReachBottom(){
-		if(this.showStatus === 0){
+	onPullDownRefresh() {
+		this.loadProjects(true)
+	},
+	onReachBottom() {
+		if (this.showStatus === 0) {
 			this.showStatus = 2
-			getProjects({
-				userId: this.userId,
-				pageNum: this.pageNum,
-				pageSize: this.pageSize,
-				sortBy: this.sortList[this.sortIndex].val
-			})
-			.then(res => {
-				const data = res.data.pageData
-				this.projects = this.projects.concat(data)
-				if(res.data.pageSize < this.pageSize)
-					this.showStatus = 1
-				else{
-					this.page.pageNum++
-					this.showStatus = 0
-				}
-			})
-			.catch(err => {
-				this.showStatus = 0
-			})
+			this.loadProjects(false,false)
 		}
 	}
 }
@@ -221,12 +251,10 @@ export default {
 				font-weight 700
 			/* 筛选按键 */
 			.filter
-				color var(--origin2)
 				display flex
 				align-items center
 				.iconfont
 					font-size 40rpx
-		
 	.center
 		padding 10px
 		color var(--gray1)

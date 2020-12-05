@@ -179,8 +179,10 @@
 }
 .self .tasks .task.data-v-bf8d8ef4 {
   text-align: center;
+  font-size: 24rpx;
+  color: var(--origin1);
 }
-.self .tasks .task text.data-v-bf8d8ef4 {
+.self .tasks .task .iconfont.data-v-bf8d8ef4 {
   line-height: 1.2;
   font-size: 54rpx;
   color: var(--origin2);

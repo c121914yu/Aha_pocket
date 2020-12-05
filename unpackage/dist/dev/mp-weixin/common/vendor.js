@@ -1935,7 +1935,20 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 102:
+/***/ 11:
+/*!*********************************************!*\
+  !*** D:/服务外包/竞赛统计/static/icon/iconfont.css ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+    if(false) { var cssReload; }
+  
+
+/***/ }),
+
+/***/ 116:
 /*!**************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
   \**************************************************/
@@ -1943,7 +1956,7 @@ function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.getLoadSignature = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteProject = exports.putProject = exports.getProject = exports.getProjects = exports.postProject = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.getLoadSignature = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.buyProject = exports.deleteProject = exports.putProject = exports.getProject = exports.getMeProjects = exports.getProjects = exports.postProject = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 获取上传头像/证明材料签名 */
 var getPublicSignature = function getPublicSignature() {return (0, _request.default)("/project/sign/upload/public", "GET", {});};
@@ -1962,14 +1975,18 @@ var postProject = function postProject(data) {return (0, _request.default)("/pro
                                                                                                                 orderBy: 排序方式
                                                                                                         */exports.postProject = postProject;
 var getProjects = function getProjects(params) {return (0, _request.default)("/project", "GET", params);};
-/* 获取项目详细信息 */exports.getProjects = getProjects;
+/* 获取个人项目列表 */exports.getProjects = getProjects;
+var getMeProjects = function getMeProjects(params) {return (0, _request.default)("/project/me", "GET", params);};
+/* 获取项目详细信息 */exports.getMeProjects = getMeProjects;
 var getProject = function getProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
 /* 更新项目详细信息 */exports.getProject = getProject;
 var putProject = function putProject(projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
 /* 删除项目 */exports.putProject = putProject;
 var deleteProject = function deleteProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
+/* 购买项目 */exports.deleteProject = deleteProject;
+var buyProject = function buyProject(projectId) {return (0, _request.default)("/project/buy/".concat(projectId), "GET", {});};
 
-/* 判断是否收藏 */exports.deleteProject = deleteProject;
+/* 判断是否收藏 */exports.buyProject = buyProject;
 var isCollected = function isCollected(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "GET", {});};
 /* 收藏项目 */exports.isCollected = isCollected;
 var collectProject = function collectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "POST", {});};
@@ -1993,19 +2010,6 @@ var putMember = function putMember(projectId, memberUserId, data) {return (0, _r
 var putMembers = function putMembers(projectId, data) {return (0, _request.default)("/project/members/".concat(projectId), "PUT", data);};
 /* 删除成员 */exports.putMembers = putMembers;
 var deleteMember = function deleteMember(projectId, memberPhone) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberPhone), "DELETE", {});};exports.deleteMember = deleteMember;
-
-/***/ }),
-
-/***/ 11:
-/*!*********************************************!*\
-  !*** D:/服务外包/竞赛统计/static/icon/iconfont.css ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-    if(false) { var cssReload; }
-  
 
 /***/ }),
 
@@ -2164,18 +2168,18 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.loginOut =
                                                                                                                                                                                                                                                                                                                                                                            type: String,取值register、changePassword、bindPhone
                                                                                                                                                                                                                                                                                                                                                                    	return: null
                                                                                                                                                                                                                                                                                                                                                                    */
-var sendCode = function sendCode(data) {return (0, _request.default)("/sms/code/".concat(data.phone), "POST", data);};
+var sendCode = function sendCode(data) {return (0, _request.default)("/sms/code", "POST", data);};
 
 /* 
-                                                                                                                       	description: 用户注册
-                                                                                                                       	input: 
-                                                                                                                       				phone: String,手机号
-                                                                                                                       				password: String,密码
-                                                                                                                       				code: String,验证码
-                                                                                                                       	return: 
-                                                                                                                       				token: String
-                                                                                                                       				userInfo: Object,用户信息
-                                                                                                                       */exports.sendCode = sendCode;
+                                                                                                   	description: 用户注册
+                                                                                                   	input: 
+                                                                                                   				phone: String,手机号
+                                                                                                   				password: String,密码
+                                                                                                   				code: String,验证码
+                                                                                                   	return: 
+                                                                                                   				token: String
+                                                                                                   				userInfo: Object,用户信息
+                                                                                                   */exports.sendCode = sendCode;
 var Register = function Register(data) {return (0, _request.default)("/register/phone", "POST", data);};
 
 /* 
@@ -8343,7 +8347,7 @@ myRequest;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getMessages = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMessage = exports.postMessage = exports.getMessage = exports.getMessages = exports.getUnreadCount = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 获取个人信息 */
 var getMe = function getMe(data) {return (0, _request.default)("/userInfo/me", "GET", data);};
@@ -8355,23 +8359,71 @@ var signNotice = function signNotice() {return (0, _request.default)("/sign/noti
 var getAvatarOssSignature = function getAvatarOssSignature(data) {return (0, _request.default)("/userInfo/avatar/sign/upload", "GET", data);};
 /* 根据userId获取用户详细信息 */exports.getAvatarOssSignature = getAvatarOssSignature;
 var getUser = function getUser(userId) {return (0, _request.default)("/userInfo/" + userId, "GET", {});};
-/* 获取消息通知列表 */exports.getUser = getUser;
-var getMessages = function getMessages(param) {return (0, _request.default)("/message", "GET", param);};exports.getMessages = getMessages;
+
+/* 获取未读通知数量 */exports.getUser = getUser;
+var getUnreadCount = function getUnreadCount() {return (0, _request.default)("/message/count/notRead", "GET", {});};
+/* 获取消息通知列表 */exports.getUnreadCount = getUnreadCount;
+var getMessages = function getMessages(param) {return (0, _request.default)("/message", "GET", param);};
+/* 
+                                                                                                         	获取消息通知内容
+                                                                                                         	@param: messageId: Number
+                                                                                                         */exports.getMessages = getMessages;
+var getMessage = function getMessage(messageId) {return (0, _request.default)("/message/".concat(messageId), "GET", {});};
+/* 
+                                                                                                                               发送通知
+                                                                                                                               @params: receiverUserId: Number,收件人用户id
+                                                                                                                               @params: title: String, 信件标题
+                                                                                                                               @params: content:String, 信件内容
+                                                                                                                           */exports.getMessage = getMessage;
+var postMessage = function postMessage(data) {return (0, _request.default)("/message", "POST", data);};
+/*  删除消息 */exports.postMessage = postMessage;
+var deleteMessage = function deleteMessage(messageId) {return (0, _request.default)("/message/".concat(messageId), "DELETE", {});};exports.deleteMessage = deleteMessage;
 
 /***/ }),
 
-/***/ 295:
+/***/ 3:
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+
+/***/ 309:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 296);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 310);
 
 /***/ }),
 
-/***/ 296:
+/***/ 310:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -8402,7 +8454,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 297);
+module.exports = __webpack_require__(/*! ./runtime */ 311);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -8419,7 +8471,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 297:
+/***/ 311:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -9151,37 +9203,6 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 3:
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
 /***/ 4:
 /*!*******************************!*\
   !*** D:/服务外包/竞赛统计/pages.json ***!
@@ -9208,7 +9229,7 @@ var getAllCompetition = function getAllCompetition() {return (0, _request.defaul
 
 /***/ }),
 
-/***/ 77:
+/***/ 91:
 /*!*************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_resume.js ***!
   \*************************************************/

@@ -3,93 +3,121 @@
 	<view class="inform">
 		<!-- 清除未读 -->
 		<view class="head small">
-			<text>有<text class="strong">5</text>条消息未读取</text>
+			<text>
+				有
+				<text class="strong">{{ unreaded }}</text>
+				条消息未读取
+			</text>
 			<text class="iconfont icon-clear"></text>
 			<text class="strong">清除未读</text>
 		</view>
 		<!-- 通知列表 -->
 		<view class="informs">
-			<navigator 
-				class="item"
-				hover-class="none"
-				v-for="(item,index) in informs"
-				:key="index"
-				:url="'Inform?id='+index">
-					<image 
-						:class="item.read ? '' : 'unread'"
-						src="https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png">
-					</image>
-					<view class="right small">
-						<view class="title">
-							<text class="name">{{item.name}}</text>
-							<text class="time">{{item.time}}</text>
-						</view>
-						<view class="content">{{item.content}}</view>
+			<navigator class="item" hover-class="none" v-for="(item, index) in informs" :key="index" :url="'Inform?id=' + item.id">
+				<image :class="item.status === 0 ? 'unread' : ''" src="https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png"></image>
+				<view class="right small">
+					<view class="title">
+						<text class="title">{{ item.title }}</text>
+						<text class="time">{{ item.receiveDate }}</text>
 					</view>
+					<view class="content" v-html="item.content"></view>
+				</view>
 			</navigator>
 		</view>
-        <view class="remark small center">{{loadText}}</view>
-        <!-- 加载动画 -->
-        <Loading ref="loading"></Loading>
-    </view>
+		<view class="remark small center">{{ loadText }}</view>
+		<!-- 发送信息 -->
+		<navigator class="send-inform" hover-class="none" url="Inform_send"><text class="iconfont icon-tianjia"></text></navigator>
+		<!-- 加载动画 -->
+		<Loading ref="loading"></Loading>
+	</view>
 </template>
 
 <script>
-import { getMessages } from "@/static/request/api_userInfo.js"
+import { getMessages } from '@/static/request/api_userInfo.js';
 export default {
 	data() {
 		return {
-            pageNum: 1,
-            pageSize: 20,
-            loadStatus: 0,
-			informs: [
-				{name: "项目审核通知",content: "撒搭嘎搭嘎多少个sad广撒点阿搭嘎搭嘎大使馆的撒都是搞当",time: "12:28"},
-				{name: "项目审核通知",content: "撒搭嘎搭嘎多少个sad广撒点",time: "2020-11-16"},
-				{name: "项目审核通知",content: "撒搭嘎搭嘎多少个sad广撒点",time: "2020-11-16"},
-				{name: "项目审核通知",content: "撒搭嘎搭嘎多少个sad广撒点少时诵诗书少时诵诗书是是是宿舍所所所所所所",time: "2020-11-15"},
-				{name: "项目审核通知",content: "撒搭嘎搭嘎多少个sad广撒点",time: "2020-11-14"},
-			]
+			pageNum: 1,
+			pageSize: 20,
+			loadStatus: 0,
+			informs: []
+		};
+	},
+	computed: {
+		loadText() {
+			switch (this.loadStatus) {
+				case 0: return ''
+				case 1: return '已加载全部'
+				case 2: return '加载中...'
+				case 3: return '没有相关数据'
+			}
+		},
+		unreaded() {
+			return this.informs.filter(item => item.status === 0).length;
 		}
 	},
-    computed: {
-    	loadText(){
-    		switch(this.loadStatus){
-    			case 0: return ""
-    			case 1: return "加载中..."
-                case 2: return "已加载全部"
-    		}
-    	}
-    },
-    methods: {
-        /* 获取消息列表 */
-        getMsg()
-        {
-           this.gLoading(this,true)
-           if(this.loadStatus === 0){
-               getMessages({
-                   pageNum: this.pageNum,
-                   pageSize: this.pageSize
-               }) 
-               .then(res => {
-                    if(res.data.pageSize < this.pageSize)
-                       this.loadStatus = 2
-                    else{
-                        this.pageNum++
-                        this.loadStatus = 0
-                    }
-                    this.gLoading(this,false)
-                    console.log(res)
-               })
-               .catch(err => {
-                   this.gLoading(this,false)
-               })
-           }
-        }
-    },
-    onLoad(){
-        this.getMsg()
-    }
-}
+	methods: {
+		/* 判断是否加载全部 */
+		judgeLoadAll(size)
+		{
+			this.loadStatus = 0
+			if(size < this.pageSize)
+				this.loadStatus = 1
+			else
+				this.pageNum++
+			if(this.informs.length === 0)
+				this.loadStatus = 3
+			console.log(size)
+		},
+		/* 获取消息列表 */
+		getMsg(init=false,loading=true) 
+		{
+			this.gLoading(this, loading)
+			if(init){
+				this.pageNum = 1
+			}
+			getMessages({
+				pageNum: this.pageNum,
+				pageSize: this.pageSize
+			})
+			.then(res => {
+				this.gLoading(this, false)
+				const data = res.data.pageData.map(item => {
+					const today = new Date();
+					const receiveDate = new Date(item.receiveDate)
+					if (receiveDate.getFullYear() === today.getFullYear() && receiveDate.getMonth() === today.getMonth() && receiveDate.getDate() === today.getDate()) {
+						item.receiveDate = item.receiveDate.split(' ')[1]
+					} else {
+						item.receiveDate = item.receiveDate.split(' ')[0]
+					}
+					return item
+				})
+				
+				this.informs = init ?  data : this.informs.concat(data)
+				
+				this.judgeLoadAll(res.data.pageSize)
+				console.log(this.informs)
+				uni.stopPullDownRefresh()
+			})
+			.catch(err => {
+				this.gLoading(this, false)
+				uni.stopPullDownRefresh()
+			})
+		}
+	},
+	onShow() {
+		this.getMsg(true)
+	},
+	onPullDownRefresh() {
+		this.getMsg(true)
+	},
+	onReachBottom() {
+		if (this.loadStatus === 0) {
+			this.loadStatus = 2
+			this.getMsg(false,false)
+		}
+	}
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -101,7 +129,14 @@ export default {
 		color var(--gray1)
 		.iconfont
 			margin 0 2px 0 10px
-    /* 通知列表*/
+	.send-inform
+		position fixed
+		right 10px
+		bottom 20px
+		text
+			font-size 50rpx
+			color var(--origin1)
+	/* 通知列表 */
 	.informs
 		box-shadow var(--shadow2)
 		.item
@@ -115,7 +150,7 @@ export default {
 				border-radius 4px
 				&.unread::after
 					z-index 10
-					content ""
+					content ''
 					position absolute
 					top 0
 					right 0
@@ -137,13 +172,13 @@ export default {
 				.content
 					margin-top 4px
 					width calc(100vw - 75px)
+					height 20px
 					color var(--gray1)
-					text-overflow:ellipsis;
+					text-overflow ellipsis
 					white-space nowrap
 					overflow hidden
 					text-overflow ellipsis
-    .remark{
-        margin-top: 10px;
-        color: var(--gray1);
-    }                
+	.remark
+		padding 10px 0
+		color var(--gray1)
 </style>

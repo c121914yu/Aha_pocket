@@ -32,7 +32,10 @@
 		{
 			"path": "pages/Self/Informs",
 			"style": {
-				"navigationBarTitleText": "通知管理"
+				"navigationBarTitleText": "通知管理",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle": "dark",
+				"onReachBottomDistance": 100
 			}
 		}, {
 			"path": "pages/Self/Inform",
@@ -45,6 +48,16 @@
 				"navigationBarTitleText": "发送消息"
 			}
 		}, {
+			"path": "pages/Self/ContribPointRecord",
+			"style": {
+				"navigationBarTitleText": "贡献度账单"
+			}
+		},{
+			"path": "pages/Self/NumberInfo",
+			"style": {
+				"navigationBarTitleText": "账号信息"
+			}
+		},{
 			"path": "pages/Self/Resume",
 			"style": {
 				"navigationBarTitleText": "个人简历"
@@ -90,10 +103,10 @@
 			"style": {
 				"navigationBarTitleText": "项目详情"
 			}
-		},{
-			"path": "pages/Project/ReadFile",
+		}, {
+			"path": "pages/Project/PurchasedProjects",
 			"style": {
-				"navigationBarTitleText": "文件阅读"
+				"navigationBarTitleText": "已购买的项目"
 			}
 		},
 		/* 合同 & 电子签名 */

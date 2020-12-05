@@ -55,7 +55,7 @@
                 v-if="projects.length===5"
                 class="center"
                 hover-class="none"
-                :url="'../Project/Projects?phone='+phone">
+                :url="'../Project/Projects?userId='+userId">
                 查看更多
             </navigator>
         </view>

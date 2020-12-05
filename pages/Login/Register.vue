@@ -6,63 +6,45 @@
 			<view class="card" v-if="!codeInput">
 				<view class="input">
 					<text class="iconfont icon-user"></text>
-					<input 
-						type="number" 
-						placeholder="手机号" 
-						placeholder-class="placeholderStyle" 
-						v-model="phone"/>
+					<input type="number" placeholder="手机号" placeholder-class="placeholderStyle" v-model="phone" />
 				</view>
 				<view class="input">
 					<text class="iconfont icon-password"></text>
-					<input 
-						style="padding-right:40px" 
-						type="text" 
-						:password="isPassword"
-						placeholder="密码" 
-						placeholder-class="placeholderStyle" 
-						v-model="password"
-					/>
-					<text class="iconfont icon-readed readed" @click="isPassword=!isPassword"></text>
+					<input style="padding-right:40px" type="text" :password="isPassword" placeholder="密码" placeholder-class="placeholderStyle" v-model="password" />
+					<text class="iconfont icon-readed readed" @click="isPassword = !isPassword"></text>
 				</view>
 				<view class="input">
 					<text class="iconfont icon-password"></text>
-					<input 
-						type="text" 
-						password
-						placeholder="再次输入密码" 
-						placeholder-class="placeholderStyle" 
-						v-model="password2"
-					/>
+					<input type="text" password placeholder="再次输入密码" placeholder-class="placeholderStyle" v-model="password2" />
 				</view>
 				<button type="default" @click="getCode">获取验证码</button>
 			</view>
 			<view class="code-input" v-show="codeInput">
-				<view class="center"><text class="strong h3">{{phone}}</text> 正在注册账号</view>
-				<CodeInput 
-					ref="codeInput"
-					@getCode="getCode"
-					@finishInput="register">
-				</CodeInput>
-				<button @click="codeInput=false">修改注册信息</button>
+				<view class="center">
+					<text class="strong h3">{{ phone }}</text>
+					正在注册账号
+				</view>
+				<CodeInput ref="codeInput" @getCode="getCode" @finishInput="register"></CodeInput>
+				<button @click="codeInput = false">修改注册信息</button>
 			</view>
 		</view>
-    <!-- 加载动画 -->
-    <Loading ref="loading"></Loading>
+		<!-- 加载动画 -->
+		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { Register,sendCode } from "../../static/request/api_login.js"
-var reg = /^1[3456789]\d{9}$/
+import { Register, sendCode } from '../../static/request/api_login.js';
+var reg = /^1[3456789]\d{9}$/;
 export default {
 	data() {
 		return {
-			phone: "",
-			password: "",
-			password2: "",
+			phone: '',
+			password: '',
+			password2: '',
 			isPassword: true, // 是否展示密码
 			codeInput: false
-		}
+		};
 	},
 	methods: {
 		/*
@@ -74,44 +56,35 @@ export default {
 						this.password2: String,确认密码
 			return: null
 		*/
-		getCode(){
-			if(!reg.test(this.phone))
-			{
-				this.gToastError("手机格式错误")
-			}
-			else if(this.password === "")
-			{
-				this.gToastError("请填写密码")
-			}
-			else if(this.password !== this.password2)
-			{
-				this.gToastError("密码不一致")
-			}
-			else
-			{
+		getCode() {
+			if (!reg.test(this.phone)) {
+				this.gToastError('手机格式错误');
+			} else if (this.password === '') {
+				this.gToastError('请填写密码');
+			} else if (this.password !== this.password2) {
+				this.gToastError('密码不一致');
+			} else {
 				/* 判断用户是否可以发送验证码 */
-				if(getApp().globalData.gCodeTime <= 0)
-				{
-          this.gLoading(this,true)
+				if (getApp().globalData.gCodeTime <= 0) {
+					this.gLoading(this, true);
 					/* 发送验证码 */
 					sendCode({
-            phone: this.phone,
-            type: "register"
-          })
-					.then(res => {
-						this.gToastSuccess(res.msg,1000)
-						this.codeInput = true
-						this.$refs.codeInput.setTimer()
-            this.gLoading(this,false)
+						phone: this.phone,
+						type: 'register'
 					})
-          .catch(err => {
-            this.gLoading(this,false)
-          })
-				}
-				else
-				{
-					this.codeInput = true
-					this.$refs.codeInput.setTimer()
+					.then(res => {
+						this.gToastSuccess(res.msg, 1000);
+						this.codeInput = true;
+						this.$refs.codeInput.setTimer();
+						this.gLoading(this, false);
+					})
+					.catch(err => {
+						this.gLoading(this, false);
+					});
+				} 
+				else {
+					this.codeInput = true;
+					this.$refs.codeInput.setTimer();
 				}
 			}
 		},
@@ -125,30 +98,30 @@ export default {
 						this.code: String,验证码
 			return: null
 		*/
-		register(code){
+		register(code) {
 			const data = {
 				phone: this.phone,
 				password: this.password,
 				code,
 				nickname: this.phone // 用户默认的昵称
-			}
-      this.gLoading(this,true)
+			};
+			this.gLoading(this, true);
 			Register(data)
 			.then(res => {
-				this.gToastSuccess(res.msg)
+				this.gToastSuccess(res.msg);
 				/* 储存token */
-				uni.setStorageSync("token",res.data.token)
+				uni.setStorageSync('token', res.data.token);
 				/* 储存个人信息 */
-				getApp().globalData.gUserInfo = res.data.personalUserInfo
-        this.gLoading(this,false)
+				getApp().globalData.gUserInfo = res.data.personalUserInfo;
+				this.gLoading(this, false);
 				/* 跳转主页 */
 				uni.reLaunch({
-					url: "../app"
+					url: '../app'
 				})
 			})
-      .catch(err => {
-        this.gLoading(this,false)
-      })
+			.catch(err => {
+				this.gLoading(this, false);
+			})
 		}
 	},
 	computed: {
@@ -162,15 +135,13 @@ export default {
 						0ns后获取
 						ns后获取
 		*/
-		codeText(){
-			if(this.time === 0)
-				return "获取验证码"
-			else if(this.time >= 10)
-				return `${this.time}s后获取`
-			return `0${this.time}s后获取`
+		codeText() {
+			if (this.time === 0) return '获取验证码';
+			else if (this.time >= 10) return `${this.time}s后获取`;
+			return `0${this.time}s后获取`;
 		}
 	}
-}
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -226,7 +197,7 @@ export default {
 					margin-left 8px
 					font-size 46rpx
 					color var(--gray1)
-					 &.readed
+					&.readed
 						right 10px
 				input
 					width 100%
@@ -249,5 +220,8 @@ export default {
 			width 100%
 			.strong
 				color var(--origin5)
-			button				margin 10px 10%				color #FFFFFF				background-color var(--origin2)
+			button
+				margin 10px 10%
+				color #FFFFFF
+				background-color var(--origin2)
 </style>

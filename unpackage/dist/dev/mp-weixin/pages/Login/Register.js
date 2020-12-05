@@ -94,10 +94,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   CodeInput: function() {
-    return __webpack_require__.e(/*! import() | components/CodeInput/CodeInput */ "components/CodeInput/CodeInput").then(__webpack_require__.bind(null, /*! @/components/CodeInput/CodeInput.vue */ 168))
+    return __webpack_require__.e(/*! import() | components/CodeInput/CodeInput */ "components/CodeInput/CodeInput").then(__webpack_require__.bind(null, /*! @/components/CodeInput/CodeInput.vue */ 182))
   },
   Loading: function() {
-    return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 161))
+    return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 175))
   }
 }
 var render = function() {
@@ -182,24 +182,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var _api_login = __webpack_require__(/*! ../../static/request/api_login.js */ 19); //
 //
 //
@@ -235,25 +217,7 @@ var _api_login = __webpack_require__(/*! ../../static/request/api_login.js */ 19
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {return { phone: "", password: "", password2: "", isPassword: true, // 是否展示密码
+var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {return { phone: '', password: '', password2: '', isPassword: true, // 是否展示密码
       codeInput: false };}, methods: { /*
                                        	name: getCode
                                        	description: 发送验证码，跳转验证码输入界面，需要检查手机格式和密码
@@ -262,17 +226,26 @@ var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {return { p
                                        				this.password: String,密码
                                        				this.password2: String,确认密码
                                        	return: null
-                                       */getCode: function getCode() {var _this = this;if (!reg.test(this.phone)) {this.gToastError("手机格式错误");} else if (this.password === "") {this.gToastError("请填写密码");} else if (this.password !== this.password2) {this.gToastError("密码不一致");} else {/* 判断用户是否可以发送验证码 */if (getApp().globalData.gCodeTime <= 0) {this.gLoading(this, true); /* 发送验证码 */(0, _api_login.sendCode)({ phone: this.phone, type: "register" }).then(function (res) {_this.gToastSuccess(res.msg, 1000);_this.codeInput = true;_this.$refs.codeInput.setTimer();_this.gLoading(_this, false);}).catch(function (err) {_this.gLoading(_this, false);});} else {this.codeInput = true;this.$refs.codeInput.setTimer();}}},
+                                       */getCode: function getCode() {var _this = this;if (!reg.test(this.phone)) {this.gToastError('手机格式错误');} else if (this.password === '') {this.gToastError('请填写密码');} else if (this.password !== this.password2) {this.gToastError('密码不一致');} else {/* 判断用户是否可以发送验证码 */if (getApp().globalData.gCodeTime <= 0) {this.gLoading(this, true); /* 发送验证码 */(0, _api_login.sendCode)({ phone: this.phone, type: 'register' }).then(function (res) {_this.gToastSuccess(res.msg, 1000);_this.codeInput = true;_this.$refs.codeInput.setTimer();_this.gLoading(_this, false);}).catch(function (err) {
+            _this.gLoading(_this, false);
+          });
+        } else
+        {
+          this.codeInput = true;
+          this.$refs.codeInput.setTimer();
+        }
+      }
+    },
     /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	name: register
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	description: 注册账号
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	input: 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       				this.phone: String,手机号
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       				this.password: String,密码
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       				this.password2: String,第二次密码
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       				this.code: String,验证码
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	return: null
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
+       	name: register
+       	description: 注册账号
+       	input: 
+       				this.phone: String,手机号
+       				this.password: String,密码
+       				this.password2: String,第二次密码
+       				this.code: String,验证码
+       	return: null
+       */
     register: function register(code) {var _this2 = this;
       var data = {
         phone: this.phone,
@@ -285,13 +258,13 @@ var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {return { p
       then(function (res) {
         _this2.gToastSuccess(res.msg);
         /* 储存token */
-        uni.setStorageSync("token", res.data.token);
+        uni.setStorageSync('token', res.data.token);
         /* 储存个人信息 */
         getApp().globalData.gUserInfo = res.data.personalUserInfo;
         _this2.gLoading(_this2, false);
         /* 跳转主页 */
         uni.reLaunch({
-          url: "../app" });
+          url: '../app' });
 
       }).
       catch(function (err) {
@@ -311,10 +284,8 @@ var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {return { p
               				ns后获取
               */
     codeText: function codeText() {
-      if (this.time === 0)
-      return "获取验证码";else
-      if (this.time >= 10)
-      return "".concat(this.time, "s\u540E\u83B7\u53D6");
+      if (this.time === 0) return '获取验证码';else
+      if (this.time >= 10) return "".concat(this.time, "s\u540E\u83B7\u53D6");
       return "0".concat(this.time, "s\u540E\u83B7\u53D6");
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

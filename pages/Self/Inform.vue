@@ -3,37 +3,40 @@
 	<view class="inform">
 		<view class="head">
 			<text class="iconfont icon-remove" @click="removeInform"></text>
-			<view class="h3">{{name}}</view>
+			<view class="h3">{{title}}</view>
 			<view class="item">
-				<text class="label">发件人:</text><text class="strong send-name">{{sendName}}</text>
+				<text class="label">发件人:</text><text class="strong send-name">{{senderUser.nickname}}</text>
 			</view>
 			<view class="item">
-				<text class="label">收件人:</text>{{receiveName}}
+				<text class="label">收件人:</text>{{receiverUser.nickname}}
 			</view>
 			<view class="item">
-				<text class="label">时&emsp;间:</text>{{time}}
+				<text class="label">时&emsp;间:</text>{{receiveDate}}
 			</view>
 		</view>
-		<view class="content">
-			{{content}}
-		</view>
+		<view class="content" v-html="content"></view>
 		<!-- 操作按键 -->
 		<view class="btns">
 			<button class="mark-unread" @click="markUnread">标记为未读</button>
 			<button @click="reply">回复发件人</button>
 		</view>
+		<!-- 加载动画 -->
+		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
+import { getMessage,deleteMessage } from "@/static/request/api_userInfo.js"
 export default {
 	data() {
 		return {
-			name: "项目审核通知!",
-			sendName: "Aha口袋",
-			receiveName: "余金隆",
-			time: "2020/12/1 18:18",
-			content: "大概是打开我几号哪嘎达看我hisadJS爱的故事 我的撒个娇酸豆角偶数 d+9s65gsd6464啊按时s64s6fd4s6s4yy.com6s6416s4yy.comdf6gs是是"
+			id: "",
+			title: "",
+			senderUser: "",
+			receiverUser: "",
+			type: 0,
+			receiveDate: "",
+			content: ""
 		}
 	},
 	methods: {
@@ -45,7 +48,13 @@ export default {
 		removeInform()
 		{
 			this.gShowModal("确认删除该通知? ",() => {
-				console.log("删除成功");
+				deleteMessage(this.id)
+				uni.navigateBack({
+					delta: 1,
+					success: () => {
+						this.gToastSuccess("删除成功!")
+					}
+				})
 			})
 		},
 		/* 
@@ -64,13 +73,27 @@ export default {
 		*/
 		reply()
 		{
+			let senderId = ''
+			if(this.senderUser){
+				senderId = this.senderUser.userId
+			}
 			uni.navigateTo({
-				url:"Inform_send"
+				url: "Inform_send?id=" + senderId
 			})
 		}
 	},
 	onLoad(e) {
-		console.log(e);
+		this.gLoading(this,true)
+		getMessage(e.id)
+		.then(res => {
+			console.log(res);
+			for(let key in res.data)
+				this[key] = res.data[key]
+			this.gLoading(this,false)
+		})
+		.catch(err => {
+			this.gLoading(this,false)
+		})
 	}
 }
 </script>

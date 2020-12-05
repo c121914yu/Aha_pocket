@@ -4,7 +4,7 @@
 		<view class="content">
 			<view class="head">
 				<text class="h3">条件筛选</text>
-				<button @click="sure">确认</button>
+				<button @click="sureFilter">确认</button>
 			</view>
 			<view class="main">
 				<view class="left">
@@ -43,7 +43,7 @@
 						</picker-view>
 					</view>
 					<!-- 获奖等级 -->
-					<view v-if="currentNav===2" class="part level">
+					<view v-else-if="currentNav===2" class="part level">
 						<picker-view
 							class="picker"
 							:value="levelPicker"
@@ -59,6 +59,9 @@
 						</picker-view>
 					</view>
 					<!-- 精确搜索 -->
+					<view v-else-if="currentNav===3" class="part search">
+						<input type="text" placeholder="搜索" v-model="searchFilter"/>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -74,18 +77,36 @@ export default {
 			levels: getApp().globalData.prizeLevels,
 			levelPicker: [0],
 			competitions: getApp().globalData.Matches,
-			comePicker: [0,0]
+			comePicker: [0,0],
+			searchFilter: "",
+			filterRes: null
 		}
 	},
 	methods: {
 		/* 
 			name: sure filter
-			desc: get filter type and emit to father modal
+			desc: 确认筛选模式，退出弹窗。
 			time: 2020/11/30
 		*/
-		sure()
+		sureFilter()
 		{
-			
+			const pickerComp = () => {
+				const index = this.comePicker[this.comePicker.length-1]
+				return this.competitions[index].compTagId
+			}
+			const pickerLevel = () => {
+				return this.levels[this.levelPicker[0]].value
+			}
+			let type = "all"
+			switch(this.currentNav){
+				case 0: type="all";this.filterRes=null;break;
+				case 1: type="compId";this.filterRes=pickerComp();break;
+				case 2: type="awardLevel";this.filterRes=pickerLevel();break;
+			}
+			this.$emit("sureFilter",{
+				type,
+				value: this.filterRes
+			})
 		}
 	}
 }
@@ -140,17 +161,16 @@ export default {
 				flex 1
 				.part
 					height 100%
-				.picker
-					margin 0 10px
-					height 100%
-					text-align center
-					picker-view-column
-						margin 0 10px
-					.item
-						min-height 30px
-						line-height 2
-				.competition
+					padding 0 10px
+					.picker
+						height 100%
+						text-align center
+						picker-view-column
+							margin 0 10px
+				.competition .item
 					font-size 22rpx
+				.level .item
+					line-height 2
 @keyframes showContent
 	from
 		transform translateY(50vh)

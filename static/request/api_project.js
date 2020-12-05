@@ -16,13 +16,17 @@ const postProject = (data) => request("/project","POST",data)
         sortBy: 排序字段
         orderBy: 排序方式
 */
-const getProjects = (params) => request(`/project`,"GET",params)
+const getProjects = (params) => request("/project","GET",params)
+/* 获取个人项目列表 */
+const getMeProjects = (params) => request("/project/me","GET",params)
 /* 获取项目详细信息 */
 const getProject = (projectId) => request(`/project/${projectId}`,"GET",{})
 /* 更新项目详细信息 */
 const putProject = (projectId,data) => request(`/project/${projectId}`,"PUT",data)
 /* 删除项目 */
 const deleteProject = (projectId) => request(`/project/${projectId}`,"DELETE",{})
+/* 购买项目 */
+const buyProject = (projectId) => request(`/project/buy/${projectId}`,"GET",{})
 
 /* 判断是否收藏 */
 const isCollected = (projectId) => request(`/project/collection/${projectId}`,"GET",{})
@@ -50,13 +54,15 @@ const putMembers = (projectId,data) => request(`/project/members/${projectId}`,"
 const deleteMember = (projectId,memberPhone) => request(`/project/member/${projectId}/${memberPhone}`	,"DELETE",{})
 
 export {
-  getPublicSignature,
+	getPublicSignature,
 	
 	postProject,
 	getProjects,
+	getMeProjects,
 	getProject,
 	putProject,
 	deleteProject,
+	buyProject,
 	
 	isCollected,
 	collectProject,

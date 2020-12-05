@@ -10,8 +10,25 @@ const signNotice = () => request("/sign/notice","POST",{})
 const getAvatarOssSignature = (data) => request("/userInfo/avatar/sign/upload","GET",data)
 /* 根据userId获取用户详细信息 */
 const getUser = (userId) => request("/userInfo/" + userId,"GET",{})
+
+/* 获取未读通知数量 */
+const getUnreadCount = () => request("/message/count/notRead","GET",{})
 /* 获取消息通知列表 */
 const getMessages = (param) => request("/message","GET",param)
+/* 
+	获取消息通知内容
+	@param: messageId: Number
+*/
+const getMessage = (messageId) => request(`/message/${messageId}`,"GET",{})
+/* 
+    发送通知
+    @params: receiverUserId: Number,收件人用户id
+    @params: title: String, 信件标题
+    @params: content:String, 信件内容
+*/
+const postMessage = (data) => request("/message","POST",data)
+/*  删除消息 */
+const deleteMessage = (messageId) => request(`/message/${messageId}`,"DELETE",{})
 
 export {
 	getMe,
@@ -21,5 +38,9 @@ export {
 	
 	getUser,
     
+    getUnreadCount,
     getMessages,
+	getMessage,
+    postMessage,
+	deleteMessage
 }
