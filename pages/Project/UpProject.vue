@@ -191,7 +191,7 @@ export default {
 			this.gLoading(this,false)
 		}
 	},
-	onLoad() {
+	onShow() {
 		/* 判断用户是否签署合同，若为签署则跳转签署界面 */
 		if(!getApp().globalData.gUserInfo.signedContract)
 		{

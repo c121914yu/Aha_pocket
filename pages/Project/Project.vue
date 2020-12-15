@@ -3,10 +3,9 @@
 		<view class="content">
 			<!-- 头像 & 首作者 & 创建时间 & 收藏 & 阅读-->
 			<view class="head">
-				<image :src="avatarUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'" mode="widthFix"></image>
-				<view class="container small">
-					<text class="author">{{ members[0].nickname }}</text>
-					<text class="date">2020年9月1日</text>
+				<view class="left">
+					<view class="h3">项目介绍</view>
+					<view class="date">2020年9月1日</view>
 					<!-- 数据统计 -->
 					<view class="statistics">
 						<!-- 阅读量 -->
@@ -15,66 +14,122 @@
 							<text class="val">{{ read }}</text>
 						</view>
 						<!-- 收藏量 -->
-						<view
-							class="collect"
-							:style="{
-								color: isCollect ? '#e86452' : 'var(--gray2)'
-							}"
-							@click="collected"
-						>
+						<view class="collect">
 							<text class="iconfont icon-collection"></text>
 							<text class="val">{{ collect }}</text>
 						</view>
 					</view>
 				</view>
+				<view class="right">
+					<image :src="avatarUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'" mode="widthFix"></image>
+				</view>
 			</view>
 			<!-- 项目成员 -->
-			<view class="item members">
+			<view class="item">
 				<view class="title">项目成员</view>
-				<view class="val">
-					<navigator class="member" hover-class="none" v-for="(member, index) in members" :key="index" :url="'../Self/UserHome?userId=' + member.memberUser.userId">
+				<view class="values">
+					<navigator 
+						class="val arr" 
+						hover-class="none"
+						style="text-decoration: underline;"
+						v-for="(member, index) in members" 
+						:key="index" 
+						:url="'../Self/UserHome?userId=' + member.memberUser.userId">
 						{{ member.memberUser.nickname }}
 					</navigator>
 				</view>
 			</view>
 			<!-- 项目题目 -->
-			<view class="item name">
+			<view class="item">
 				<view class="title">项目题目</view>
-				<view class="val h3">{{ name }}</view>
+				<view class="values"><view class="val name">{{ name }}</view></view>
 			</view>
 			<!-- 获奖情况 -->
 			<view v-if="compId" class="item prize">
 				<view class="title">获奖情况</view>
-				<view class="val">
-					<view>{{ awardTime }}&emsp;{{ awardLevelMsg }}</view>
-					<view>{{ compName }}</view>
+				<view class="values">
+					<view class="val arr">{{ awardTime }}</view>
+					<view class="val arr">{{ awardLevelMsg }}</view>
+					<view class="val arr">{{ compName }}</view>
 				</view>
 			</view>
 			<!-- 标签 -->
 			<view v-if="tags" class="item tags">
 				<view class="title">项目标签</view>
-				<view class="val">{{ tagsMsg }}</view>
+				<view class="values">
+					<view
+						class="val arr"
+						v-for="(tag,index) in tagsMsg"
+						:key="index">
+						{{tag}}
+					</view>
+				</view>
 			</view>
+		</view>
+		<view class="content" style="margin-top: 15px;">
+			<view class="h3" style="color: var(--gray1);">项目详细</view>
 			<!-- 描述 -->
 			<view v-if="intro" class="item intro">
 				<view class="title">项目描述</view>
-				<view class="val" v-html="intro"></view>
+				<view class="values"><view class="val desc" v-html="intro"></view></view>
 			</view>
 			<!-- 附件 -->
 			<view class="item files">
 				<view class="title">
 					项目附件
 					<view v-if="isBuy" class="remark">已购买</view>
-					<button v-else>10贡献度购买</button>
+					<button class="all-buy" v-else>10贡献度购买</button>
 				</view>
-				<view class="small">非媒体类附件将从外部应用打开，请通过外部应用保存至本地。</view>
-				<view class="val">
-					<view v-if="!isBuy">可预览:</view>
-					<view class="file" v-for="(file, index) in previewFiles" :key="index" @click="preview(file, index)">{{ file.name }}</view>
-					<view v-if="!isBuy">不可预览:</view>
-					<view class="file" v-for="(file, index) in unPreviewFiles" :key="index" @click="loadFile(file, index)">{{ file.name }}</view>
+				<view class="small">非媒体类附件将从外部应用打开,请通过外部应用保存至本地.</view>
+				<view class="list">
+					<view class="val" v-if="!isBuy">可预览</view>
+					<view class="file"
+						v-for="(file, index) in previewFiles" 
+						:key="index">
+						<view class="name" @click="preview(file, index)">{{ file.name }}</view>
+						<button>5贡献度购买</button>
+					</view>
+					<view class="val" v-if="!isBuy">不可预览</view>
+					<view class="file" 
+						v-for="(file, index) in unPreviewFiles" 
+						:key="index">
+						<view class="name" @click="loadFile(file, index)">{{ file.name }}242424</view>
+						<button>5贡献度购买</button>
+					</view>
 				</view>
 			</view>
+			<!-- 项目评价 -->
+			<view class="item">
+				<view class="title">项目评论</view>
+				<view 
+					class="remark"
+					v-for="(remark,index) in remarks"
+					:key="index">
+					<image :src="remark.avatarUrl"></image>
+					<view class="right">
+						<view class="head">
+							<view class="name">{{remark.name}}</view>
+							<view class="time">{{remark.time}}</view>
+						</view>
+						<view class="container">
+							{{remark.content}}
+						</view>
+						<view class="reply">
+							
+							<button>回复</button>
+						</view>
+					</view>
+				</view>
+				<view class="load-msg center small">已加载全部</view>
+			</view>
+		</view>
+		<!-- 写评论模块 -->
+		<view class="remark-hint">
+			<view class="input"><text class="iconfont icon-write"></text>写下你的评论...</view>
+			<text class="icon iconfont icon-xinxi"></text>
+			<text v-if="isCollect" class="icon iconfont icon-collection collected" @click="collected"></text>
+			<text v-else class="icon iconfont icon-shoucang" @click="collected"></text>
+			<text class="icon iconfont icon-share"></text>
 		</view>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
@@ -99,6 +154,11 @@ export default {
 			members: [],
 			previewFiles: [],
 			unPreviewFiles: [],
+			remarks: [
+				{avatarUrl:"https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png",name:"余金隆",time:"2020/9/5 11:14",content:"大哥大哥大的三个和尚大哥大哥大的三个和尚阿萨德大哥大哥大的三个和尚阿萨德"},
+				{avatarUrl:"https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png",name:"余金隆",time:"2020/9/5 11:14",content:"大哥大哥大的三个和尚"},
+				{avatarUrl:"https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png",name:"余金隆",time:"2020/9/5 11:14",content:"大哥大哥大的三个和尚阿萨德大哥大哥大的三个和尚阿萨德大哥大哥大的三个和尚阿萨德"},
+			],
 			isBuy: false,
 			isCollect: false
 		};
@@ -107,13 +167,17 @@ export default {
 		awardLevelMsg() {
 			if (this.compId) {
 				let res = getApp().globalData.prizeLevels.find(item => item.value === this.awardLevel);
-				if (res) return res.label;
+				if (res){
+					return res.label;
+				} 
 			}
 			return '';
 		},
 		tagsMsg() {
-			if (this.tags) return this.tags.replace(/\s+/g, ',');
-			return '';
+			if (this.tags){
+				return this.tags.split(" ")
+			} 
+			return ''
 		}
 	},
 	methods: {
@@ -139,16 +203,18 @@ export default {
 			const viewImg = url => {
 				uni.previewImage({
 					urls: [url]
-				});
-			};
-			if (file.previewLoad) viewImg(file.previewUrl);
+				})
+			}
+			if (file.previewLoad){
+				viewImg(file.previewUrl)
+			} 
 			else {
 				getLoadSignature(file.id).then(res => {
-					this.previewFiles[index].previewUrl = res.data.url;
-					this.previewFiles[index].previewLoad = true;
-					viewImg(res.data.url);
-					console.log(res);
-				});
+					this.previewFiles[index].previewUrl = res.data.url
+					this.previewFiles[index].previewLoad = true
+					viewImg(res.data.url)
+					console.log(res)
+				})
 			}
 		},
 		/* 
@@ -162,8 +228,11 @@ export default {
 			}
 			/* 图片：获取预览连接后打开图片 */
 			const reg = /\.(gif|jpg|jpeg|png)$/i;
-			if (reg.test(file.name)) this.previewImg(file, index)
-			/* 文档类：下载后打开 */ else {
+			if (reg.test(file.name)){
+				this.previewImg(file, index)
+			} 
+			/* 文档类：下载后打开 */ 
+			else {
 				uni.showLoading({
 					title: '打开中...'
 				})
@@ -173,8 +242,9 @@ export default {
 						complete() {
 							uni.hideLoading()
 						}
-					});
-				} else {
+					})
+				} 
+				else {
 					uni.downloadFile({
 						url: file.previewUrl,
 						success: res => {
@@ -219,7 +289,7 @@ export default {
 			else {
 				uni.showLoading({
 					title: '下载中...'
-				});
+				})
 				if (file.loadUrl) {
 					uni.openDocument({
 						filePath: file.loadUrl,
@@ -251,7 +321,7 @@ export default {
 								uni.hideLoading()
 							}
 						})
-					});
+					})
 				}
 			}
 		}
@@ -288,79 +358,193 @@ export default {
 
 <style lang="stylus" scoped>
 .project
-	padding 10px
+	padding 10px 10px 40px
 	min-height 100vh
 	background-color var(--white1)
 	.content
-		padding 10px
-		border-radius 8px
+		padding 20px 30px
+		border-radius 22px
 		background-color #FFFFFF
 		/* 头像 & 首作者 & 创建时间 & 收藏 & 阅读 */
 		.head
 			display flex
-			image
-				width 80px
-				height 80px
-				border-radius 8px
-			.container
+			.left
 				padding 0 10px
+				flex 1
 				display flex
 				flex-direction column
-				justify-content space-between
+				.h3
+					flex 1
 				.date
 					font-size 22rpx
 					color var(--gray1)
 				.statistics
+					margin-top 5px
 					display flex
 					view
-						margin-right 10px
-						font-size 24rpx
+						margin-right 25px
+						font-size 22rpx
 						line-height 1
 						display flex
 						align-items center
+						
 					.iconfont
 						margin-right 2px
 					.read
-						color #5d7092
+						color var(--origin2)
+					.collect
+						color #e86452
+			.right
+				width 80px
+				height 80px
+				border-radius 8px
+				overflow hidden
+				image
+					width 100%
+					height 100%
 		/* 各类数据共同样式 */
 		.item
-			margin 15px 0
+			margin 10px 0
 			/* 引导标题 */
 			.title
 				margin-bottom 5px
 				padding-left 5px
 				position relative
-				color var(--origin2)
+				color var(--origin1)
 				line-height 1
-				border-left 3px solid var(--origin2)
-				border-radius 2px
+				border-left 3px solid var(--origin1)
+				font-weight 700
 				display flex
 				align-items center
-			.val
-				padding 5px
-		/* 成员数据 */
-		.members
-			.member
-				margin-right 10px
-				text-decoration underline
-				color var(--origin1)
-		/* 附近 */
+			.values
+				padding 5px 0
+				display flex
+				flex-wrap wrap
+				.val
+					padding 0 20px
+					border-radius 22px
+					background-color var(--origin4)
+					color var(--gray1)
+					font-weight 24rpx
+					/* 标题 */
+					&.name
+						min-width 50%
+						font-weight 700
+						text-align center
+						color var(--black)
+					/* 数组格式 */
+					&.arr
+						margin 0 5px 5px 0
+					/* 描述 */
+					&.desc
+						border-radius 8px
+						padding 0 5px
+		/* 附件 */
 		.files
-			button
+			.all-buy
 				position absolute
 				margin-left 80px
 				padding 5px
 				line-height 1
 				font-size 22rpx
-				border-radius 8px
-				background-color #5d7092
+				border-radius 22px
+				background-color var(--origin2)
+				font-weight 400
 			.remark
 				color #04BE02
 				margin-left 10px
 			.small
+				color var(--origin2)
+				font-size 20rpx
+			.list
+				.val
+					margin 10px 0
+					padding 0 20px
+					border-radius 22px
+					background-color var(--origin4)
+					color var(--gray1)
+					font-weight 24rpx
+					display inline-block
+				.file
+					margin-bottom 10px
+					font-size 26rpx
+					display flex
+					align-items center
+					justify-content space-between
+					.name
+						flex 1
+						text-decoration underline
+						color var(--origin1)
+						word-break break-all
+					button
+						min-width 88px
+						white-space nowrap
+						padding 5px 0
+						border-radius 22px
+						font-size 22rpx
+						font-weight 400
+						line-height 1
+						text-align center
+		.remark
+			margin 5px 0
+			padding 10px
+			border-radius 8px
+			background-color var(--origin4)
+			display flex
+			image
+				width 40px
+				height 40px
+				border-radius 50%
+			.right
+				flex 1
+				margin-left 10px
+				font-size 24rpx
+				.head
+					display flex
+					justify-content space-between
+					.name
+						padding 0 10px
+						border-radius 22px
+						background-color var(--origin2)
+						color #FFFFFF
+					.time
+						font-size 22rpx
+						color var(--gray1)
+				.container
+					padding 5px
+					font-size 22rpx
+				.reply
+					button
+						width 50px
+						float right
+						padding 3px 10px
+						line-height 1
+						font-size 22rpx
+						border-radius 22px
+		.load-msg
+			color var(--gray1)
+	/* 写评论区 */
+	.remark-hint
+		position fixed
+		bottom 0
+		left 0
+		right 0
+		padding 10px
+		border-top var(--border2)
+		background-color #FFFFFF
+		display flex
+		align-items center
+		justify-content space-between
+		.input
+			width 60%
+			padding 5px 10px
+			background-color var(--white1)
+			font-size 24rpx
+			border-radius 22px
+			.iconfont
+				margin-right 5px
+		.icon
+			font-size 40rpx
+			&.collected
 				color #e86452
-			.file
-				margin 10px 0
-				text-decoration underline
-				color var(--origin1)
 </style>

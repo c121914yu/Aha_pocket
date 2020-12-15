@@ -41,7 +41,7 @@ export default{
       height 60px
       font-size 60px
       color #18FFFF
-      transform scale(1)
+      transform scale(0.5)
       animation loader-2-star 1s ease alternate infinite
       display flex
       align-items center
@@ -60,7 +60,7 @@ export default{
   0% 
     transform scale(0) rotate(0deg)
   100% 
-    transform scale(1) rotate(360deg)
+    transform scale(0.5) rotate(360deg)
 @keyframes loader-2-circles 
   0% 
     box-shadow 0 0 0 #18ffff

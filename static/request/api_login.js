@@ -3,8 +3,8 @@ import request from "./request.js"
 /* 
 	description: 发送验证码
 	input: 
-				phone: String,手机号
-        type: String,取值register、changePassword、bindPhone
+			phone: String,手机号
+			type: String,取值register、changePassword、bindPhone
 	return: null
 */
 const sendCode = (data) => request(`/sms/code`,"POST",data)

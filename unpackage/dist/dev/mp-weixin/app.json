@@ -4,21 +4,25 @@
     "pages/Login/Register",
     "pages/Login/FindPassword",
     "pages/app",
+    "pages/Self/UserHome",
     "pages/Self/Informs",
     "pages/Self/Inform",
     "pages/Self/Inform_send",
-    "pages/Self/ContribPointRecord",
+    "pages/Self/Orders",
     "pages/Self/NumberInfo",
+    "pages/Self/InviteMember",
+    "pages/Self/Authentication",
     "pages/Self/Resume",
     "pages/Self/ResumePreview",
-    "pages/Self/Authentication",
-    "pages/Self/UserHome",
+    "pages/Self/MyCollection",
+    "pages/Self/Feedback",
     "pages/Project/UpProject",
     "pages/Project/EditProject",
     "pages/Project/Projects",
     "pages/Project/Project",
     "pages/Project/PurchasedProjects",
     "pages/Project/Contract",
+    "pages/Epiboly/MyEpiboly",
     "pages/Epiboly/EpibolyDetail"
   ],
   "subPackages": [],
@@ -29,6 +33,5 @@
     "backgroundColor": "#FFFFFF"
   },
   "permission": {},
-  "usingComponents": {},
-  "sitemapLocation": "sitemap76.json"
+  "usingComponents": {}
 }

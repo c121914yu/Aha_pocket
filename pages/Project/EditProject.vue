@@ -263,7 +263,7 @@ export default {
 		top 0
 		width 100%
 		padding 10px
-		border-radius 22px
+		border-radius 8px
 		background-color #FFFFFF
 		display flex
 		align-items center

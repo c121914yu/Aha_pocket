@@ -73,7 +73,7 @@ export default {
 	data() {
 		return {
 			leftNav: ["全部","参与赛事","获奖等级","精确搜索"],
-			currentNav: 1,
+			currentNav: 0,
 			levels: getApp().globalData.prizeLevels,
 			levelPicker: [0],
 			competitions: getApp().globalData.Matches,

@@ -18,6 +18,8 @@
 				{{item.label}}
 			</view>
 		</view>
+		<!-- 转赠 -->
+		<givePoint v-if="currentType===4" ></givePoint>
 		<!-- 记录 -->
 		<view class="records">
 			<view 
@@ -39,6 +41,8 @@
 </template>
 
 <script>
+import givePoint from "./ContribPointRecordComponents/GivePoint.vue"
+import { getOrders } from "@/static/request/api_order.js"
 export default {
 	data() {
 		return {
@@ -47,8 +51,9 @@ export default {
 				{label: "项目",val: "all"},
 				{label: "外包",val: "all"},
 				{label: "竞赛",val: "all"},
+				{label: "转赠",val: "all"},
 			],
-			currentType: 0,
+			currentType: 4,
 			records: [
 				{title: "项目通过-发放贡献度",type: "项目", point: 50, time: "2020/12/4 20:05"},
 				{title: "项目通过-发放贡献度",type: "项目",point: -30, time: "2020/12/4 20:05"},
@@ -56,6 +61,12 @@ export default {
 				{title: "项目通过-发放贡献度",type: "项目",point: 10, time: "2020/12/4 20:05"},
 			]
 		}
+	},
+	onLoad() {
+		getOrders()
+		.then(res => {
+			console.log(res.data)
+		})
 	},
 	methods: {
 		/* 
@@ -78,6 +89,9 @@ export default {
 				}
 		   })
 	   }
+	},
+	components: {
+		givePoint
 	}
 }
 </script>

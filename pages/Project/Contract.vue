@@ -81,8 +81,8 @@ export default {
 					const data = JSON.parse(res.data)
 					uni.setStorageSync("token",data.data.token)
 					getApp().globalData.gUserInfo.signedContract = true
-					uni.redirectTo({
-						url: "UpProject",
+					uni.navigateBack({
+						delta: 1,
 						success: () => {
 							this.gToastSuccess(data.msg)
 						}

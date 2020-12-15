@@ -20,14 +20,19 @@
 			<view class="h3">需求描述</view>
 			<view>{{epiboly.description}}</view>
 		</view>
-		<view class="btn">
+		<view class="step">
+			<view class="h3">外包进度</view>
+			<Steps :steps="epiboly.steps" :actice="epiboly.activeStep"></Steps>
+		</view>
+		<!-- <view class="btn">
 			<button>投递简历</button>
 			<view class="small center">已有100人投递</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 
 <script>
+import Steps from "./components/Steps.vue"
 export default {
 	data() {
 		return {
@@ -41,8 +46,17 @@ export default {
 					name: "****公司"
 				},
 				description:"大的撒广撒点5广东省十多个ds16g415大嘎达6ds41g5ds4g5sd",
+				steps: [
+					{title: "待发起人选择接单人",desc: "已有50人投递简历。"},
+					{title: "第一阶段",desc: "甲方已支付定金"},
+					{title: "待发起人选择接单人",desc: "已有50人投递简历,赶紧上车吧！"},
+				],
+				activeStep: 0
 			},
 		}
+	},
+	components: {
+		Steps
 	},
 	onLoad(e) {
 		/* 根据ID获取外包信息 */
@@ -79,7 +93,7 @@ export default {
 				border-radius 8px
 			.item
 				margin 5px 0
-	.description
+	.description,.step
 		margin-top 15px
 		background-color #FFFFFF
 		padding 10px

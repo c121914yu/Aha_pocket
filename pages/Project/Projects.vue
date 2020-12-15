@@ -37,6 +37,7 @@
 					:key="index"
 					margin="0 0 10px 0"
 					:radius="index === 0 ? '0 0 16px 16px' : '16px'"
+					:backgroundColor="project.passed ? '#ffffff' : 'rgba(248,184,107,0.1)'"
 					:project="project"
 					@click="projectSetting(project)"
 				></projectCard>
@@ -56,7 +57,6 @@ import { getMeProjects, deleteProject } from '@/static/request/api_project.js';
 export default {
 	data() {
 		return {
-			userId: '',
 			couldSet: true,
 			sortList: [
 				{ text: '综合', val: 'read' }, 
@@ -193,18 +193,6 @@ export default {
 		}
 	},
 	onLoad(e) {
-		if (e.userId) {
-			this.userId = e.userId
-			this.couldSet = false
-			uni.setNavigationBarTitle({
-				title: '用户项目列表'
-			})
-		} else {
-			this.userId = getApp().globalData.gUserInfo.userInfo.userId;
-			uni.setNavigationBarTitle({
-				title: '我的项目'
-			})
-		}
 		this.loadProjects(true)
 	},
 	onPullDownRefresh() {

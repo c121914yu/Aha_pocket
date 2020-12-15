@@ -1,5 +1,15 @@
 import request from "./request.js"
 
+/* 
+	name: 绑定手机号
+	params:
+			phone: String
+			code: String
+*/
+const bindPhone = (data) => request("/bind/phone","POST",data)
+/* 绑定微信号 */
+const bindWxchat = (data) => request("/bind/wechat?code="+data.code,"POST",data)
+
 /* 获取个人信息 */
 const getMe = (data) => request("/userInfo/me","GET",data)
 /* 修改个人基本资料 */
@@ -30,7 +40,13 @@ const postMessage = (data) => request("/message","POST",data)
 /*  删除消息 */
 const deleteMessage = (messageId) => request(`/message/${messageId}`,"DELETE",{})
 
+/* 获取个人收藏项目 */
+const getCollectedProjects = () => request("/project/collection","GET",{})
+
 export {
+	bindPhone,
+	bindWxchat,
+	
 	getMe,
 	putMe,
 	signNotice,
@@ -42,5 +58,7 @@ export {
     getMessages,
 	getMessage,
     postMessage,
-	deleteMessage
+	deleteMessage,
+	
+	getCollectedProjects
 }

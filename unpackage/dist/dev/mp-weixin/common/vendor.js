@@ -1948,68 +1948,28 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 116:
-/*!**************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
-  \**************************************************/
+/***/ 119:
+/*!*************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_resume.js ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.getLoadSignature = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.buyProject = exports.deleteProject = exports.putProject = exports.getProject = exports.getMeProjects = exports.getProjects = exports.postProject = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.putResume = exports.getResume = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
-/* 获取上传头像/证明材料签名 */
-var getPublicSignature = function getPublicSignature() {return (0, _request.default)("/project/sign/upload/public", "GET", {});};
-
-/* 创建项目数据，保存至数据库 */exports.getPublicSignature = getPublicSignature;
-var postProject = function postProject(data) {return (0, _request.default)("/project", "POST", data);};
 /* 
-                                                                                                        	获取所有项目粗略信息表
-                                                                                                        	params:
-                                                                                                        				pageNum： 第几页
-                                                                                                        				pageSize: 每页的条数
-                                                                                                                userId: 用户userId
-                                                                                                                compId: 竞赛Id
-                                                                                                                awardLevel: 获奖等级
-                                                                                                                sortBy: 排序字段
-                                                                                                                orderBy: 排序方式
-                                                                                                        */exports.postProject = postProject;
-var getProjects = function getProjects(params) {return (0, _request.default)("/project", "GET", params);};
-/* 获取个人项目列表 */exports.getProjects = getProjects;
-var getMeProjects = function getMeProjects(params) {return (0, _request.default)("/project/me", "GET", params);};
-/* 获取项目详细信息 */exports.getMeProjects = getMeProjects;
-var getProject = function getProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
-/* 更新项目详细信息 */exports.getProject = getProject;
-var putProject = function putProject(projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
-/* 删除项目 */exports.putProject = putProject;
-var deleteProject = function deleteProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
-/* 购买项目 */exports.deleteProject = deleteProject;
-var buyProject = function buyProject(projectId) {return (0, _request.default)("/project/buy/".concat(projectId), "GET", {});};
+                                                                                                                                                                                                                                                                                       	description: 获取简历信息
+                                                                                                                                                                                                                                                                                       	params:
+                                                                                                                                                                                                                                                                                               userId: String,用户标识码
+                                                                                                                                                                                                                                                                                       */
+var getResume = function getResume(userId) {return (0, _request.default)("/resume/".concat(userId), "GET", {});};
 
-/* 判断是否收藏 */exports.buyProject = buyProject;
-var isCollected = function isCollected(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "GET", {});};
-/* 收藏项目 */exports.isCollected = isCollected;
-var collectProject = function collectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "POST", {});};
-/* 取消收藏 */exports.collectProject = collectProject;
-var cancleCollectProject = function cancleCollectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "DELETE", {});};
-
-/* 获取上传文件签名 */exports.cancleCollectProject = cancleCollectProject;
-var getFilesSignature = function getFilesSignature(projectId) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private"), "GET", {});};
-/* 创建项目的资源信息 */exports.getFilesSignature = getFilesSignature;
-var postResource = function postResource(projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
-/* 删除资源 */exports.postResource = postResource;
-var deleteResource = function deleteResource(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "DELETE", {});};
-/* 获取下载签名 */exports.deleteResource = deleteResource;
-var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download"), "GET", {});};
-
-/* 创建成员 */exports.getLoadSignature = getLoadSignature;
-var postMember = function postMember(projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};
-/* 更新成员 */exports.postMember = postMember;
-var putMember = function putMember(projectId, memberUserId, data) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "PUT", data);};
-/* 批量更新成员 */exports.putMember = putMember;
-var putMembers = function putMembers(projectId, data) {return (0, _request.default)("/project/members/".concat(projectId), "PUT", data);};
-/* 删除成员 */exports.putMembers = putMembers;
-var deleteMember = function deleteMember(projectId, memberPhone) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberPhone), "DELETE", {});};exports.deleteMember = deleteMember;
+/* 
+                                                                                                                  	description: 更新简历信息
+                                                                                                                  	input: resume: Object,简历的所有字段
+                                                                                                                  */exports.getResume = getResume;
+var putResume = function putResume(data) {return (0, _request.default)("/resume", "PUT", data);};exports.putResume = putResume;
 
 /***/ }),
 
@@ -2164,8 +2124,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.loginOut =
 /* 
                                                                                                                                                                                                                                                                                                                                                                    	description: 发送验证码
                                                                                                                                                                                                                                                                                                                                                                    	input: 
-                                                                                                                                                                                                                                                                                                                                                                   				phone: String,手机号
-                                                                                                                                                                                                                                                                                                                                                                           type: String,取值register、changePassword、bindPhone
+                                                                                                                                                                                                                                                                                                                                                                   			phone: String,手机号
+                                                                                                                                                                                                                                                                                                                                                                   			type: String,取值register、changePassword、bindPhone
                                                                                                                                                                                                                                                                                                                                                                    	return: null
                                                                                                                                                                                                                                                                                                                                                                    */
 var sendCode = function sendCode(data) {return (0, _request.default)("/sms/code", "POST", data);};
@@ -8347,9 +8307,19 @@ myRequest;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMessage = exports.postMessage = exports.getMessage = exports.getMessages = exports.getUnreadCount = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.getCollectedProjects = exports.deleteMessage = exports.postMessage = exports.getMessage = exports.getMessages = exports.getUnreadCount = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = exports.bindWxchat = exports.bindPhone = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
-/* 获取个人信息 */
+/* 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	name: 绑定手机号
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	params:
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                			phone: String
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                			code: String
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+var bindPhone = function bindPhone(data) {return (0, _request.default)("/bind/phone", "POST", data);};
+/* 绑定微信号 */exports.bindPhone = bindPhone;
+var bindWxchat = function bindWxchat(data) {return (0, _request.default)("/bind/wechat?code=" + data.code, "POST", data);};
+
+/* 获取个人信息 */exports.bindWxchat = bindWxchat;
 var getMe = function getMe(data) {return (0, _request.default)("/userInfo/me", "GET", data);};
 /* 修改个人基本资料 */exports.getMe = getMe;
 var putMe = function putMe(data) {return (0, _request.default)("/userInfo/me", "PUT", data);};
@@ -8377,7 +8347,10 @@ var getMessage = function getMessage(messageId) {return (0, _request.default)("/
                                                                                                                            */exports.getMessage = getMessage;
 var postMessage = function postMessage(data) {return (0, _request.default)("/message", "POST", data);};
 /*  删除消息 */exports.postMessage = postMessage;
-var deleteMessage = function deleteMessage(messageId) {return (0, _request.default)("/message/".concat(messageId), "DELETE", {});};exports.deleteMessage = deleteMessage;
+var deleteMessage = function deleteMessage(messageId) {return (0, _request.default)("/message/".concat(messageId), "DELETE", {});};
+
+/* 获取个人收藏项目 */exports.deleteMessage = deleteMessage;
+var getCollectedProjects = function getCollectedProjects() {return (0, _request.default)("/project/collection", "GET", {});};exports.getCollectedProjects = getCollectedProjects;
 
 /***/ }),
 
@@ -8412,18 +8385,18 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 309:
+/***/ 365:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 310);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 366);
 
 /***/ }),
 
-/***/ 310:
+/***/ 366:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -8454,7 +8427,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 311);
+module.exports = __webpack_require__(/*! ./runtime */ 367);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -8471,7 +8444,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 311:
+/***/ 367:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -9229,28 +9202,89 @@ var getAllCompetition = function getAllCompetition() {return (0, _request.defaul
 
 /***/ }),
 
-/***/ 91:
-/*!*************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_resume.js ***!
-  \*************************************************/
+/***/ 53:
+/*!**************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.putResume = exports.getResume = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.getLoadSignature = exports.putResource = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteProject = exports.putProject = exports.getProject = exports.getMeProjects = exports.getProjects = exports.postProject = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
-/* 
-                                                                                                                                                                                                                                                                                       	description: 获取简历信息
-                                                                                                                                                                                                                                                                                       	params:
-                                                                                                                                                                                                                                                                                               userId: String,用户标识码
-                                                                                                                                                                                                                                                                                       */
-var getResume = function getResume(userId) {return (0, _request.default)("/resume/".concat(userId), "GET", {});};
+/* 获取上传头像/证明材料签名 */
+var getPublicSignature = function getPublicSignature() {return (0, _request.default)("/project/sign/upload/public", "GET", {});};
 
+/* 创建项目数据，保存至数据库 */exports.getPublicSignature = getPublicSignature;
+var postProject = function postProject(data) {return (0, _request.default)("/project", "POST", data);};
 /* 
-                                                                                                                  	description: 更新简历信息
-                                                                                                                  	input: resume: Object,简历的所有字段
-                                                                                                                  */exports.getResume = getResume;
-var putResume = function putResume(data) {return (0, _request.default)("/resume", "PUT", data);};exports.putResume = putResume;
+                                                                                                        	获取所有项目粗略信息表
+                                                                                                        	params:
+                                                                                                        				pageNum： 第几页
+                                                                                                        				pageSize: 每页的条数
+                                                                                                                userId: 用户userId
+                                                                                                                compId: 竞赛Id
+                                                                                                                awardLevel: 获奖等级
+                                                                                                                sortBy: 排序字段
+                                                                                                                orderBy: 排序方式
+                                                                                                        */exports.postProject = postProject;
+var getProjects = function getProjects(params) {return (0, _request.default)("/project", "GET", params);};
+/* 获取个人项目列表 */exports.getProjects = getProjects;
+var getMeProjects = function getMeProjects(params) {return (0, _request.default)("/project/me", "GET", params);};
+/* 获取项目详细信息 */exports.getMeProjects = getMeProjects;
+var getProject = function getProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
+/* 更新项目详细信息 */exports.getProject = getProject;
+var putProject = function putProject(projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
+/* 删除项目 */exports.putProject = putProject;
+var deleteProject = function deleteProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
+/* 获取评论 */exports.deleteProject = deleteProject;
+var getRemarks = function getRemarks(params) {return (0, _request.default)("/project/me", "GET", params);};
+
+/* 判断是否收藏 */
+var isCollected = function isCollected(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "GET", {});};
+/* 收藏项目 */exports.isCollected = isCollected;
+var collectProject = function collectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "POST", {});};
+/* 取消收藏 */exports.collectProject = collectProject;
+var cancleCollectProject = function cancleCollectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "DELETE", {});};
+
+/* 获取上传文件签名 */exports.cancleCollectProject = cancleCollectProject;
+var getFilesSignature = function getFilesSignature(projectId) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private"), "GET", {});};
+/* 创建项目的资源信息 */exports.getFilesSignature = getFilesSignature;
+var postResource = function postResource(projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
+/* 删除资源 */exports.postResource = postResource;
+var deleteResource = function deleteResource(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "DELETE", {});};
+/* 修改资源信息 */exports.deleteResource = deleteResource;
+var putResource = function putResource(projectResourceId, data) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "PUT", data);};
+/* 获取下载签名 */exports.putResource = putResource;
+var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download"), "GET", {});};
+
+/* 创建成员 */exports.getLoadSignature = getLoadSignature;
+var postMember = function postMember(projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};
+/* 更新成员 */exports.postMember = postMember;
+var putMember = function putMember(projectId, memberUserId, data) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "PUT", data);};
+/* 批量更新成员 */exports.putMember = putMember;
+var putMembers = function putMembers(projectId, data) {return (0, _request.default)("/project/members/".concat(projectId), "PUT", data);};
+/* 删除成员 */exports.putMembers = putMembers;
+var deleteMember = function deleteMember(projectId, memberPhone) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberPhone), "DELETE", {});};exports.deleteMember = deleteMember;
+
+/***/ }),
+
+/***/ 86:
+/*!************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_order.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getOrder = exports.getOrders = exports.buyProject = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 购买项目 */
+var buyProject = function buyProject(projectId) {return (0, _request.default)("/project/buy/".concat(projectId), "GET", {});};
+/* 获取个人订单信息 */exports.buyProject = buyProject;
+var getOrders = function getOrders() {return (0, _request.default)("/order/me", "GET", {});};
+/* 获取订单详细 */exports.getOrders = getOrders;
+var getOrder = function getOrder(orderId) {return (0, _request.default)("/order/".concat(orderId), "GET", {});};exports.getOrder = getOrder;
 
 /***/ })
 

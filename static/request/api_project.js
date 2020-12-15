@@ -25,8 +25,8 @@ const getProject = (projectId) => request(`/project/${projectId}`,"GET",{})
 const putProject = (projectId,data) => request(`/project/${projectId}`,"PUT",data)
 /* 删除项目 */
 const deleteProject = (projectId) => request(`/project/${projectId}`,"DELETE",{})
-/* 购买项目 */
-const buyProject = (projectId) => request(`/project/buy/${projectId}`,"GET",{})
+/* 获取评论 */
+const getRemarks = (params) => request("/project/me","GET",params)
 
 /* 判断是否收藏 */
 const isCollected = (projectId) => request(`/project/collection/${projectId}`,"GET",{})
@@ -38,9 +38,11 @@ const cancleCollectProject = (projectId) => request(`/project/collection/${proje
 /* 获取上传文件签名 */
 const getFilesSignature = (projectId) => request(`/project/${projectId}/resources/sign/upload/private`,"GET",{})
 /* 创建项目的资源信息 */
-const postResource = (projectId,data) => request(`/project/resource/${projectId}`	,"POST",data)
+const postResource = (projectId,data) => request(`/project/resource/${projectId}`,"POST",data)
 /* 删除资源 */
 const deleteResource = (projectResourceId) => request(`/project/resource/${projectResourceId}`,"DELETE",{})
+/* 修改资源信息 */
+const putResource = (projectResourceId,data) => request(`/project/resource/${projectResourceId}`,"PUT",data)
 /* 获取下载签名 */
 const getLoadSignature = (projectResourceId) => request(`/project/resource/${projectResourceId}/sign/download`,"GET",{})
 
@@ -62,7 +64,6 @@ export {
 	getProject,
 	putProject,
 	deleteProject,
-	buyProject,
 	
 	isCollected,
 	collectProject,
@@ -71,6 +72,7 @@ export {
 	getFilesSignature,
 	postResource,
 	deleteResource,
+	putResource,
 	getLoadSignature,
   
 	postMember,

@@ -5,7 +5,10 @@
 			<text class="iconfont icon-remove" @click="removeInform"></text>
 			<view class="h3">{{title}}</view>
 			<view class="item">
-				<text class="label">发件人:</text><text class="strong send-name">{{senderUser.nickname}}</text>
+				<text class="label">发件人:</text>
+				<text class="strong send-name">
+					{{type === 0 ? "管理员" : senderUser.nickname}}
+				</text>
 			</view>
 			<view class="item">
 				<text class="label">收件人:</text>{{receiverUser.nickname}}
@@ -76,10 +79,10 @@ export default {
 			let senderId = ''
 			if(this.senderUser){
 				senderId = this.senderUser.userId
+				uni.navigateTo({
+					url: "Inform_send?id=" + senderId
+				})
 			}
-			uni.navigateTo({
-				url: "Inform_send?id=" + senderId
-			})
 		}
 	},
 	onLoad(e) {

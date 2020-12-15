@@ -30,6 +30,11 @@
 		},
 		/* 次界面，不含主导航 */
 		{
+			"path": "pages/Self/UserHome",
+			"style": {
+				"navigationBarTitleText": "用户信息"
+			}
+		}, {
 			"path": "pages/Self/Informs",
 			"style": {
 				"navigationBarTitleText": "通知管理",
@@ -48,16 +53,26 @@
 				"navigationBarTitleText": "发送消息"
 			}
 		}, {
-			"path": "pages/Self/ContribPointRecord",
+			"path": "pages/Self/Orders",
 			"style": {
-				"navigationBarTitleText": "贡献度账单"
+				"navigationBarTitleText": "我的订单"
 			}
-		},{
+		}, {
 			"path": "pages/Self/NumberInfo",
 			"style": {
 				"navigationBarTitleText": "账号信息"
 			}
-		},{
+		}, {
+			"path": "pages/Self/InviteMember",
+			"style": {
+				"navigationBarTitleText": "邀请好友"
+			}
+		}, {
+			"path": "pages/Self/Authentication",
+			"style": {
+				"navigationBarTitleText": "实名认证"
+			}
+		}, {
 			"path": "pages/Self/Resume",
 			"style": {
 				"navigationBarTitleText": "个人简历"
@@ -68,15 +83,14 @@
 				"navigationBarTitleText": "简历预览"
 			}
 		}, {
-			"path": "pages/Self/Authentication",
+			"path": "pages/Self/MyCollection",
 			"style": {
-				"navigationBarTitleText": "实名认证"
+				"navigationBarTitleText": "我的收藏"
 			}
-		},
-		{
-			"path": "pages/Self/UserHome",
+		}, {
+			"path": "pages/Self/Feedback",
 			"style": {
-				"navigationBarTitleText": "用户信息"
+				"navigationBarTitleText": "问题反馈"
 			}
 		},
 		/* 项目相关 */
@@ -118,12 +132,17 @@
 		},
 		/* 外包 */
 		{
+			"path": "pages/Epiboly/MyEpiboly",
+			"style": {
+				"navigationBarTitleText": "外包管理"
+			}
+		}, {
 			"path": "pages/Epiboly/EpibolyDetail",
 			"style": {
 				"navigationBarTitleText": "外包信息"
 			}
 		}
-	],
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "uni-app",

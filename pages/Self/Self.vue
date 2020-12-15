@@ -27,7 +27,7 @@
 		<!-- 我的项目 & 外包管理 & 招募队友 -->
 		<view class="navs">
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/Projects">我的项目</navigator>
-			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/Projects">外包管理</navigator>
+			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Epiboly/MyEpiboly">外包管理</navigator>
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/Projects">招募队友</navigator>
 		</view>
 		<!-- 任务 进行中 & 已完成 & 贡献详情 -->
@@ -44,15 +44,29 @@
 				:style="{
 					animationDelay: index * 0.1 + 's'
 				}"
-				v-for="(item, index) in funtions"
+				v-for="(item, index) in funtions1"
 				:key="index"
 				hover-stay-time="50"
-				:url="item.to"
-			>
+				:url="item.to">
 				<text :class="'iconfont ' + item.icon"></text>
 				<text class="name small">{{ item.name }}</text>
 				<text v-if="item.val >= 0" class="small val">{{ item.val }}</text>
 				<text v-else class="right iconfont icon-arrow-right"></text>
+			</navigator>
+		</view>
+		<view class="list">
+			<navigator
+				class="item"
+				:style="{
+					animationDelay: (index+funtions1.length) * 0.1 + 's'
+				}"
+				v-for="(item, index) in funtions2"
+				:key="index"
+				hover-stay-time="50"
+				:url="item.to">
+				<text :class="'iconfont ' + item.icon"></text>
+				<text class="name small">{{ item.name }}</text>
+				<text class="right iconfont icon-arrow-right"></text>
 			</navigator>
 		</view>
 		<!-- 兴趣选择 -->
@@ -78,15 +92,18 @@ export default {
 				{ name: '贡献详情', icon: 'icon-icon', to: '/pages/Project/Project' }
 			],
 			/* 功能列表 */
-			funtions: [
+			funtions1: [
 				{ name: 'userId', icon: 'icon-ID', to: '', val: getApp().globalData.gUserInfo.userInfo.userId },
-				{ name: '贡献值', icon: 'icon-icon', to: '/pages/Self/ContribPointRecord', val: getApp().globalData.gUserInfo.contribPoint },
+				{ name: '贡献值', icon: 'icon-icon', to: '/pages/Self/Orders', val: getApp().globalData.gUserInfo.contribPoint },
 				{ name: '消息通知', icon: 'icon-tongzhi1', to: '/pages/Self/Informs', val: 10 },
 				{ name: '账号信息', icon: 'icon-zhanghao', to: '/pages/Self/NumberInfo' },
-				{ name: '实名认证', icon: 'icon-shimingrenzheng', to: '/pages/Self/Authentication' },
-				{ name: '个人简历', icon: 'icon-jianli', to: '/pages/Self/Resume' },
-				{ name: '邀请好友', icon: 'icon-iconfontzhizuobiaozhun49', to: '/pages/Self/Authentication' },
-				{ name: '联系管理员', icon: 'icon-lianxikefu', to: '/pages/Self/Authentication' }
+				{ name: '邀请好友', icon: 'icon-iconfontzhizuobiaozhun49', to: '/pages/Self/InviteMember'},
+			],
+			funtions2: [
+				{ name: '我的收藏', icon: 'icon-shoucang', to: '/pages/Self/MyCollection'},
+				{ name: '个人简历', icon: 'icon-jianli', to: '/pages/Self/Resume'},
+				{ name: '意见反馈', icon: 'icon-lianxikefu', to: '/pages/Self/Feedback'},
+				{ name: '联系客服', icon: 'icon-lianxikefu', to: '/pages/Self/Feedback'},
 			],
 			isCheckTags: false // 是否进入选择标签
 		};
@@ -97,10 +114,16 @@ export default {
 			const userInfo = getApp().globalData.gUserInfo.userInfo
 			let specialtyTags = []
 			let compTags = []
-			if (userInfo.specialtyTags) specialtyTags = userInfo.specialtyTags.split(',')
-			if (userInfo.compTags) compTags = userInfo.compTags.split(',')
+			if (userInfo.specialtyTags){
+				specialtyTags = userInfo.specialtyTags.split(',')
+			} 
+			if (userInfo.compTags){
+				compTags = userInfo.compTags.split(',')
+			} 
 			let res = specialtyTags.concat(compTags)
-			if (res.length === 0) res = ['点击定制个人标签']
+			if (res.length === 0){
+				res = ['点击定制个人标签']
+			} 
 			return res
 		}
 	},
@@ -130,7 +153,7 @@ export default {
 			/* 进入操作菜单 */
 			uni.showActionSheet({
 				itemList: ['预览头像', '修改头像', '查看个人信息'],
-				success: res => {
+				success: (res) => {
 					/* 预览头像 */
 					if (res.tapIndex === 0) {
 						uni.previewImage({
@@ -204,7 +227,7 @@ export default {
 	created() {
 		getUnreadCount()
 		.then(res => {
-			this.funtions[2].val = res.data
+			this.funtions1[2].val = res.data
 		})
 	}
 };
@@ -338,13 +361,14 @@ bgSetting(size, color)
 		margin 10px auto
 		width 90%
 		.item
-			margin-bottom 3px
+			margin-bottom 1px
 			transform translateY(50vh)
-			padding 10px 20px
+			opacity 0
+			padding 5px 20px
 			background-color #FFFFFF
 			display flex
 			align-items center
-			animation funShow 0.2s forwards
+			animation funShow 0.1s ease-out forwards
 			&:first-child
 				border-top-left-radius 20px
 				border-top-right-radius 20px
@@ -352,10 +376,10 @@ bgSetting(size, color)
 				border-bottom-left-radius 20px
 				border-bottom-right-radius 20px
 			.iconfont
-				font-size 44rpx
+				font-size 40rpx
 				color var(--origin2)
 			.right
-				font-size 60rpx
+				font-size 50rpx
 			.name
 				margin-left 25rpx
 				flex 1
@@ -376,4 +400,5 @@ bgSetting(size, color)
 @keyframes funShow
 	to
 		transform translateY(0)
+		opacity 1
 </style>

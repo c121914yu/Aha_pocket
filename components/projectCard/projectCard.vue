@@ -5,7 +5,7 @@
 		:style="{
 			'margin': margin,
 			'border-radius': radius,
-			'background-color': project.passed ? '#ffffff' : 'rgba(248,184,107,0.1)'
+			'background-color': backgroundColor
 		}"
 		@click="$emit('click')">
 		<!-- 排名图标 -->
@@ -41,12 +41,6 @@
 					<text>{{project.collect}}</text>
 				</view>
 			</view>
-			<!-- 收藏按键 -->
-			<text 
-				v-if="showCollect" 
-				class="collection iconfont icon-collection" 
-				@click.stop="collect">
-			</text>	
 		</view>
 	</view>
 </template>
@@ -75,9 +69,9 @@ export default {
 			type: String,
 			default: "0"
 		},
-		showCollect: {
-			type: Boolean,
-			default: false
+		backgroundColor: {
+			type: String,
+			default: "#ffffff"
 		}
 	},
 	computed: {
