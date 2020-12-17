@@ -265,6 +265,7 @@ export default {
 		padding 10px
 		border-radius 8px
 		background-color #FFFFFF
+		box-shadow var(--shadow2)
 		display flex
 		align-items center
 		justify-content space-around

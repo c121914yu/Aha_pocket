@@ -94,8 +94,8 @@ export default {
 			/* 功能列表 */
 			funtions1: [
 				{ name: 'userId', icon: 'icon-ID', to: '', val: getApp().globalData.gUserInfo.userInfo.userId },
-				{ name: '贡献值', icon: 'icon-icon', to: '/pages/Self/Orders', val: getApp().globalData.gUserInfo.contribPoint },
 				{ name: '消息通知', icon: 'icon-tongzhi1', to: '/pages/Self/Informs', val: 10 },
+				{ name: '我的钱包', icon: 'icon-ziyuan', to: '/pages/Self/Wallet'},
 				{ name: '账号信息', icon: 'icon-zhanghao', to: '/pages/Self/NumberInfo' },
 				{ name: '邀请好友', icon: 'icon-iconfontzhizuobiaozhun49', to: '/pages/Self/InviteMember'},
 			],

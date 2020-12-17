@@ -25,8 +25,16 @@ const getProject = (projectId) => request(`/project/${projectId}`,"GET",{})
 const putProject = (projectId,data) => request(`/project/${projectId}`,"PUT",data)
 /* 删除项目 */
 const deleteProject = (projectId) => request(`/project/${projectId}`,"DELETE",{})
-/* 获取评论 */
-const getRemarks = (params) => request("/project/me","GET",params)
+/* 
+	获取评论
+	@prams	pageNum: Number,页码
+	@prams	pageSize: Number,分页大小
+	@prams	projectId: Number,项目ID
+	@prams	resourceId: Number,资源ID（可选)
+*/
+const getRemarks = (params) => request(`/project/resource/score`,"GET",params)
+/* 评价 */
+const postRemark = (projectResourceId,data) => request(`/project/score/${projectResourceId}`,"POST",data)
 
 /* 判断是否收藏 */
 const isCollected = (projectId) => request(`/project/collection/${projectId}`,"GET",{})
@@ -74,6 +82,8 @@ export {
 	deleteResource,
 	putResource,
 	getLoadSignature,
+	getRemarks,
+	postRemark,
   
 	postMember,
 	putMember,

@@ -1,103 +1,80 @@
 <!-- 贡献度记录 -->
 <template>
-	<view class="contribPoint-record">
+	<view class="orders">
 		<!-- 搜索 -->
 		<view class="search">
 			<text class="iconfont icon-sousuo"></text>
 			<input type="text" placeholder="输入账单相关信息">
 			<text class="search-btn">搜索</text>
 		</view>
-		<!-- 分类 -->
-		<view class="filter">
-			<view 
-				class="item"
-				:class="index === currentType ? 'active' : ''"
-				v-for="(item,index) in types"
-				:key="index"
-				@click="currentType=index">
-				{{item.label}}
-			</view>
-		</view>
-		<!-- 转赠 -->
-		<givePoint v-if="currentType===4" ></givePoint>
 		<!-- 记录 -->
-		<view class="records">
-			<view 
-				class="record"
-				v-for="(record,index) in records"
-				:key="index"
-				@click="handleRecord">
-				<view class="left">
-					<view class="title">{{record.title}}</view>
-					<view class="type small">{{record.type}}</view>
-					<view class="time small">{{record.time}}</view>
-				</view>
-				<view class="right point">
-					{{record.point > 0 ? `+${record.point}` : record.point}}
-				</view>
+		<navigator 
+			class="order"
+			v-for="(order,index) in orders"
+			:key="index"
+			:url="'./OrderDetail?id=' + order.id">
+			<view class="left">
+				<view class="title">{{order.title}}</view>
+				<view class="type small">{{order.type}}</view>
+				<view class="time small">{{order.time}}</view>
 			</view>
-		</view>
+			<view class="right point">
+				{{order.point > 0 ? `+${order.point}` : order.point}}
+			</view>
+		</navigator>
 	</view>
 </template>
 
 <script>
-import givePoint from "./ContribPointRecordComponents/GivePoint.vue"
 import { getOrders } from "@/static/request/api_order.js"
 export default {
 	data() {
 		return {
-			types: [
-				{label: "全部",val: "all"},
-				{label: "项目",val: "all"},
-				{label: "外包",val: "all"},
-				{label: "竞赛",val: "all"},
-				{label: "转赠",val: "all"},
+			orders: [
+				{id: 0,title: "项目通过-发放贡献度",type: "项目", point: 50, time: "2020/12/4 20:05"},
+				{id: 1,title: "项目通过-发放贡献度",type: "项目",point: -30, time: "2020/12/4 20:05"},
+				{id: 2,title: "项目通过-发放贡献度",type: "项目",point: -20, time: "2020/12/4 20:05"},
+				{id: 3,title: "项目通过-发放贡献度",type: "项目",point: 10, time: "2020/12/4 20:05"},
 			],
-			currentType: 4,
-			records: [
-				{title: "项目通过-发放贡献度",type: "项目", point: 50, time: "2020/12/4 20:05"},
-				{title: "项目通过-发放贡献度",type: "项目",point: -30, time: "2020/12/4 20:05"},
-				{title: "项目通过-发放贡献度",type: "项目",point: -20, time: "2020/12/4 20:05"},
-				{title: "项目通过-发放贡献度",type: "项目",point: 10, time: "2020/12/4 20:05"},
-			]
+			type: 0,
+			pageNum: 1,
+			pageSize: 20,
+			loadStatus: 0, // 0未加载完成，1加载中，2加载全部
 		}
 	},
 	onLoad() {
-		getOrders()
-		.then(res => {
-			console.log(res.data)
-		})
+		this.getOrdersInfo(true)
 	},
 	methods: {
-		/* 
-			name: handleRecord
-			desc: 点击一条记录，展示操作菜单（删除记录，对该账单疑问）
-		*/
-	   handleRecord()
-	   {
-		   uni.showActionSheet({
-				itemList:["对该账单疑问","删除该账单"],
-				success: (res) => {
-					if(res.tapIndex === 0){
-						console.log("疑问");
-					}
-					else if(res.tapIndex === 1){
-						this.gShowModal("确认删除该贡献度记录?",() => {
-							this.gToastSuccess("删除记录")
-						})
-					}
-				}
-		   })
-	   }
+		/* 判断是否加载全部 */
+		judgeLoadAll(size)
+		{
+			if(size < this.pageSize)
+				this.loadStatus = 3
+			else{
+				this.loadStatus = 0
+				this.pageNum++
+			}
+		},
+		/* 加载订单 */
+		getOrdersInfo(init=false)
+		{
+			this.loadStatus = 1
+			if(init){
+				this.pageNum = 1
+			}
+			getOrders()
+			.then(res => {
+				this.judgeLoadAll(res.data.pageSize)
+				this.orders = init ? res.data.pageData : this.orders.concat(res.data.pageData)
+			})
+		}
 	},
-	components: {
-		givePoint
-	}
 }
 </script>
 
 <style lang="stylus" scoped>
-.contribPoint-record
+.orders
 	background-color #FFFFFF
 	/* 搜索栏 */
 	.search
@@ -115,28 +92,16 @@ export default {
 		.search-btn
 			margin-left 10px
 			font-size 26rpx
-	/* 筛选 */
-	.filter
+	.order
 		padding 10px
-		background-color #f6f6f6
-		color #000000
+		border-bottom var(--border2)
 		display flex
-		justify-content space-around
-		.active
-			color var(--origin2)
-	/* 记录列表 */
-	.records
-		padding 10px
-		.record
-			padding 10px
-			border-bottom var(--border2)
-			display flex
-			.left
-				flex 1
-			.small
-				color var(--gray2)
-			.point
-				font-size 36rpx
-				color var(--origin1)
-				font-weight 700
+		.left
+			flex 1
+		.small
+			color var(--gray2)
+		.point
+			font-size 36rpx
+			color var(--origin1)
+			font-weight 700
 </style>

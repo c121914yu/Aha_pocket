@@ -14,6 +14,7 @@ Vue.prototype.gShowModal = globalFun.gShowModal
 Vue.prototype.gUploadFile = globalFun.gUploadFile
 Vue.prototype.gPutUserInfo = globalFun.gPutUserInfo
 Vue.prototype.gLoading = globalFun.gLoading
+Vue.prototype.gformatDate = globalFun.gformatDate
 
 const app = new Vue({
 	...App

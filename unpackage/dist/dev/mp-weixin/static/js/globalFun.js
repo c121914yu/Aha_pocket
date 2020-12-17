@@ -97,10 +97,40 @@ function gUploadFile(url,name,signature){
 					userInfo: Object,新的userInfo
 */
 function gPutUserInfo(data){
-	for(let key in data)
+	for(let key in data){
 		getApp().globalData.gUserInfo.userInfo[key] = data[key]
+	}
 	console.log(getApp().globalData.gUserInfo);
 	return {...getApp().globalData.gUserInfo}
+}
+
+/* 
+	name: formatDate
+	desc: 格式化日期成yy/mm/dd HH:mm
+	input: Date
+	return: String
+*/
+const gformatDate = (time) => {
+	const date = new Date(time)
+	const year = date.getFullYear()
+	const month = date.getMonth() + 1
+	const day = date.getDate()
+	const hour = date.getHours()
+	const minutes = date.getMinutes()
+	
+	const nDay = new Date()
+	const nyear = nDay.getFullYear()
+	const nmonth = nDay.getMonth() + 1
+	const nday = nDay.getDate()
+	if(year === nyear && month === nmonth && day === nday){
+		return `${hour}:${minutes}`
+	}
+	else if(year === nyear){
+		return `${month}/${day} ${hour}:${minutes}`
+	}
+	else{
+		return `${year}/${month}/${day} ${hour}:${minutes}`
+	}
 }
 
 /* 展示/隐藏等待 */
@@ -121,6 +151,7 @@ const globalFun = {
 	gShowModal,
 	gUploadFile,
 	gPutUserInfo,
-  gLoading
+	gLoading,
+	gformatDate
 }
 export default globalFun

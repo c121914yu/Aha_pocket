@@ -23,6 +23,7 @@ _vue.default.prototype.gShowModal = _globalFun.default.gShowModal;
 _vue.default.prototype.gUploadFile = _globalFun.default.gUploadFile;
 _vue.default.prototype.gPutUserInfo = _globalFun.default.gPutUserInfo;
 _vue.default.prototype.gLoading = _globalFun.default.gLoading;
+_vue.default.prototype.gformatDate = _globalFun.default.gformatDate;
 
 var app = new _vue.default(_objectSpread({},
 _App.default));

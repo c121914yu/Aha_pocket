@@ -53,9 +53,19 @@
 				"navigationBarTitleText": "发送消息"
 			}
 		}, {
+			"path": "pages/Self/Wallet",
+			"style": {
+				"navigationBarTitleText": "我的钱包"
+			}
+		}, {
 			"path": "pages/Self/Orders",
 			"style": {
-				"navigationBarTitleText": "我的订单"
+				"navigationBarTitleText": "账单"
+			}
+		}, {
+			"path": "pages/Self/OrderDetail",
+			"style": {
+				"navigationBarTitleText": "账单详细"
 			}
 		}, {
 			"path": "pages/Self/NumberInfo",
@@ -115,7 +125,8 @@
 		}, {
 			"path": "pages/Project/Project",
 			"style": {
-				"navigationBarTitleText": "项目详情"
+				"navigationBarTitleText": "项目详情",
+				"onReachBottomDistance": 100
 			}
 		}, {
 			"path": "pages/Project/PurchasedProjects",

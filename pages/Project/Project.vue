@@ -66,7 +66,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="content" style="margin-top: 15px;">
+		<view id="content2" class="content" style="margin-top: 15px;">
 			<view class="h3" style="color: var(--gray1);">项目详细</view>
 			<!-- 描述 -->
 			<view v-if="intro" class="item intro">
@@ -100,47 +100,49 @@
 			</view>
 			<!-- 项目评价 -->
 			<view class="item">
-				<view class="title">项目评论</view>
+				<view class="title" id="comments">项目评论</view>
 				<view 
-					class="remark"
-					v-for="(remark,index) in remarks"
+					class="comment"
+					v-for="(comment,index) in comments"
 					:key="index">
-					<image :src="remark.avatarUrl"></image>
+					<image :src="comment.user.avatarUrl"></image>
 					<view class="right">
 						<view class="head">
-							<view class="name">{{remark.name}}</view>
-							<view class="time">{{remark.time}}</view>
+							<view class="name">{{comment.user.nickname}}</view>
+							<view class="time">{{comment.time}}</view>
 						</view>
 						<view class="container">
-							{{remark.content}}
+							{{comment.comment}}
 						</view>
-						<view class="reply">
-							
-							<button>回复</button>
+						<view class="file-control">
+							<text class="filename">{{comment.filename}}</text>
+							<text v-if="comment.isMe" class="iconfont icon-remove" @click="removeComment(comment)"></text>
 						</view>
 					</view>
 				</view>
-				<view class="load-msg center small">已加载全部</view>
 			</view>
 		</view>
 		<!-- 写评论模块 -->
-		<view class="remark-hint">
-			<view class="input"><text class="iconfont icon-write"></text>写下你的评论...</view>
-			<text class="icon iconfont icon-xinxi"></text>
-			<text v-if="isCollect" class="icon iconfont icon-collection collected" @click="collected"></text>
-			<text v-else class="icon iconfont icon-shoucang" @click="collected"></text>
-			<text class="icon iconfont icon-share"></text>
-		</view>
+		<WriteRemark
+			v-if="id"
+			:projectId="id"
+			:files="resources"
+			@scrollComment="scrollComment"
+			@collectChange="collect+=$event"
+			@success="getCommentsInfo(true)">
+		</WriteRemark>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { getProject, buyProject, isCollected, collectProject, cancleCollectProject, getLoadSignature } from '@/static/request/api_project.js';
+import { getProject, buyProject, getLoadSignature,getRemarks } from '@/static/request/api_project.js';
+import WriteRemark from "./components/WriteRemark.vue"
 export default {
 	data() {
 		return {
+			id: null,
 			name: '',
 			avatarUrl: '',
 			tags: '',
@@ -152,16 +154,16 @@ export default {
 			awardLevel: '',
 			awardTime: '',
 			members: [],
+			resources: [],
 			previewFiles: [],
 			unPreviewFiles: [],
-			remarks: [
-				{avatarUrl:"https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png",name:"余金隆",time:"2020/9/5 11:14",content:"大哥大哥大的三个和尚大哥大哥大的三个和尚阿萨德大哥大哥大的三个和尚阿萨德"},
-				{avatarUrl:"https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png",name:"余金隆",time:"2020/9/5 11:14",content:"大哥大哥大的三个和尚"},
-				{avatarUrl:"https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png",name:"余金隆",time:"2020/9/5 11:14",content:"大哥大哥大的三个和尚阿萨德大哥大哥大的三个和尚阿萨德大哥大哥大的三个和尚阿萨德"},
-			],
+			comments: [],
 			isBuy: false,
-			isCollect: false
-		};
+			/* 分页获取评论信息 */
+			pageNum: 1,
+			pageSize: 5,
+			showCommentAll: false
+		}
 	},
 	computed: {
 		awardLevelMsg() {
@@ -180,26 +182,88 @@ export default {
 			return ''
 		}
 	},
-	methods: {
-		/*
-			name: 收藏/取消收藏项目
-			desc：根据当前收藏状态判断，收藏项目还是取消收藏，修改收藏状态及项目收藏数量
-		*/
-		collected() {
-			/* 本是收藏的，取消收藏 */
-			if (this.isCollect) {
-				cancleCollectProject(this.id);
-				this.collect -= 1;
-			} else {
-			/* 本事未收藏的收藏 */
-				collectProject(this.id);
-				this.collect += 1;
-				uni.vibrateShort(); // 短暂震动
+	onLoad(e) {
+		this.gLoading(this,true)
+		getProject(e.id)
+		.then(res => {
+			for (let key in res.data){
+				this[key] = res.data[key]
 			}
-			this.isCollect = !this.isCollect;
+			this.members = this.members.sort((a, b) => a.rank - b.rank)
+			/* 将resource分类 */
+			res.data.resources.forEach(file => {
+				/* 图片 & 含预览路径的文件分一类 */
+				const reg = /\.(gif|jpg|jpeg|png)$/i
+				if (reg.test(file.name) || file.previewUrl){
+					this.previewFiles.push(file)
+				} 
+				else{
+					this.unPreviewFiles.push(file)
+				} 
+			})
+			console.log(res.data)
+			/* 获取评论信息 */
+			this.getCommentsInfo(true)
+			this.gLoading(this,false)
+		})
+		.catch(err => {
+			this.gLoading(this,false)
+		})
+	},
+	components: {
+		WriteRemark
+	},
+	onShareAppMessage(e){
+		console.log(e)
+		return {
+			title: "Aha口袋",
+			path: `pages/Project/Project?id=${this.id}`,
+			desc: "Aha口袋邀您阅读" + this.name,
+		}
+	},
+	onReachBottom(){
+		this.getCommentsInfo()
+	},
+	methods: {
+		/* 判断是否加载全部 */
+		judgeLoadAll(size)
+		{
+			this.showCommentAll = false
+			if(size < this.pageSize)
+				this.showCommentAll = true
+			else
+				this.pageNum++
+		},
+		/* 获取评论 */
+		getCommentsInfo(init=false)
+		{
+			if(init){
+				this.pageNum = 1
+			}
+			const userId = getApp().globalData.gUserInfo.userInfo.userId
+			getRemarks({
+				pageNum: this.pageNum,
+				pageSize: this.pageSize,
+				projectId: this.id
+			})
+			.then(res => {
+				this.judgeLoadAll(res.data.pageSize)
+				const data = res.data.pageData.map(remark => {
+					const file = this.resources.find(item => item.id === remark.resourceId)
+					return {
+						...remark,
+						isMe: userId === remark.user.userId,
+						time: this.gformatDate(remark.time),
+						filename: file.name
+					}
+				})
+				this.comments = init ? data : this.comments.concat(data);
+				console.log(this.comments);
+			})
 		},
 		/* 打开图片 */
-		previewImg(file, index) {
+		previewImg(file, index) 
+		{
 			const viewImg = url => {
 				uni.previewImage({
 					urls: [url]
@@ -209,7 +273,9 @@ export default {
 				viewImg(file.previewUrl)
 			} 
 			else {
-				getLoadSignature(file.id).then(res => {
+				console.log(file);
+				getLoadSignature(file.id)
+				.then(res => {
 					this.previewFiles[index].previewUrl = res.data.url
 					this.previewFiles[index].previewLoad = true
 					viewImg(res.data.url)
@@ -221,7 +287,8 @@ export default {
 			name: 预览项目
 			desc: 判断是否已经购买，如果已经购买触发下载
 		*/
-		preview(file, index) {
+		preview(file, index) 
+		{
 			if (this.isBuy) {
 				this.loadFile(file, index);
 				return;
@@ -270,7 +337,8 @@ export default {
 			name: 下载附件
 			desc: 下载附件并打开,如果是视频则跳转播放页
 		*/
-		loadFile(file, index) {
+		loadFile(file, index) 
+		{
 			if (!this.isBuy) {
 				this.gToastError('无权下载')
 				return;
@@ -324,41 +392,33 @@ export default {
 					})
 				}
 			}
-		}
-	},
-	onLoad(e) {
-		this.gLoading(this,true)
-		getProject(e.id)
-		.then(res => {
-			for (let key in res.data){
-				this[key] = res.data[key]
-			}
-			this.members = this.members.sort((a, b) => a.rank - b.rank)
-			/* 将resource分类 */
-			res.data.resources.forEach(file => {
-				/* 图片 & 含预览路径的文件分一类 */
-				const reg = /\.(gif|jpg|jpeg|png)$/i
-				if (reg.test(file.name) || file.previewUrl) this.previewFiles.push(file)
-				else this.unPreviewFiles.push(file)
+		},
+		/* 滚动到评论区 */
+		scrollComment()
+		{
+			uni.createSelectorQuery().select("#comments").boundingClientRect(data=>{//目标节点
+			　　uni.createSelectorQuery().select("#content2").boundingClientRect((res)=>{//最外层盒子节点
+					uni.pageScrollTo({
+						duration:0,
+						scrollTop: data.top - res.top,//滚动到实际距离是元素距离顶部的距离减去最外层盒子的滚动距离
+					})
+			　　}).exec()
+			}).exec()
+		},
+		/* 删除评论 */
+		removeComment(comment)
+		{
+			this.gShowModal("您确定删除该评价?",() => {
+				console.log(comment);
 			})
-			console.log(res.data)
-			this.gLoading(this,false)
-		})
-		.catch(err => {
-			this.gLoading(this,false)
-		})
-		/* 判断是否收藏 */
-		isCollected(e.id)
-		.then(res => {
-			this.isCollect = res.data
-		})
+		}
 	}
 }
 </script>
 
 <style lang="stylus" scoped>
 .project
-	padding 10px 10px 40px
+	padding 10px 10px 50px
 	min-height 100vh
 	background-color var(--white1)
 	.content
@@ -397,11 +457,10 @@ export default {
 			.right
 				width 80px
 				height 80px
-				border-radius 8px
-				overflow hidden
 				image
 					width 100%
 					height 100%
+					border-radius 8px
 		/* 各类数据共同样式 */
 		.item
 			margin 10px 0
@@ -485,9 +544,9 @@ export default {
 						font-weight 400
 						line-height 1
 						text-align center
-		.remark
+		.comment
 			margin 5px 0
-			padding 10px
+			padding 10px 10px 0 10px
 			border-radius 8px
 			background-color var(--origin4)
 			display flex
@@ -511,40 +570,15 @@ export default {
 						font-size 22rpx
 						color var(--gray1)
 				.container
-					padding 5px
-					font-size 22rpx
-				.reply
-					button
-						width 50px
-						float right
-						padding 3px 10px
-						line-height 1
+					padding 5px 0
+					font-size 24rpx
+				.file-control
+					display flex
+					align-items center
+					justify-content space-between
+					.filename
+						color var(--gray2)
 						font-size 22rpx
-						border-radius 22px
-		.load-msg
-			color var(--gray1)
-	/* 写评论区 */
-	.remark-hint
-		position fixed
-		bottom 0
-		left 0
-		right 0
-		padding 10px
-		border-top var(--border2)
-		background-color #FFFFFF
-		display flex
-		align-items center
-		justify-content space-between
-		.input
-			width 60%
-			padding 5px 10px
-			background-color var(--white1)
-			font-size 24rpx
-			border-radius 22px
-			.iconfont
-				margin-right 5px
-		.icon
-			font-size 40rpx
-			&.collected
-				color #e86452
+					.iconfont
+						color var(--origin1)
 </style>

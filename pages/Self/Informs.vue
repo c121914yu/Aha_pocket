@@ -67,7 +67,6 @@ export default {
 				this.pageNum++
 			if(this.informs.length === 0)
 				this.loadStatus = 3
-			console.log(size)
 		},
 		/* 获取消息列表 */
 		getMsg(init=false,loading=true) 

@@ -26,7 +26,7 @@ export default {
 		return {
 			navs: [
 				{icon: "icon-canjiaxiaowaijingsai",text: "项目分享",name: "ProjectHome"},
-				{icon: "icon-canjiaxiaowaijingsai",text: "竞赛消息",name: "Competition"},
+				{icon: "icon-canjiaxiaowaijingsai",text: "竞赛组队",name: "Competition"},
 				{icon: "icon-waibao",text: "服务外包",name: "Epiboly"},
 				{icon: "icon-user",text: "我的",name: "Self"},
 			]

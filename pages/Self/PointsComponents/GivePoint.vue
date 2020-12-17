@@ -1,12 +1,13 @@
 <!-- 转赠贡献度 -->
 <template>
-	<view class="give-point">
-		<view class="search">
-			<input type="text" placeholder="转增人userId" v-model.number="userId">
-			<text @click="searchUser">搜索</text>
-		</view>
-		<view v-if="userCard" class="user-card">
-			<view class="card">
+	<view class="give-point fix-screen">
+		<view class="content">
+			<view class="search">
+				<text class="iconfont icon-sousuo"></text>
+				<input type="text" placeholder="根据userId搜索用户" v-model="userId"/>
+				<text class="search-btn" @click="searchUser">搜索</text>
+			</view>
+			<view v-if="userCard" class="userInfo">
 				<view class="center h3">用户信息</view>
 				<image :src="userCard.avatarUrl"></image>
 				<view class="item userId">
@@ -25,10 +26,11 @@
 					<text class="label">可转赠:</text>
 					<text class="value">{{canGivePoint}}点</text>
 				</view>
-				<view class="item btns">
-					<view class="cancel" @click="userCard=null">取消</view>
-					<view class="sure strong" @click="sure">确认</view>
-				</view>
+			</view>
+			<view v-else class="blank"></view>
+			<view class="btns">
+				<view class="cancel" @click="$emit('close')">取消</view>
+				<view class="sure strong" @click="sure">确认</view>
 			</view>
 		</view>
 	</view>
@@ -49,8 +51,9 @@ export default {
 		/* 根据userId搜索用户 */
 		searchUser()
 		{
-			if(this.userId === "")
+			if(this.userId === ""){
 				return
+			}
 			getUser(this.userId)
 			.then(res => {
 				this.userCard = res.data
@@ -72,8 +75,8 @@ export default {
 				}
 				else{
 					this.gShowModal(`你即将转赠 ${this.giveAmount} 个贡献点给 ${this.userCard.nickname},请确认操作！`,() => {
-						console.log("转赠成功");
-						this.userCard = null
+						this.gToastSuccess("转赠成功")
+						this.$emit("success")
 					})
 				}
 			}
@@ -84,35 +87,33 @@ export default {
 
 <style lang="stylus" scoped>
 .give-point
-	margin-top 10px
-	padding 0 10px
-	.search
-		display flex
-		align-items center
-		input
-			flex 1
-			border var(--border2)
-			padding 0 5px
-			border-radius 4px
-		text
-			margin-left 10px
-			color var(--gray1)
 	/* 用户信息卡片 */
-	.user-card
-		position fixed
-		top 0
-		left 0
-		right 0
-		bottom 0
-		background-color rgba(0,0,0,0.2)
+	.content
+		width 90%
+		min-height 200px
+		border-radius 8px
 		display flex
-		align-items center
-		justify-content center
-		.card
-			width 90%
-			padding 10px 20px
-			border-radius 8px
-			background-color #FFFFFF
+		flex-direction column
+		.search
+			position relative
+			display flex
+			align-items center
+			.icon-sousuo
+				position absolute
+				margin-left 7px
+				color var(--gray1)
+			input
+				flex 1
+				padding-left 30px
+				border var(--border2)
+			.search-btn
+				margin-left 10px
+				color var(--origin2)
+		.blank
+			flex 1
+		/* 用户信息 */
+		.userInfo
+			margin-top 5px
 			image
 				margin auto
 				width 60px
@@ -134,15 +135,17 @@ export default {
 					padding 0 5px
 					border-radius 4px
 					border var(--border2)
-			.btns
-				margin-top 10px
-				font-size 30rpx
-				text-align center
-				.cancel
-					width 50%
-					color var(--gray1)
-					border-right 2px solid var(--origin2)
-				.sure
-					width 50%
-					color var(--origin1)
+		.btns
+			margin-top 10px
+			font-size 30rpx
+			text-align center
+			display flex
+			align-items center
+			.cancel
+				width 50%
+				color var(--gray1)
+				border-right 2px solid var(--origin2)
+			.sure
+				width 50%
+				color var(--origin1)
 </style>

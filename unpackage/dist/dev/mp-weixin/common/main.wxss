@@ -28,15 +28,17 @@ page {
   letter-spacing: 2rpx;
 }
 page,
-view {
+view,
+textarea {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
-input {
-  font-size: 28rpx;
+input,
+textarea {
+  font-size: 26rpx;
   padding: 5px;
-  -webkit-border-radius: 10px;
-          border-radius: 10px;
+  -webkit-border-radius: 8px;
+          border-radius: 8px;
 }
 button {
   border: none;
@@ -63,7 +65,8 @@ navigator {
   display: inline-block;
 }
 /* 默认placeholder样式 */
-.input-placeholder {
+.input-placeholder,
+.textarea-placeholder {
   font-size: 22rpx;
   color: var(--gray2);
   letter-spacing: 0;
@@ -114,12 +117,12 @@ navigator {
 
 @font-face {
   font-family: 'iconfont';  /* project id 2102312 */
-  src: url('//at.alicdn.com/t/font_2102312_2myko6cuou6.eot');
-  src: url('//at.alicdn.com/t/font_2102312_2myko6cuou6.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_2102312_2myko6cuou6.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_2102312_2myko6cuou6.woff') format('woff'),
-  url('//at.alicdn.com/t/font_2102312_2myko6cuou6.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_2102312_2myko6cuou6.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_2102312_yzq1442z6.eot');
+  src: url('//at.alicdn.com/t/font_2102312_yzq1442z6.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2102312_yzq1442z6.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2102312_yzq1442z6.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2102312_yzq1442z6.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2102312_yzq1442z6.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -128,6 +131,26 @@ navigator {
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-zengsong:before {
+  content: "\e661";
+}
+
+.icon-zhangdan:before {
+  content: "\e610";
+}
+
+.icon-tixian:before {
+  content: "\e60e";
+}
+
+.icon-ziyuan:before {
+  content: "\e621";
+}
+
+.icon-qian:before {
+  content: "\e60f";
 }
 
 .icon-xinxi:before {

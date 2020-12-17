@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1948,31 +1948,6 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 119:
-/*!*************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_resume.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.putResume = exports.getResume = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/* 
-                                                                                                                                                                                                                                                                                       	description: 获取简历信息
-                                                                                                                                                                                                                                                                                       	params:
-                                                                                                                                                                                                                                                                                               userId: String,用户标识码
-                                                                                                                                                                                                                                                                                       */
-var getResume = function getResume(userId) {return (0, _request.default)("/resume/".concat(userId), "GET", {});};
-
-/* 
-                                                                                                                  	description: 更新简历信息
-                                                                                                                  	input: resume: Object,简历的所有字段
-                                                                                                                  */exports.getResume = getResume;
-var putResume = function putResume(data) {return (0, _request.default)("/resume", "PUT", data);};exports.putResume = putResume;
-
-/***/ }),
-
 /***/ 12:
 /*!*******************************************!*\
   !*** D:/服务外包/竞赛统计/static/js/globalFun.js ***!
@@ -2081,10 +2056,40 @@ function gUploadFile(url, name, signature) {
   */
 function gPutUserInfo(data) {
   for (var key in data) {
-    getApp().globalData.gUserInfo.userInfo[key] = data[key];}
+    getApp().globalData.gUserInfo.userInfo[key] = data[key];
+  }
   console.log(getApp().globalData.gUserInfo);
   return _objectSpread({}, getApp().globalData.gUserInfo);
 }
+
+/* 
+  	name: formatDate
+  	desc: 格式化日期成yy/mm/dd HH:mm
+  	input: Date
+  	return: String
+  */
+var gformatDate = function gformatDate(time) {
+  var date = new Date(time);
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var hour = date.getHours();
+  var minutes = date.getMinutes();
+
+  var nDay = new Date();
+  var nyear = nDay.getFullYear();
+  var nmonth = nDay.getMonth() + 1;
+  var nday = nDay.getDate();
+  if (year === nyear && month === nmonth && day === nday) {
+    return "".concat(hour, ":").concat(minutes);
+  } else
+  if (year === nyear) {
+    return "".concat(month, "/").concat(day, " ").concat(hour, ":").concat(minutes);
+  } else
+  {
+    return "".concat(year, "/").concat(month, "/").concat(day, " ").concat(hour, ":").concat(minutes);
+  }
+};
 
 /* 展示/隐藏等待 */
 var gLoading = function gLoading(that) {var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
@@ -2104,10 +2109,36 @@ var globalFun = {
   gShowModal: gShowModal,
   gUploadFile: gUploadFile,
   gPutUserInfo: gPutUserInfo,
-  gLoading: gLoading };var _default =
+  gLoading: gLoading,
+  gformatDate: gformatDate };var _default =
 
 globalFun;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 127:
+/*!*************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_resume.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.putResume = exports.getResume = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 
+                                                                                                                                                                                                                                                                                       	description: 获取简历信息
+                                                                                                                                                                                                                                                                                       	params:
+                                                                                                                                                                                                                                                                                               userId: String,用户标识码
+                                                                                                                                                                                                                                                                                       */
+var getResume = function getResume(userId) {return (0, _request.default)("/resume/".concat(userId), "GET", {});};
+
+/* 
+                                                                                                                  	description: 更新简历信息
+                                                                                                                  	input: resume: Object,简历的所有字段
+                                                                                                                  */exports.getResume = getResume;
+var putResume = function putResume(data) {return (0, _request.default)("/resume", "PUT", data);};exports.putResume = putResume;
 
 /***/ }),
 
@@ -7703,7 +7734,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7724,14 +7755,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7817,7 +7848,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8385,18 +8416,18 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 365:
+/***/ 373:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 366);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 374);
 
 /***/ }),
 
-/***/ 366:
+/***/ 374:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -8427,7 +8458,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 367);
+module.exports = __webpack_require__(/*! ./runtime */ 375);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -8444,7 +8475,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 367:
+/***/ 375:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -9210,7 +9241,7 @@ var getAllCompetition = function getAllCompetition() {return (0, _request.defaul
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.getLoadSignature = exports.putResource = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteProject = exports.putProject = exports.getProject = exports.getMeProjects = exports.getProjects = exports.postProject = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.postRemark = exports.getRemarks = exports.getLoadSignature = exports.putResource = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteProject = exports.putProject = exports.getProject = exports.getMeProjects = exports.getProjects = exports.postProject = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 获取上传头像/证明材料签名 */
 var getPublicSignature = function getPublicSignature() {return (0, _request.default)("/project/sign/upload/public", "GET", {});};
@@ -9237,10 +9268,18 @@ var getProject = function getProject(projectId) {return (0, _request.default)("/
 var putProject = function putProject(projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
 /* 删除项目 */exports.putProject = putProject;
 var deleteProject = function deleteProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
-/* 获取评论 */exports.deleteProject = deleteProject;
-var getRemarks = function getRemarks(params) {return (0, _request.default)("/project/me", "GET", params);};
+/* 
+                                                                                                                                    	获取评论
+                                                                                                                                    	@prams	pageNum: Number,页码
+                                                                                                                                    	@prams	pageSize: Number,分页大小
+                                                                                                                                    	@prams	projectId: Number,项目ID
+                                                                                                                                    	@prams	resourceId: Number,资源ID（可选)
+                                                                                                                                    */exports.deleteProject = deleteProject;
+var getRemarks = function getRemarks(params) {return (0, _request.default)("/project/resource/score", "GET", params);};
+/* 评价 */exports.getRemarks = getRemarks;
+var postRemark = function postRemark(projectResourceId, data) {return (0, _request.default)("/project/score/".concat(projectResourceId), "POST", data);};
 
-/* 判断是否收藏 */
+/* 判断是否收藏 */exports.postRemark = postRemark;
 var isCollected = function isCollected(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "GET", {});};
 /* 收藏项目 */exports.isCollected = isCollected;
 var collectProject = function collectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "POST", {});};
