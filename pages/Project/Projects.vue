@@ -43,7 +43,7 @@
 				></projectCard>
 			</view>
 		</view>
-		<view class="center small">{{ loadText }}</view>
+		<view class="center small remark">{{ is_showAll ? "已加载全部" : "" }}</view>
 		
 		<!-- 筛选组件 -->
 		<ProjectFilter v-if="isFilter" @sureFilter="sureFilter"></ProjectFilter>
@@ -70,32 +70,30 @@ export default {
 			pageSize: 10,
 			compId: null,
 			awardLevel: null,
-			showStatus: 0, //0未加载完成，1加载全部，2加载中,3 无数据
 			isFilter: false,
 			filterActive: false,
+			is_showAll: false, //0未加载完成，1加载全部，2加载中,3 无数据
 		};
 	},
-	computed: {
-		loadText() {
-			switch (this.showStatus) {
-				case 0: return ''
-				case 1: return '已加载全部'
-				case 2: return '加载中...'
-				case 3: return '没有相关数据'
-			}
+	onShow() {
+		this.loadProjects(true)
+	},
+	onPullDownRefresh() {
+		this.loadProjects(true)
+	},
+	onReachBottom() {
+		if (!this.is_showAll) {
+			this.loadProjects(false,false)
 		}
 	},
 	methods: {
 		/* 判断是否加载全部 */
 		judgeLoadAll(size)
 		{
-			this.showStatus = 0
 			if(size < this.pageSize)
-				this.showStatus = 1
+				this.is_showAll = true
 			else
 				this.pageNum++
-			if(this.projects.length === 0)
-				this.showStatus = 3
 		},
 		/*
 			name: 获取项目
@@ -104,23 +102,25 @@ export default {
 		*/
 		loadProjects(init=false,loading=true) 
 		{
+			this.gLoading(this, loading)
 			if (init) {
 				this.pageNum = 1
 			}
-			this.gLoading(this, loading)
 			let params = {
 				pageNum: this.pageNum,
 				pageSize: this.pageSize,
 				sortBy: this.sortList[this.sortIndex].val
 			}
-			if(this.compId !== null)
+			if(this.compId !== null){
 				params.compId = this.compId
-			if(this.awardLevel!== null)
+			}
+			if(this.awardLevel!== null){
 				params.awardLevel = this.awardLevel
+			}
 			getMeProjects(params)
 			.then(res => {
+				this.judgeLoadAll(res.data.pageData.length)
 				this.projects = init ? res.data.pageData : this.projects.concat(res.data.pageData)
-				this.judgeLoadAll(res.data.pageSize)
 				this.gLoading(this, false)
 				uni.stopPullDownRefresh()
 				console.log(this.projects);
@@ -192,18 +192,6 @@ export default {
 			}
 		}
 	},
-	onLoad(e) {
-		this.loadProjects(true)
-	},
-	onPullDownRefresh() {
-		this.loadProjects(true)
-	},
-	onReachBottom() {
-		if (this.showStatus === 0) {
-			this.showStatus = 2
-			this.loadProjects(false,false)
-		}
-	}
 }
 </script>
 
@@ -229,7 +217,7 @@ export default {
 			background-color var(--white2)
 			border-top-left-radius 22px
 			border-top-right-radius 22px
-			font-size 28rpx
+			font-size 24rpx
 			display flex
 			align-items center
 			justify-content space-between
@@ -243,7 +231,7 @@ export default {
 				align-items center
 				.iconfont
 					font-size 40rpx
-	.center
+	.remark
 		padding 10px
 		color var(--gray1)
 </style>

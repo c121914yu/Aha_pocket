@@ -5,11 +5,10 @@ const getPublicSignature = () => request("/project/sign/upload/public","GET",{})
 
 /* 创建项目数据，保存至数据库 */
 const postProject = (data) => request("/project","POST",data)
-/* 
-	获取所有项目粗略信息表
+/* 获取所有项目粗略信息表
 	params:
-				pageNum： 第几页
-				pageSize: 每页的条数
+		pageNum： 第几页
+		pageSize: 每页的条数
         userId: 用户userId
         compId: 竞赛Id
         awardLevel: 获奖等级
@@ -25,8 +24,8 @@ const getProject = (projectId) => request(`/project/${projectId}`,"GET",{})
 const putProject = (projectId,data) => request(`/project/${projectId}`,"PUT",data)
 /* 删除项目 */
 const deleteProject = (projectId) => request(`/project/${projectId}`,"DELETE",{})
-/* 
-	获取评论
+
+/* 获取评论
 	@prams	pageNum: Number,页码
 	@prams	pageSize: Number,分页大小
 	@prams	projectId: Number,项目ID
@@ -34,10 +33,12 @@ const deleteProject = (projectId) => request(`/project/${projectId}`,"DELETE",{}
 */
 const getRemarks = (params) => request(`/project/resource/score`,"GET",params)
 /* 评价 */
-const postRemark = (projectResourceId,data) => request(`/project/score/${projectResourceId}`,"POST",data)
+const postRemark = (projectResourceId,data) => request(`/project/resource/score/${projectResourceId}`,"POST",data)
+/* 删除评价 */
+const deleteRemark = (commentId) => request(`/project/resource/score/${commentId}`,"DELETE",{})
 
 /* 判断是否收藏 */
-const isCollected = (projectId) => request(`/project/collection/${projectId}`,"GET",{})
+const isCollected = (projectId) => request(`/project/collection/check/${projectId}`,"GET",{})
 /* 收藏项目 */
 const collectProject = (projectId) => request(`/project/collection/${projectId}`,"POST",{})
 /* 取消收藏 */
@@ -61,21 +62,14 @@ const putMember = (projectId,memberUserId,data) => request(`/project/member/${pr
 /* 批量更新成员 */
 const putMembers = (projectId,data) => request(`/project/members/${projectId}`,"PUT",data)
 /* 删除成员 */
-const deleteMember = (projectId,memberPhone) => request(`/project/member/${projectId}/${memberPhone}`	,"DELETE",{})
+const deleteMember = (projectId,memberPhone) => request(`/project/member/${projectId}/${memberPhone}`,"DELETE",{})
 
 export {
 	getPublicSignature,
 	
-	postProject,
 	getProjects,
 	getMeProjects,
 	getProject,
-	putProject,
-	deleteProject,
-	
-	isCollected,
-	collectProject,
-	cancleCollectProject,
 	
 	getFilesSignature,
 	postResource,
@@ -84,7 +78,15 @@ export {
 	getLoadSignature,
 	getRemarks,
 	postRemark,
-  
+	deleteRemark,
+	
+	isCollected,
+	collectProject,
+	cancleCollectProject,
+	
+	postProject,
+	putProject,
+	deleteProject,
 	postMember,
 	putMember,
 	putMembers,

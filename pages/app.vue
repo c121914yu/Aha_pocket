@@ -7,10 +7,17 @@
 			v-if="!signedNotice"
 			@readed="successSign">
 		</UserAgreement>
+		<!-- 系统公告 -->
+		<!-- <SystemNotice 
+			v-if="arr_systemNotice.length>0" 
+			:notices="arr_systemNotice"
+			@close="arr_systemNotice=[]">
+		</SystemNotice> -->
 		<!-- 导航 -->
 		<TabBar 
 			:currentNav="currentNav"
-			@navigate="navigate">
+			@navigate="navigate"
+			@flash="falshProjects">
 		</TabBar>
 		<!-- 主页 -->
 		<ProjectHome 
@@ -38,6 +45,7 @@
 
 <script>
 import { getAllCompetition } from "@/static/request/api_competition.js"
+import { getNotice } from "@/static/request/api_system.js"
 import ProjectHome from "./Project/ProjectHome.vue"
 import Competition from "./Competition/Competition"
 import Epiboly from "./Epiboly/Epiboly"
@@ -55,8 +63,9 @@ export default {
 				{name: "Epiboly",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 3,
-			signedNotice: getApp().globalData.gUserInfo.signedNotice
+			currentNav: 0,
+			signedNotice: getApp().globalData.gUserInfo.signedNotice,
+			arr_systemNotice: []
 		}
 	},
 	watch:{
@@ -73,13 +82,33 @@ export default {
 			})
 		}
 	},
+	components:{
+		ProjectHome,
+		Competition,
+		Epiboly,
+		Self,
+	},
+	onLoad() {
+		getNotice()
+		.then(res => {
+			this.arr_systemNotice = res.data
+		})
+		console.log(getApp().globalData.gUserInfo)
+		this.loadCompetitionInfo()
+		this.loadNav()
+	},
+	onReachBottom(){
+		if(this.currentNav === 0){
+			this.$refs.projectHome.loadMore()
+		}
+	},
 	methods: {
 		/* 完成协议签署 */
 		successSign()
 		{
 			this.signedNotice = true
 			this.loadCompetitionInfo()
-			this.$refs.projectHome.loadProjects()
+			this.$refs.projectHome.loadProjects(true)
 		},
 		/* 加载比赛信息 */
 		loadCompetitionInfo()
@@ -101,41 +130,38 @@ export default {
 						this.navs[].loaded: Boolean,路由是否加载标识符
 			return: null
 		*/
-		loadNav(){
+		loadNav()
+		{
 			this.navs[this.currentNav].loaded = true
 		},
 		/*
 			name: 路由跳转
 			description: 跳转指定下标的路由
-			input:
-						this.currentNav: Number,需要跳转的路由下标
+			input: this.currentNav: Number,需要跳转的路由下标
 			change: null
 			return: null
 		*/
-		navigate(name){
-			uni.pageScrollTo({ 　　　　　　
+		navigate(name)
+		{
+			const index = this.navs.findIndex(item => item.name === name)
+			if(index !== this.currentNav){
+				uni.pageScrollTo({
+					duration: 0,
+					scrollTop: 0 
+				})
+			}
+			this.currentNav = index
+			this.loadNav()
+		},
+		/* 刷新项目，重新获取 */
+		falshProjects()
+		{
+			uni.pageScrollTo({
 				duration: 0,
 				scrollTop: 0 
 			})
-			this.currentNav = this.navs.findIndex(item => item.name === name)
-			this.loadNav()
+			this.$refs.projectHome.loadProjects(true)
 		}
-	},
-	onLoad() {
-		console.log(getApp().globalData.gUserInfo)
-		this.loadCompetitionInfo()
-		this.loadNav()
-	},
-	onReachBottom(){
-		if(this.currentNav !== 0)
-			return
-		this.$refs.projectHome.loadMore()
-	},
-	components:{
-		ProjectHome,
-		Competition,
-		Epiboly,
-		Self,
 	}
 }
 </script>

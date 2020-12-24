@@ -1,6 +1,7 @@
 <!-- 项目筛选 -->
 <template>
 	<view class="project-filter">
+		<view class="blank" @click="$emit('close')"></view>
 		<view class="content">
 			<view class="head">
 				<text class="h3">条件筛选</text>
@@ -121,9 +122,9 @@ export default {
 	right 0
 	bottom 0
 	background-color rgba(0,0,0,0.1)
+	display flex
+	flex-direction column
 	.content
-		position absolute
-		bottom 0
 		width 100%
 		background-color #FFFFFF
 		border-top-left-radius 22px

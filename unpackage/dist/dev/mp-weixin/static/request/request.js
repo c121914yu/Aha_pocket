@@ -1,4 +1,4 @@
-import globalFun from "../js/globalFun.js"
+import Vue from 'vue'
 const baseUrl = getApp().globalData.baseUrl
 
 function myRequest(url,method,data){
@@ -28,14 +28,14 @@ function myRequest(url,method,data){
 				{
 					console.log("请求错误")
 					console.log(result.data)
-					globalFun.gToastError(result.data.msg)
+					Vue.prototype.gToastError(result.data.msg)
 					/* 如果是token过期，关闭所有界面回到登录页 */
 					if(result.data.code === 103){
 						uni.clearStorageSync("token")
-						uni.redirectTo({
+						uni.reLaunch({
 							url: "/pages/Login/Login",
 							success: () => {
-								globalFun.gToastError(result.data.msg)
+								Vue.prototype.gToastError(result.data.msg)
 							}
 						})
 					}
@@ -46,12 +46,11 @@ function myRequest(url,method,data){
 			{
 				console.log("服务器错误")
 				console.log(err.data)
-				globalFun.gToastError("服务器错误")
+				Vue.prototype.gToastError("服务器错误")
 				rej(err)
 			},
 			complete(result) {
 				/* 判断是否有新token,有则替换旧的token */
-					
 				if(result.header.Authorization){
 					console.log(result.header);
 					uni.setStorageSync("token",result.header.Authorization)

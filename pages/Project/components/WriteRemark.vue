@@ -3,7 +3,10 @@
 	<view class="write-remark">
 		<!-- 提示模块 -->
 		<view v-if="type===0" class="remark-hint">
-			<view class="input" @click="startComment"><text class="iconfont icon-write"></text>写下你的评论...</view>
+			<view class="input" @click="startComment">
+				<text class="iconfont icon-write"></text>
+				<text>写下你的评论...</text>
+			</view>
 			<text class="icon iconfont icon-xinxi" @click="$emit('scrollComment')"></text>
 			<text v-if="isCollect" class="icon iconfont icon-collection collected" @click="collected"></text>
 			<text v-else class="icon iconfont icon-shoucang" @click="collected"></text>

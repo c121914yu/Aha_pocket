@@ -22,10 +22,10 @@ page {
 page {
   margin: 0;
   padding: 0s;
-  font-size: 30rpx;
+  font-size: 28rpx;
   line-height: 1.5;
+  font-weight: 400;
   color: var(--black);
-  letter-spacing: 2rpx;
 }
 page,
 view,
@@ -78,6 +78,9 @@ navigator {
 .small {
   font-size: 24rpx;
 }
+.mini {
+  font-size: 20rpx;
+}
 .strong {
   font-weight: 700;
 }
@@ -87,13 +90,14 @@ navigator {
 }
 .h3 {
   font-size: 32rpx;
-  font-weight: 700;
+  font-weight: 600;
 }
 .label {
   font-size: 24rpx;
   color: var(--origin2);
 }
 .fix-screen {
+  z-index: 100;
   position: fixed;
   top: 0;
   left: 0;
@@ -114,15 +118,20 @@ navigator {
   padding: 10px;
   background-color: #fff;
 }
+.blank {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
 
 @font-face {
   font-family: 'iconfont';  /* project id 2102312 */
-  src: url('//at.alicdn.com/t/font_2102312_yzq1442z6.eot');
-  src: url('//at.alicdn.com/t/font_2102312_yzq1442z6.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_2102312_yzq1442z6.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_2102312_yzq1442z6.woff') format('woff'),
-  url('//at.alicdn.com/t/font_2102312_yzq1442z6.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_2102312_yzq1442z6.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_2102312_f05spu8jhh8.eot');
+  src: url('//at.alicdn.com/t/font_2102312_f05spu8jhh8.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2102312_f05spu8jhh8.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2102312_f05spu8jhh8.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2102312_f05spu8jhh8.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2102312_f05spu8jhh8.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -131,6 +140,22 @@ navigator {
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-VIP:before {
+  content: "\e61d";
+}
+
+.icon-shuaxin:before {
+  content: "\ea29";
+}
+
+.icon-right:before {
+  content: "\e720";
+}
+
+.icon-xiangmu:before {
+  content: "\e616";
 }
 
 .icon-zengsong:before {

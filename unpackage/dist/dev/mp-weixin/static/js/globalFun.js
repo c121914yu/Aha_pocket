@@ -1,3 +1,4 @@
+import Vue from 'vue'
 /* 
 	name: showSuccess
 	description: 展示成功提示
@@ -5,7 +6,7 @@
 				title: String,提示文字
 				mask: Boolean,是否展示蒙层
 */
-function gToastSuccess(title,mask=false,duration=1500){
+Vue.prototype.gToastSuccess = (title,mask=false,duration=1500) => {
 	uni.showToast({
 		title,
 		mask,
@@ -19,7 +20,7 @@ function gToastSuccess(title,mask=false,duration=1500){
 				title: String,提示文字
 				mask: Boolean,是否展示蒙层
 */
-function gToastError(title,mask=false,duration=1500){
+Vue.prototype.gToastError = (title,mask=false,duration=1500) => {
 	uni.showToast({
 		title,
 		image: "/static/icon/close.png",
@@ -35,7 +36,7 @@ function gToastError(title,mask=false,duration=1500){
 				success: Function,点击确认后的操作
 				cancel: Function,点击取消后的操作
 */
-function gShowModal(content,success,cancel){
+Vue.prototype.gShowModal = (content,success,cancel) => {
 	uni.showModal({
 		title: "提示",
 		content,
@@ -63,7 +64,7 @@ function gShowModal(content,success,cancel){
 	return: 
 				fileName: String,最终的文件名
 */
-function gUploadFile(url,name,signature){
+Vue.prototype.gUploadFile = (url,name,signature) => {
   const filename = `${signature.dir}/${name}`
   return new Promise((resolve,reject) => {
     uni.uploadFile({
@@ -96,7 +97,7 @@ function gUploadFile(url,name,signature){
 	return: 
 					userInfo: Object,新的userInfo
 */
-function gPutUserInfo(data){
+Vue.prototype.gPutUserInfo = (data) => {
 	for(let key in data){
 		getApp().globalData.gUserInfo.userInfo[key] = data[key]
 	}
@@ -110,7 +111,7 @@ function gPutUserInfo(data){
 	input: Date
 	return: String
 */
-const gformatDate = (time) => {
+Vue.prototype.gformatDate = (time) => {
 	const date = new Date(time)
 	const year = date.getFullYear()
 	const month = date.getMonth() + 1
@@ -123,35 +124,22 @@ const gformatDate = (time) => {
 	const nmonth = nDay.getMonth() + 1
 	const nday = nDay.getDate()
 	if(year === nyear && month === nmonth && day === nday){
-		return `${hour}:${minutes}`
+		`${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
 	}
-	else if(year === nyear){
-		return `${month}/${day} ${hour}:${minutes}`
+	if(year === nyear){
+		return `${month < 10 ? '0'+month : month}/${day < 10 ? '0'+day : day} ${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
 	}
-	else{
-		return `${year}/${month}/${day} ${hour}:${minutes}`
-	}
+	return `${year < 10 ? '0'+year : year}/${month < 10 ? '0'+month : month}/${day < 10 ? '0'+day : day} ${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
 }
 
 /* 展示/隐藏等待 */
-const gLoading = (that,type=false) => {
-  const dom = that.$refs.loading
-  const time = type ? 0 : 500
-  if(dom){
-    setTimeout(() => {
-      if(dom)
-        dom.show = type
-    },time)
-  }
+Vue.prototype.gLoading  = (that,type,delay=0) => {
+	const dom = that.$refs.loading
+	if(dom){
+		setTimeout(() => {
+			if(dom){
+				dom.show = type
+			}
+		},delay)
+	}
 }
-
-const globalFun = {
-	gToastSuccess,
-	gToastError,
-	gShowModal,
-	gUploadFile,
-	gPutUserInfo,
-	gLoading,
-	gformatDate
-}
-export default globalFun

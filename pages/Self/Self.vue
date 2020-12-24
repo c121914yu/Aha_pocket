@@ -87,23 +87,23 @@ export default {
 			userInfo: { ...getApp().globalData.gUserInfo.userInfo },
 			/* 任务列表 */
 			tasks: [
-				{ name: '已购项目', icon: 'icon-shouye', to: '/pages/Project/PurchasedProjects' },
-				{ name: '已完成', icon: 'icon-yiwancheng', to: '/pages/Self/Authentication' },
-				{ name: '贡献详情', icon: 'icon-icon', to: '/pages/Project/Project' }
+				{ name: '已购项目', icon: 'icon-shouye', to: "/pages/Project/PurchasedProjects" },
+				{ name: '已完成', icon: 'icon-yiwancheng', to: "/pages/Project/PurchasedProjects"},
+				{ name: '贡献详情', icon: 'icon-icon', to: "/pages/Project/PurchasedProjects" }
 			],
 			/* 功能列表 */
 			funtions1: [
 				{ name: 'userId', icon: 'icon-ID', to: '', val: getApp().globalData.gUserInfo.userInfo.userId },
-				{ name: '消息通知', icon: 'icon-tongzhi1', to: '/pages/Self/Informs', val: 10 },
-				{ name: '我的钱包', icon: 'icon-ziyuan', to: '/pages/Self/Wallet'},
-				{ name: '账号信息', icon: 'icon-zhanghao', to: '/pages/Self/NumberInfo' },
+				{ name: '消息通知', icon: 'icon-tongzhi1', to: '/pages/Self/Inform/Informs', val: 0 },
+				{ name: '我的钱包', icon: 'icon-ziyuan', to: '/pages/Self/Wallet/Wallet'},
+				{ name: '账号信息', icon: 'icon-zhanghao', to: '/pages/Self/Number/NumberInfo' },
 				{ name: '邀请好友', icon: 'icon-iconfontzhizuobiaozhun49', to: '/pages/Self/InviteMember'},
 			],
 			funtions2: [
 				{ name: '我的收藏', icon: 'icon-shoucang', to: '/pages/Self/MyCollection'},
-				{ name: '个人简历', icon: 'icon-jianli', to: '/pages/Self/Resume'},
-				{ name: '意见反馈', icon: 'icon-lianxikefu', to: '/pages/Self/Feedback'},
-				{ name: '联系客服', icon: 'icon-lianxikefu', to: '/pages/Self/Feedback'},
+				{ name: '个人简历', icon: 'icon-jianli', to: '/pages/Self/Resume/Resume'},
+				{ name: '意见反馈', icon: 'icon-lianxikefu', to: '/pages/Self/Feedback/Feedback'},
+				{ name: '联系客服', icon: 'icon-lianxikefu', to: '/pages/Self/Feedback/Feedback'},
 			],
 			isCheckTags: false // 是否进入选择标签
 		};
@@ -126,6 +126,12 @@ export default {
 			} 
 			return res
 		}
+	},
+	created() {
+		getUnreadCount()
+		.then(res => {
+			this.funtions1[1].val = res.data
+		})
 	},
 	methods: {
 		/* 
@@ -224,12 +230,6 @@ export default {
 			});
 		}
 	},
-	created() {
-		getUnreadCount()
-		.then(res => {
-			this.funtions1[2].val = res.data
-		})
-	}
 };
 </script>
 

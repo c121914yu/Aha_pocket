@@ -42,8 +42,6 @@
 					@click="readProject(project.id)">
 				</projectCard>
 			</view>
-			<!-- 加载提示文字 -->
-			<view class="loadMsg center small">{{loadText}}</view>
 			
 			<!-- 筛选组件 -->
 			<ProjectFilter v-if="isFilter" @sureFilter="sureFilter"></ProjectFilter>
@@ -54,7 +52,7 @@
 </template>
 
 <script>
-import { getProjects } from "@/static/request/api_project.js"
+import { getPurchasedProject } from "@/static/request/api_userInfo.js"
 export default {
 	data() {
 		return {
@@ -72,20 +70,13 @@ export default {
 			pageSize: 20,
 			compId: null,
 			awardLevel: null,
-			showStatus: 0, //0未加载完成，1加载全部，2加载中,3 无数据
+			is_showAll: 0, //0未加载完成，1加载全部，2加载中,3 无数据
 			isFilter: false,
 			filterActive: false,
 		}
 	},
-	computed: {
-		loadText(){
-			switch(this.showStatus){
-				case 0: return ""
-				case 1: return "已加载全部"
-				case 2: return "加载中..."
-				case 3: return '没有相关数据'
-			}
-		}
+	onLoad() {
+		this.loadProjects()
 	},
 	methods: {
 		/* 判断是否加载全部 */
@@ -102,26 +93,10 @@ export default {
 		/* 获取项目，追加到projects中 */
 		loadProjects(init=false)
 		{	
-			if(init){
-				this.pageNum = 1
-			}
 			this.gLoading(this,true)
-			let params = {
-				pageNum: this.pageNum,
-				pageSize: this.pageSize,
-				sortBy: this.sortList[this.sortIndex].val
-			}
-			if(this.compId !== null)
-				params.compId = this.compId
-			if(this.awardLevel!== null)
-				params.awardLevel = this.awardLevel
-			getProjects(params)
+			getPurchasedProject()
 			.then(res => {
-				this.projects = init ? res.data.pageData : this.projects.concat(res.data.pageData)
-				this.judgeLoadAll(res.data.pageSize)
-				this.gLoading(this,false)
-			})
-			.catch(err => {
+				console.log(res.data);
 				this.gLoading(this,false)
 			})
 		},
@@ -131,10 +106,12 @@ export default {
 		*/
 		sureFilter(e)
 		{
-		    if(e.type === "all")
+		    if(e.type === "all"){
 				this.filterActive = false
-			else
+			}
+			else{
 				this.filterActive = true
+			}
 			this.compId = null
 			this.awardLevel = null
 		   
@@ -148,18 +125,6 @@ export default {
 			uni.navigateTo({
 				url: `Project?id=${id}`
 			});
-		}
-	},
-	onLoad() {
-		this.loadProjects()
-	},
-	onPullDownRefresh() {
-		this.loadProjects(true)
-	},
-	onReachBottom() {
-		if (this.showStatus === 0) {
-			this.showStatus = 2
-			this.loadProjects()
 		}
 	}
 }
@@ -204,7 +169,4 @@ export default {
 				align-items center
 				.iconfont
 					font-size 40rpx
-		/* 加载文字提示 */
-		.loadMsg
-			color var(--gray2)
 </style>

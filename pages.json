@@ -35,7 +35,7 @@
 				"navigationBarTitleText": "用户信息"
 			}
 		}, {
-			"path": "pages/Self/Informs",
+			"path": "pages/Self/Inform/Informs",
 			"style": {
 				"navigationBarTitleText": "通知管理",
 				"enablePullDownRefresh": true,
@@ -43,52 +43,57 @@
 				"onReachBottomDistance": 100
 			}
 		}, {
-			"path": "pages/Self/Inform",
+			"path": "pages/Self/Inform/Inform",
 			"style": {
 				"navigationBarTitleText": "通知信息"
 			}
 		}, {
-			"path": "pages/Self/Inform_send",
+			"path": "pages/Self/Inform/Inform_send",
 			"style": {
 				"navigationBarTitleText": "发送消息"
 			}
 		}, {
-			"path": "pages/Self/Wallet",
+			"path": "pages/Self/Wallet/Wallet",
 			"style": {
 				"navigationBarTitleText": "我的钱包"
 			}
 		}, {
-			"path": "pages/Self/Orders",
+			"path": "pages/Self/Wallet/Orders",
 			"style": {
 				"navigationBarTitleText": "账单"
 			}
 		}, {
-			"path": "pages/Self/OrderDetail",
+			"path": "pages/Self/Wallet/OrderDetail",
 			"style": {
 				"navigationBarTitleText": "账单详细"
 			}
 		}, {
-			"path": "pages/Self/NumberInfo",
+			"path": "pages/Self/Number/NumberInfo",
 			"style": {
 				"navigationBarTitleText": "账号信息"
 			}
 		}, {
+			"path": "pages/Self/Number/Contract",
+			"style": {
+				"navigationBarTitleText": "Aha口袋用户合同"
+			}
+		},{
 			"path": "pages/Self/InviteMember",
 			"style": {
 				"navigationBarTitleText": "邀请好友"
 			}
 		}, {
-			"path": "pages/Self/Authentication",
+			"path": "pages/Self/Number/Authentication",
 			"style": {
 				"navigationBarTitleText": "实名认证"
 			}
 		}, {
-			"path": "pages/Self/Resume",
+			"path": "pages/Self/Resume/Resume",
 			"style": {
 				"navigationBarTitleText": "个人简历"
 			}
 		}, {
-			"path": "pages/Self/ResumePreview",
+			"path": "pages/Self/Resume/ResumePreview",
 			"style": {
 				"navigationBarTitleText": "简历预览"
 			}
@@ -98,9 +103,15 @@
 				"navigationBarTitleText": "我的收藏"
 			}
 		}, {
-			"path": "pages/Self/Feedback",
+			"path": "pages/Self/Feedback/Feedback",
 			"style": {
 				"navigationBarTitleText": "问题反馈"
+			}
+		}, {
+			"path": "pages/Self/Feedback/FeedBack_self",
+			"style": {
+				"navigationBarTitleText": "我的反馈",
+				"onReachBottomDistance": 100
 			}
 		},
 		/* 项目相关 */
@@ -129,16 +140,14 @@
 				"onReachBottomDistance": 100
 			}
 		}, {
+			"path": "pages/Project/readFile",
+			"style": {
+				"navigationBarTitleText": "阅读项目"
+			}
+		}, {
 			"path": "pages/Project/PurchasedProjects",
 			"style": {
 				"navigationBarTitleText": "已购买的项目"
-			}
-		},
-		/* 合同 & 电子签名 */
-		{
-			"path": "pages/Project/Contract",
-			"style": {
-				"navigationBarTitleText": "Aha口袋用户合同"
 			}
 		},
 		/* 外包 */

@@ -21,10 +21,10 @@ page
 body
 	margin 0
 	padding 0s
-	font-size 30rpx
+	font-size 28rpx
 	line-height 1.5
+	font-weight 400
 	color var(--black)
-	letter-spacing 2rpx
 body,view,textarea
 	box-sizing border-box
 input,textarea
@@ -58,6 +58,8 @@ navigator
 	transform scale(0.98)
 .small
 	font-size 24rpx
+.mini
+	font-size 20rpx
 .strong
 	font-weight 700
 .center
@@ -65,11 +67,12 @@ navigator
 	margin auto
 .h3
 	font-size 32rpx
-	font-weight 700
+	font-weight 600
 .label
 	font-size 24rpx
 	color var(--origin2)
 .fix-screen
+	z-index 100
 	position fixed
 	top 0
 	left 0
@@ -82,3 +85,5 @@ navigator
 	.content
 		padding 10px
 		background-color #FFFFFF
+.blank
+	flex 1

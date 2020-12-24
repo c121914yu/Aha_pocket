@@ -22,15 +22,13 @@
 				:key="index"
 				:url="'/pages/Project/Project?id='+project.id">
 				<projectCard
-					margin="10px 0"
+					margin="10px 0 0"
 					radius="16px"
 					:project="project"
 				></projectCard>
 			</navigator>
 		</view>
 		
-		<!-- 提示文字 -->
-		<view class="remark center small">无更多数据</view>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
@@ -49,6 +47,9 @@ export default {
 			activeNav: 0,
 			list: []
 		}
+	},
+	onLoad() {
+		this.getProjects()
 	},
 	methods: {
 		/* 改变展示收藏的类型，修改下标，重新请求数据 */
@@ -87,9 +88,6 @@ export default {
 		{
 			
 		}
-	},
-	onLoad() {
-		this.getProjects()
 	}
 }
 </script>

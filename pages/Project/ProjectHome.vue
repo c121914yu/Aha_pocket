@@ -44,7 +44,7 @@
 						color: filterActive ? 'var(--origin2)' : ''
 					}"
 					class="filter" 
-					@click="isFilter = true">
+					@click="is_showFileter = true">
 					筛选
 					<text class="iconfont icon-shaixuan"></text>
 				</text>
@@ -61,10 +61,10 @@
 				></projectCard>
 			</view>
 		</view>
-		<view class="center small">{{ loadText }}</view>
+		<view class="center small remark">{{ is_showAll ? "已加载全部" : "" }}</view>
 
 		<!-- 筛选组件 -->
-		<ProjectFilter v-if="isFilter" @sureFilter="sureFilter"></ProjectFilter>
+		<ProjectFilter v-if="is_showFileter" @sureFilter="sureFilter" @close="is_showFileter=false"></ProjectFilter>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
@@ -76,13 +76,10 @@ export default {
 	data() {
 		return {
 			images: [
-				{ url: 'http://blogs.jinlongyuchitang.cn/background.jpg', to: '' },
-				{ url: 'http://blogs.jinlongyuchitang.cn/background.jpg', to: '' },
-				{ url: 'http://blogs.jinlongyuchitang.cn/background.jpg', to: '' },
-				{
-					url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/55/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.XONdUyq1A2d5d0fdaf1a2189515e12e9ce2779f01da7.JPG',
-					to: ''
-				}
+				{url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/53/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.l5VxpCL0psJU6a072385c43fa7d08b8ec38bf1b760ff.png',name: "反向寻车系统",to: '' },
+				{url: 'http://blogs.jinlongyuchitang.cn/background.jpg',name: "反向寻车系统", to: '' },
+				{url: 'http://blogs.jinlongyuchitang.cn/background.jpg',name: "反向寻车系统", to: '' },
+				{url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/55/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.XONdUyq1A2d5d0fdaf1a2189515e12e9ce2779f01da7.JPG',name: "反向寻车系统",to: ''}
 			],
 			rankType: 'week',
 			sortList: [
@@ -91,38 +88,19 @@ export default {
 				{ text: '最新', val: 'time' }, 
 				{ text: '获奖等级', val: 'awardLevel' },
 			],
-			sortIndex: 0,
 			pageNum: 1,
-			pageSize: 15,
+			pageSize: 5,
+			sortIndex: 0,
 			compId: null,
 			awardLevel: null,
-			showStatus: 0,
-			isFilter: false,
 			filterActive: false,
 			RankingData: [],
-			commands: []
+			commands: [],
+			is_showFileter: false,
+			is_showAll: false
 		};
 	},
-	computed: {
-		loadText() {
-			switch (this.showStatus) {
-				case 0: return ''
-				case 1: return '已加载全部'
-				case 2: return '加载中...'
-				case 3: return '没有相关数据'
-			}
-		}
-	},
 	methods: {
-		/* 判断是否加载全部 */
-		judgeLoadAll(size)
-		{
-			this.showStatus = 0
-			if(size < this.pageSize)
-				this.showStatus = 1
-			else
-				this.pageNum++
-		},
 		/* 
 			name: 获取项目
 			desc: 请求项目数据，根据界面条件排序/筛选。传入init参数，判断是否初始化进行操作。
@@ -131,6 +109,7 @@ export default {
 		loadProjects(init=false,loading=true) 
 		{
 			if (init) {
+				this.is_showAll = false
 				this.pageNum = 1
 			}
 			this.gLoading(this, loading)
@@ -139,21 +118,32 @@ export default {
 				pageSize: this.pageSize,
 				sortBy: this.sortList[this.sortIndex].val
 			}
-			if(this.compId !== null)
+			if(this.compId !== null){
 				params.compId = this.compId
-			if(this.awardLevel!== null)
+			}
+			if(this.awardLevel!== null){
 				params.awardLevel = this.awardLevel
+			}
 			getProjects(params)
 			.then(res => {
-				this.judgeLoadAll(res.data.pageSize)
+				if(res.data.pageData.length < this.pageSize){
+					this.is_showAll = true
+				}
+				else{
+					this.pageNum++
+				}
 				this.commands = init ? res.data.pageData : this.commands.concat(res.data.pageData)
 				
-				if(this.commands.length >= 3)
+				/* 获取推荐 */
+				if(this.commands.length >= 3){
 					this.RankingData = [this.commands[0], this.commands[1], this.commands[2]]
-				else if(this.commands.length > 0)
+				}
+				else if(this.commands.length > 0){
 					this.RankingData = [].concat(this.commands)
-				else
+				}
+				else{
 					this.showStatus = 3
+				}
 				
 				this.gLoading(this, false)
 				uni.stopPullDownRefresh()
@@ -170,8 +160,7 @@ export default {
 		*/
 		loadMore() 
 		{
-			if (this.showStatus === 0) {
-				this.showStatus = 2
+			if (!this.is_showAll) {
 				this.loadProjects(false,false)
 			}
 		},
@@ -181,19 +170,22 @@ export default {
 		*/
 	    sureFilter(e)
 	    {
-		    if(e.type === "all")
+		    if(e.type === "all"){
 				this.filterActive = false
-			else
+			}
+			else{
 				this.filterActive = true
+			}
 			this.compId = null
 			this.awardLevel = null
 		   
 			this[e.type] = e.value
 			this.loadProjects(true)
-			this.isFilter = false
+			this.is_showFileter = false
 	    },
 		/* 进入项目详细 */
-		readProject(id) {
+		readProject(id) 
+		{
 			uni.navigateTo({
 				url: `Project/Project?id=${id}`
 			})
@@ -202,7 +194,7 @@ export default {
 	created() {
 		this.loadProjects(true)
 	}
-};
+}
 </script>
 
 <style lang="stylus">
@@ -229,14 +221,14 @@ export default {
 				flex 1
 				padding 10px 0 50px
 				color var(--origin2)
-				font-size 32rpx
 				font-weight 600
+				font-size 28rpx
 				display flex
 				align-items center
 				justify-content center
 				.iconfont
 					margin-right 5px
-					font-size 40rpx
+					font-size 32rpx
 				&.active
 					background-color var(--origin2)
 					color #FFFFFF
@@ -252,14 +244,15 @@ export default {
 		width 90%
 		// 开头标题
 		.title
-			padding 20rpx 30rpx
 			background-color var(--white2)
 			border-top-left-radius 22px
 			border-top-right-radius 22px
-			font-size 28rpx
+			font-size 24rpx
 			display flex
 			align-items center
-			justify-content space-between
+			justify-content space-around
+			text
+				padding 20rpx 0
 			.active
 				color var(--origin2)
 				font-weight 700
@@ -267,8 +260,8 @@ export default {
 				display flex
 				align-items center
 				.iconfont
-					font-size 40rpx
-	.center
+					font-size 30rpx
+	.remark
 		transform translateY(-15px)
-		color var(--gray1)
+		color var(--gray2)
 </style>

@@ -59,7 +59,7 @@
 				<view class="values">
 					<view
 						class="val arr"
-						v-for="(tag,index) in tagsMsg"
+						v-for="(tag,index) in arr_tags"
 						:key="index">
 						{{tag}}
 					</view>
@@ -77,24 +77,22 @@
 			<view class="item files">
 				<view class="title">
 					项目附件
-					<view v-if="isBuy" class="remark">已购买</view>
-					<button class="all-buy" v-else>10贡献度购买</button>
 				</view>
 				<view class="small">非媒体类附件将从外部应用打开,请通过外部应用保存至本地.</view>
 				<view class="list">
-					<view class="val" v-if="!isBuy">可预览</view>
+					<view class="val">可预览</view>
 					<view class="file"
 						v-for="(file, index) in previewFiles" 
 						:key="index">
 						<view class="name" @click="preview(file, index)">{{ file.name }}</view>
-						<button>5贡献度购买</button>
+						<button v-if="!file.isBuy" @click="buyFile(file)">{{file.price}}贡献点购买</button>
 					</view>
-					<view class="val" v-if="!isBuy">不可预览</view>
+					<view class="val">不可预览</view>
 					<view class="file" 
 						v-for="(file, index) in unPreviewFiles" 
 						:key="index">
 						<view class="name" @click="loadFile(file, index)">{{ file.name }}242424</view>
-						<button>5贡献度购买</button>
+						<button v-if="!file.isBuy" @click="buyFile(file)">{{file.price}}贡献度购买</button>
 					</view>
 				</view>
 			</view>
@@ -116,7 +114,7 @@
 						</view>
 						<view class="file-control">
 							<text class="filename">{{comment.filename}}</text>
-							<text v-if="comment.isMe" class="iconfont icon-remove" @click="removeComment(comment)"></text>
+							<text v-if="comment.isMe" class="iconfont icon-remove" @click="removeComment(comment,index)"></text>
 						</view>
 					</view>
 				</view>
@@ -137,7 +135,8 @@
 </template>
 
 <script>
-import { getProject, buyProject, getLoadSignature,getRemarks } from '@/static/request/api_project.js';
+import { getProject, getLoadSignature,getRemarks,deleteRemark } from '@/static/request/api_project.js'
+import { postOrder,putOrder,checkResourcePurchased } from "../../static/request/api_order.js"
 import WriteRemark from "./components/WriteRemark.vue"
 export default {
 	data() {
@@ -158,11 +157,10 @@ export default {
 			previewFiles: [],
 			unPreviewFiles: [],
 			comments: [],
-			isBuy: false,
 			/* 分页获取评论信息 */
 			pageNum: 1,
 			pageSize: 5,
-			showCommentAll: false
+			is_showAllComments: false
 		}
 	},
 	computed: {
@@ -175,7 +173,7 @@ export default {
 			}
 			return '';
 		},
-		tagsMsg() {
+		arr_tags() {
 			if (this.tags){
 				return this.tags.split(" ")
 			} 
@@ -190,21 +188,12 @@ export default {
 				this[key] = res.data[key]
 			}
 			this.members = this.members.sort((a, b) => a.rank - b.rank)
-			/* 将resource分类 */
-			res.data.resources.forEach(file => {
-				/* 图片 & 含预览路径的文件分一类 */
-				const reg = /\.(gif|jpg|jpeg|png)$/i
-				if (reg.test(file.name) || file.previewUrl){
-					this.previewFiles.push(file)
-				} 
-				else{
-					this.unPreviewFiles.push(file)
-				} 
-			})
-			console.log(res.data)
-			/* 获取评论信息 */
-			this.getCommentsInfo(true)
-			this.gLoading(this,false)
+			if(this.resources.length > 0){
+				this.initFiles()
+			}
+			else{
+				this.gLoading(this,false,500)
+			}
 		})
 		.catch(err => {
 			this.gLoading(this,false)
@@ -214,7 +203,6 @@ export default {
 		WriteRemark
 	},
 	onShareAppMessage(e){
-		console.log(e)
 		return {
 			title: "Aha口袋",
 			path: `pages/Project/Project?id=${this.id}`,
@@ -222,17 +210,33 @@ export default {
 		}
 	},
 	onReachBottom(){
-		this.getCommentsInfo()
+		if(!this.is_showAllComments){
+			this.getCommentsInfo()
+		}
 	},
 	methods: {
-		/* 判断是否加载全部 */
-		judgeLoadAll(size)
+		/* 初始化附件 */
+		initFiles(file)
 		{
-			this.showCommentAll = false
-			if(size < this.pageSize)
-				this.showCommentAll = true
-			else
-				this.pageNum++
+			/* 图片 & 含预览路径的文件分一类 */
+			const reg = /\.(gif|jpg|jpeg|png)$/i
+			let success = 0
+			checkResourcePurchased(this.id)
+			.then(res => {
+				this.resources.forEach(file => {
+					file.isBuy = res.data.indexOf(file.id) > -1 ? true : false
+					if (reg.test(file.filename) || file.previewUrl){
+						this.previewFiles.push(file)
+					} 
+					else{
+						this.unPreviewFiles.push(file)
+					}
+				})
+				this.gLoading(this,false)
+			})
+			.catch(err => {
+				this.gLoading(this,false)
+			})
 		},
 		/* 获取评论 */
 		getCommentsInfo(init=false)
@@ -247,39 +251,65 @@ export default {
 				projectId: this.id
 			})
 			.then(res => {
-				this.judgeLoadAll(res.data.pageSize)
-				const data = res.data.pageData.map(remark => {
+				if(res.data.pageData.length < this.pageSize){
+					this.is_showAllComments = true
+				}
+				else{
+					this.pageNum++
+				}
+				if(init){
+					this.comments = []
+				}
+				res.data.pageData.forEach(remark => {
 					const file = this.resources.find(item => item.id === remark.resourceId)
-					return {
-						...remark,
-						isMe: userId === remark.user.userId,
-						time: this.gformatDate(remark.time),
-						filename: file.name
-					}
+					remark.filename = file.name
+					remark.isMe = userId === remark.user.userId
+					remark.time = this.gformatDate(remark.time)
+					this.comments.push(remark)
 				})
-				this.comments = init ? data : this.comments.concat(data);
 				console.log(this.comments);
 			})
 		},
-		/* 打开图片 */
-		previewImg(file, index) 
+		/* 购买文件 */
+	    buyFile(file)
 		{
-			const viewImg = url => {
+			this.gShowModal(`确认花费${file.price}个贡献度购买该附件？`,() => {
+				postOrder({
+					projectId: file.projectId,
+					resourceIds: [file.id]
+				})
+				.then(res => {
+					const orderId = res.data
+					/* 调用微信支付 */
+					putOrder(orderId,"pay")
+					.then(res => {
+						console.log(res.data);
+						this.gToastSuccess("购买成功")
+					})
+				})
+			})
+		},
+		/* 打开图片 */
+		previewImg(image, index) 
+		{
+			this.gLoading(this,true)
+			const viewImg = (url) => {
 				uni.previewImage({
-					urls: [url]
+					urls: [url],
+					success: () => {
+						this.gLoading(this,false)
+					}
 				})
 			}
-			if (file.previewLoad){
-				viewImg(file.previewUrl)
+			if (image.previewLoad){
+				viewImg(image.previewUrl)
 			} 
 			else {
-				console.log(file);
-				getLoadSignature(file.id)
+				getLoadSignature(image.id)
 				.then(res => {
 					this.previewFiles[index].previewUrl = res.data.url
 					this.previewFiles[index].previewLoad = true
 					viewImg(res.data.url)
-					console.log(res)
 				})
 			}
 		},
@@ -289,20 +319,18 @@ export default {
 		*/
 		preview(file, index) 
 		{
-			if (this.isBuy) {
+			/* 图片：获取预览连接后打开图片 */
+			const reg = /\.(gif|jpg|jpeg|png)$/i;
+			if(reg.test(file.filename)){
+				this.previewImg(file, index)
+			} 
+			else if(file.isBuy) {
 				this.loadFile(file, index);
 				return;
 			}
-			/* 图片：获取预览连接后打开图片 */
-			const reg = /\.(gif|jpg|jpeg|png)$/i;
-			if (reg.test(file.name)){
-				this.previewImg(file, index)
-			} 
 			/* 文档类：下载后打开 */ 
 			else {
-				uni.showLoading({
-					title: '打开中...'
-				})
+				this.gLoading(this,true)
 				if (file.previewLoad) {
 					uni.openDocument({
 						filePath: file.previewUrl,
@@ -320,14 +348,14 @@ export default {
 							uni.openDocument({
 								filePath: res.tempFilePath,
 								complete() {
-									uni.hideLoading()
+									this.gLoading(this,false)
 								}
 							})
 							console.log(res)
 						},
 						fail: err => {
 							console.log(err)
-							uni.hideLoading()
+							this.gLoading(this,false)
 						}
 					})
 				}
@@ -339,59 +367,56 @@ export default {
 		*/
 		loadFile(file, index) 
 		{
-			if (!this.isBuy) {
+			if (!file.isBuy) {
 				this.gToastError('无权下载')
-				return;
+				return
 			}
 			const imgReg = /\.(gif|jpg|jpeg|png)$/i
-			const videoReg = /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb)$/i
 			/* 图片格式：直接打开 */
 			if (imgReg.test(file.name)) {
 				this.previewImg(file, index)
 			} 
 			/* 视频类型 */
-			else if (videoReg.test(file.name)) {
-				console.log('视频')
-			} 
-			/* 其他类型：下载后打开 */
 			else {
-				uni.showLoading({
-					title: '下载中...'
+				uni.navigateTo({
+					url: "readFile?id=" + file.id
 				})
-				if (file.loadUrl) {
-					uni.openDocument({
-						filePath: file.loadUrl,
-						complete() {
-							uni.hideLoading()
-						}
-					})
-				} 
-				else {
-					getLoadSignature(file.id)
-					.then(res => {
-						uni.showLoading({
-							title: '下载中...'
-						});
-						/* 保存到本地 */
-						uni.downloadFile({
-							url: res.data.url,
-							success: res => {
-								file.loadUrl = res.tempFilePath
-								uni.openDocument({
-									filePath: file.loadUrl,
-									complete() {
-										uni.hideLoading()
-									}
-								})
-							},
-							fail: err => {
-								console.log(err)
-								uni.hideLoading()
-							}
-						})
-					})
-				}
-			}
+			} 
+			// const videoReg = /\.(swf|avi|flv|mp4|rm|mov|wav|asf|3gp|mkv|rmvb)$/i
+			/* 其他类型：下载后打开 */
+			// else {
+			// 	this.gLoading(this,true)
+			// 	if (file.loadUrl) {
+			// 		uni.openDocument({
+			// 			filePath: file.loadUrl,
+			// 			complete() {
+			// 				uni.hideLoading()
+			// 			}
+			// 		})
+			// 	} 
+			// 	else {
+			// 		getLoadSignature(file.id)
+			// 		.then(res => {
+			// 			/* 保存到本地 */
+			// 			uni.downloadFile({
+			// 				url: res.data.url,
+			// 				success: res => {
+			// 					file.loadUrl = res.tempFilePath
+			// 					uni.openDocument({
+			// 						filePath: file.loadUrl,
+			// 						complete() {
+			// 							this.gLoading(this,false)
+			// 						}
+			// 					})
+			// 				},
+			// 				fail: err => {
+			// 					console.log(err)
+			// 					this.gLoading(this,false)
+			// 				}
+			// 			})
+			// 		})
+			// 	}
+			// }
 		},
 		/* 滚动到评论区 */
 		scrollComment()
@@ -406,10 +431,12 @@ export default {
 			}).exec()
 		},
 		/* 删除评论 */
-		removeComment(comment)
+		removeComment(comment,index)
 		{
 			this.gShowModal("您确定删除该评价?",() => {
-				console.log(comment);
+				deleteRemark(comment.resourceId)
+				this.comments.splice(index,1)
+				this.gToastSuccess("删除成功")
 			})
 		}
 	}
@@ -533,6 +560,7 @@ export default {
 					.name
 						flex 1
 						text-decoration underline
+						font-size 24rpx
 						color var(--origin1)
 						word-break break-all
 					button

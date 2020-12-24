@@ -1,44 +1,52 @@
 <!-- 资源卡片 -->
 <template>
-	<view 
+	<view
 		class="project-card"
 		:style="{
-			'margin': margin,
+			margin: margin,
 			'border-radius': radius,
 			'background-color': backgroundColor
 		}"
-		@click="$emit('click')">
+		@click="$emit('click')"
+	>
 		<!-- 排名图标 -->
-		<text v-if="ranking!==0" :class="'ranking iconfont ' + rankingIcon"></text>	
+		<text v-if="ranking !== 0" :class="'ranking iconfont ' + rankingIcon"></text>
 		<!-- 头像 -->
-		<view class="logo">
-			<image 
-				:src="project.avatarUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'" 
-				mode="widthFix">
-			</image>
-		</view>
+		<view class="logo"><image :src="project.avatarUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'" mode="widthFix"></image></view>
 		<!-- 资源信息 -->
-		<view 
-			class="info"
-			:class="border ? 'border' : ''">
+		<view class="info" :class="border ? 'border' : ''">
 			<!-- 资源名称 -->
-			<view class="name strong">{{project.name}}</view>
+			<view class="head">
+				<text class="name strong">{{ project.name }}</text>
+				<view v-if="awardLevel" class="award" :style="{'backgroundColor': awardLevel.color}">
+					<image v-if="awardLevel.img" :src="`../../static/icon/${awardLevel.img}.png`"></image>
+					<text>{{awardLevel.label}}</text>
+				</view>
+			</view>
 			<!-- 获奖信息 -->
-			<view class="prize" v-if="project.compId !== 0">
-				<view>{{project.awardTime}} {{awardLevel}}</view>
-				<view class="strong">{{compName}}</view>
+			<view v-if="compName">
+				<text class="comp-name strong">{{ compName }}</text>
 			</view>
 			<!-- 标签 -->
-			<view class="tags">{{tags}}</view>
-			<!-- 数据统计 -->
-			<view class="statistics">
-				<view>
-					<text class="iconfont icon-readed"></text>
-					<text>{{project.read}}</text>
+			<view class="tags">
+				<view 
+					class="tag"
+					v-for="(tag,index) in tags"
+					:key="index">
+					{{ tag }}
 				</view>
-				<view style="color: var(--origin1);">
+			</view>
+			<view class="blank"></view>
+			<!-- 数据统计 -->
+			<view class="footer">
+				<view class="time"><text v-if="project.awardTime">{{ project.awardTime }}</text></view>
+				<view class="read">
+					<text class="iconfont icon-readed"></text>
+					<text>{{ project.read }}</text>
+				</view>
+				<view class="collect">
 					<text class="iconfont icon-collection"></text>
-					<text>{{project.collect}}</text>
+					<text>{{ project.collect }}</text>
 				</view>
 			</view>
 		</view>
@@ -46,7 +54,7 @@
 </template>
 
 <script>
-import { collectProject,cancleCollectProject } from "@/static/request/api_project.js"
+import { collectProject, cancleCollectProject } from '@/static/request/api_project.js';
 export default {
 	props: {
 		project: {
@@ -63,52 +71,73 @@ export default {
 		},
 		margin: {
 			type: String,
-			default: "0"
+			default: '0'
 		},
 		radius: {
 			type: String,
-			default: "0"
+			default: '0'
 		},
 		backgroundColor: {
 			type: String,
-			default: "#ffffff"
+			default: '#ffffff'
 		}
 	},
 	computed: {
-		rankingIcon(){
-			switch(this.ranking){
-				case 1: return "icon-first"
-				case 2: return "icon-second"
-				case 3: return "icon-third"
-				default: return ""
+		rankingIcon() {
+			switch (this.ranking) {
+				case 1:
+					return 'icon-first';
+				case 2:
+					return 'icon-second';
+				case 3:
+					return 'icon-third';
+				default:
+					return '';
 			}
 		},
-		compName(){
-			if(this.project.compId !== 0){
-				const match = getApp().globalData.Matches.find(match => match.compTagId === this.project.compId)
-				if(match)
-					return match.name
+		compName() {
+			if (this.project.compId !== 0) {
+				const match = getApp().globalData.Matches.find(match => match.compTagId === this.project.compId);
+				if (match){
+					return match.name;
+				} 
 			}
-			return ""
+			return '全国大学生服务外包大赛';
 		},
-		awardLevel(){
-			if(this.project.awardLevel){
+		awardLevel() {
+			if (this.project.awardLevel) {
 				let res = getApp().globalData.prizeLevels.find(item => item.value === this.project.awardLevel)
-				if(res)
-					return res.label
+				if(res.value > 50){
+					res.img = "medal1"
+					res.color = "#FB6100"
+				}
+				else if(res.value > 40){
+					res.img = "medal2"
+					res.color = "#EE7800"
+				}
+				else if(res.value > 30){
+					res.img = "medal3"
+					res.color = "#F18D00"
+				}
+				else if(res.value > 20){
+					res.img = "medal4"
+					res.color = "#F5A200"
+				}
+				else{
+					res.img = null
+					res.color = "#F8B500"
+				}
+				if (res){
+					return res
+				}
 			}
-			return ""
+			return null
 		},
-		tags(){
-			if(!this.project.tags)
-				return ""
-			return this.project.tags.replace(/\s+/g,",")
-		}
-	},
-	methods: {
-		collect()
-		{
-			console.log(this.project);
+		tags() {
+			if (!this.project.tags) {
+				return []
+			}
+			return this.project.tags.split(" ")
 		}
 	}
 }
@@ -116,20 +145,17 @@ export default {
 
 <style lang="stylus" scoped>
 .project-card
-	min-height 90px
 	background-color #FFFFFF
 	padding 5px
 	display flex
 	align-items center
 	.ranking
 		color var(--origin2)
-		font-size 40rpx
-		display flex
-		justify-content center
+		font-size 34rpx
 	.logo
-		margin 0 10px 0 5px 
-		width 160rpx
-		height 160rpx
+		margin 0 10px 0 5px
+		width 57px
+		height 57px
 		background-color var(--origin3)
 		border-radius 8px
 		overflow hidden
@@ -143,35 +169,58 @@ export default {
 	.info
 		position relative
 		flex 1
-		min-height 160rpx
-		font-size 24rpx
+		min-height 57px
+		font-size 16rpx
+		line-height 1.2
 		display flex
 		flex-direction column
 		&.border
 			border-bottom 1px solid var(--origin2)
-		.name
-			flex 1
-			color var(--origin2)
-			font-size 26rpx
+		.head
+			height 18px
+			display flex
+			justify-content space-between
+			align-items flex-start
+			.name
+				font-size 20rpx
+			.award
+				border-radius 22px
+				display flex
+				align-items center
+				text
+					padding 0 7px 0 5px
+					color #FFFFFF
+				image
+					width 18px
+					height 18px
+		.comp-name
+			padding 1px 12px
+			background-color #F5A200
+			color #FFFFFF
+			border-radius 22px
 		.tags
 			display flex
 			flex-wrap wrap
 			.tag
-				margin 2px
+				margin 4px 4px 0 0
+				padding 1px 10px
+				background-color #F8B500
+				color #FFFFFF
+				border-radius 22px
 		/* 统计量 */
-		.statistics
+		.footer
 			color var(--origin2)
 			display flex
-			align-items center
-			view
+			align-items flex-end
+			.time
+				flex 1
+				color var(--gray2)
+			.read,.collect
 				margin-right 10px
+				color var(--origin1)
+				display flex
+				align-items center
 			.iconfont
 				margin-right 3px
-		/* 收藏按键 */
-		.collection
-			position absolute
-			right 0
-			bottom 0
-			font-size 44rpx
-			color var(--origin1)
+				font-size 24rpx
 </style>
