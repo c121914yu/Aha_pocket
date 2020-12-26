@@ -52,8 +52,6 @@
             <!-- 底部按键 -->
             <view class="bottom"><button @click="sure">确认</button></view>
         </view>
-        <!-- 加载动画 -->
-        <Loading ref="loading"></Loading>
     </view>
 </template>
 
@@ -86,10 +84,14 @@ export default {
     },
     computed: {
         specialtyAmount(){
-            return this.specialtyTags.filter(item => item.select).length
+			if(this.specialtyTags)
+				return this.specialtyTags.filter(item => item.select).length
+			return 0
         },
         compAmount(){
-            return this.compTags.filter(item => item.select).length
+			if(this.compTags)
+				return this.compTags.filter(item => item.select).length
+			return 0
         }
     },
     methods: {
@@ -105,7 +107,6 @@ export default {
         },
         /* 点击确认 */
         sure() {
-            this.gLoading(this, true)
             const specialtyTags = this.specialtyTags.filter(item => item.select).map(item => item.text).join(',')
             const compTags = this.compTags.filter(item => item.select).map(item => item.text).join(',');
             putMe({
@@ -119,17 +120,15 @@ export default {
                 });
                 this.gToastSuccess('选择成功')
                 this.$emit('close')
-                this.gLoading(this, false)
-            })
-            .catch(err => {
-                this.gLoading(this, false)
             })
         }
     },
     created() {
         /* 获取已经选择的标签，将其设置为true */
-        const specialtyTags = getApp().globalData.gUserInfo.userInfo.specialtyTags.split(',')
-        const compTags = getApp().globalData.gUserInfo.userInfo.compTags.split(',')
+        let specialtyTags = getApp().globalData.gUserInfo.userInfo.specialtyTags
+		specialtyTags = specialtyTags ? specialtyTags.split(',') : []
+        let compTags = getApp().globalData.gUserInfo.userInfo.compTags
+		compTags = compTags ? compTags.split(',') : []
         this.specialtyTags.forEach(tag => {
             if (specialtyTags.indexOf(tag.text) > -1) tag.select = true
         })

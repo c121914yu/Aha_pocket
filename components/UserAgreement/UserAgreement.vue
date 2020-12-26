@@ -5,62 +5,66 @@
 			<view class="title center">用户须知</view>
 			<!-- 协议内容 -->
 			<view class="agreement">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum exercitationem incidunt reprehenderit blanditiis voluptas ea deleniti porro aperiam iste vero vitae facilis quibusdam culpa necessitatibus iusto beatae minima recusandae labore fuga natus soluta praesentium quisquam et amet excepturi aut rerum placeat facere quia qui libero eligendi dicta quas eveniet repellat rem perspiciatis! Sit animi laudantium in sunt perspiciatis nihil aliquam repellat laboriosam autem cupiditate molestias incidunt sapiente expedita dignissimos ducimus obcaecati ipsa quidem unde deserunt ea voluptatem libero officiis vitae quis veniam? Atque quidem optio ut perspiciatis numquam dolorem est fugiat veniam itaque mollitia quos impedit molestiae et rem officia.
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum exercitationem incidunt reprehenderit blanditiis voluptas ea deleniti porro aperiam iste vero
+				vitae facilis quibusdam culpa necessitatibus iusto beatae minima recusandae labore fuga natus soluta praesentium quisquam et amet excepturi aut rerum placeat facere
+				quia qui libero eligendi dicta quas eveniet repellat rem perspiciatis! Sit animi laudantium in sunt perspiciatis nihil aliquam repellat laboriosam autem cupiditate
+				molestias incidunt sapiente expedita dignissimos ducimus obcaecati ipsa quidem unde deserunt ea voluptatem libero officiis vitae quis veniam? Atque quidem optio ut
+				perspiciatis numquam dolorem est fugiat veniam itaque mollitia quos impedit molestiae et rem officia.
 			</view>
 			<!-- 须知勾选 -->
-			<view class="sign" @click="isReaded=!isReaded">
-				<view 
-					class="square"
-					:class="isReaded ? 'active' : ''">
-					{{isReaded ? "&#10003;" : ''}}
+			<view class="sign" @click="isReaded = !isReaded">
+				<view class="square" :class="isReaded ? 'active' : ''">{{ isReaded ? '&#10003;' : '' }}</view>
+				<view>
+					我已阅读
+					<text class="strong">Aha口袋</text>
+					用户协议
 				</view>
-				<view>我已阅读<text class="strong">Aha口袋</text>用户协议</view>
 			</view>
 			<!-- 完成按键 -->
-			<button 
-				class="readed-btn"
-				:class="isReaded ? 'already' : 'noReady'"
-				@click="readed">
-				我已阅读
-			</button>
+			<button class="readed-btn" :class="isReaded ? 'already' : 'noReady'" @click="readed">我已阅读</button>
 		</view>
-    <!-- 加载动画 -->
-    <Loading ref="loading"></Loading>
+		<!-- 加载动画 -->
+		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { signNotice } from "@/static/request/api_userInfo.js"
+import { signNotice } from '@/static/request/api_userInfo.js';
 export default {
 	data() {
 		return {
-			isReaded: false
-		}
+			isReaded: getApp().globalData.gUserInfo.signedNotice
+		};
 	},
 	methods: {
 		/* 
 			name: 我已阅读
 			desc: 点击我已阅读,判断是否勾选了用户协议，未勾选则跳过，勾选则触发请求
 		*/
-		readed()
-		{
-			if(!this.isReaded) return
+		readed() {
+			if (!this.isReaded){
+				return
+			}
+			if(getApp().globalData.gUserInfo.signedNotice){
+				this.$emit("readed")
+				return
+			}
 			/* 触发请求 */
-      this.gLoading(this,true)
+			this.gLoading(this, true);
 			signNotice()
 			.then(res => {
-				uni.setStorageSync("token",res.data.token)
-				this.gToastSuccess(res.msg)
-				getApp().globalData.gUserInfo.signedNotice = true
-				this.$emit("readed")
-        this.gLoading(this,false)
+				uni.setStorageSync('token', res.data.token);
+				this.gToastSuccess(res.msg);
+				getApp().globalData.gUserInfo.signedNotice = true;
+				this.$emit('readed');
+				this.gLoading(this, false);
 			})
-      .catch(err => {
-        this.gLoading(this,false)
-      })
+			.catch(err => {
+				this.gLoading(this, false);
+			});
 		}
 	}
-}
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -71,12 +75,12 @@ export default {
 	left 0
 	height 100vh
 	width 100vw
-	background-color rgba(144,140,139,0.65)
+	background-color rgba(144, 140, 139, 0.65)
 	.content
 		position absolute
 		top 45%
 		left 50%
-		transform translate(-50%,-50%)
+		transform translate(-50%, -50%)
 		width 80vw
 		height 60vh
 		padding 10px
@@ -121,7 +125,7 @@ export default {
 		.readed-btn
 			margin-top 10px
 			width 100%
-			background-color rgba(144,140,139,0.65)
+			background-color rgba(144, 140, 139, 0.65)
 			color #333333
 			&.noReady:active
 				transform none

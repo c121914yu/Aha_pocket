@@ -103,7 +103,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   Loading: function() {
-    return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 161))
+    return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 243))
   }
 }
 var render = function() {
@@ -186,21 +186,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var _api_login = __webpack_require__(/*! @/static/request/api_login.js */ 19);
 var _api_userInfo = __webpack_require__(/*! @/static/request/api_userInfo.js */ 21); //
 //
@@ -241,27 +226,27 @@ var _api_userInfo = __webpack_require__(/*! @/static/request/api_userInfo.js */ 
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = { data: function data() {return { phone: "", password: "", isPassword: true // 是否展示密码
-    };}, methods: { loginSuccess: function loginSuccess(data) {getApp().globalData.gUserInfo = data;this.gToastSuccess("登录成功");uni.reLaunch({ url: "../app" });this.gLoading(this, false);}, login: function login() {var _this = this;if (this.phone === "") this.gToastError("手机号不能为空");else {this.gLoading(this, true);(0, _api_login.Login)({ phone: this.phone, password: this.password }).then(function (res) {uni.setStorageSync("token", res.data.token);_this.loginSuccess(res.data.personalUserInfo);}).catch(function (err) {_this.gLoading(_this, false);});}}, wxLogin: function wxLogin() {var _this2 = this;this.gLoading(this, true);uni.getUserInfo({ provider: 'weixin', withCredentials: true, lang: "zh_CN", success: function success(res) {// 获取code，请求openid
-          uni.login({ provider: 'weixin', success: function success(loginRes) {// 调用wx登录接口，获取token
-              (0, _api_login.WXLogin)({ code: loginRes.code, avatarUrl: res.userInfo.avatarUrl, nickname: res.userInfo.nickName }).then(function (res) {uni.setStorageSync("token", res.data.token);_this2.loginSuccess(res.data.personalUserInfo);}).
+var _default = { data: function data() {return { phone: '', password: '', isPassword: true // 是否展示密码
+    };}, methods: { loginSuccess: function loginSuccess(data) {var _this = this;getApp().globalData.gUserInfo = data;uni.reLaunch({ url: '../app', success: function success() {_this.gToastSuccess('登录成功');} });this.gLoading(this, false);}, login: function login() {var _this2 = this;if (this.phone === '') this.gToastError('手机号不能为空');else {this.gLoading(this, true);(0, _api_login.Login)({ phone: this.phone, password: this.password }).then(function (res) {uni.setStorageSync('token', res.data.token);_this2.loginSuccess(res.data.personalUserInfo);}).catch(function (err) {_this2.gLoading(_this2, false);});}}, wxLogin: function wxLogin() {var _this3 = this;this.gLoading(this, true);uni.getUserInfo({ provider: 'weixin',
+        withCredentials: true,
+        lang: 'zh_CN',
+        success: function success(res) {
+          // 获取code，请求openid
+          uni.login({
+            provider: 'weixin',
+            success: function success(loginRes) {
+              // 调用wx登录接口，获取token
+              (0, _api_login.WXLogin)({
+                code: loginRes.code,
+                avatarUrl: res.userInfo.avatarUrl,
+                nickname: res.userInfo.nickName }).
+
+              then(function (res) {
+                uni.setStorageSync('token', res.data.token);
+                _this3.loginSuccess(res.data.personalUserInfo);
+              }).
               catch(function (err) {
-                _this2.gLoading(_this2, false);
+                _this3.gLoading(_this3, false);
               });
             } });
 
@@ -269,17 +254,12 @@ var _default = { data: function data() {return { phone: "", password: "", isPass
 
     } },
 
-  mounted: function mounted() {var _this3 = this;
+  mounted: function mounted() {var _this4 = this;
     /* 检查是否有存储token，验证登录身份 */
-    if (uni.getStorageSync("token"))
-    {
-      this.gLoading(this, true);
+    if (uni.getStorageSync('token')) {
       (0, _api_userInfo.getMe)().
       then(function (res) {
-        _this3.loginSuccess(res.data);
-      }).
-      catch(function (err) {
-        _this3.gLoading(_this3, false);
+        _this4.loginSuccess(res.data);
       });
     }
   } };exports.default = _default;

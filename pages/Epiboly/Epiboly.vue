@@ -44,30 +44,14 @@
 				v-for="(item,index) in Epibolies"
 				:key="index"
 				url="Epiboly/EpibolyDetail">
-				<view class="title strong">{{item.title}}</view>
-				<view class="description small">
-					<text class="strong">内容描述: </text>{{item.description}}
-				</view>
-				<view class="info">
-					<view class="time">
-						<text class="iconfont icon-shalou"></text>
-						<text><text class="small">工时:</text>{{item.workTime}}天</text>
-					</view>
-					<view class="money">
-						<text class="iconfont icon-moneynew"></text>
-						<text><text class="small">出价:</text>{{item.workReward}}元</text>
-					</view>
-					<view class="place">
-						<text class="iconfont icon-didian"></text>
-						<text><text class="small">地点:</text>{{item.place}}</text>
-					</view>
-				</view>
+				<EpibolyCard :epiboly="item"></EpibolyCard>
 			</navigator>
 		</view>
 	</view>
 </template>
 
 <script>
+import EpibolyCard from "./components/EpibolyCard.vue"
 export default {
 	data() {
 		return {
@@ -97,6 +81,9 @@ export default {
 				{title: "***设计稿",description:"大的撒广撒点5广东省十多个ds16g4156ds41g5ds4g5sd",workTime:10,workReward: 1000,place: "远程",issuer: "****公司"},
 			]
 		}
+	},
+	components: {
+		EpibolyCard
 	}
 }
 </script>
@@ -144,31 +131,4 @@ export default {
 		width 95%
 		.item
 			margin 10px 0
-			background-color #FFFFFF
-			border-radius 8px
-			display block
-			overflow hidden
-			word-break break-all
-			.title,.description
-				padding 10px
-			.strong
-				color var(--origin1)
-			.title
-				background-color var(--origin3)
-			.info
-				padding 0 10px
-				display flex
-				flex-wrap wrap
-				view
-					margin-right 10px
-					display flex
-					align-items center
-					.small
-						margin-right 3px
-					.iconfont
-						font-size 32rpx
-				.time
-					color var(--origin1)
-				.money
-					color #e86452
 </style>

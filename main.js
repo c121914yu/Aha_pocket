@@ -7,13 +7,7 @@ App.mpType = 'app'
 import "./static/icon/iconfont.css"
 
 /* 注册全局方法 */
-import globalFun from "./static/js/globalFun.js"
-Vue.prototype.gToastError = globalFun.gToastError
-Vue.prototype.gToastSuccess = globalFun.gToastSuccess
-Vue.prototype.gShowModal = globalFun.gShowModal
-Vue.prototype.gUploadFile = globalFun.gUploadFile
-Vue.prototype.gPutUserInfo = globalFun.gPutUserInfo
-Vue.prototype.gLoading = globalFun.gLoading
+require("./static/js/globalFun.js")
 
 const app = new Vue({
 	...App

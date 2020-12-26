@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "data-picker": "/components/DataPicker/DataPicker",
-    "s-picker": "/components/SPicker/SPicker"
-  },
-  "component": true
-}

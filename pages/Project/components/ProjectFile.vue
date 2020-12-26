@@ -5,11 +5,12 @@
 			<text class="h3">上传附件:</text>
 			<text class="add iconfont icon-tianjia" @click="chooseFile"></text>
 		</view>
-		<view class="remark">(注:手机选择文件可从文件助手或聊天记录中选取，超过25M文件请用电脑选取。)</view>
+		<view class="remark">(注: 附件必须小于50M)</view>
 		<view 
 			class="file"
 			v-for="(file,index) in files"
-			:key="index">
+			:key="index"
+			@click="clickFile(index)">
 			<!-- 文件信息 -->
 			<view class="info">
 				<text class="name">{{file.name}}</text>
@@ -34,29 +35,41 @@
 				<text style="color: #956134" v-if="file.status === 1" class="text">上传中</text>
 				<text style="color: #67C23A" v-if="file.status === 2" class="text">上传成功</text>
 				<text style="color: #F56C6C" v-if="file.status === 3" class="text">上传失败</text>
-				<text class="remove iconfont icon-remove" @click="removeFile(index)"></text>
+				<text class="price">{{file.price}}</text>
 			</view>
 		</view>
 		<!-- 上传按键 -->
 		<button v-if="!uploading" class="startUpload" @click="upload">{{btnText}}</button>
 		<button v-if="uploading" loading class="uploading">上传中,请勿离开界面</button>
 		<view v-if="uploading" class="mask"></view>
+		
+		<SetFile 
+			v-if="setFileIndex!==null" 
+			:fileInfo="files[setFileIndex]" 
+			@close="setFileIndex=null" 
+			@success="changeFileInfo">
+		</SetFile>
         <!-- 加载动画 -->
         <Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { getFilesSignature,postResource,deleteResource } from "@/static/request/api_project.js"
+import { getFilesSignature,postResource,putResource,deleteResource } from "@/static/request/api_project.js"
+import SetFile from "./SetFile"
 export default {
 	data() {
 		return {
 			files: [],
-			uploading: false
+			uploading: false,
+			setFileIndex: null
 		}
 	},
 	props: {
 		projectId: String
+	},
+	components: {
+		SetFile
 	},
 	methods: {
 		/*
@@ -81,17 +94,24 @@ export default {
 				count: 10,
 				type: 'all',
 				success: (res) => {
-					this.files.push(...res.tempFiles.map(file => {
+					/* 限制50M */
+					let files = res.tempFiles.filter(file => file.size < 50000000)
+					if(files.length < res.tempFiles.length){
+						this.gToastError("文件大于50M")
+					}
+					files = files.map(file => {
 						return{
 							name: file.name,
 							url: file.path,
 							size: renderSize(file.size),
 							progress: 0,
-							status: 0 // 0 待上传，1 上传中，2上传完成，3上传失败
+							status: 0, // 0 待上传，1 上传中，2上传完成，3上传失败
+							price: 100
 						}
-					})) 
+					})
+					this.files = this.files.concat(files)
 				},
-				fail: (err) => {
+				fail: err => {
 					console.log(err)
 					if(err.errMsg !== "chooseMessageFile:fail cancel")
 					{
@@ -100,6 +120,21 @@ export default {
 				},
 				complete: () => {
 					this.gLoading(this,false)
+				}
+			})
+		},
+		/* 点击文件，打开操作菜单 */
+		clickFile(index)
+		{
+			uni.showActionSheet({
+				itemList: ['修改附件信息', '删除附件'],
+				success: res => {
+					if (res.tapIndex === 0) {
+						this.setFileIndex = index
+					} 
+					else if (res.tapIndex === 1) {
+						this.removeFile(index)
+					}
 				}
 			})
 		},
@@ -117,78 +152,85 @@ export default {
 			this.gShowModal(
 				`确认删除 ${this.files[index].name}?`,
 				() => {
-                    this.gLoading(this,true)
 					deleteResource(this.files[index].id)
-					.then(res => {
-						this.files.splice(index,1)
-						this.gToastSuccess("删除成功")
-                        this.gLoading(this,false)
-					})
-                    .catch(err => {
-                        this.gLoading(this,false)
-                    })
+					this.files.splice(index,1)
+					this.gToastSuccess("删除成功")
 				}
 			)
+		},
+		/* 根据setFileIndex修改文件信息 */
+		changeFileInfo(e)
+		{
+			putResource(this.files[this.setFileIndex].id,e)
+			.then(res => {
+				this.gToastSuccess("修改成功")
+			})
+			this.files[this.setFileIndex].name = e.name
+			this.files[this.setFileIndex].price = e.price
+			this.setFileIndex = null
 		},
 		/* 
 			name: 上传附近
 			desc: 调用签名接口，上传附件
 		*/
-	 upload()
-	 {
-		 if(this.files.length === 0)
-			 return
-		 if(this.btnText === "已全部上传")
-			return
-		 this.uploading = true
-		 this.gLoading(this,true)
-		 /* 请求服务器更新资源状态 */
-		 const api_postResource = async (file) => {
-			 try{
-				 const data = await postResource(this.projectId,{
-					 name: file.name,
-					 filename: file.filename
-				 })
-				 return data.data.id
-			 }
-			 catch(err){
-				 return false
-			 }
-		 }
+		upload()
+		{
+			if(this.files.length === 0)
+				return
+			if(this.btnText === "已全部上传")
+				return
+			this.uploading = true
+			this.gLoading(this,true)
+			/* 请求服务器更新资源状态 */
+			const api_postResource = async (file) => {
+				try{
+					const data = await postResource(this.projectId,{
+						name: file.name,
+						filename: file.filename,
+						price: file.price,
+						discount: 0
+					})
+					return data.data.id
+				}
+				catch(err){
+					return false
+				}
+			}
 		 
-		 /* 获取签名 */
-		 getFilesSignature(this.projectId)
-		 .then(sign => {
-			 const signature = sign.data
-			 /* 开始上传任务，传入对应资源的下标 */
-			 const startUpload = (i) => {
-				 /* 
-					  判断文件是否是待上传状态
-					  是上传状态且非最后一个，则上传下一个
+			/* 获取签名 */
+			getFilesSignature(this.projectId)
+			.then(sign => {
+				const signature = sign.data
+				/* 开始上传任务，传入对应资源的下标 */
+				const startUpload = (i) => {
+					/* 
+						判断文件是否是待上传状态
+						是上传状态且非最后一个，则上传下一个
 						是最后一个附件则提示完成上传
-				 */
-				 if(this.files[i].status === 2){
-					 if(i < this.files.length-1)
-						 startUpload(i+1)
+					*/
+					if(this.files[i].status === 2){
+						if(i < this.files.length-1){
+							startUpload(i+1)
+						}
 						else{
 							this.gToastSuccess("已全部上传")
 							this.uploading = false
 						}
 						return
-				 }
-				 this.files[i].status = 1
-				 this.files[i].filename = `${signature.dir}${Date.now()}/${this.files[i].name}`
-				 /* 上传文件 */
-				 const uploadTask =	uni.uploadFile({
-				 		url: signature.host,
-				 		filePath: this.files[i].url,
-				 		name: "file",
-				 		formData: {
-				 			key: this.files[i].filename, // 文件名
-				 			policy: signature.policy,
-				 			OSSAccessKeyId: signature.accessid,
-				 			signature: signature.signature
-				 		},
+					}
+					this.files[i].status = 1
+					this.files[i].filename = `${signature.dir}${Date.now()}/${this.files[i].name}`
+					/* 上传文件 */
+					const uploadTask =	uni.uploadFile({
+						url: signature.host,
+						filePath: this.files[i].url,
+						name: "file",
+						formData: {
+							key: this.files[i].filename, // 文件名
+							policy: signature.policy,
+							OSSAccessKeyId: signature.accessid,
+							signature: signature.signature
+						},
 						success: async(res) => {
 							/* 上传文件成功 */
 							if(res.statusCode === 204){
@@ -213,22 +255,22 @@ export default {
 							if(i < this.files.length-1)
 							  startUpload(i+1)
 							else{
-                                this.gLoading(this,false)
+								this.gLoading(this,false)
 								this.gToastSuccess("已全部上传")
 								this.uploading = false
 							}
 						}
-				 	})
+					})
 					uploadTask.onProgressUpdate(res => {this.files[i].progress = res.progress})
-			 }
-			 startUpload(0)
-		 })
-		 .catch(err => {
-			 console.log("无法获取上传凭证")
-			 this.uploading = false
-             this.gLoading(this,false)
-		 })
-	 }
+				}
+				startUpload(0)
+			})
+			.catch(err => {
+				console.log("无法获取上传凭证")
+				this.uploading = false
+				this.gLoading(this,false)
+			})
+		}
 	},
 	computed:{
 		btnText(){
@@ -262,9 +304,6 @@ export default {
 		justify-content space-between
 		.size
 			color var(--origin1)
-		.remove
-			color #F56C6C
-			font-size 40rpx
 	.progress
 		width 100%
 /* 上传中 */

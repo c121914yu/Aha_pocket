@@ -3,33 +3,27 @@
 		<!-- 外边框 -->
 		<view class="out-border"></view>
 		<!-- 内容 -->
-		<view 
-			class="content"
-			@touchstart="touchstart"
-			@touchend="touchend"
-			@touchcancel="touchend"
-			@touchmove="touchmove"
-		>
-			<image 
+		<view class="content" @touchstart="touchstart" @touchend="touchend" @touchcancel="touchend" @touchmove="touchmove">
+			<image
 				:style="{
-					transform: `translateX(${(-(slideIndex+1) * 100)}%)`,
+					transform: `translateX(${-(slideIndex + 1) * 100}%)`,
 					transition: imgAnimation ? 'var(--speed-slide)' : ''
 				}"
 				:src="img.url"
-				v-for="(img,index) in showImg"
+				v-for="(img, index) in showImg"
 				:key="index"
 			></image>
 		</view>
 		<!-- 轮播点 -->
 		<view class="dots">
-			<view 
+			<view
 				class="dot"
 				:style="{
 					backgroundColor: index === dotIndex ? 'var(--origin1)' : 'var(--origin2)'
 				}"
-				v-for="index in images.length" 
-				:key="index">
-			</view>
+				v-for="index in images.length"
+				:key="index"
+			></view>
 		</view>
 	</view>
 </template>
@@ -54,6 +48,49 @@ export default {
 			startX: null, // 手指触碰的起始X坐标
 		}
 	},
+	watch:{
+		slideIndex: 'indexChange'
+	},
+	computed:{
+		/*
+			name: 轮播图点下标
+			description: 获取轮播图点的下标
+			watch: slideIndex
+			return: Number
+		*/
+		dotIndex(){
+			if(this.slideIndex === -1)
+			{
+				return this.images.length - 1
+			}
+			else if(this.slideIndex === this.images.length)
+			{
+				return 0
+			}
+			return this.slideIndex
+		}
+	},
+	created() {
+		this.showImg = [
+			this.images[this.images.length-1],
+			...this.images,
+			this.images[0]
+		]
+		this.setTimer()
+	},
+	mounted() {
+		/* 获取图片的宽度 */
+		uni.createSelectorQuery().in(this).select('.content').boundingClientRect(result => {
+			if (result)
+			{
+				this.imgWidth = result.width
+			}
+			else
+			{
+				this.imgWidth = 325
+			}
+		}).exec()
+	},
 	methods: {
 		/*
 			name: 配置循环时钟
@@ -70,7 +107,7 @@ export default {
 		/*
 			name: 轮播图下标变化
 			description: 监听轮播图下标变化，处理首尾图循环
-			input: 当前轮播图下标 
+			input: 当前轮播图下标
 			return : null
 		*/
 		indexChange(index){
@@ -137,49 +174,7 @@ export default {
 		 this.startX = e.changedTouches[0].pageX
 	 }
 	},
-	watch:{
-		slideIndex: 'indexChange'
-	},
-	computed:{
-		/*
-			name: 轮播图点下标
-			description: 获取轮播图点的下标
-			watch: slideIndex
-			return: Number
-		*/
-		dotIndex(){
-			if(this.slideIndex === -1)
-			{
-				return this.images.length - 1
-			}
-			else if(this.slideIndex === this.images.length)
-			{
-				return 0
-			}
-			return this.slideIndex
-		}
-	},
-	created() {
-		this.showImg = [
-			this.images[this.images.length-1],
-			...this.images,
-			this.images[0]
-		]
-		this.setTimer()
-	},
-	mounted() {
-		/* 获取图片的宽度 */
-		uni.createSelectorQuery().in(this).select('.content').boundingClientRect(result => {
-			if (result)
-			{ 
-				this.imgWidth = result.width
-			}
-			else
-			{ 
-				this.imgWidth = 325
-			} 
-		}).exec()
-	},
+
 }
 </script>
 

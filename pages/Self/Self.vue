@@ -7,29 +7,15 @@
 				<view class="bg bg3"></view>
 				<view class="bg bg2"></view>
 				<view class="bg bg1"></view>
-				<image :src="userInfo.avatarUrl|| 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'">
-				</image>
+				<image :src="userInfo.avatarUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'"></image>
 			</view>
 			<!-- 右侧昵称 & 标签 -->
 			<view class="right">
 				<!-- 昵称 -->
-				<input 
-					class="name" 
-					:value="userInfo.nickname"
-					maxlength="15"
-					@blur="setNickName">
-				</input>
+				<input class="name" :value="userInfo.nickname" maxlength="15" @blur="setNickName" />
 				<!-- 标签 -->
-				<view
-					class="tags"
-					@click="isCheckTags=true"
-					>
-					<view 
-						class="tag"
-						v-for="(tag,index) in tags"
-						:key="index">
-						{{tag}}
-					</view>
+				<view class="tags" @click="isCheckTags = true">
+					<view class="tag" v-for="(tag, index) in tags" :key="index">{{ tag }}</view>
 				</view>
 			</view>
 			<!-- 幕布 -->
@@ -40,220 +26,215 @@
 		</view>
 		<!-- 我的项目 & 外包管理 & 招募队友 -->
 		<view class="navs">
-			<navigator
-				hover-class="hoverScale"
-				hover-stay-time	="50"
-				url="/pages/Project/Projects">
-				我的项目
-			</navigator>
-			<navigator 
-				hover-class="hoverScale"
-				hover-stay-time	="50"
-				url="/pages/Project/Projects">
-				外包管理
-			</navigator>
-			<navigator
-				hover-class="hoverScale"
-				hover-stay-time	="50"
-				url="/pages/Project/Projects">
-				招募队友
-			</navigator>
+			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/Projects">我的项目</navigator>
+			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Epiboly/MyEpiboly">外包管理</navigator>
+			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/Projects">招募队友</navigator>
 		</view>
 		<!-- 任务 进行中 & 已完成 & 贡献详情 -->
 		<view class="tasks">
-			<navigator 
-				class="task"
-				v-for="(task,index) in tasks"
-				:key="index"
-				hover-class="none"
-				:url="task.to">
+			<navigator class="task" v-for="(task, index) in tasks" :key="index" hover-class="none" :url="task.to">
 				<text :class="'iconfont ' + task.icon"></text>
-				<view class="small strong">{{task.name}}</view>
+				<view>{{ task.name }}</view>
 			</navigator>
 		</view>
 		<!-- 功能列表 -->
 		<view class="list">
-			<navigator 
+			<navigator
 				class="item"
 				:style="{
-					'animationDelay': index*0.1 + 's'
+					animationDelay: index * 0.1 + 's'
 				}"
-				v-for="(item,index) in funtions"
+				v-for="(item, index) in funtions1"
 				:key="index"
-				hover-stay-time	="50"
+				hover-stay-time="50"
 				:url="item.to">
 				<text :class="'iconfont ' + item.icon"></text>
-				<text class="name small">{{item.name}}</text>
-				<text v-if="item.val" class="small val">{{item.val}}</text>
+				<text class="name small">{{ item.name }}</text>
+				<text v-if="item.val >= 0" class="small val">{{ item.val }}</text>
 				<text v-else class="right iconfont icon-arrow-right"></text>
 			</navigator>
 		</view>
+		<view class="list">
+			<navigator
+				class="item"
+				:style="{
+					animationDelay: (index+funtions1.length) * 0.1 + 's'
+				}"
+				v-for="(item, index) in funtions2"
+				:key="index"
+				hover-stay-time="50"
+				:url="item.to">
+				<text :class="'iconfont ' + item.icon"></text>
+				<text class="name small">{{ item.name }}</text>
+				<text class="right iconfont icon-arrow-right"></text>
+			</navigator>
+		</view>
 		<!-- 兴趣选择 -->
-		<SelectInterest v-if="isCheckTags" @close="isCheckTags=false"></SelectInterest>
-    <!-- 登出 -->
-    <button 
-      style="width: 90%;margin: auto;background-color: #e86452;" 
-      @click="out">
-      退出登录
-    </button>
-    <!-- 加载动画 -->
-    <Loading ref="loading"></Loading>
+		<SelectInterest v-if="isCheckTags" @close="isCheckTags = false"></SelectInterest>
+		<!-- 登出 -->
+		<button style="width: 90%;margin: auto;background-color: #e86452;" @click="out">退出登录</button>
+		<!-- 加载动画 -->
+		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { getAvatarOssSignature,putMe } from "@/static/request/api_userInfo.js"
-import { loginOut } from "@/static/request/api_login.js"
+import { getAvatarOssSignature, putMe, getUnreadCount } from '@/static/request/api_userInfo.js';
+import { loginOut } from '@/static/request/api_login.js';
 export default {
 	data() {
 		return {
-			userInfo: {...getApp().globalData.gUserInfo.userInfo},
+			userInfo: { ...getApp().globalData.gUserInfo.userInfo },
 			/* 任务列表 */
 			tasks: [
-				{name: "进行中",icon: "icon-shouye",to: "/pages/Self/Authentication"},
-				{name: "已完成",icon: "icon-yiwancheng",to: "/pages/Self/Authentication"},
-				{name: "贡献详情",icon: "icon-icon",to: "/pages/Project/Project"},
+				{ name: '已购项目', icon: 'icon-shouye', to: "/pages/Project/PurchasedProjects" },
+				{ name: '已完成', icon: 'icon-yiwancheng', to: "/pages/Project/PurchasedProjects"},
+				{ name: '贡献详情', icon: 'icon-icon', to: "/pages/Project/PurchasedProjects" }
 			],
 			/* 功能列表 */
-			funtions: [
-				{name: "贡献值",icon: "icon-icon;",to:"",val: getApp().globalData.gUserInfo.contribPoint},
-				{name: "消息通知",icon: "icon-tongzhi1",to:"/pages/Self/Informs",val: 10},
-				{name: "实名认证",icon: "icon-shimingrenzheng",to:"/pages/Self/Authentication"},
-				{name: "个人简历",icon: "icon-jianli",to:"/pages/Self/Resume"},
-				{name: "邀请好友",icon: "icon-iconfontzhizuobiaozhun49",to:"/pages/Self/Authentication"},
-				{name: "联系管理员",icon: "icon-lianxikefu",to:"/pages/Self/Authentication"},
+			funtions1: [
+				{ name: 'userId', icon: 'icon-ID', to: '', val: getApp().globalData.gUserInfo.userInfo.userId },
+				{ name: '消息通知', icon: 'icon-tongzhi1', to: '/pages/Self/Inform/Informs', val: 0 },
+				{ name: '我的钱包', icon: 'icon-ziyuan', to: '/pages/Self/Wallet/Wallet'},
+				{ name: '账号信息', icon: 'icon-zhanghao', to: '/pages/Self/Number/NumberInfo' },
+				{ name: '邀请好友', icon: 'icon-iconfontzhizuobiaozhun49', to: '/pages/Self/InviteMember'},
 			],
-			isCheckTags: false, // 是否进入选择标签
-		}
+			funtions2: [
+				{ name: '我的收藏', icon: 'icon-shoucang', to: '/pages/Self/MyCollection'},
+				{ name: '个人简历', icon: 'icon-jianli', to: '/pages/Self/Resume/Resume'},
+				{ name: '意见反馈', icon: 'icon-lianxikefu', to: '/pages/Self/Feedback/Feedback'},
+				{ name: '联系客服', icon: 'icon-lianxikefu', to: '/pages/Self/Feedback/Feedback'},
+			],
+			isCheckTags: false // 是否进入选择标签
+		};
 	},
 	computed: {
-		tags(){
+		tags() {
 			let isCheckTags = this.isCheckTags // 检测标签更改
 			const userInfo = getApp().globalData.gUserInfo.userInfo
 			let specialtyTags = []
 			let compTags = []
-			if(userInfo.specialtyTags)
-				specialtyTags = userInfo.specialtyTags.split(",")
-			if(userInfo.compTags)
-				compTags = userInfo.compTags.split(",")
+			if (userInfo.specialtyTags){
+				specialtyTags = userInfo.specialtyTags.split(',')
+			} 
+			if (userInfo.compTags){
+				compTags = userInfo.compTags.split(',')
+			} 
 			let res = specialtyTags.concat(compTags)
-			if(res.length === 0)
-				res = ["点击定制个人标签"]
+			if (res.length === 0){
+				res = ['点击定制个人标签']
+			} 
 			return res
 		}
+	},
+	created() {
+		getUnreadCount()
+		.then(res => {
+			this.funtions1[1].val = res.data
+		})
 	},
 	methods: {
 		/* 
 			name: 设置昵称
 			description: 失去焦点时修改账号的昵称，需要预先判断是否有修改，即对比原数据与新输入的内容是否相等
 		*/
-		setNickName(e)
-		{
+		setNickName(e) {
 			const value = e.detail.value
 			/* 判断value与原本的nickName是否相同，相同则无需请求，不同则请求服务器修改nickName */
-			if(value !== this.userInfo.nickname)
-			{
+			if (value !== this.userInfo.nickname) {
 				putMe({
 					nickname: value
-				})
-				.then(res => {
-					this.userInfo = this.gPutUserInfo({nickname: value}).userInfo
-					this.gToastSuccess("修改昵称成功!")
+				}).then(res => {
+					this.userInfo = this.gPutUserInfo({ nickname: value }).userInfo
+					this.gToastSuccess('修改昵称成功!')
 				})
 			}
 		},
 		/*
 			name: 点击头像
-			description: 点击头像打开操作菜单，可选择预览或者修改头像
-									 点击预览，触发预览效果
-									 点击修改头像，进入选择头像模式，选择完成后上传头像至oss，然后将链接存储到数据库中。
-      time: 2020/11/15
+			description: 点击头像打开操作菜单，可选择预览或者修改头像点击预览，触发预览效果点击修改头像，进入选择头像模式，选择完成后上传头像至oss，然后将链接存储到数据库中。
+            time: 2020/11/15
 		*/
-		clickAvatar()
-		{
+		clickAvatar() {
 			/* 进入操作菜单 */
 			uni.showActionSheet({
-				itemList: ["预览头像", "修改头像","查看个人信息"],
-				success:  (res) => {
+				itemList: ['预览头像', '修改头像', '查看个人信息'],
+				success: (res) => {
 					/* 预览头像 */
-					if(res.tapIndex === 0)
-					{
+					if (res.tapIndex === 0) {
 						uni.previewImage({
 							urls: [this.userInfo.avatarUrl]
-						})
-					}
-					/* 修改头像 */
-					else if(res.tapIndex === 1)
-					{
+						});
+					} 
+					else if (res.tapIndex === 1) {
+						/* 修改头像 */
 						uni.chooseImage({
 							count: 1, //默认9
 							sizeType: ['compressed'],
-							success:  (img) => {
+							success: img => {
 								/* 压缩图片 */
 								uni.compressImage({
-								  src: img.tempFilePaths[0],
-								  quality: 50,
-								  success: res => {
-                    this.gLoading(this,true)
+									src: img.tempFilePaths[0],
+									quality: 50,
+									success: res => {
+										this.gLoading(this, true);
 										/* 获取签名 */
 										getAvatarOssSignature()
 										.then(sign => {
 											/* 上传文件 */
-											this.gUploadFile(res.tempFilePath,"avatar.JPG",sign.data)
-											.then(upRes => {
+											this.gUploadFile(res.tempFilePath, `${Date.now()}.JPG`, sign.data).then(upRes => {
 												/* 更新头像 */
 												putMe({
 													avatarUrl: upRes
 												})
 												.then(putRes => {
-													this.userInfo = this.gPutUserInfo({avatarUrl: upRes}).userInfo,
-													this.gToastSuccess("修改头像成功!")
-                          this.gLoading(this,false)
+													this.userInfo = this.gPutUserInfo({ avatarUrl: upRes }).userInfo;
+													this.gToastSuccess('修改头像成功!')
+													this.gLoading(this, false)
 												})
-                        .catch(err => {
-                          this.gLoading(this,false)
-                        })
+												.catch(err => {
+													this.gLoading(this, false)
+												})
 											})
 										})
-                    .catch(err => {
-                      this.gLoading(this,false)
-                    })
-								  }
+										.catch(err => {
+											this.gLoading(this, false)
+										})
+									}
 								})
 							}
 						})
-					}
-					else if(res.tapIndex === 2){
+					} 
+					else if (res.tapIndex === 2) {
 						uni.navigateTo({
-							url: "Self/UserHome?userId=" + this.userInfo.userId
+							url: 'Self/UserHome?userId=' + this.userInfo.userId
 						})
 					}
 				},
-				fail: function (res) {
+				fail: function(res) {
 					console.log(res.errMsg);
 				}
-			})
+			});
 		},
-    /* 退出登录，调用modal确认*/
-    out()
-    {
-      this.gShowModal("确认退出登录?",() => {
-        loginOut()
-        uni.clearStorageSync("token")
-        uni.reLaunch({
-          url: "Login/Login",
-          success: () => {
-            this.gToastSuccess("已退出登录")
-          }
-        })
-      })
-    }
-	}
-}
+		/* 退出登录，调用modal确认*/
+		out() {
+			this.gShowModal('确认退出登录?', () => {
+				loginOut();
+				uni.clearStorageSync('token');
+				uni.reLaunch({
+					url: 'Login/Login',
+					success: () => {
+						this.gToastSuccess('已退出登录');
+					}
+				});
+			});
+		}
+	},
+};
 </script>
 
 <style lang="stylus" scoped>
-bgSetting(size,color)
+bgSetting(size, color)
 	width size
 	height size
 	background-color color
@@ -274,7 +255,7 @@ bgSetting(size,color)
 			height 60vw
 			left 20vw
 			top 20vw
-			transform translate(-50%,-50%)
+			transform translate(-50%, -50%)
 			display flex
 			align-items center
 			justify-content center
@@ -287,11 +268,11 @@ bgSetting(size,color)
 				position absolute
 				border-radius 50%
 			.bg1
-				bgSetting(40vw,var(--origin4))
+				bgSetting(40vw, var(--origin4))
 			.bg2
-				bgSetting(50vw,var(--origin3))
+				bgSetting(50vw, var(--origin3))
 			.bg3
-				bgSetting(60vw,var(--origin2))
+				bgSetting(60vw, var(--origin2))
 		/* 右侧 */
 		.right
 			margin-left 52vw
@@ -321,17 +302,17 @@ bgSetting(size,color)
 			height 70vw
 			display flex
 			animation 1ms closeCurtain forwards
-			animation-delay .8s
+			animation-delay 0.8s
 			view
 				width 50%
 			.one
 				background-color var(--origin2)
 				transform-origin right top
-				animation curtain1 .5s forwards
+				animation curtain1 0.5s forwards
 			.two
 				background-color var(--origin2)
 				transform-origin left top
-				animation curtain2 .5s forwards
+				animation curtain2 0.5s forwards
 	/* 核心导航 招募队友 & 资源分享 */
 	.navs
 		margin 10vw 0 20px
@@ -369,7 +350,9 @@ bgSetting(size,color)
 		justify-content space-around
 		.task
 			text-align center
-			text
+			font-size 24rpx
+			color var(--origin1)
+			.iconfont
 				line-height 1.2
 				font-size 54rpx
 				color var(--origin2)
@@ -378,13 +361,14 @@ bgSetting(size,color)
 		margin 10px auto
 		width 90%
 		.item
-			margin-bottom 3px
+			margin-bottom 1px
 			transform translateY(50vh)
-			padding 10px 20px
+			opacity 0
+			padding 5px 20px
 			background-color #FFFFFF
 			display flex
 			align-items center
-			animation funShow .2s forwards
+			animation funShow 0.1s ease-out forwards
 			&:first-child
 				border-top-left-radius 20px
 				border-top-right-radius 20px
@@ -392,10 +376,10 @@ bgSetting(size,color)
 				border-bottom-left-radius 20px
 				border-bottom-right-radius 20px
 			.iconfont
-				font-size 44rpx
+				font-size 40rpx
 				color var(--origin2)
 			.right
-				font-size 60rpx
+				font-size 50rpx
 			.name
 				margin-left 25rpx
 				flex 1
@@ -416,4 +400,5 @@ bgSetting(size,color)
 @keyframes funShow
 	to
 		transform translateY(0)
+		opacity 1
 </style>

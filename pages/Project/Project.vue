@@ -3,172 +3,318 @@
 		<view class="content">
 			<!-- 头像 & 首作者 & 创建时间 & 收藏 & 阅读-->
 			<view class="head">
-				<image :src="avatarUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'" mode="widthFix"></image>
-				<view class="container small">
-					<text class="author">{{members[0].nickname}}</text>
-					<text class="date">2020年9月1日</text>
+				<view class="left">
+					<view class="h3">项目介绍</view>
+					<view class="date">2020年9月1日</view>
 					<!-- 数据统计 -->
 					<view class="statistics">
 						<!-- 阅读量 -->
 						<view class="read">
 							<text class="iconfont icon-readed"></text>
-							<text class="val">{{read}}</text>
+							<text class="val">{{ read }}</text>
 						</view>
 						<!-- 收藏量 -->
-						<view 
-							class="collect" 
-							:style="{
-								color: isCollect ? '#e86452' : 'var(--gray2)'
-							}"
-							@click="collected">
+						<view class="collect">
 							<text class="iconfont icon-collection"></text>
-							<text class="val">{{collect}}</text>
+							<text class="val">{{ collect }}</text>
 						</view>
 					</view>
 				</view>
+				<view class="right">
+					<image :src="avatarUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'" mode="widthFix"></image>
+				</view>
 			</view>
 			<!-- 项目成员 -->
-			<view class="item members">
+			<view class="item">
 				<view class="title">项目成员</view>
-				<view class="val">
+				<view class="values">
 					<navigator 
-						class="member"
+						class="val arr" 
 						hover-class="none"
-						v-for="(member,index) in members"
-						:key="index"
-						:url="'../Self/UserHome?userId='+member.memberUser.userId">
-						{{member.memberUser.nickname}}
+						style="text-decoration: underline;"
+						v-for="(member, index) in members" 
+						:key="index" 
+						:url="'../Self/UserHome?userId=' + member.memberUser.userId">
+						{{ member.memberUser.nickname }}
 					</navigator>
 				</view>
 			</view>
 			<!-- 项目题目 -->
-			<view class="item name">
+			<view class="item">
 				<view class="title">项目题目</view>
-				<view class="val h3">{{name}}</view>
+				<view class="values"><view class="val name">{{ name }}</view></view>
 			</view>
 			<!-- 获奖情况 -->
 			<view v-if="compId" class="item prize">
 				<view class="title">获奖情况</view>
-				<view class="val">
-					<view>{{awardTime}}&emsp;{{awardLevelMsg}}</view>
-					<view>{{compName}}</view>
+				<view class="values">
+					<view class="val arr">{{ awardTime }}</view>
+					<view class="val arr">{{ awardLevelMsg }}</view>
+					<view class="val arr">{{ compName }}</view>
 				</view>
 			</view>
 			<!-- 标签 -->
 			<view v-if="tags" class="item tags">
 				<view class="title">项目标签</view>
-				<view class="val">{{tagsMsg}}</view>
+				<view class="values">
+					<view
+						class="val arr"
+						v-for="(tag,index) in arr_tags"
+						:key="index">
+						{{tag}}
+					</view>
+				</view>
 			</view>
+		</view>
+		<view id="content2" class="content" style="margin-top: 15px;">
+			<view class="h3" style="color: var(--gray1);">项目详细</view>
 			<!-- 描述 -->
 			<view v-if="intro" class="item intro">
 				<view class="title">项目描述</view>
-				<view class="val" v-html="intro"></view>
+				<view class="values"><view class="val desc" v-html="intro"></view></view>
 			</view>
 			<!-- 附件 -->
 			<view class="item files">
 				<view class="title">
 					项目附件
-					<view v-if="isBuy" class="remark">已购买</view>
-					<button v-else>10贡献度购买</button>
 				</view>
-				<view class="small">非媒体类附件将从外部应用打开，请通过外部应用保存至本地。</view>
-				<view class="val">
-					<view v-if="!isBuy">可预览: </view>
-					<view 
-						class="file"
-						v-for="(file,index) in previewFiles"
-						:key="index"
-						@click="preview(file,index)">
-						{{file.name}}
+				<view class="small">非媒体类附件将从外部应用打开,请通过外部应用保存至本地.</view>
+				<view class="list">
+					<view class="val">可预览</view>
+					<view class="file"
+						v-for="(file, index) in previewFiles" 
+						:key="index">
+						<view class="name" @click="preview(file, index)">{{ file.name }}</view>
+						<button v-if="!file.isBuy" @click="buyFile(file)">{{file.price}}贡献点购买</button>
 					</view>
-					<view v-if="!isBuy">不可预览:</view>
-					<view
-						class="file"
-						v-for="(file,index) in unPreviewFiles"
-						:key="index"
-						@click="loadFile(file,index)">
-						{{file.name}}
+					<view class="val">不可预览</view>
+					<view class="file" 
+						v-for="(file, index) in unPreviewFiles" 
+						:key="index">
+						<view class="name" @click="readFile(file, index)">{{ file.name }}242424</view>
+						<button v-if="!file.isBuy" @click="buyFile(file)">{{file.price}}贡献度购买</button>
+					</view>
+				</view>
+			</view>
+			<!-- 项目评价 -->
+			<view class="item">
+				<view class="title" id="comments">项目评论</view>
+				<view 
+					class="comment"
+					v-for="(comment,index) in comments"
+					:key="index">
+					<image :src="comment.user.avatarUrl"></image>
+					<view class="right">
+						<view class="head">
+							<view class="name">{{comment.user.nickname}}</view>
+							<view class="blank"></view>
+							<view class="score"><text class="iconfont icon-start"></text>{{comment.score}}</view>
+							<view class="time">{{comment.time}}</view>
+						</view>
+						<view class="container">
+							{{comment.comment}}
+						</view>
+						<view class="file-control">
+							<text class="filename">{{comment.filename}}</text>
+							<text v-if="comment.isMe" class="iconfont icon-remove" @click="removeComment(comment,index)"></text>
+						</view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<!-- 写评论模块 -->
+		<WriteRemark
+			v-if="id"
+			:projectId="id"
+			:files="resources"
+			@scrollComment="scrollComment"
+			@collectChange="collect+=$event"
+			@success="getCommentsInfo(true)">
+		</WriteRemark>
+		<!-- 加载动画 -->
+		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { getProject,isCollected,collectProject,cancleCollectProject,getLoadSignature } from "@/static/request/api_project.js"
+import { getProject, getLoadSignature,getRemarks,deleteRemark } from '@/static/request/api_project.js'
+import { postOrder,putOrder,checkResourcePurchased } from "../../static/request/api_order.js"
+import WriteRemark from "./components/WriteRemark.vue"
 export default {
 	data() {
 		return {
-			name: "",
-			avatarUrl: "",
-			tags: "",
-			intro: "",
+			id: null,
+			name: '',
+			avatarUrl: '',
+			tags: '',
+			intro: '',
 			read: 0,
 			collect: 0,
 			compId: 0,
-			compName: "",
-			awardLevel: "",
-			awardTime: "",
+			compName: '',
+			awardLevel: '',
+			awardTime: '',
 			members: [],
+			resources: [],
 			previewFiles: [],
 			unPreviewFiles: [],
-			isBuy: false,
-			isCollect: false
+			comments: [],
+			/* 分页获取评论信息 */
+			pageNum: 1,
+			pageSize: 5,
+			is_showAllComments: false
 		}
 	},
 	computed: {
-		awardLevelMsg(){
-			if(this.compId){
-				let res = getApp().globalData.prizeLevels.find(item => item.value === this.awardLevel)
-				if(res)
-					return res.label
+		awardLevelMsg() {
+			if (this.compId) {
+				let res = getApp().globalData.prizeLevels.find(item => item.value === this.awardLevel);
+				if (res){
+					return res.label;
+				} 
 			}
-			return ""
+			return '';
 		},
-		tagsMsg(){
-			if(this.tags)
-				return this.tags.replace(/\s+/g,",")
-			return ""
+		arr_tags() {
+			if (this.tags){
+				return this.tags.split(" ")
+			} 
+			return ''
+		}
+	},
+	onLoad(e) {
+		this.gLoading(this,true)
+		getProject(e.id)
+		.then(res => {
+			for (let key in res.data){
+				this[key] = res.data[key]
+			}
+			this.members = this.members.sort((a, b) => a.rank - b.rank)
+			if(this.resources.length > 0){
+				this.initFiles()
+			}
+			else{
+				this.gLoading(this,false,500)
+			}
+		})
+		.catch(err => {
+			this.gLoading(this,false)
+		})
+	},
+	components: {
+		WriteRemark
+	},
+	onShareAppMessage(e){
+		return {
+			title: "Aha口袋",
+			path: `pages/Project/Project?id=${this.id}`,
+			desc: "Aha口袋邀您阅读" + this.name,
+		}
+	},
+	onReachBottom(){
+		if(!this.is_showAllComments){
+			this.getCommentsInfo()
 		}
 	},
 	methods: {
-		/*
-			name: 收藏/取消收藏项目
-			desc：根据当前收藏状态判断，收藏项目还是取消收藏，修改收藏状态及项目收藏数量
-		*/
-		collected()
+		/* 初始化附件 */
+		initFiles(file)
 		{
-			/* 本是收藏的，取消收藏 */
-			if(this.isCollect){
-				cancleCollectProject(this.id)
-				this.collect -= 1
+			/* 图片 & 含预览路径的文件分一类 */
+			const reg = /\.(gif|jpg|jpeg|png)$/i
+			let success = 0
+			checkResourcePurchased(this.id)
+			.then(res => {
+				this.resources.forEach(file => {
+					file.isBuy = res.data.indexOf(file.id) > -1 ? true : false
+					if (reg.test(file.filename) || file.previewUrl){
+						this.previewFiles.push(file)
+					} 
+					else{
+						this.unPreviewFiles.push(file)
+					}
+				})
+				this.gLoading(this,false)
+			})
+			.catch(err => {
+				this.gLoading(this,false)
+			})
+		},
+		/* 获取评论 */
+		getCommentsInfo(init=false)
+		{
+			if(init){
+				this.pageNum = 1
 			}
-			/* 本事未收藏的收藏 */
-			else{
-				collectProject(this.id)
-				this.collect += 1
-				uni.vibrateShort() // 短暂震动
-			}
-			this.isCollect = !this.isCollect
+			const userId = getApp().globalData.gUserInfo.userInfo.userId
+			getRemarks({
+				pageNum: this.pageNum,
+				pageSize: this.pageSize,
+				projectId: this.id
+			})
+			.then(res => {
+				if(res.data.pageData.length < this.pageSize){
+					this.is_showAllComments = true
+				}
+				else{
+					this.pageNum++
+				}
+				if(init){
+					this.comments = []
+				}
+				res.data.pageData.forEach(remark => {
+					const file = this.resources.find(item => item.id === remark.resourceId)
+					remark.filename = file.name
+					remark.isMe = userId === remark.user.userId
+					remark.time = this.gformatDate(remark.time)
+					this.comments.push(remark)
+				})
+				console.log(this.comments);
+			})
+		},
+		/* 购买文件 */
+	    buyFile(file)
+		{
+			this.gShowModal(`确认花费${file.price}个贡献度购买该附件？`,() => {
+				postOrder({
+					projectId: file.projectId,
+					resourceIds: [file.id]
+				})
+				.then(res => {
+					const orderId = res.data
+					/* 调用微信支付 */
+					putOrder(orderId,"pay")
+					.then(res => {
+						console.log(res.data);
+						this.gToastSuccess("购买成功")
+					})
+				})
+			})
 		},
 		/* 打开图片 */
-		previewImg(file,index)
+		previewImg(image, index) 
 		{
+			this.gLoading(this,true)
 			const viewImg = (url) => {
 				uni.previewImage({
-					urls: [url]
+					urls: [url],
+					success: () => {
+						this.gLoading(this,false)
+					}
 				})
 			}
-			if(file.previewLoad)
-				viewImg(file.previewUrl)
-			else{
-				getLoadSignature(file.id)
+			if (image.previewLoad){
+				viewImg(image.previewUrl)
+			} 
+			else {
+				getLoadSignature(image.id)
 				.then(res => {
 					this.previewFiles[index].previewUrl = res.data.url
 					this.previewFiles[index].previewLoad = true
 					viewImg(res.data.url)
-					console.log(res);
+				})
+				.catch(err => {
+					this.gLoading(this,false)
 				})
 			}
 		},
@@ -176,213 +322,267 @@ export default {
 			name: 预览项目
 			desc: 判断是否已经购买，如果已经购买触发下载
 		*/
-	  preview(file,index)
-	  {
-			if(this.isBuy){
-				this.loadFile(file,index)
-				return
-			}
+		preview(file, index) 
+		{
 			/* 图片：获取预览连接后打开图片 */
-			const reg = /\.(gif|jpg|jpeg|png)$/i
-			if(reg.test(file.name))
-				this.previewImg(file,index)
-			/* 文档类：下载后打开 */
-			else{
-				uni.showLoading({
-					title: "打开中..."
-				})
-				if(file.previewLoad){
+			const reg = /\.(gif|jpg|jpeg|png)$/i;
+			if(reg.test(file.filename)){
+				this.previewImg(file, index)
+			} 
+			else if(file.isBuy) {
+				this.readFile(file, index);
+				return;
+			}
+			/* 文档类：下载后打开 */ 
+			else {
+				this.gLoading(this,true)
+				if (file.previewLoad) {
 					uni.openDocument({
 						filePath: file.previewUrl,
 						complete() {
-							uni.hideLoading()
+							this.gLoading(this,false)
 						}
 					})
-				}
-				else{
+				} 
+				else {
 					uni.downloadFile({
 						url: file.previewUrl,
-						success: (res) => {
+						success: res => {
 							this.previewFiles[index].previewUrl = res.tempFilePath
 							this.previewFiles[index].previewLoad = true
 							uni.openDocument({
 								filePath: res.tempFilePath,
 								complete() {
-									uni.hideLoading()
+									this.gLoading(this,false)
 								}
 							})
-							console.log(res);
+							console.log(res)
 						},
-						fail: (err) => {
+						fail: err => {
 							console.log(err)
-							uni.hideLoading()
+							this.gLoading(this,false)
 						}
 					})
 				}
 			}
-	  },
+		},
 		/* 
-			name: 下载附件
-			desc: 下载附件并打开,如果是视频则跳转播放页
+			name: 阅读完整附件
+			desc: 阅读完整附件,如果是视频则跳转播放页
 		*/
-		loadFile(file,index)
+		readFile(file, index) 
 		{
-			if(!this.isBuy){
-				this.gToastError("无权下载")
+			if (!file.isBuy) {
+				this.gToastError('无权下载')
 				return
 			}
 			const imgReg = /\.(gif|jpg|jpeg|png)$/i
-			const videoReg = /\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb)$/i
 			/* 图片格式：直接打开 */
-			if(imgReg.test(file.name)){
-				this.previewImg(file,index)
-			}
-			/* 视频类型 */
-			else if(videoReg.test(file.name)){
-				console.log("图片类型");
-			}
-			/* 其他类型：下载后打开 */
-			else{
-				uni.showLoading({
-					title: "下载中..."
+			if (imgReg.test(file.name)) {
+				this.previewImg(file, index)
+			} 
+			/* 其他类型 */
+			else {
+				uni.navigateTo({
+					url: "readFile?id=" + file.id
 				})
-				if(file.loadUrl){
-					uni.openDocument({
-						filePath: file.loadUrl,
-						complete() {
-							uni.hideLoading()
-						}
+			} 
+		},
+		/* 滚动到评论区 */
+		scrollComment()
+		{
+			uni.createSelectorQuery().select("#comments").boundingClientRect(data=>{//目标节点
+			　　uni.createSelectorQuery().select("#content2").boundingClientRect((res)=>{//最外层盒子节点
+					uni.pageScrollTo({
+						duration:0,
+						scrollTop: data.top - res.top,//滚动到实际距离是元素距离顶部的距离减去最外层盒子的滚动距离
 					})
-				}
-				else{
-					getLoadSignature(file.id)
-					.then(res => {
-						uni.showLoading({
-							title: "下载中..."
-						})
-						/* 保存到本地 */
-						uni.downloadFile({
-							url: res.data.url,
-							success: (res) => {
-								file.loadUrl = res.tempFilePath
-								uni.openDocument({
-									filePath: file.loadUrl,
-									complete() {
-										uni.hideLoading()
-									}
-								})
-							},
-							fail: (err) => {
-								console.log(err)
-								uni.hideLoading()
-							},
-						})
-					})
-				}
-			}
-		}
-	},
-	onLoad(e) {
-		getProject(e.id)
-		.then(res => {
-			for(let key in res.data)
-				this[key] = res.data[key]
-			this.members = this.members.sort((a,b) => b.rank-a.rank)
-			/* 将resource分类 */
-			res.data.resources.forEach(file => {
-				/* 图片 & 含预览路径的文件分一类 */
-				const reg = /\.(gif|jpg|jpeg|png)$/i
-				if(reg.test(file.name) || file.previewUrl)
-					this.previewFiles.push(file)
-				else
-					this.unPreviewFiles.push(file)
+			　　}).exec()
+			}).exec()
+		},
+		/* 删除评论 */
+		removeComment(comment,index)
+		{
+			this.gShowModal("您确定删除该评价?",() => {
+				deleteRemark(comment.resourceId)
+				this.comments.splice(index,1)
+				this.gToastSuccess("删除成功")
 			})
-			console.log(res.data)
-		})
-		/* 判断是否收藏 */
-		isCollected(e.id)
-		.then(res => {
-			this.isCollect = res.data
-		})
+		}
 	}
 }
 </script>
 
 <style lang="stylus" scoped>
 .project
-	padding 10px
+	padding 10px 10px 50px
 	min-height 100vh
 	background-color var(--white1)
 	.content
-		padding 10px
-		border-radius 8px
+		padding 20px 30px
+		border-radius 22px
 		background-color #FFFFFF
 		/* 头像 & 首作者 & 创建时间 & 收藏 & 阅读 */
 		.head
 			display flex
-			image
-				width 80px
-				height 80px
-				border-radius 8px
-			.container
+			.left
 				padding 0 10px
+				flex 1
 				display flex
 				flex-direction column
-				justify-content space-between
+				.h3
+					flex 1
 				.date
 					font-size 22rpx
 					color var(--gray1)
 				.statistics
+					margin-top 5px
 					display flex
 					view
-						margin-right 10px
-						font-size 24rpx
+						margin-right 25px
+						font-size 22rpx
 						line-height 1
 						display flex
 						align-items center
+						
 					.iconfont
 						margin-right 2px
 					.read
-						color #5d7092
+						color var(--origin2)
+					.collect
+						color #e86452
+			.right
+				width 80px
+				height 80px
+				image
+					width 100%
+					height 100%
+					border-radius 8px
 		/* 各类数据共同样式 */
 		.item
-			margin 15px 0
+			margin 10px 0
 			/* 引导标题 */
 			.title
 				margin-bottom 5px
 				padding-left 5px
 				position relative
-				color var(--origin2)
+				color var(--origin1)
 				line-height 1
-				border-left 3px solid var(--origin2)
-				border-radius 2px
+				border-left 3px solid var(--origin1)
+				font-weight 700
 				display flex
 				align-items center
-			.val
-				padding 5px
-		/* 成员数据 */
-		.members
-			.member
-				margin-right 10px
-				text-decoration underline
-				color var(--origin1)
-		/* 附近 */
+			.values
+				padding 5px 0
+				display flex
+				flex-wrap wrap
+				.val
+					padding 0 20px
+					border-radius 22px
+					background-color var(--origin4)
+					color var(--gray1)
+					font-weight 24rpx
+					/* 标题 */
+					&.name
+						min-width 50%
+						font-weight 700
+						text-align center
+						color var(--black)
+					/* 数组格式 */
+					&.arr
+						margin 0 5px 5px 0
+					/* 描述 */
+					&.desc
+						border-radius 8px
+						padding 0 5px
+		/* 附件 */
 		.files
-			button
+			.all-buy
 				position absolute
 				margin-left 80px
 				padding 5px
 				line-height 1
 				font-size 22rpx
-				border-radius 8px
-				background-color #5d7092
+				border-radius 22px
+				background-color var(--origin2)
+				font-weight 400
 			.remark
 				color #04BE02
 				margin-left 10px
 			.small
-				color #e86452
-			.file
-				margin 10px 0
-				text-decoration underline
-				color var(--origin1)
+				color var(--origin2)
+				font-size 20rpx
+			.list
+				.val
+					margin 10px 0
+					padding 0 20px
+					border-radius 22px
+					background-color var(--origin4)
+					color var(--gray1)
+					font-weight 24rpx
+					display inline-block
+				.file
+					margin-bottom 10px
+					width 100%
+					font-size 26rpx
+					display flex
+					align-items center
+					justify-content space-between
+					.name
+						text-decoration underline
+						font-size 24rpx
+						color var(--origin1)
+						word-break break-all
+					button
+						margin 0
+						white-space nowrap
+						padding 5px
+						border-radius 22px
+						font-size 22rpx
+						font-weight 400
+						line-height 1
+						text-align center
+		.comment
+			margin 5px 0
+			padding 10px 10px 0 10px
+			border-radius 8px
+			background-color var(--origin4)
+			display flex
+			image
+				width 40px
+				height 40px
+				border-radius 50%
+			.right
+				flex 1
+				margin-left 10px
+				.head
+					display flex
+					align-items center
+					.name
+						padding 0 10px
+						border-radius 22px
+						background-color var(--origin2)
+						color #FFFFFF
+						font-size 24rpx
+					.score
+						font-size 22rpx
+						color var(--origin2)
+						.iconfont
+							font-size 22rpx
+					.time
+						margin-left 5px
+						font-size 22rpx
+						color var(--gray1)
+				.container
+					padding 5px 0
+					font-size 24rpx
+				.file-control
+					display flex
+					align-items center
+					justify-content space-between
+					.filename
+						color var(--gray2)
+						font-size 22rpx
+					.iconfont
+						color var(--origin1)
 </style>

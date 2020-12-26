@@ -1,4 +1,4 @@
-<!-- 比赛 -->
+<!-- 比赛信息 -->
 <template>
 	<view>
 		比赛
@@ -6,13 +6,13 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				
-			};
+export default {
+	data() {
+		return {
+			
 		}
 	}
+}
 </script>
 
 <style lang="stylus">

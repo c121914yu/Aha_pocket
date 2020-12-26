@@ -7,7 +7,7 @@
 		:range="range"
 		:value="startIndex"
 		@change="check">
-		<view class="content">
+		<view class="msg">
 			<view 
 				class="value"
 				:class="value === '' ? 'input-placeholder' : ''">
@@ -61,13 +61,14 @@ export default {
 	padding-left 20rpx
 	border-radius 15px
 	background-color var(--origin3)
-	.content
+	.msg
 		display flex
 		align-items center
 	.value
 		height 53rpx
 		line-height 53rpx
 		flex 1
+		font-size 24rpx
 	.iconfont
 		margin 0 5px
 		color var(--origin2)

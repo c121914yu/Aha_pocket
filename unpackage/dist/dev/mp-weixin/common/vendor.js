@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1935,67 +1935,6 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 102:
-/*!**************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.getLoadSignature = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteProject = exports.putProject = exports.getProject = exports.getProjects = exports.postProject = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/* 获取上传头像/证明材料签名 */
-var getPublicSignature = function getPublicSignature() {return (0, _request.default)("/project/sign/upload/public", "GET", {});};
-
-/* 创建项目数据，保存至数据库 */exports.getPublicSignature = getPublicSignature;
-var postProject = function postProject(data) {return (0, _request.default)("/project", "POST", data);};
-/* 
-                                                                                                        	获取所有项目粗略信息表
-                                                                                                        	params:
-                                                                                                        				pageNum： 第几页
-                                                                                                        				pageSize: 每页的条数
-                                                                                                                userId: 用户userId
-                                                                                                                compId: 竞赛Id
-                                                                                                                awardLevel: 获奖等级
-                                                                                                                sortBy: 排序字段
-                                                                                                                orderBy: 排序方式
-                                                                                                        */exports.postProject = postProject;
-var getProjects = function getProjects(params) {return (0, _request.default)("/project", "GET", params);};
-/* 获取项目详细信息 */exports.getProjects = getProjects;
-var getProject = function getProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
-/* 更新项目详细信息 */exports.getProject = getProject;
-var putProject = function putProject(projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
-/* 删除项目 */exports.putProject = putProject;
-var deleteProject = function deleteProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
-
-/* 判断是否收藏 */exports.deleteProject = deleteProject;
-var isCollected = function isCollected(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "GET", {});};
-/* 收藏项目 */exports.isCollected = isCollected;
-var collectProject = function collectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "POST", {});};
-/* 取消收藏 */exports.collectProject = collectProject;
-var cancleCollectProject = function cancleCollectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "DELETE", {});};
-
-/* 获取上传文件签名 */exports.cancleCollectProject = cancleCollectProject;
-var getFilesSignature = function getFilesSignature(projectId) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private"), "GET", {});};
-/* 创建项目的资源信息 */exports.getFilesSignature = getFilesSignature;
-var postResource = function postResource(projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
-/* 删除资源 */exports.postResource = postResource;
-var deleteResource = function deleteResource(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "DELETE", {});};
-/* 获取下载签名 */exports.deleteResource = deleteResource;
-var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download"), "GET", {});};
-
-/* 创建成员 */exports.getLoadSignature = getLoadSignature;
-var postMember = function postMember(projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};
-/* 更新成员 */exports.postMember = postMember;
-var putMember = function putMember(projectId, memberUserId, data) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "PUT", data);};
-/* 批量更新成员 */exports.putMember = putMember;
-var putMembers = function putMembers(projectId, data) {return (0, _request.default)("/project/members/".concat(projectId), "PUT", data);};
-/* 删除成员 */exports.putMembers = putMembers;
-var deleteMember = function deleteMember(projectId, memberPhone) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberPhone), "DELETE", {});};exports.deleteMember = deleteMember;
-
-/***/ }),
-
 /***/ 11:
 /*!*********************************************!*\
   !*** D:/服务外包/竞赛统计/static/icon/iconfont.css ***!
@@ -2017,44 +1956,45 @@ var deleteMember = function deleteMember(projectId, memberPhone) {return (0, _re
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} /* 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	name: showSuccess
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	description: 展示成功提示
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	input: 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                				title: String,提示文字
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                				mask: Boolean,是否展示蒙层
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-function gToastSuccess(title) {var mask = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
+/* WEBPACK VAR INJECTION */(function(uni) {var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+/* 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        	name: showSuccess
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        	description: 展示成功提示
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        	input: 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        				title: String,提示文字
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        				mask: Boolean,是否展示蒙层
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        */
+_vue.default.prototype.gToastSuccess = function (title) {var mask = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
   uni.showToast({
     title: title,
     mask: mask,
     duration: duration });
 
-}
+};
 /* 
-  	name: showError
-  	description: 展示错误提示
-  	input: 
-  				title: String,提示文字
-  				mask: Boolean,是否展示蒙层
-  */
-function gToastError(title) {var mask = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
+   	name: showError
+   	description: 展示错误提示
+   	input: 
+   				title: String,提示文字
+   				mask: Boolean,是否展示蒙层
+   */
+_vue.default.prototype.gToastError = function (title) {var mask = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
   uni.showToast({
     title: title,
     image: "/static/icon/close.png",
     mask: mask,
     duration: duration });
 
-}
+};
 /* 
-  	name: showModal
-  	description: 提示确认操作
-  	input: 
-  				content: String,提示文字
-  				success: Function,点击确认后的操作
-  				cancel: Function,点击取消后的操作
-  */
-function gShowModal(content, _success, cancel) {
+   	name: showModal
+   	description: 提示确认操作
+   	input: 
+   		content: String,提示文字
+   		success: Function,点击确认后的操作
+   		cancel: Function,点击取消后的操作
+   */
+_vue.default.prototype.gShowModal = function (content, _success, cancel) {
   uni.showModal({
     title: "提示",
     content: content,
@@ -2070,19 +2010,19 @@ function gShowModal(content, _success, cancel) {
       }
     } });
 
-}
+};
 
 /* 
-  	name: uploadFile
-  	description: 上传文件至OSS存储空间
-  	input: 
-  				url: String,待上传的临时路径
-  				name: String,待上传文件的文件名
-  				signature: Object,签名
-  	return: 
-  				fileName: String,最终的文件名
-  */
-function gUploadFile(url, name, signature) {
+   	name: uploadFile
+   	description: 上传文件至OSS存储空间
+   	input: 
+   				url: String,待上传的临时路径
+   				name: String,待上传文件的文件名
+   				signature: Object,签名
+   	return: 
+   				fileName: String,最终的文件名
+   */
+_vue.default.prototype.gUploadFile = function (url, name, signature) {
   var filename = "".concat(signature.dir, "/").concat(name);
   return new Promise(function (resolve, reject) {
     uni.uploadFile({
@@ -2106,44 +2046,87 @@ function gUploadFile(url, name, signature) {
       } });
 
   });
-}
-
-/* 
-  	name: putUserInfo
-  	description: 修改用户信息
-  	input: userInfo里的任意字段
-  	return: 
-  					userInfo: Object,新的userInfo
-  */
-function gPutUserInfo(data) {
-  for (var key in data) {
-    getApp().globalData.gUserInfo.userInfo[key] = data[key];}
-  console.log(getApp().globalData.gUserInfo);
-  return _objectSpread({}, getApp().globalData.gUserInfo);
-}
-
-/* 展示/隐藏等待 */
-var gLoading = function gLoading(that) {var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-  var dom = that.$refs.loading;
-  var time = type ? 0 : 500;
-  if (dom) {
-    setTimeout(function () {
-      if (dom)
-      dom.show = type;
-    }, time);
-  }
 };
 
-var globalFun = {
-  gToastSuccess: gToastSuccess,
-  gToastError: gToastError,
-  gShowModal: gShowModal,
-  gUploadFile: gUploadFile,
-  gPutUserInfo: gPutUserInfo,
-  gLoading: gLoading };var _default =
+/* 
+   	name: putUserInfo
+   	description: 修改用户信息
+   	input: userInfo里的任意字段
+   	return: 
+   					userInfo: Object,新的userInfo
+   */
+_vue.default.prototype.gPutUserInfo = function (data) {
+  for (var key in data) {
+    getApp().globalData.gUserInfo.userInfo[key] = data[key];
+  }
+  console.log(getApp().globalData.gUserInfo);
+  return _objectSpread({}, getApp().globalData.gUserInfo);
+};
 
-globalFun;exports.default = _default;
+/* 
+   	name: formatDate
+   	desc: 格式化日期成yy/mm/dd HH:mm
+   	input: Date
+   	return: String
+   */
+_vue.default.prototype.gformatDate = function (time) {
+  var date = new Date(time);
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var hour = date.getHours();
+  var minutes = date.getMinutes();
+
+  var nDay = new Date();
+  var nyear = nDay.getFullYear();
+  var nmonth = nDay.getMonth() + 1;
+  var nday = nDay.getDate();
+  if (year === nyear && month === nmonth && day === nday) {
+    "".concat(hour < 10 ? '0' + hour : hour, ":").concat(minutes < 10 ? '0' + minutes : minutes);
+  }
+  if (year === nyear) {
+    return "".concat(month < 10 ? '0' + month : month, "/").concat(day < 10 ? '0' + day : day, " ").concat(hour < 10 ? '0' + hour : hour, ":").concat(minutes < 10 ? '0' + minutes : minutes);
+  }
+  return "".concat(year < 10 ? '0' + year : year, "/").concat(month < 10 ? '0' + month : month, "/").concat(day < 10 ? '0' + day : day, " ").concat(hour < 10 ? '0' + hour : hour, ":").concat(minutes < 10 ? '0' + minutes : minutes);
+};
+
+/* 展示/隐藏等待 */
+_vue.default.prototype.gLoading = function (that, type) {var delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+  var dom = that.$refs.loading;
+  if (dom) {
+    setTimeout(function () {
+      if (dom) {
+        dom.show = type;
+      }
+    }, delay);
+  }
+};
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 144:
+/*!*************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_resume.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.putResume = exports.getResume = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 
+                                                                                                                                                                                                                                                                                       	description: 获取简历信息
+                                                                                                                                                                                                                                                                                       	params:
+                                                                                                                                                                                                                                                                                               userId: String,用户标识码
+                                                                                                                                                                                                                                                                                       */
+var getResume = function getResume(userId) {return (0, _request.default)("/resume/".concat(userId), "GET", {});};
+
+/* 
+                                                                                                                  	description: 更新简历信息
+                                                                                                                  	input: resume: Object,简历的所有字段
+                                                                                                                  */exports.getResume = getResume;
+var putResume = function putResume(data) {return (0, _request.default)("/resume", "PUT", data);};exports.putResume = putResume;
 
 /***/ }),
 
@@ -2160,22 +2143,22 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.loginOut =
 /* 
                                                                                                                                                                                                                                                                                                                                                                    	description: 发送验证码
                                                                                                                                                                                                                                                                                                                                                                    	input: 
-                                                                                                                                                                                                                                                                                                                                                                   				phone: String,手机号
-                                                                                                                                                                                                                                                                                                                                                                           type: String,取值register、changePassword、bindPhone
+                                                                                                                                                                                                                                                                                                                                                                   			phone: String,手机号
+                                                                                                                                                                                                                                                                                                                                                                   			type: String,取值register、changePassword、bindPhone
                                                                                                                                                                                                                                                                                                                                                                    	return: null
                                                                                                                                                                                                                                                                                                                                                                    */
-var sendCode = function sendCode(data) {return (0, _request.default)("/sms/code/".concat(data.phone), "POST", data);};
+var sendCode = function sendCode(data) {return (0, _request.default)("/sms/code", "POST", data);};
 
 /* 
-                                                                                                                       	description: 用户注册
-                                                                                                                       	input: 
-                                                                                                                       				phone: String,手机号
-                                                                                                                       				password: String,密码
-                                                                                                                       				code: String,验证码
-                                                                                                                       	return: 
-                                                                                                                       				token: String
-                                                                                                                       				userInfo: Object,用户信息
-                                                                                                                       */exports.sendCode = sendCode;
+                                                                                                   	description: 用户注册
+                                                                                                   	input: 
+                                                                                                   				phone: String,手机号
+                                                                                                   				password: String,密码
+                                                                                                   				code: String,验证码
+                                                                                                   	return: 
+                                                                                                   				token: String
+                                                                                                   				userInfo: Object,用户信息
+                                                                                                   */exports.sendCode = sendCode;
 var Register = function Register(data) {return (0, _request.default)("/register/phone", "POST", data);};
 
 /* 
@@ -7739,7 +7722,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7760,14 +7743,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7853,7 +7836,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8268,7 +8251,7 @@ internalMixin(Vue);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _globalFun = _interopRequireDefault(__webpack_require__(/*! ../js/globalFun.js */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 var baseUrl = getApp().globalData.baseUrl;
 
 function myRequest(url, method, data) {
@@ -8298,14 +8281,14 @@ function myRequest(url, method, data) {
           {
             console.log("请求错误");
             console.log(result.data);
-            _globalFun.default.gToastError(result.data.msg);
+            _vue.default.prototype.gToastError(result.data.msg);
             /* 如果是token过期，关闭所有界面回到登录页 */
             if (result.data.code === 103) {
               uni.clearStorageSync("token");
-              uni.redirectTo({
+              uni.reLaunch({
                 url: "/pages/Login/Login",
                 success: function success() {
-                  _globalFun.default.gToastError(result.data.msg);
+                  _vue.default.prototype.gToastError(result.data.msg);
                 } });
 
             }
@@ -8316,12 +8299,11 @@ function myRequest(url, method, data) {
       {
         console.log("服务器错误");
         console.log(err.data);
-        _globalFun.default.gToastError("服务器错误");
+        _vue.default.prototype.gToastError("服务器错误");
         rej(err);
       },
       complete: function complete(result) {
         /* 判断是否有新token,有则替换旧的token */
-
         if (result.header.Authorization) {
           console.log(result.header);
           uni.setStorageSync("token", result.header.Authorization);
@@ -8343,9 +8325,19 @@ myRequest;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getMessages = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.getPurchased = exports.getCollectedProjects = exports.deleteMessage = exports.postMessage = exports.getMessage = exports.getMessages = exports.getUnreadCount = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = exports.bindWxchat = exports.bindPhone = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
-/* 获取个人信息 */
+/* 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	name: 绑定手机号
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	params:
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       			phone: String
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       			code: String
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
+var bindPhone = function bindPhone(data) {return (0, _request.default)("/bind/phone", "POST", data);};
+/* 绑定微信号 */exports.bindPhone = bindPhone;
+var bindWxchat = function bindWxchat(data) {return (0, _request.default)("/bind/wechat?code=" + data.code, "POST", data);};
+
+/* 获取个人信息 */exports.bindWxchat = bindWxchat;
 var getMe = function getMe(data) {return (0, _request.default)("/userInfo/me", "GET", data);};
 /* 修改个人基本资料 */exports.getMe = getMe;
 var putMe = function putMe(data) {return (0, _request.default)("/userInfo/me", "PUT", data);};
@@ -8355,23 +8347,87 @@ var signNotice = function signNotice() {return (0, _request.default)("/sign/noti
 var getAvatarOssSignature = function getAvatarOssSignature(data) {return (0, _request.default)("/userInfo/avatar/sign/upload", "GET", data);};
 /* 根据userId获取用户详细信息 */exports.getAvatarOssSignature = getAvatarOssSignature;
 var getUser = function getUser(userId) {return (0, _request.default)("/userInfo/" + userId, "GET", {});};
-/* 获取消息通知列表 */exports.getUser = getUser;
-var getMessages = function getMessages(param) {return (0, _request.default)("/message", "GET", param);};exports.getMessages = getMessages;
+
+/* 获取未读通知数量 */exports.getUser = getUser;
+var getUnreadCount = function getUnreadCount() {return (0, _request.default)("/message/count/notRead", "GET", {});};
+/* 获取消息通知列表 */exports.getUnreadCount = getUnreadCount;
+var getMessages = function getMessages(param) {return (0, _request.default)("/message", "GET", param);};
+/* 
+                                                                                                         	获取消息通知内容
+                                                                                                         	@param: messageId: Number
+                                                                                                         */exports.getMessages = getMessages;
+var getMessage = function getMessage(messageId) {return (0, _request.default)("/message/".concat(messageId), "GET", {});};
+/* 
+                                                                                                                               发送通知
+                                                                                                                               @params: receiverUserId: Number,收件人用户id
+                                                                                                                               @params: title: String, 信件标题
+                                                                                                                               @params: content:String, 信件内容
+                                                                                                                           */exports.getMessage = getMessage;
+var postMessage = function postMessage(data) {return (0, _request.default)("/message", "POST", data);};
+/*  删除消息 */exports.postMessage = postMessage;
+var deleteMessage = function deleteMessage(messageId) {return (0, _request.default)("/message/".concat(messageId), "DELETE", {});};
+
+/* 获取个人收藏项目 */exports.deleteMessage = deleteMessage;
+var getCollectedProjects = function getCollectedProjects() {return (0, _request.default)("/project/collection", "GET", {});};
+/* 获取个人购买的项目附件 */exports.getCollectedProjects = getCollectedProjects;
+var getPurchased = function getPurchased() {return (0, _request.default)("/project/resource/purchased", "GET", {});};exports.getPurchased = getPurchased;
 
 /***/ }),
 
-/***/ 295:
+/***/ 3:
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+
+/***/ 4:
+/*!*******************************!*\
+  !*** D:/服务外包/竞赛统计/pages.json ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ 405:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 296);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 406);
 
 /***/ }),
 
-/***/ 296:
+/***/ 406:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -8402,7 +8458,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 297);
+module.exports = __webpack_require__(/*! ./runtime */ 407);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -8419,7 +8475,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 297:
+/***/ 407:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -9151,48 +9207,6 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 3:
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
-/***/ 4:
-/*!*******************************!*\
-  !*** D:/服务外包/竞赛统计/pages.json ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-
 /***/ 46:
 /*!******************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_competition.js ***!
@@ -9208,28 +9222,129 @@ var getAllCompetition = function getAllCompetition() {return (0, _request.defaul
 
 /***/ }),
 
-/***/ 77:
+/***/ 47:
 /*!*************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_resume.js ***!
+  !*** D:/服务外包/竞赛统计/static/request/api_system.js ***!
   \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.putResume = exports.getResume = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.feedbackProblem = exports.getFeedbackMe = exports.getNotice = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 获取系统公告 */
+var getNotice = function getNotice() {return (0, _request.default)("/notice", "GET", {});};
+/* 获取我的反馈 */exports.getNotice = getNotice;
+var getFeedbackMe = function getFeedbackMe(param) {return (0, _request.default)("/feedback/me", "GET", param);};
+/* 反馈问题 */exports.getFeedbackMe = getFeedbackMe;
+var feedbackProblem = function feedbackProblem(data) {return (0, _request.default)("/feedback", "POST", data);};exports.feedbackProblem = feedbackProblem;
+
+/***/ }),
+
+/***/ 54:
+/*!**************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteProject = exports.putProject = exports.postProject = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteRemark = exports.postRemark = exports.getRemarks = exports.getLoadSignature = exports.putResource = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.getProject = exports.getMeProjects = exports.getProjects = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 获取上传头像/证明材料签名 */
+var getPublicSignature = function getPublicSignature() {return (0, _request.default)("/project/sign/upload/public", "GET", {});};
+
+/* 创建项目数据，保存至数据库 */exports.getPublicSignature = getPublicSignature;
+var postProject = function postProject(data) {return (0, _request.default)("/project", "POST", data);};
+/* 获取所有项目粗略信息表
+                                                                                                        	params:
+                                                                                                        		pageNum： 第几页
+                                                                                                        		pageSize: 每页的条数
+                                                                                                                userId: 用户userId
+                                                                                                                compId: 竞赛Id
+                                                                                                                awardLevel: 获奖等级
+                                                                                                                sortBy: 排序字段
+                                                                                                                orderBy: 排序方式
+                                                                                                        */exports.postProject = postProject;
+var getProjects = function getProjects(params) {return (0, _request.default)("/project", "GET", params);};
+/* 获取个人项目列表 */exports.getProjects = getProjects;
+var getMeProjects = function getMeProjects(params) {return (0, _request.default)("/project/me", "GET", params);};
+/* 获取项目详细信息 */exports.getMeProjects = getMeProjects;
+var getProject = function getProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
+/* 更新项目详细信息 */exports.getProject = getProject;
+var putProject = function putProject(projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
+/* 删除项目 */exports.putProject = putProject;
+var deleteProject = function deleteProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
+
+/* 获取评论
+                                                                                                                                    	@prams	pageNum: Number,页码
+                                                                                                                                    	@prams	pageSize: Number,分页大小
+                                                                                                                                    	@prams	projectId: Number,项目ID
+                                                                                                                                    	@prams	resourceId: Number,资源ID（可选)
+                                                                                                                                    */exports.deleteProject = deleteProject;
+var getRemarks = function getRemarks(params) {return (0, _request.default)("/project/resource/score", "GET", params);};
+/* 评价 */exports.getRemarks = getRemarks;
+var postRemark = function postRemark(projectResourceId, data) {return (0, _request.default)("/project/resource/score/".concat(projectResourceId), "POST", data);};
+/* 删除评价 */exports.postRemark = postRemark;
+var deleteRemark = function deleteRemark(commentId) {return (0, _request.default)("/project/resource/score/".concat(commentId), "DELETE", {});};
+
+/* 判断是否收藏 */exports.deleteRemark = deleteRemark;
+var isCollected = function isCollected(projectId) {return (0, _request.default)("/project/collection/check/".concat(projectId), "GET", {});};
+/* 收藏项目 */exports.isCollected = isCollected;
+var collectProject = function collectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "POST", {});};
+/* 取消收藏 */exports.collectProject = collectProject;
+var cancleCollectProject = function cancleCollectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "DELETE", {});};
+
+/* 获取上传文件签名 */exports.cancleCollectProject = cancleCollectProject;
+var getFilesSignature = function getFilesSignature(projectId) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private"), "GET", {});};
+/* 创建项目的资源信息 */exports.getFilesSignature = getFilesSignature;
+var postResource = function postResource(projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
+/* 删除资源 */exports.postResource = postResource;
+var deleteResource = function deleteResource(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "DELETE", {});};
+/* 修改资源信息 */exports.deleteResource = deleteResource;
+var putResource = function putResource(projectResourceId, data) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "PUT", data);};
+/* 获取下载签名 */exports.putResource = putResource;
+var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download"), "GET", {});};
+
+/* 创建成员 */exports.getLoadSignature = getLoadSignature;
+var postMember = function postMember(projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};
+/* 更新成员 */exports.postMember = postMember;
+var putMember = function putMember(projectId, memberUserId, data) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "PUT", data);};
+/* 批量更新成员 */exports.putMember = putMember;
+var putMembers = function putMembers(projectId, data) {return (0, _request.default)("/project/members/".concat(projectId), "PUT", data);};
+/* 删除成员 */exports.putMembers = putMembers;
+var deleteMember = function deleteMember(projectId, memberPhone) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberPhone), "DELETE", {});};exports.deleteMember = deleteMember;
+
+/***/ }),
+
+/***/ 95:
+/*!************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_order.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.checkResourcePurchased = exports.getOrder = exports.getOrders = exports.putOrder = exports.postOrder = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 
-                                                                                                                                                                                                                                                                                       	description: 获取简历信息
-                                                                                                                                                                                                                                                                                       	params:
-                                                                                                                                                                                                                                                                                               userId: String,用户标识码
-                                                                                                                                                                                                                                                                                       */
-var getResume = function getResume(userId) {return (0, _request.default)("/resume/".concat(userId), "GET", {});};
-
+                                                                                                                                                                                                                                                                                                                                                              	购买附件-创建订单
+                                                                                                                                                                                                                                                                                                                                                              	@params projectId:Int 项目ID
+                                                                                                                                                                                                                                                                                                                                                              	@params resourceId:Array 购买的附件id
+                                                                                                                                                                                                                                                                                                                                                              */
+var postOrder = function postOrder(data) {return (0, _request.default)("/order", "POST", data);};
 /* 
-                                                                                                                  	description: 更新简历信息
-                                                                                                                  	input: resume: Object,简历的所有字段
-                                                                                                                  */exports.getResume = getResume;
-var putResume = function putResume(data) {return (0, _request.default)("/resume", "PUT", data);};exports.putResume = putResume;
+                                                                                                  	付款/取消付款
+                                                                                                  	@params ordetrId:Int 订单ID
+                                                                                                  	@params action:String,取值pay/cancel
+                                                                                                  */exports.postOrder = postOrder;
+var putOrder = function putOrder(orderId, action) {return (0, _request.default)("/order/".concat(orderId, "?action=").concat(action), "PUT", {});};
+/* 获取个人订单信息 */exports.putOrder = putOrder;
+var getOrders = function getOrders() {return (0, _request.default)("/order/me", "GET", {});};
+/* 获取订单详细 */exports.getOrders = getOrders;
+var getOrder = function getOrder(orderId) {return (0, _request.default)("/order/".concat(orderId), "GET", {});};
+/* 判断资源是否购买 */exports.getOrder = getOrder;
+var checkResourcePurchased = function checkResourcePurchased(projectId) {return (0, _request.default)("/project/purchased/".concat(projectId), "GET", {});};exports.checkResourcePurchased = checkResourcePurchased;
 
 /***/ })
 

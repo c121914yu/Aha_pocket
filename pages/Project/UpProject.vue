@@ -31,6 +31,23 @@ export default {
 			projectId: null
 		}
 	},
+	onShow() {
+		/* 判断用户是否签署合同，若为签署则跳转签署界面 */
+		if(!getApp().globalData.gUserInfo.signedContract)
+		{
+			uni.navigateTo({
+				url: "/pages/Self/Number/Contract",
+				success: () => {
+					this.gToastError("请先签署合同")
+				}
+			})
+		}
+	},
+	components: {
+		baseInfo,
+		fileInfo,
+		MemberInfo,
+	},
 	methods: {
         /* 
             name: 创建项目资源
@@ -49,7 +66,7 @@ export default {
                 }
             })
 			let compId = ""
-            getApp().globalData.Matches.find(item => {
+            getApp().globalData.Competitions.find(item => {
                 if(item.name === base.compName){
                     compId = item.compTagId
                      return
@@ -190,23 +207,6 @@ export default {
 			},1000)
 			this.gLoading(this,false)
 		}
-	},
-	onLoad() {
-		/* 判断用户是否签署合同，若为签署则跳转签署界面 */
-		if(!getApp().globalData.gUserInfo.signedContract)
-		{
-			uni.redirectTo({
-				url: "Contract",
-				success: () => {
-					this.gToastError("请先签署合同")
-				}
-			})
-		}
-	},
-	components: {
-		baseInfo,
-		fileInfo,
-		MemberInfo,
 	}
 }
 </script>

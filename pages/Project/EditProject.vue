@@ -122,7 +122,7 @@ export default {
 				}
 			})
 			let compId = ""
-			getApp().globalData.Matches.find(item => {
+			getApp().globalData.Competitions.find(item => {
 				if(item.name === base.compName){
 					compId = item.compTagId
 					return
@@ -258,17 +258,20 @@ export default {
 	padding 20rpx 0
 	background-color var(--origin3)
 	.navs
-		position relative
-		transform translateY(-20rpx)
+		z-index 10
+		position fixed
+		top 0
+		width 100%
 		padding 10px
-		border-radius 22px
+		border-radius 8px
 		background-color #FFFFFF
-		display flex
-		align-items center
-		justify-content space-around
+		box-shadow var(--shadow2)
+		display grid
+		grid-template-columns repeat(3,1fr)
 		overflow hidden
 		.nav
 			z-index 2
+			text-align center
 			transition .3s
 			&.active
 				color #FFFFFF
@@ -279,9 +282,7 @@ export default {
 			height 100%
 			background-color var(--origin1)
 			opacity 0.8
-			border-radius 10px
 			transition .3s
-	/* 每个模块共同样式 */
 	/* 按键 */
 	.btn
 		position fixed
@@ -301,8 +302,9 @@ export default {
 			color var(--origin2)
 			font-size 30rpx
 			font-weight 600
+	/* 每个模块共同样式 */
 	.content
-		margin 0 20rpx 66px
+		margin 45px 10px 66px
 		padding 20rpx 60rpx
 		background-color #FFFFFF
 		border-radius 22px

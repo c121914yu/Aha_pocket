@@ -6,74 +6,53 @@
 			<view class="card">
 				<view class="input">
 					<text class="iconfont icon-user"></text>
-					<input 
-						type="number" 
-						placeholder="手机号" 
-						placeholder-class="placeholderStyle" 
-						v-model="phone"/>
+					<input type="number" placeholder="手机号" placeholder-class="placeholderStyle" v-model="phone" />
 				</view>
 				<view class="input">
 					<text class="iconfont icon-password"></text>
-					<input 
-						style="padding-right:40px" 
-						type="text" 
-						:password="isPassword"
-						placeholder="密码" 
-						placeholder-class="placeholderStyle" 
-						v-model="password"
-					/>
-					<text class="iconfont icon-readed readed" @click="isPassword=!isPassword"></text>
+					<input style="padding-right:40px" type="text" :password="isPassword" placeholder="密码" placeholder-class="placeholderStyle" v-model="password" />
+					<text class="iconfont icon-readed readed" @click="isPassword = !isPassword"></text>
 				</view>
 				<view class="input">
 					<text class="iconfont icon-password"></text>
-					<input 
-						type="text" 
-						password
-						placeholder="再次输入密码" 
-						placeholder-class="placeholderStyle" 
-						v-model="password2"
-					/>
+					<input type="text" password placeholder="再次输入密码" placeholder-class="placeholderStyle" v-model="password2" />
 				</view>
 				<!-- 获取验证码 -->
 				<view class="input code">
 					<text class="iconfont icon-password"></text>
-					<input
-						type="number" 
-						placeholder="验证码" 
-						placeholder-class="placeholderStyle" 
-						maxlength="6"
-						v-model="code"/>
-					<view 
+					<input type="number" placeholder="验证码" placeholder-class="placeholderStyle" maxlength="6" v-model="code" />
+					<view
 						class="get-code"
 						:style="{
 							backgroundColor: time === 0 ? 'var(--origin2)' : 'var(--gray2)'
 						}"
-						@click="getCode">
-						{{codeText}}
+						@click="getCode"
+					>
+						{{ codeText }}
 					</view>
 				</view>
 				<button type="default" @click="changePassword">修改密码</button>
 			</view>
 		</view>
-    <!-- 加载动画 -->
-    <Loading ref="loading"></Loading>
+		<!-- 加载动画 -->
+		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { sendCode,ChangePassword } from "../..//static/request/api_login.js"
-var timer
-var reg = /^1[3456789]\d{9}$/
+import { sendCode, ChangePassword } from '../..//static/request/api_login.js';
+var timer;
+var reg = /^1[3456789]\d{9}$/;
 export default {
 	data() {
 		return {
-			phone: "",
-			password: "",
-			password2: "",
-			code: "",
+			phone: '',
+			password: '',
+			password2: '',
+			code: '',
 			isPassword: true, // 是否展示密码
-			time: 0, // 倒计时
-		}
+			time: 0 // 倒计时
+		};
 	},
 	methods: {
 		/*
@@ -84,39 +63,35 @@ export default {
 						this.phone: String,手机号
 			return: null
 		*/
-		getCode(){
+		getCode() {
 			/* 时间<=0时不执行 */
-			if(this.time <= 0){
-				if(!reg.test(this.phone))
-				{
-					this.gToastError("手机格式错误")
-				}
-				else
-				{
-          this.gLoading(this,true)
+			if (this.time <= 0) {
+				if (!reg.test(this.phone)) {
+					this.gToastError('手机格式错误');
+				} else {
+					this.gLoading(this, true);
 					/* 发送验证码 */
 					sendCode({
-            phone: this.phone,
-            type: "changePassword"
-          })
+						phone: this.phone,
+						type: 'changePassword'
+					})
 					.then(res => {
 						/* 设置全局倒计时 */
-						this.time = getApp().globalData.gCodeMaxTime
-						getApp().globalData.gCodeTime = getApp().globalData.gCodeMaxTime
+						this.time = getApp().globalData.gCodeMaxTime;
+						getApp().globalData.gCodeTime = getApp().globalData.gCodeMaxTime;
 						timer = setInterval(() => {
-							this.time--
-							getApp().globalData.gCodeTime--
-							if(this.time <= 0)
-							{
-								clearInterval(timer)
+							this.time--;
+							getApp().globalData.gCodeTime--;
+							if (this.time <= 0) {
+								clearInterval(timer);
 							}
-						},1000)
-						this.gToastSuccess("验证码已发送")
-            this.gLoading(this,false)
+						}, 1000);
+						this.gToastSuccess('验证码已发送');
+						this.gLoading(this, false);
 					})
-          .catch(err => {
-            this.gLoading(this,false)
-          })
+					.catch(err => {
+						this.gLoading(this, false);
+					});
 				}
 			}
 		},
@@ -124,37 +99,32 @@ export default {
 			name: setPassword
 			description: 重置密码
 		*/
-		changePassword()
-		{
+		changePassword() {
 			/* 前端校验数据格式 */
-			if(!reg.test(this.phone))
-				this.gToastError("手机格式错误")
-			else if(this.password === "")
-				this.gToastError("请填写密码")
-			else if(this.password !== this.password2)
-				this.gToastError("密码不一致")
-			else if(this.code.length !== 4)
-				this.gToastError("验证码错误")
-			else{
-        this.gLoading(this,true)
+			if (!reg.test(this.phone)) this.gToastError('手机格式错误');
+			else if (this.password === '') this.gToastError('请填写密码');
+			else if (this.password !== this.password2) this.gToastError('密码不一致');
+			else if (this.code.length !== 4) this.gToastError('验证码错误');
+			else {
+				this.gLoading(this, true);
 				const data = {
 					phone: this.phone,
 					newPassword: this.password,
 					code: this.code
-				}
+				};
 				ChangePassword(data)
-				.then(res => {
-					this.gToastSuccess(res.msg)
-					setTimeout(() => {
-						uni.navigateBack({
-							delta: 1,
-						})
-					},500)
-          this.gLoading(this,false)
-				})
-        .catch(err => {
-          this.gLoading(this,false)
-        })
+					.then(res => {
+						this.gToastSuccess(res.msg);
+						setTimeout(() => {
+							uni.navigateBack({
+								delta: 1
+							});
+						}, 500);
+						this.gLoading(this, false);
+					})
+					.catch(err => {
+						this.gLoading(this, false);
+					});
 			}
 		}
 	},
@@ -169,12 +139,10 @@ export default {
 						0ns后获取
 						ns后获取
 		*/
-		codeText(){
-			if(this.time === 0)
-				return "获取验证码"
-			else if(this.time >= 10)
-				return `${this.time}s后重新获取`
-			return `0${this.time}s后重新获取`
+		codeText() {
+			if (this.time === 0) return '获取验证码';
+			else if (this.time >= 10) return `${this.time}s后重新获取`;
+			return `0${this.time}s后重新获取`;
 		}
 	},
 	onLoad() {
@@ -182,20 +150,19 @@ export default {
 			检查全局发送验证码倒计时是否为0
 			若不为0则将当前页的time设置为剩余时间
 		*/
-		const gTime = getApp().globalData.gCodeTime
-		if(gTime > 0){
+		const gTime = getApp().globalData.gCodeTime;
+		if (gTime > 0) {
 			/* 发送验证码倒计时 */
-			this.time = gTime
+			this.time = gTime;
 			timer = setInterval(() => {
-				this.time--
-				if(this.time <= 0)
-				{
-					clearInterval(timer)
+				this.time--;
+				if (this.time <= 0) {
+					clearInterval(timer);
 				}
-			},1000)
+			}, 1000);
 		}
 	}
-}
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -251,7 +218,7 @@ export default {
 					margin-left 8px
 					font-size 46rpx
 					color var(--gray1)
-					 &.readed
+					&.readed
 						right 10px
 				input
 					width 100%

@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   Loading: function() {
-    return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 161))
+    return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 243))
   }
 }
 var render = function() {
@@ -181,27 +181,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var _api_login = __webpack_require__(/*! ../..//static/request/api_login.js */ 19); //
 //
 //
@@ -243,28 +222,7 @@ var _api_login = __webpack_require__(/*! ../..//static/request/api_login.js */ 1
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var timer;var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {return { phone: "", password: "", password2: "", code: "", isPassword: true, // 是否展示密码
+var timer;var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {return { phone: '', password: '', password2: '', code: '', isPassword: true, // 是否展示密码
       time: 0 // 倒计时
     };}, methods: { /*
                     	name: getCode
@@ -273,10 +231,22 @@ var timer;var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {
                     				this.time: Number,计时时间
                     				this.phone: String,手机号
                     	return: null
-                    */getCode: function getCode() {var _this = this; /* 时间<=0时不执行 */if (this.time <= 0) {if (!reg.test(this.phone)) {this.gToastError("手机格式错误");} else {this.gLoading(this, true); /* 发送验证码 */(0, _api_login.sendCode)({ phone: this.phone, type: "changePassword" }).then(function (res) {/* 设置全局倒计时 */_this.time = getApp().globalData.gCodeMaxTime;getApp().globalData.gCodeTime = getApp().globalData.gCodeMaxTime;timer = setInterval(function () {_this.time--;getApp().globalData.gCodeTime--;if (_this.time <= 0) {clearInterval(timer);}}, 1000);_this.gToastSuccess("验证码已发送");_this.gLoading(_this, false);}).catch(function (err) {_this.gLoading(_this, false);});}}}, /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   	name: setPassword
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   	description: 重置密码
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   */changePassword: function changePassword() {var _this2 = this; /* 前端校验数据格式 */if (!reg.test(this.phone)) this.gToastError("手机格式错误");else if (this.password === "") this.gToastError("请填写密码");else if (this.password !== this.password2) this.gToastError("密码不一致");else if (this.code.length !== 4) this.gToastError("验证码错误");else {
+                    */getCode: function getCode() {var _this = this; /* 时间<=0时不执行 */if (this.time <= 0) {if (!reg.test(this.phone)) {this.gToastError('手机格式错误');} else {this.gLoading(this, true); /* 发送验证码 */(0, _api_login.sendCode)({ phone: this.phone, type: 'changePassword' }).then(function (res) {/* 设置全局倒计时 */_this.time = getApp().globalData.gCodeMaxTime;getApp().globalData.gCodeTime = getApp().globalData.gCodeMaxTime;timer = setInterval(function () {_this.time--;getApp().globalData.gCodeTime--;if (_this.time <= 0) {clearInterval(timer);}}, 1000);_this.gToastSuccess('验证码已发送');_this.gLoading(_this, false);}).catch(function (err) {_this.gLoading(_this, false);
+          });
+        }
+      }
+    },
+    /*
+       	name: setPassword
+       	description: 重置密码
+       */
+    changePassword: function changePassword() {var _this2 = this;
+      /* 前端校验数据格式 */
+      if (!reg.test(this.phone)) this.gToastError('手机格式错误');else
+      if (this.password === '') this.gToastError('请填写密码');else
+      if (this.password !== this.password2) this.gToastError('密码不一致');else
+      if (this.code.length !== 4) this.gToastError('验证码错误');else
+      {
         this.gLoading(this, true);
         var data = {
           phone: this.phone,
@@ -311,10 +281,8 @@ var timer;var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {
               				ns后获取
               */
     codeText: function codeText() {
-      if (this.time === 0)
-      return "获取验证码";else
-      if (this.time >= 10)
-      return "".concat(this.time, "s\u540E\u91CD\u65B0\u83B7\u53D6");
+      if (this.time === 0) return '获取验证码';else
+      if (this.time >= 10) return "".concat(this.time, "s\u540E\u91CD\u65B0\u83B7\u53D6");
       return "0".concat(this.time, "s\u540E\u91CD\u65B0\u83B7\u53D6");
     } },
 
@@ -329,8 +297,7 @@ var timer;var reg = /^1[3456789]\d{9}$/;var _default = { data: function data() {
       this.time = gTime;
       timer = setInterval(function () {
         _this3.time--;
-        if (_this3.time <= 0)
-        {
+        if (_this3.time <= 0) {
           clearInterval(timer);
         }
       }, 1000);

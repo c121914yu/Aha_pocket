@@ -179,8 +179,10 @@
 }
 .self .tasks .task.data-v-bf8d8ef4 {
   text-align: center;
+  font-size: 24rpx;
+  color: var(--origin1);
 }
-.self .tasks .task text.data-v-bf8d8ef4 {
+.self .tasks .task .iconfont.data-v-bf8d8ef4 {
   line-height: 1.2;
   font-size: 54rpx;
   color: var(--origin2);
@@ -190,10 +192,11 @@
   width: 90%;
 }
 .self .list .item.data-v-bf8d8ef4 {
-  margin-bottom: 3px;
+  margin-bottom: 1px;
   -webkit-transform: translateY(50vh);
           transform: translateY(50vh);
-  padding: 10px 20px;
+  opacity: 0;
+  padding: 5px 20px;
   background-color: #fff;
   display: -webkit-box;
   display: -webkit-flex;
@@ -201,8 +204,8 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  -webkit-animation: funShow-data-v-bf8d8ef4 0.2s forwards;
-          animation: funShow-data-v-bf8d8ef4 0.2s forwards;
+  -webkit-animation: funShow-data-v-bf8d8ef4 0.1s ease-out forwards;
+          animation: funShow-data-v-bf8d8ef4 0.1s ease-out forwards;
 }
 .self .list .item.data-v-bf8d8ef4:first-child {
   -webkit-border-top-left-radius: 20px;
@@ -217,11 +220,11 @@
           border-bottom-right-radius: 20px;
 }
 .self .list .item .iconfont.data-v-bf8d8ef4 {
-  font-size: 44rpx;
+  font-size: 40rpx;
   color: var(--origin2);
 }
 .self .list .item .right.data-v-bf8d8ef4 {
-  font-size: 60rpx;
+  font-size: 50rpx;
 }
 .self .list .item .name.data-v-bf8d8ef4 {
   margin-left: 25rpx;
@@ -273,12 +276,14 @@ to {
 to {
     -webkit-transform: translateY(0);
             transform: translateY(0);
+    opacity: 1;
 }
 }
 @keyframes funShow-data-v-bf8d8ef4 {
 to {
     -webkit-transform: translateY(0);
             transform: translateY(0);
+    opacity: 1;
 }
 }
 

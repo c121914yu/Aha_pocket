@@ -15,27 +15,30 @@ page {
   --shadow2: 1px 1px 2px rgba(144,140,139,0.65);
   --font-dark: #595757;
   --border1: 1px solid #808080;
+  --border2: 1px solid #dcdfe6;
   --speed-slide: 0.8s ease-in-out;
   --speed-hover: 0.5s;
 }
 page {
   margin: 0;
   padding: 0s;
-  font-size: 30rpx;
+  font-size: 28rpx;
   line-height: 1.5;
+  font-weight: 400;
   color: var(--black);
-  letter-spacing: 2rpx;
 }
 page,
-view {
+view,
+textarea {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
-input {
-  font-size: 28rpx;
+input,
+textarea {
+  font-size: 26rpx;
   padding: 5px;
-  -webkit-border-radius: 10px;
-          border-radius: 10px;
+  -webkit-border-radius: 8px;
+          border-radius: 8px;
 }
 button {
   border: none;
@@ -62,8 +65,9 @@ navigator {
   display: inline-block;
 }
 /* 默认placeholder样式 */
-.input-placeholder {
-  font-size: 24rpx;
+.input-placeholder,
+.textarea-placeholder {
+  font-size: 22rpx;
   color: var(--gray2);
   letter-spacing: 0;
 }
@@ -72,7 +76,10 @@ navigator {
           transform: scale(0.98);
 }
 .small {
-  font-size: 26rpx;
+  font-size: 24rpx;
+}
+.mini {
+  font-size: 20rpx;
 }
 .strong {
   font-weight: 700;
@@ -83,21 +90,44 @@ navigator {
 }
 .h3 {
   font-size: 32rpx;
-  font-weight: 700;
+  font-weight: 600;
 }
-.label {
-  font-size: 24rpx;
-  color: var(--origin2);
+.fix-screen {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.2);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.fix-screen .content {
+  padding: 10px;
+  background-color: #fff;
+}
+.blank {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
 }
 
 @font-face {
   font-family: 'iconfont';  /* project id 2102312 */
-  src: url('//at.alicdn.com/t/font_2102312_mlduyq0v0l.eot');
-  src: url('//at.alicdn.com/t/font_2102312_mlduyq0v0l.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_2102312_mlduyq0v0l.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_2102312_mlduyq0v0l.woff') format('woff'),
-  url('//at.alicdn.com/t/font_2102312_mlduyq0v0l.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_2102312_mlduyq0v0l.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_2102312_u5kc4u0n10a.eot');
+  src: url('//at.alicdn.com/t/font_2102312_u5kc4u0n10a.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2102312_u5kc4u0n10a.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2102312_u5kc4u0n10a.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2102312_u5kc4u0n10a.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2102312_u5kc4u0n10a.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -106,6 +136,90 @@ navigator {
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-duihuan:before {
+  content: "\e7da";
+}
+
+.icon-VIP:before {
+  content: "\e61d";
+}
+
+.icon-shuaxin:before {
+  content: "\ea29";
+}
+
+.icon-right:before {
+  content: "\e720";
+}
+
+.icon-xiangmu:before {
+  content: "\e616";
+}
+
+.icon-zengsong:before {
+  content: "\e661";
+}
+
+.icon-zhangdan:before {
+  content: "\e610";
+}
+
+.icon-tixian:before {
+  content: "\e60e";
+}
+
+.icon-ziyuan:before {
+  content: "\e621";
+}
+
+.icon-qian:before {
+  content: "\e60f";
+}
+
+.icon-xinxi:before {
+  content: "\e607";
+}
+
+.icon-write:before {
+  content: "\e60d";
+}
+
+.icon-share:before {
+  content: "\e619";
+}
+
+.icon-yuyin:before {
+  content: "\e6e1";
+}
+
+.icon-jinhangzhong:before {
+  content: "\e615";
+}
+
+.icon-hetong:before {
+  content: "\e605";
+}
+
+.icon-shoucang:before {
+  content: "\e606";
+}
+
+.icon-xieyi:before {
+  content: "\e60c";
+}
+
+.icon-waibao:before {
+  content: "\e602";
+}
+
+.icon-zhanghao:before {
+  content: "\e60b";
+}
+
+.icon-ID:before {
+  content: "\e65b";
 }
 
 .icon-start:before {
@@ -188,10 +302,6 @@ navigator {
   content: "\e769";
 }
 
-.icon-fanhui:before {
-  content: "\e653";
-}
-
 .icon-tianjia:before {
   content: "\e69d";
 }
@@ -228,20 +338,8 @@ navigator {
   content: "\e600";
 }
 
-.icon-shenghuofuwu:before {
-  content: "\e60f";
-}
-
 .icon-yiwancheng:before {
   content: "\e612";
-}
-
-.icon-huabanfuben:before {
-  content: "\e621";
-}
-
-.icon-huiyuan1:before {
-  content: "\e605";
 }
 
 .icon-shimingrenzheng:before {

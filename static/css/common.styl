@@ -15,22 +15,22 @@ page
 	--shadow2 1px 1px 2px rgba(144,140,139,0.65)
 	--font-dark #595757
 	--border1 1px solid #808080
+	--border2 1px solid #DCDFE6
 	--speed-slide .8s ease-in-out
 	--speed-hover 0.5s
 body
 	margin 0
 	padding 0s
-	font-size 30rpx
-	line-height 1.5
-	color var(--black)
-	letter-spacing 2rpx
-body,view	
-	box-sizing border-box
-
-input
 	font-size 28rpx
+	line-height 1.5
+	font-weight 400
+	color var(--black)
+body,view,textarea
+	box-sizing border-box
+input,textarea
+	font-size 26rpx
 	padding 5px
-	border-radius 10px
+	border-radius 8px
 button
 	border none
 	border-radius 12px
@@ -50,14 +50,16 @@ navigator
 	display inline-block
 
 /* 默认placeholder样式 */
-.input-placeholder
-	font-size 24rpx
+.input-placeholder,.textarea-placeholder
+	font-size 22rpx
 	color var(--gray2)
 	letter-spacing 0
 .hoverScale
 	transform scale(0.98)
 .small
-	font-size 26rpx
+	font-size 24rpx
+.mini
+	font-size 20rpx
 .strong
 	font-weight 700
 .center
@@ -65,7 +67,20 @@ navigator
 	margin auto
 .h3
 	font-size 32rpx
-	font-weight 700
-.label
-	font-size 24rpx
-	color var(--origin2)
+	font-weight 600
+.fix-screen
+	z-index 100
+	position fixed
+	top 0
+	left 0
+	right 0
+	bottom 0
+	background-color rgba(0,0,0,0.2)
+	display flex
+	align-items center
+	justify-content center
+	.content
+		padding 10px
+		background-color #FFFFFF
+.blank
+	flex 1

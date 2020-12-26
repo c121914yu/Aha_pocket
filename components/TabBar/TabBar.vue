@@ -7,7 +7,8 @@
 			v-for="(nav,index) in navs"
 			:key="index"
 			@click="$emit('navigate',nav.name)">
-			<text :class="'iconfont ' + nav.icon"></text>
+			<text v-if="currentNav===0 && index===0" class="iconfont icon-shuaxin"></text>
+			<text v-else :class="'iconfont ' + nav.icon"></text>
 			<view class="text">
 				{{nav.text}}
 			</view>
@@ -25,9 +26,9 @@ export default {
 	data() {
 		return {
 			navs: [
-				{icon: "icon-canjiaxiaowaijingsai",text: "项目分享",name: "ProjectHome"},
-				{icon: "icon-shenghuofuwu",text: "竞赛消息",name: "Competition"},
-				{icon: "icon-huiyuan1",text: "服务外包",name: "Epiboly"},
+				{icon: "icon-xiangmu",text: "项目分享",name: "ProjectHome"},
+				{icon: "icon-canjiaxiaowaijingsai",text: "竞赛组队",name: "Competition"},
+				{icon: "icon-waibao",text: "服务外包",name: "Epiboly"},
 				{icon: "icon-user",text: "我的",name: "Self"},
 			]
 		}
@@ -46,22 +47,27 @@ export default {
 	z-index 10
 	position fixed
 	bottom 0
-	height 140rpx
+	height 70px
 	width 100%
 	background-color var(--origin2)
 	display flex
 	align-items center
 	justify-content space-around
-	text-align center
 	.bar
 		z-index 2
+		height 70px
 		flex 1
 		color #FFFFFF
 		line-height 1.2
+		display flex
+		flex-direction column
+		justify-content center
+		align-items center
 		.iconfont
-			font-size 44rpx
+			font-size 40rpx
 		.text
-			font-size 28rpx
+			font-weight 600
+			font-size 24rpx
 	.slide-card
 		z-index 1
 		position absolute
