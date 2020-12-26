@@ -122,7 +122,7 @@ export default {
 				}
 			})
 			let compId = ""
-			getApp().globalData.Matches.find(item => {
+			getApp().globalData.Competitions.find(item => {
 				if(item.name === base.compName){
 					compId = item.compTagId
 					return
@@ -266,12 +266,12 @@ export default {
 		border-radius 8px
 		background-color #FFFFFF
 		box-shadow var(--shadow2)
-		display flex
-		align-items center
-		justify-content space-around
+		display grid
+		grid-template-columns repeat(3,1fr)
 		overflow hidden
 		.nav
 			z-index 2
+			text-align center
 			transition .3s
 			&.active
 				color #FFFFFF
@@ -282,7 +282,6 @@ export default {
 			height 100%
 			background-color var(--origin1)
 			opacity 0.8
-			border-radius 10px
 			transition .3s
 	/* 按键 */
 	.btn

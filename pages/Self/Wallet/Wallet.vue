@@ -2,19 +2,9 @@
 <template>
 	<view class="wallet">
 		<view class="head">
-			<view class="balance">
-				<view class="small">余额(元)</view>
-				<view class="h3">{{myBalance}}</view>
-				<view class="function">
-					<view class="ctr">
-						<text class="iconfont icon-tixian"></text>
-						<text>提现</text>
-					</view>
-				</view>
-			</view>
-			<view class="points">
-				<view class="small">贡献点(个)</view>
-				<view class="h3">{{myPoint}}</view>
+			<view>
+				<view class="small">Aha币</view>
+				<view class="h3">{{AhaB}}</view>
 				<view class="function">
 					<view class="ctr">
 						<text class="iconfont icon-qian"></text>
@@ -26,17 +16,29 @@
 					</view>
 				</view>
 			</view>
+			<view>
+				<view class="small">Aha点</view>
+				<view class="h3">{{AhaD}}</view>
+				<view class="function">
+					<view class="ctr" @click="isShowGive=true">
+						<text class="iconfont icon-duihuan"></text>
+						<text>兑换</text>
+					</view>
+				</view>
+			</view>
 		</view>
 		<!-- 卡片操作 -->
+		<view class="card" @click="withdrawDeposit">
+			<text class="logo iconfont icon-tixian"></text>
+			<text class="name">Aha币提现</text>
+			<text class="explain">实名认证后才可提现</text>
+		</view>
 		<navigator 
 			class="card"
-			v-for="(card,index) in cards"
-			:key="index"
-			:url="card.to">
-			<text :class="'logo iconfont ' + card.icon"></text>
-			<text class="name">{{card.name}}</text>
-			<text class="explain">{{card.explain}}</text>
-			<text class="right iconfont icon-arrow-right"></text>
+			url="Orders">
+			<text class="logo iconfont icon-zhangdan"></text>
+			<text class="name">账单信息</text>
+			<text class="right iconfont icon-right"></text>
 		</navigator>
 		<GivePoint
 			v-if="isShowGive"
@@ -52,13 +54,9 @@ import { getMe } from "@/static/request/api_userInfo.js"
 export default {
 	data() {
 		return {
-			myBalance: 0,
+			AhaB: 50,
+			AhaD: 100.5,
 			myPoint: getApp().globalData.gUserInfo.contribPoint,
-			cards: [
-				{name: "实名认证",icon: "icon-shimingrenzheng",to: "/pages/Self/Number/Authentication",explain: "实名认证后才可提现"},
-				{name: "贡献点账单",icon: "icon-icon",to: "Orders?type=0",explain: ""},
-				{name: "现金账单",icon: "icon-zhangdan",to: "Orders?type=1",explain: ""},
-			],
 			isShowGive: false
 		}
 	},
@@ -77,6 +75,16 @@ export default {
 		upDate()
 		{
 			this.isShowGive = false
+		},
+		/* 提现，判断是否实名认证，若未实名认证则跳转实名认证 */
+		withdrawDeposit()
+		{
+			uni.navigateTo({
+				url: "/pages/Self/Number/Authentication",
+				success: () => {
+					this.gToastError("请先实名认证")
+				}
+			})
 		}
 	}
 }
@@ -107,7 +115,7 @@ export default {
 				border-radius 22px
 				.iconfont
 					margin-right 5px
-				.icon-tixian
+				.icon-duihuan
 					color var(--origin1)
 				.icon-qian
 					color var(--origin2)
@@ -131,12 +139,9 @@ export default {
 			border-radius 50%
 			text-align center
 			font-size 40rpx
-		.icon-shimingrenzheng
+		.icon-tixian
 			color #5ad8a6
 			background-color rgba(90,216,166,0.2)
-		.icon-icon
-			color #5b8ff9
-			background-color rgba(91,143,249,0.2)
 		.icon-zhangdan
 			color #f8b86b
 			background-color rgba(248,184,107,0.2)

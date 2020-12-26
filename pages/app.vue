@@ -16,8 +16,7 @@
 		<!-- 导航 -->
 		<TabBar 
 			:currentNav="currentNav"
-			@navigate="navigate"
-			@flash="falshProjects">
+			@navigate="navigate">
 		</TabBar>
 		<!-- 主页 -->
 		<ProjectHome 
@@ -116,8 +115,8 @@ export default {
 			if(this.signedNotice){
                 getAllCompetition()
                 .then(res => {
-                    console.log(res.data);
-                    getApp().globalData.Matches = res.data
+                    getApp().globalData.Competitions = res.data
+					console.log(getApp().globalData.Competitions);
                 })
             }
 		},
@@ -150,18 +149,16 @@ export default {
 					scrollTop: 0 
 				})
 			}
+			else if(index === 0 && index === this.currentNav){
+				uni.pageScrollTo({
+					duration: 0,
+					scrollTop: 0 
+				})
+				this.$refs.projectHome.loadProjects(true)
+			}
 			this.currentNav = index
 			this.loadNav()
 		},
-		/* 刷新项目，重新获取 */
-		falshProjects()
-		{
-			uni.pageScrollTo({
-				duration: 0,
-				scrollTop: 0 
-			})
-			this.$refs.projectHome.loadProjects(true)
-		}
 	}
 }
 </script>

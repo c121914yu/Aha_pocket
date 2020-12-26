@@ -43,7 +43,7 @@ const deleteMessage = (messageId) => request(`/message/${messageId}`,"DELETE",{}
 /* 获取个人收藏项目 */
 const getCollectedProjects = () => request("/project/collection","GET",{})
 /* 获取个人购买的项目附件 */
-const getPurchasedProject = () => request("/project/resource/purchased","GET",{})
+const getPurchased = () => request("/project/resource/purchased","GET",{})
 
 export {
 	bindPhone,
@@ -63,5 +63,5 @@ export {
 	deleteMessage,
 	
 	getCollectedProjects,
-	getPurchasedProject
+	getPurchased
 }

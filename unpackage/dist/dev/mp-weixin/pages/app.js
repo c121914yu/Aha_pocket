@@ -183,10 +183,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 var _api_competition = __webpack_require__(/*! @/static/request/api_competition.js */ 46);
 var _api_system = __webpack_require__(/*! @/static/request/api_system.js */ 47); //
-//
 //
 //
 //
@@ -233,7 +231,8 @@ var _api_system = __webpack_require__(/*! @/static/request/api_system.js */ 47);
 var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages/Project/ProjectHome */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Project/ProjectHome")]).then((function () {return resolve(__webpack_require__(/*! ./Project/ProjectHome.vue */ 271));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Competition = function Competition() {__webpack_require__.e(/*! require.ensure | pages/Competition/Competition */ "pages/Competition/Competition").then((function () {return resolve(__webpack_require__(/*! ./Competition/Competition */ 278));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Epiboly = function Epiboly() {__webpack_require__.e(/*! require.ensure | pages/Epiboly/Epiboly */ "pages/Epiboly/Epiboly").then((function () {return resolve(__webpack_require__(/*! ./Epiboly/Epiboly */ 283));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 290));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { /* 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	第一次不直接加载界面，防止加载时间过长
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	切换到未缓存的界面时再进行加载
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */navs: [{ name: "ProjectHome", loaded: false }, { name: "Competition", loaded: false }, { name: "Epiboly", loaded: false }, { name: "Self", loaded: false }], currentNav: 0, signedNotice: getApp().globalData.gUserInfo.signedNotice, arr_systemNotice: [] };}, watch: { currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "竞赛信息";break;case 2:text = "服务外包";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });} }, components: { ProjectHome: ProjectHome, Competition: Competition, Epiboly: Epiboly, Self: Self }, onLoad: function onLoad() {var _this = this;(0, _api_system.getNotice)().then(function (res) {_this.arr_systemNotice = res.data;});console.log(getApp().globalData.gUserInfo);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */navs: [{ name: "ProjectHome", loaded: false }, { name: "Competition", loaded: false }, { name: "Epiboly", loaded: false }, { name: "Self", loaded: false }], currentNav: 0, signedNotice: getApp().globalData.gUserInfo.signedNotice, arr_systemNotice: [] };}, watch: { currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "竞赛信息";break;case 2:text = "服务外包";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });} }, components: { ProjectHome: ProjectHome, Competition: Competition, Epiboly: Epiboly, Self: Self }, onLoad: function onLoad() {var _this = this;(0, _api_system.getNotice)().then(function (res) {_this.arr_systemNotice = res.data;});
+    console.log(getApp().globalData.gUserInfo);
     this.loadCompetitionInfo();
     this.loadNav();
   },
@@ -256,8 +255,8 @@ var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages
       if (this.signedNotice) {
         (0, _api_competition.getAllCompetition)().
         then(function (res) {
-          console.log(res.data);
-          getApp().globalData.Matches = res.data;
+          getApp().globalData.Competitions = res.data;
+          console.log(getApp().globalData.Competitions);
         });
       }
     },
@@ -289,18 +288,16 @@ var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages
           duration: 0,
           scrollTop: 0 });
 
+      } else
+      if (index === 0 && index === this.currentNav) {
+        uni.pageScrollTo({
+          duration: 0,
+          scrollTop: 0 });
+
+        this.$refs.projectHome.loadProjects(true);
       }
       this.currentNav = index;
       this.loadNav();
-    },
-    /* 刷新项目，重新获取 */
-    falshProjects: function falshProjects()
-    {
-      uni.pageScrollTo({
-        duration: 0,
-        scrollTop: 0 });
-
-      this.$refs.projectHome.loadProjects(true);
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

@@ -151,7 +151,7 @@ export default {
 	.logo
 		z-index 5
 		position absolute
-		top 3vh
+		top 8vh
 		left 50%
 		transform translateX(-50%)
 		width 20vh
@@ -160,14 +160,14 @@ export default {
 		z-index 1
 		position absolute
 		top 0
-		height 70%
+		height 80%
 		width 100%
 		background-image var(--bg-linear)
 	.bottom
 		z-index 2
 		position absolute
 		bottom 0
-		height 70%
+		height 60%
 		width 100%
 		background-color var(--white1)
 		border-top-left-radius 60rpx

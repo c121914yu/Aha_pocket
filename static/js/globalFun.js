@@ -32,9 +32,9 @@ Vue.prototype.gToastError = (title,mask=false,duration=1500) => {
 	name: showModal
 	description: 提示确认操作
 	input: 
-				content: String,提示文字
-				success: Function,点击确认后的操作
-				cancel: Function,点击取消后的操作
+		content: String,提示文字
+		success: Function,点击确认后的操作
+		cancel: Function,点击取消后的操作
 */
 Vue.prototype.gShowModal = (content,success,cancel) => {
 	uni.showModal({

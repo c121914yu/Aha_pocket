@@ -7,8 +7,7 @@
 			'border-radius': radius,
 			'background-color': backgroundColor
 		}"
-		@click="$emit('click')"
-	>
+		@click="$emit('click')">
 		<!-- 排名图标 -->
 		<text v-if="ranking !== 0" :class="'ranking iconfont ' + rankingIcon"></text>
 		<!-- 头像 -->
@@ -19,7 +18,7 @@
 			<view class="head">
 				<text class="name strong">{{ project.name }}</text>
 				<view v-if="awardLevel" class="award" :style="{'backgroundColor': awardLevel.color}">
-					<image v-if="awardLevel.img" :src="`../../static/icon/${awardLevel.img}.png`"></image>
+					<image v-if="awardLevel.img" :src="`../../../static/icon/${awardLevel.img}.png`"></image>
 					<text>{{awardLevel.label}}</text>
 				</view>
 			</view>
@@ -97,7 +96,7 @@ export default {
 		},
 		compName() {
 			if (this.project.compId !== 0) {
-				const match = getApp().globalData.Matches.find(match => match.compTagId === this.project.compId);
+				const match = getApp().globalData.Competitions.find(match => match.compTagId === this.project.compId);
 				if (match){
 					return match.name;
 				} 

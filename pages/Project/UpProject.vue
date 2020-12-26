@@ -35,7 +35,7 @@ export default {
 		/* 判断用户是否签署合同，若为签署则跳转签署界面 */
 		if(!getApp().globalData.gUserInfo.signedContract)
 		{
-			uni.redirectTo({
+			uni.navigateTo({
 				url: "/pages/Self/Number/Contract",
 				success: () => {
 					this.gToastError("请先签署合同")
@@ -66,7 +66,7 @@ export default {
                 }
             })
 			let compId = ""
-            getApp().globalData.Matches.find(item => {
+            getApp().globalData.Competitions.find(item => {
                 if(item.name === base.compName){
                     compId = item.compTagId
                      return

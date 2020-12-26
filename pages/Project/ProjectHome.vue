@@ -31,24 +31,11 @@
 		</view>
 		<!-- 比赛推荐 -->
 		<view class="recommand">
-			<view class="title">
-				<text 
-					:class="index === sortIndex ? 'active' : ''" 
-					v-for="(sort, index) in sortList" 
-					:key="sort" 
-					@click="sortIndex=index;loadProjects(true)">
-					{{ sort.text }}
-				</text>
-				<text 
-					:style="{
-						color: filterActive ? 'var(--origin2)' : ''
-					}"
-					class="filter" 
-					@click="is_showFileter = true">
-					筛选
-					<text class="iconfont icon-shaixuan"></text>
-				</text>
-			</view>
+			<ProjectHead 
+				topRadius
+				@sortChange="sortChange" 
+				@filterChange="filterChange">
+			</ProjectHead>
 			<!-- 推荐比赛列表 -->
 			<view class="list">
 				<projectCard
@@ -63,15 +50,15 @@
 		</view>
 		<view class="center small remark">{{ is_showAll ? "已加载全部" : "" }}</view>
 
-		<!-- 筛选组件 -->
-		<ProjectFilter v-if="is_showFileter" @sureFilter="sureFilter" @close="is_showFileter=false"></ProjectFilter>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { getProjects } from '@/static/request/api_project.js';
+import { getProjects } from '@/static/request/api_project.js'
+import ProjectCard from "./components/ProjectCard.vue"
+import ProjectHead from "./components/ProjectHead.vue"
 export default {
 	data() {
 		return {
@@ -82,23 +69,17 @@ export default {
 				{url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/55/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.XONdUyq1A2d5d0fdaf1a2189515e12e9ce2779f01da7.JPG',name: "反向寻车系统",to: ''}
 			],
 			rankType: 'week',
-			sortList: [
-				{ text: '综合', val: 'read' }, 
-				{ text: '收藏量', val: 'collect' }, 
-				{ text: '最新', val: 'time' }, 
-				{ text: '获奖等级', val: 'awardLevel' },
-			],
 			pageNum: 1,
 			pageSize: 5,
-			sortIndex: 0,
-			compId: null,
-			awardLevel: null,
-			filterActive: false,
+			sortBy: "read",
+			filter: null,
 			RankingData: [],
 			commands: [],
-			is_showFileter: false,
-			is_showAll: false
 		};
+	},
+	components: {
+		ProjectHead,
+		ProjectCard
 	},
 	methods: {
 		/* 
@@ -116,13 +97,10 @@ export default {
 			let params = {
 				pageNum: this.pageNum,
 				pageSize: this.pageSize,
-				sortBy: this.sortList[this.sortIndex].val
+				sortBy: this.sortBy
 			}
-			if(this.compId !== null){
-				params.compId = this.compId
-			}
-			if(this.awardLevel!== null){
-				params.awardLevel = this.awardLevel
+			if(this.filter){
+				params[this.filter[0]] = this.filter[1]
 			}
 			getProjects(params)
 			.then(res => {
@@ -141,10 +119,6 @@ export default {
 				else if(this.commands.length > 0){
 					this.RankingData = [].concat(this.commands)
 				}
-				else{
-					this.showStatus = 3
-				}
-				
 				this.gLoading(this, false)
 				uni.stopPullDownRefresh()
 				console.log(this.commands);
@@ -164,24 +138,20 @@ export default {
 				this.loadProjects(false,false)
 			}
 		},
+		/* 排序发生改变，获取排序字段并重新请求数据 */
+		sortChange(e)
+		{
+			this.sortBy = e.val
+			this.loadProjects(true)
+		},
 		/* 
 			name: 确认筛选
 			desc: 获取筛选模式，关闭弹窗，请求数据
 		*/
-	    sureFilter(e)
+	    filterChange(e)
 	    {
-		    if(e.type === "all"){
-				this.filterActive = false
-			}
-			else{
-				this.filterActive = true
-			}
-			this.compId = null
-			this.awardLevel = null
-		   
-			this[e.type] = e.value
+			this.filter = e
 			this.loadProjects(true)
-			this.is_showFileter = false
 	    },
 		/* 进入项目详细 */
 		readProject(id) 
@@ -200,6 +170,7 @@ export default {
 <style lang="stylus">
 .resource-home
 	// 偏离底部导航距离
+	min-height 100vh
 	padding-bottom 140rpx
 	background-color var(--white1)
 	// 轮播图
@@ -239,28 +210,8 @@ export default {
 			overflow hidden
 	/* 推荐列表 */
 	.recommand
-		transform translateY(-15px)
-		margin 0 auto
+		margin -15px auto 0
 		width 90%
-		// 开头标题
-		.title
-			background-color var(--white2)
-			border-top-left-radius 22px
-			border-top-right-radius 22px
-			font-size 24rpx
-			display flex
-			align-items center
-			justify-content space-around
-			text
-				padding 20rpx 0
-			.active
-				color var(--origin2)
-				font-weight 700
-			.filter
-				display flex
-				align-items center
-				.iconfont
-					font-size 30rpx
 	.remark
 		transform translateY(-15px)
 		color var(--gray2)

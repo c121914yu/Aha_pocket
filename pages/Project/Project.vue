@@ -91,7 +91,7 @@
 					<view class="file" 
 						v-for="(file, index) in unPreviewFiles" 
 						:key="index">
-						<view class="name" @click="loadFile(file, index)">{{ file.name }}242424</view>
+						<view class="name" @click="readFile(file, index)">{{ file.name }}242424</view>
 						<button v-if="!file.isBuy" @click="buyFile(file)">{{file.price}}贡献度购买</button>
 					</view>
 				</view>
@@ -107,6 +107,8 @@
 					<view class="right">
 						<view class="head">
 							<view class="name">{{comment.user.nickname}}</view>
+							<view class="blank"></view>
+							<view class="score"><text class="iconfont icon-start"></text>{{comment.score}}</view>
 							<view class="time">{{comment.time}}</view>
 						</view>
 						<view class="container">
@@ -311,6 +313,9 @@ export default {
 					this.previewFiles[index].previewLoad = true
 					viewImg(res.data.url)
 				})
+				.catch(err => {
+					this.gLoading(this,false)
+				})
 			}
 		},
 		/* 
@@ -325,7 +330,7 @@ export default {
 				this.previewImg(file, index)
 			} 
 			else if(file.isBuy) {
-				this.loadFile(file, index);
+				this.readFile(file, index);
 				return;
 			}
 			/* 文档类：下载后打开 */ 
@@ -335,7 +340,7 @@ export default {
 					uni.openDocument({
 						filePath: file.previewUrl,
 						complete() {
-							uni.hideLoading()
+							this.gLoading(this,false)
 						}
 					})
 				} 
@@ -362,10 +367,10 @@ export default {
 			}
 		},
 		/* 
-			name: 下载附件
-			desc: 下载附件并打开,如果是视频则跳转播放页
+			name: 阅读完整附件
+			desc: 阅读完整附件,如果是视频则跳转播放页
 		*/
-		loadFile(file, index) 
+		readFile(file, index) 
 		{
 			if (!file.isBuy) {
 				this.gToastError('无权下载')
@@ -376,47 +381,12 @@ export default {
 			if (imgReg.test(file.name)) {
 				this.previewImg(file, index)
 			} 
-			/* 视频类型 */
+			/* 其他类型 */
 			else {
 				uni.navigateTo({
 					url: "readFile?id=" + file.id
 				})
 			} 
-			// const videoReg = /\.(swf|avi|flv|mp4|rm|mov|wav|asf|3gp|mkv|rmvb)$/i
-			/* 其他类型：下载后打开 */
-			// else {
-			// 	this.gLoading(this,true)
-			// 	if (file.loadUrl) {
-			// 		uni.openDocument({
-			// 			filePath: file.loadUrl,
-			// 			complete() {
-			// 				uni.hideLoading()
-			// 			}
-			// 		})
-			// 	} 
-			// 	else {
-			// 		getLoadSignature(file.id)
-			// 		.then(res => {
-			// 			/* 保存到本地 */
-			// 			uni.downloadFile({
-			// 				url: res.data.url,
-			// 				success: res => {
-			// 					file.loadUrl = res.tempFilePath
-			// 					uni.openDocument({
-			// 						filePath: file.loadUrl,
-			// 						complete() {
-			// 							this.gLoading(this,false)
-			// 						}
-			// 					})
-			// 				},
-			// 				fail: err => {
-			// 					console.log(err)
-			// 					this.gLoading(this,false)
-			// 				}
-			// 			})
-			// 		})
-			// 	}
-			// }
 		},
 		/* 滚动到评论区 */
 		scrollComment()
@@ -553,20 +523,20 @@ export default {
 					display inline-block
 				.file
 					margin-bottom 10px
+					width 100%
 					font-size 26rpx
 					display flex
 					align-items center
 					justify-content space-between
 					.name
-						flex 1
 						text-decoration underline
 						font-size 24rpx
 						color var(--origin1)
 						word-break break-all
 					button
-						min-width 88px
+						margin 0
 						white-space nowrap
-						padding 5px 0
+						padding 5px
 						border-radius 22px
 						font-size 22rpx
 						font-weight 400
@@ -585,16 +555,22 @@ export default {
 			.right
 				flex 1
 				margin-left 10px
-				font-size 24rpx
 				.head
 					display flex
-					justify-content space-between
+					align-items center
 					.name
 						padding 0 10px
 						border-radius 22px
 						background-color var(--origin2)
 						color #FFFFFF
+						font-size 24rpx
+					.score
+						font-size 22rpx
+						color var(--origin2)
+						.iconfont
+							font-size 22rpx
 					.time
+						margin-left 5px
 						font-size 22rpx
 						color var(--gray1)
 				.container

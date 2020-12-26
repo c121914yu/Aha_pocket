@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1990,9 +1990,9 @@ _vue.default.prototype.gToastError = function (title) {var mask = arguments.leng
    	name: showModal
    	description: 提示确认操作
    	input: 
-   				content: String,提示文字
-   				success: Function,点击确认后的操作
-   				cancel: Function,点击取消后的操作
+   		content: String,提示文字
+   		success: Function,点击确认后的操作
+   		cancel: Function,点击取消后的操作
    */
 _vue.default.prototype.gShowModal = function (content, _success, cancel) {
   uni.showModal({
@@ -7722,7 +7722,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7743,14 +7743,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7836,7 +7836,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8325,14 +8325,14 @@ myRequest;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getPurchasedProject = exports.getCollectedProjects = exports.deleteMessage = exports.postMessage = exports.getMessage = exports.getMessages = exports.getUnreadCount = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = exports.bindWxchat = exports.bindPhone = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.getPurchased = exports.getCollectedProjects = exports.deleteMessage = exports.postMessage = exports.getMessage = exports.getMessages = exports.getUnreadCount = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = exports.bindWxchat = exports.bindPhone = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              	name: 绑定手机号
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              	params:
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              			phone: String
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              			code: String
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	name: 绑定手机号
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       	params:
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       			phone: String
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       			code: String
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 var bindPhone = function bindPhone(data) {return (0, _request.default)("/bind/phone", "POST", data);};
 /* 绑定微信号 */exports.bindPhone = bindPhone;
 var bindWxchat = function bindWxchat(data) {return (0, _request.default)("/bind/wechat?code=" + data.code, "POST", data);};
@@ -8370,7 +8370,7 @@ var deleteMessage = function deleteMessage(messageId) {return (0, _request.defau
 /* 获取个人收藏项目 */exports.deleteMessage = deleteMessage;
 var getCollectedProjects = function getCollectedProjects() {return (0, _request.default)("/project/collection", "GET", {});};
 /* 获取个人购买的项目附件 */exports.getCollectedProjects = getCollectedProjects;
-var getPurchasedProject = function getPurchasedProject() {return (0, _request.default)("/project/resource/purchased", "GET", {});};exports.getPurchasedProject = getPurchasedProject;
+var getPurchased = function getPurchased() {return (0, _request.default)("/project/resource/purchased", "GET", {});};exports.getPurchased = getPurchased;
 
 /***/ }),
 

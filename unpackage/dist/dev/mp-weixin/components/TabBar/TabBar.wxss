@@ -2,7 +2,7 @@
   z-index: 10;
   position: fixed;
   bottom: 0;
-  height: 140rpx;
+  height: 70px;
   width: 100%;
   background-color: var(--origin2);
   display: -webkit-box;
@@ -13,15 +13,28 @@
           align-items: center;
   -webkit-justify-content: space-around;
           justify-content: space-around;
-  text-align: center;
 }
 .tabBar .bar.data-v-43a9aa84 {
   z-index: 2;
+  height: 70px;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
   color: #fff;
   line-height: 1.2;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
 }
 .tabBar .bar .iconfont.data-v-43a9aa84 {
   font-size: 40rpx;

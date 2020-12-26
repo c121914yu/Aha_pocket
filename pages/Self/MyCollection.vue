@@ -36,6 +36,7 @@
 
 <script>
 import { getCollectedProjects } from "@/static/request/api_userInfo.js"
+import ProjectCard from "../Project/components/ProjectCard.vue"
 export default {
 	data() {
 		return {
@@ -47,6 +48,9 @@ export default {
 			activeNav: 0,
 			list: []
 		}
+	},
+	components: {
+		ProjectCard
 	},
 	onLoad() {
 		this.getProjects()

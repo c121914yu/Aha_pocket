@@ -12,24 +12,11 @@
 		</navigator>
 		<!-- 项目卡片 -->
 		<view class="cards">
-			<view class="title">
-				<text 
-					:class="index === sortIndex ? 'active' : ''" 
-					v-for="(sort, index) in sortList" 
-					:key="sort"
-					@click="sortIndex=index;loadProjects(true)">
-					{{ sort.text }}
-				</text>
-				<text
-					class="filter"
-					:style="{
-						color: filterActive ? 'var(--origin2)' : ''
-					}"
-					@click="isFilter = true">
-					筛选
-					<text class="iconfont icon-shaixuan"></text>
-				</text>
-			</view>
+			<ProjectHead
+				topRadius
+				@sortChange="sortChange" 
+				@filterChange="filterChange">
+			</ProjectHead>
 			<!-- 推荐比赛列表 -->
 			<view>
 				<projectCard
@@ -54,26 +41,23 @@
 
 <script>
 import { getMeProjects, deleteProject } from '@/static/request/api_project.js';
+import ProjectCard from "./components/ProjectCard.vue"
+import ProjectHead from "./components/ProjectHead.vue"
 export default {
 	data() {
 		return {
 			couldSet: true,
-			sortList: [
-				{ text: '综合', val: 'read' }, 
-				{ text: '收藏量', val: 'collect' }, 
-				{ text: '最新', val: 'time' }, 
-				{ text: '获奖等级', val: 'awardLevel' },
-			],
-			sortIndex: 0,
 			projects: [],
 			pageNum: 1,
 			pageSize: 10,
-			compId: null,
-			awardLevel: null,
-			isFilter: false,
-			filterActive: false,
-			is_showAll: false, //0未加载完成，1加载全部，2加载中,3 无数据
-		};
+			sortBy: "read",
+			filter: null,
+			is_showAll: false, 
+		}
+	},
+	components: {
+		ProjectHead,
+		ProjectCard
 	},
 	onShow() {
 		this.loadProjects(true)
@@ -87,14 +71,6 @@ export default {
 		}
 	},
 	methods: {
-		/* 判断是否加载全部 */
-		judgeLoadAll(size)
-		{
-			if(size < this.pageSize)
-				this.is_showAll = true
-			else
-				this.pageNum++
-		},
 		/*
 			name: 获取项目
 			desc: 请求项目数据，根据界面条件排序/筛选。传入init参数，判断是否初始化进行操作。
@@ -109,17 +85,19 @@ export default {
 			let params = {
 				pageNum: this.pageNum,
 				pageSize: this.pageSize,
-				sortBy: this.sortList[this.sortIndex].val
+				sortBy: this.sortBy
 			}
-			if(this.compId !== null){
-				params.compId = this.compId
-			}
-			if(this.awardLevel!== null){
-				params.awardLevel = this.awardLevel
+			if(this.filter){
+				params[this.filter[0]] = this.filter[1]
 			}
 			getMeProjects(params)
 			.then(res => {
-				this.judgeLoadAll(res.data.pageData.length)
+				if(res.data.pageData.length < this.pageSize){
+					this.is_showAll = true
+				}
+				else{
+					this.pageNum++
+				}
 				this.projects = init ? res.data.pageData : this.projects.concat(res.data.pageData)
 				this.gLoading(this, false)
 				uni.stopPullDownRefresh()
@@ -130,22 +108,20 @@ export default {
 				uni.stopPullDownRefresh()
 			})
 		},
-		/*
+		/* 排序发生改变，获取排序字段并重新请求数据 */
+		sortChange(e)
+		{
+			this.sortBy = e.val
+			this.loadProjects(true)
+		},
+		/* 
 			name: 确认筛选
 			desc: 获取筛选模式，关闭弹窗，请求数据
 		*/
-		sureFilter(e)
+		filterChange(e)
 		{
-		    if(e.type === "all")
-				this.filterActive = false
-			else
-				this.filterActive = true
-			this.compId = null
-			this.awardLevel = null
-		   
-			this[e.type] = e.value
+			this.filter = e
 			this.loadProjects(true)
-			this.isFilter = false
 		},
 		/* 
 			name: 项目设置
@@ -211,26 +187,6 @@ export default {
 	.cards
 		width 90%
 		margin 0 auto
-		// 开头标题
-		.title
-			padding 20rpx 30rpx
-			background-color var(--white2)
-			border-top-left-radius 22px
-			border-top-right-radius 22px
-			font-size 24rpx
-			display flex
-			align-items center
-			justify-content space-between
-			/* 选中状态 */
-			.active
-				color var(--origin2)
-				font-weight 700
-			/* 筛选按键 */
-			.filter
-				display flex
-				align-items center
-				.iconfont
-					font-size 40rpx
 	.remark
 		padding 10px
 		color var(--gray1)

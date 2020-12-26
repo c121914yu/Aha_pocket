@@ -47,7 +47,7 @@
 <script>
 export default {
 	data() {
-		const Matches = getApp().globalData.Matches.map(item => item.name);
+		const Matches = getApp().globalData.Competitions.map(item => item.name);
 		const prizeLevels = getApp().globalData.prizeLevels;
 		return {
 			name: '', // 项目名称
@@ -138,7 +138,7 @@ export default {
 		width 50px
 		height 50px
 		border-radius 5px
-		border 2px solid var(--origin2)
+		border 1px solid var(--origin2)
 	image
 		border-color transparent
 	.addAvatar
@@ -160,7 +160,8 @@ export default {
 		margin 0 5px 5px 0
 		padding 0 10rpx
 		border 1px solid var(--origin2)
-		border-radius 20rpx
+		border-radius 22rpx
+		font-size 12px
 /* 获奖情况 */
 .set-prize
 	.title

@@ -17,14 +17,6 @@ __webpack_require__(/*! ./static/icon/iconfont.css */ 11);function _interopRequi
 
 /* 注册全局方法 */
 __webpack_require__(/*! ./static/js/globalFun.js */ 12);
-// import globalFun from 
-// Vue.prototype.gToastError = globalFun.gToastError
-// Vue.prototype.gToastSuccess = globalFun.gToastSuccess
-// Vue.prototype.gShowModal = globalFun.gShowModal
-// Vue.prototype.gUploadFile = globalFun.gUploadFile
-// Vue.prototype.gPutUserInfo = globalFun.gPutUserInfo
-// Vue.prototype.gLoading = globalFun.gLoading
-// Vue.prototype.gformatDate = globalFun.gformatDate
 
 var app = new _vue.default(_objectSpread({},
 _App.default));
@@ -114,7 +106,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     Schools: ['浙江工业大学', '杭州电子科技大学', '浙江大学', '杭州师范大学'], // 学校列表
     Degress: ['博士后', '博士', '硕士', '本科', '专科', '高中', '初中'], // 学历列表
     Grads: ['前1%', '1%-5%', '5%-20%', '20%-50%', '50%-100%'], // 成绩等级
-    Matches: [], // 所有比赛
+    Competitions: [], // 所有比赛
     prizeLevels: [
     { label: '国一', value: 53 },
     { label: '国二', value: 52 },
@@ -127,8 +119,22 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     { label: '市三', value: 31 },
     { label: '校一', value: 23 },
     { label: '校二', value: 22 },
-    { label: '校三', value: 21 },
-    { label: '参与奖', value: 11 }],
+    { label: '校三', value: 21 }
+    // { label: '参与奖', value: 11 }
+    ],
+    compType: [
+    { label: "经济类", value: 1 },
+    { label: "管理类", value: 2 },
+    { label: "法学类", value: 3 },
+    { label: "公管类", value: 4 },
+    { label: "语言类", value: 5 },
+    { label: "艺术传媒类", value: 6 },
+    { label: "学科类", value: 7 },
+    { label: "计算机类", value: 8 },
+    { label: "机械类", value: 9 },
+    { label: "建筑类", value: 10 },
+    { label: "化工类", value: 11 },
+    { label: "科研创业类", value: 12 }],
 
     feedbackTypes: [
     { label: "平台BUG", value: 0 },
