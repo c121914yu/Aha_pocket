@@ -70,7 +70,7 @@ export default {
 			],
 			rankType: 'week',
 			pageNum: 1,
-			pageSize: 5,
+			pageSize: 10,
 			sortBy: "read",
 			filter: null,
 			RankingData: [],
@@ -171,7 +171,7 @@ export default {
 .resource-home
 	// 偏离底部导航距离
 	min-height 100vh
-	padding-bottom 140rpx
+	padding-bottom 80px
 	background-color var(--white1)
 	// 轮播图
 	.header

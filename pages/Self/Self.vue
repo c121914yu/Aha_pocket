@@ -68,6 +68,13 @@
 				<text class="name small">{{ item.name }}</text>
 				<text class="right iconfont icon-arrow-right"></text>
 			</navigator>
+			<button 
+				class="item" 
+				open-type="contact">
+				<text class="iconfont icon-lianxikefu"></text>
+				<text class="name small">联系客服</text>
+				<text class="right iconfont icon-arrow-right"></text>
+			</button>
 		</view>
 		<!-- 兴趣选择 -->
 		<SelectInterest v-if="isCheckTags" @close="isCheckTags = false"></SelectInterest>
@@ -102,8 +109,7 @@ export default {
 			funtions2: [
 				{ name: '我的收藏', icon: 'icon-shoucang', to: '/pages/Self/MyCollection'},
 				{ name: '个人简历', icon: 'icon-jianli', to: '/pages/Self/Resume/Resume'},
-				{ name: '意见反馈', icon: 'icon-lianxikefu', to: '/pages/Self/Feedback/Feedback'},
-				{ name: '联系客服', icon: 'icon-lianxikefu', to: '/pages/Self/Feedback/Feedback'},
+				{ name: '意见反馈', icon: 'icon-feedback', to: '/pages/Self/Feedback/Feedback'},
 			],
 			isCheckTags: false // 是否进入选择标签
 		};
@@ -302,17 +308,17 @@ bgSetting(size, color)
 			height 70vw
 			display flex
 			animation 1ms closeCurtain forwards
-			animation-delay 0.8s
+			animation-delay 0.4s
 			view
 				width 50%
 			.one
 				background-color var(--origin2)
 				transform-origin right top
-				animation curtain1 0.5s forwards
+				animation curtain1 0.3s linear forwards
 			.two
 				background-color var(--origin2)
 				transform-origin left top
-				animation curtain2 0.5s forwards
+				animation curtain2 0.3s linear forwards
 	/* 核心导航 招募队友 & 资源分享 */
 	.navs
 		margin 10vw 0 20px
@@ -362,10 +368,12 @@ bgSetting(size, color)
 		width 90%
 		.item
 			margin-bottom 1px
+			height 47px
 			transform translateY(50vh)
 			opacity 0
-			padding 5px 20px
+			padding 0 20px
 			background-color #FFFFFF
+			border-radius 0
 			display flex
 			align-items center
 			animation funShow 0.1s ease-out forwards
@@ -386,6 +394,9 @@ bgSetting(size, color)
 				color var(--gray1)
 			.val
 				color var(--origin2)
+		button.item
+			text-align start
+			animation-delay .8s
 /* 动画 */
 @keyframes curtain1
 	to

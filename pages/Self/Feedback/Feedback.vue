@@ -66,7 +66,7 @@ export default {
 .feedback
 	.feedback-type
 		.item
-			padding 10px 10px 5px
+			padding 15px 10px
 			border-bottom var(--border2)
 			display flex
 			justify-content space-between

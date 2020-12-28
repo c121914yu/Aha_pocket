@@ -187,7 +187,7 @@ export default {
 			.register
 				color var(--gray2)
 		.other
-			margin-bottom 10px
+			margin-bottom 20px
 			text-align center
 			.strong
 				margin-bottom 15px
@@ -215,7 +215,7 @@ export default {
 			line-height 1
 			color #04BE02
 			background-color transparent
-			font-size 80rpx
+			font-size 45px
 			display block
 			&:active
 				transform none

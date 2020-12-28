@@ -62,7 +62,7 @@ export default {
 				{name: "Epiboly",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 0,
+			currentNav: 3,
 			signedNotice: getApp().globalData.gUserInfo.signedNotice,
 			arr_systemNotice: []
 		}

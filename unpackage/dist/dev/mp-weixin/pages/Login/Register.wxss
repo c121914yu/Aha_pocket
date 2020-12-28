@@ -43,8 +43,8 @@
           align-items: center;
 }
 .register .bottom .card.data-v-c728e9fc {
-  -webkit-transform: translateY(-5vh);
-          transform: translateY(-5vh);
+  -webkit-transform: translateY(-10vh);
+          transform: translateY(-10vh);
   width: 80%;
   padding: 5%;
   background-color: var(--white2);

@@ -100,8 +100,8 @@
   display: flex;
   -webkit-animation: 1ms closeCurtain-data-v-bf8d8ef4 forwards;
           animation: 1ms closeCurtain-data-v-bf8d8ef4 forwards;
-  -webkit-animation-delay: 0.8s;
-          animation-delay: 0.8s;
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s;
 }
 .self .head .curtain view.data-v-bf8d8ef4 {
   width: 50%;
@@ -110,15 +110,15 @@
   background-color: var(--origin2);
   -webkit-transform-origin: right top;
           transform-origin: right top;
-  -webkit-animation: curtain1-data-v-bf8d8ef4 0.5s forwards;
-          animation: curtain1-data-v-bf8d8ef4 0.5s forwards;
+  -webkit-animation: curtain1-data-v-bf8d8ef4 0.3s linear forwards;
+          animation: curtain1-data-v-bf8d8ef4 0.3s linear forwards;
 }
 .self .head .curtain .two.data-v-bf8d8ef4 {
   background-color: var(--origin2);
   -webkit-transform-origin: left top;
           transform-origin: left top;
-  -webkit-animation: curtain2-data-v-bf8d8ef4 0.5s forwards;
-          animation: curtain2-data-v-bf8d8ef4 0.5s forwards;
+  -webkit-animation: curtain2-data-v-bf8d8ef4 0.3s linear forwards;
+          animation: curtain2-data-v-bf8d8ef4 0.3s linear forwards;
 }
 .self .navs.data-v-bf8d8ef4 {
   margin: 10vw 0 20px;
@@ -193,11 +193,14 @@
 }
 .self .list .item.data-v-bf8d8ef4 {
   margin-bottom: 1px;
+  height: 47px;
   -webkit-transform: translateY(50vh);
           transform: translateY(50vh);
   opacity: 0;
-  padding: 5px 20px;
+  padding: 0 20px;
   background-color: #fff;
+  -webkit-border-radius: 0;
+          border-radius: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -235,6 +238,11 @@
 }
 .self .list .item .val.data-v-bf8d8ef4 {
   color: var(--origin2);
+}
+.self .list button.item.data-v-bf8d8ef4 {
+  text-align: start;
+  -webkit-animation-delay: 0.8s;
+          animation-delay: 0.8s;
 }
 /* 动画 */
 /* 隐藏幕布 */

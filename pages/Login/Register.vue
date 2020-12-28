@@ -176,7 +176,7 @@ export default {
 		flex-direction column
 		align-items center
 		.card
-			transform translateY(-5vh)
+			transform translateY(-10vh)
 			width 80%
 			padding 5%
 			background-color var(--white2)
