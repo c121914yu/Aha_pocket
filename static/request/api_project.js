@@ -1,7 +1,7 @@
 import request from "./request.js"
 
 /* 获取上传头像/证明材料签名 */
-const getPublicSignature = () => request("/project/sign/upload/public","GET",{})
+const getPublicSignature = (filename) => request("/project/sign/upload/public/v2?filename="+filename,"GET",{})
 
 /* 创建项目数据，保存至数据库 */
 const postProject = (data) => request("/project","POST",data)
@@ -45,7 +45,7 @@ const collectProject = (projectId) => request(`/project/collection/${projectId}`
 const cancleCollectProject = (projectId) => request(`/project/collection/${projectId}`,"DELETE",{})
 
 /* 获取上传文件签名 */
-const getFilesSignature = (projectId) => request(`/project/${projectId}/resources/sign/upload/private`,"GET",{})
+const getFilesSignature = (projectId,filename) => request(`/project/${projectId}/resources/sign/upload/private/v2?filename=${filename}`,"GET",{})
 /* 创建项目的资源信息 */
 const postResource = (projectId,data) => request(`/project/resource/${projectId}`,"POST",data)
 /* 删除资源 */

@@ -66,6 +66,7 @@ export default {
 		ProjectHead
 	},
 	onLoad() {
+		this.gUndesign()
 		this.loadPurchased()
 	},
 	methods: {

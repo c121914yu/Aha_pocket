@@ -7,6 +7,7 @@
 /* 核心导航 招募队友 & 资源分享 */
 /* 任务列表 */
 /* 功能列表 */
+/* 管理员编辑 */
 }
 .self .head.data-v-bf8d8ef4 {
   position: relative;
@@ -243,6 +244,17 @@
   text-align: start;
   -webkit-animation-delay: 0.8s;
           animation-delay: 0.8s;
+}
+.self .admin-edit.data-v-bf8d8ef4 {
+  margin: 10px auto;
+  width: 85%;
+  padding: 10px;
+  background-color: var(--origin2);
+  color: #fff;
+  text-align: center;
+  -webkit-border-radius: 22px;
+          border-radius: 22px;
+  display: block;
 }
 /* 动画 */
 /* 隐藏幕布 */

@@ -5,7 +5,7 @@ export default {
 	   getApp().globalData 获取
 	 */
 	globalData: {
-		baseUrl: 'http://47.93.224.217:8089',
+		baseUrl: 'https://ahapocket.cn/api',
 		ossHost: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/', // OSS Host域名
 		gCodeTime: 0, // 用户允许发送验证码的倒计时
 		gCodeMaxTime: 10, // 倒计时时长
@@ -48,9 +48,14 @@ export default {
 			{label: "平台体验修改建议",value: 1},
 			{label: "劣质项目",value: 2},
 			{label: "订单缺失/购买错误",value: 3},
+		],
+		arr_fileTypes: [
+			{type: 0,reg: /\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$/i}, //图片
+			{type: 1,reg: /\.(avi|wmv|mpg|mpeg|mov|rm|ram|swf|raw|flv|mp4|mp3|wma|avi|rmvb|mkv)$/i}, //视频,音频
+			{type: 2,reg: /\.(txt|doc|ppt|csv|xls|xlsx)$/i}, //文档
 		]
 	}
-};
+}
 </script>
 
 <style lang="stylus">

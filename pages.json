@@ -113,7 +113,12 @@
 				"navigationBarTitleText": "我的反馈",
 				"onReachBottomDistance": 100
 			}
-		},
+		}, {
+			"path": "pages/Self/AdminMD",
+			"style": {
+				"navigationBarTitleText": "管理员编辑"
+			}
+		}, 
 		/* 项目相关 */
 		{
 			"path": "pages/Project/UpProject",
@@ -160,6 +165,14 @@
 			"path": "pages/Epiboly/EpibolyDetail",
 			"style": {
 				"navigationBarTitleText": "外包信息"
+			}
+		},
+		
+		/* 比赛 */
+		{
+			"path": "pages/Competition/MyCompetition",
+			"style": {
+				"navigationBarTitleText": "我的比赛"
 			}
 		}
     ],

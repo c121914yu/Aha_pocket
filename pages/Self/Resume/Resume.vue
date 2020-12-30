@@ -1,26 +1,28 @@
 <template>
 	<!-- 个人简历 -->
-	<view class="resume" v-if="loaded">
-		<!-- 基本信息卡片 -->
-		<BaseInfo ref="baseInfo"></BaseInfo>
-		<!-- 教育经历 -->
-		<EduExperience ref="eduExperience"></EduExperience>
-		<!-- 校园经历 -->
-		<SchoolExperience ref="schoolExperience"></SchoolExperience>
-		<!-- 项目经历 -->
-		<ProjectExperience ref="projectExperience"></ProjectExperience>
-		<!-- 实习经历 -->
-		<PracticeExperience ref="practiceExperience"></PracticeExperience>
-		<!-- 专业技能卡片 -->
-		<ProSkill ref="projectSkill"></ProSkill>
-		<!-- 荣誉情况 -->
-		<Honors ref="honors"></Honors>
-		<!-- 自我介绍 -->
-		<SelfDescription ref="selfDescription"></SelfDescription>
-		<!-- 按键 -->
-		<view class="btns">
-			<button class="preview" @click="preview">预览</button>
-			<button class="save" @click="commitResume(true)">保存</button>
+	<view class="resume">
+		<view  v-if="loaded">
+			<!-- 基本信息卡片 -->
+			<BaseInfo ref="baseInfo"></BaseInfo>
+			<!-- 教育经历 -->
+			<EduExperience ref="eduExperience"></EduExperience>
+			<!-- 校园经历 -->
+			<SchoolExperience ref="schoolExperience"></SchoolExperience>
+			<!-- 项目经历 -->
+			<ProjectExperience ref="projectExperience"></ProjectExperience>
+			<!-- 实习经历 -->
+			<PracticeExperience ref="practiceExperience"></PracticeExperience>
+			<!-- 专业技能卡片 -->
+			<ProSkill ref="projectSkill"></ProSkill>
+			<!-- 荣誉情况 -->
+			<Honors ref="honors"></Honors>
+			<!-- 自我介绍 -->
+			<SelfDescription ref="selfDescription"></SelfDescription>
+			<!-- 按键 -->
+			<view class="btns">
+				<button class="preview" @click="preview">预览</button>
+				<button class="save" @click="commitResume(true)">保存</button>
+			</view>
 		</view>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>

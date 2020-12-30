@@ -178,7 +178,7 @@ export default {
 		arr_tags() {
 			if (this.tags){
 				return this.tags.split(" ")
-			} 
+			}
 			return ''
 		}
 	},
@@ -186,6 +186,7 @@ export default {
 		this.gLoading(this,true)
 		getProject(e.id)
 		.then(res => {
+			console.log(res.data);
 			for (let key in res.data){
 				this[key] = res.data[key]
 			}
@@ -218,7 +219,7 @@ export default {
 	},
 	methods: {
 		/* 初始化附件 */
-		initFiles(file)
+		initFiles()
 		{
 			/* 图片 & 含预览路径的文件分一类 */
 			const reg = /\.(gif|jpg|jpeg|png)$/i

@@ -34,7 +34,6 @@ export default {
 		}
 	},
 	created() {
-		console.log(this.fileInfo.price);
 		if(this.fileInfo){
 			this.name = this.fileInfo.name
 			this.price = this.fileInfo.price

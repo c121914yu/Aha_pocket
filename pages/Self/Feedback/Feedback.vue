@@ -15,7 +15,7 @@
 				<text class="iconfont icon-bottom"></text>
 			</navigator>
 		</view>
-		<view class="content" v-if="type">
+		<view class="content" v-if="type !== null">
 			<textarea
 				placeholder="写下您的意见或遇到的问题..." 
 				maxlength="-1"

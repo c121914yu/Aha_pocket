@@ -46,6 +46,9 @@ export default {
 	components: {
 		EpibolyCard
 	},
+	onLoad() {
+		this.gUndesign()
+	},
 	methods: {
 		/* 打开操作面板 */
 		showMenu(item)

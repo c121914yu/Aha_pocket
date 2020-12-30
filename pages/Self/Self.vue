@@ -28,7 +28,7 @@
 		<view class="navs">
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/Projects">我的项目</navigator>
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Epiboly/MyEpiboly">外包管理</navigator>
-			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/Projects">招募队友</navigator>
+			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Competition/MyCompetition">招募队友</navigator>
 		</view>
 		<!-- 任务 进行中 & 已完成 & 贡献详情 -->
 		<view class="tasks">
@@ -76,10 +76,12 @@
 				<text class="right iconfont icon-arrow-right"></text>
 			</button>
 		</view>
-		<!-- 兴趣选择 -->
-		<SelectInterest v-if="isCheckTags" @close="isCheckTags = false"></SelectInterest>
 		<!-- 登出 -->
 		<button style="width: 90%;margin: auto;background-color: #e86452;" @click="out">退出登录</button>
+		<!-- 管理员按键 -->
+		<navigator class="admin-edit" url="Self/AdminMD">管理员MD编辑器</navigator>
+		<!-- 兴趣选择 -->
+		<SelectInterest v-if="isCheckTags" @close="isCheckTags = false"></SelectInterest>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
@@ -177,36 +179,32 @@ export default {
 						uni.chooseImage({
 							count: 1, //默认9
 							sizeType: ['compressed'],
-							success: img => {
-								/* 压缩图片 */
-								uni.compressImage({
-									src: img.tempFilePaths[0],
-									quality: 50,
-									success: res => {
-										this.gLoading(this, true);
-										/* 获取签名 */
-										getAvatarOssSignature()
-										.then(sign => {
-											/* 上传文件 */
-											this.gUploadFile(res.tempFilePath, `${Date.now()}.JPG`, sign.data).then(upRes => {
-												/* 更新头像 */
-												putMe({
-													avatarUrl: upRes
-												})
-												.then(putRes => {
-													this.userInfo = this.gPutUserInfo({ avatarUrl: upRes }).userInfo;
-													this.gToastSuccess('修改头像成功!')
-													this.gLoading(this, false)
-												})
-												.catch(err => {
-													this.gLoading(this, false)
-												})
-											})
+							success: (img) => {
+								this.gLoading(this,true)
+								let start = Date.now()
+								/* 获取签名 */
+								getAvatarOssSignature(`${Date.now()}.JPG`)
+								.then(res => {
+									const url = img.tempFilePaths[0]
+									this.gUploadFile(url, res.data)
+									.then(url => {
+										putMe({
+											avatarUrl: url
+										})
+										.then(putRes => {
+											this.userInfo = this.gPutUserInfo({ avatarUrl: url }).userInfo;
+											this.gToastSuccess('修改头像成功!')
+											this.gLoading(this, false)
 										})
 										.catch(err => {
 											this.gLoading(this, false)
 										})
-									}
+									})
+									.catch(err => {
+										console.log(err)
+										this.gToastError("上传头像错误")
+										this.gLoading(this,false)
+									})
 								})
 							}
 						})
@@ -397,6 +395,16 @@ bgSetting(size, color)
 		button.item
 			text-align start
 			animation-delay .8s
+	/* 管理员编辑 */
+	.admin-edit
+		margin 10px auto
+		width 85%
+		padding 10px
+		background-color var(--origin2)
+		color #FFFFFF
+		text-align center
+		border-radius 22px
+		display block
 /* 动画 */
 @keyframes curtain1
 	to
