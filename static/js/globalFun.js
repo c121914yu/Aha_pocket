@@ -1,11 +1,16 @@
 import Vue from 'vue'
 /* 
 	name: showSuccess
-	description: 展示成功提示
-	input: 
-				title: String,提示文字
-				mask: Boolean,是否展示蒙层
+	description: 无图标提示
 */
+Vue.prototype.gToastMsg = (title,mask=false,duration=1500) => {
+	uni.showToast({
+		title,
+		mask,
+		duration,
+		icon: "none"
+	})
+}
 Vue.prototype.gToastSuccess = (title,mask=false,duration=1500) => {
 	uni.showToast({
 		title,
@@ -57,37 +62,74 @@ Vue.prototype.gShowModal = (content,success,cancel) => {
 /* 
 	name: uploadFile
 	description: 上传文件至OSS存储空间
-	input: 
-				url: String,待上传的临时路径
-				name: String,待上传文件的文件名
-				signature: Object,签名
+	@params filePath: String,待上传的临时路径
+	@params signature: Object,签名
 	return: 
-				fileName: String,最终的文件名
+				fileUrl: String,文件路径
+	time: 2020/12/30
 */
-Vue.prototype.gUploadFile = (url,name,signature) => {
-  const filename = `${signature.dir}/${name}`
-  return new Promise((resolve,reject) => {
-    uni.uploadFile({
-      url: signature.host,
-      filePath: url,
-      name: "file",
-      formData: {
-        key: filename, // 文件名
-        policy: signature.policy,
-        OSSAccessKeyId: signature.accessid,
-        signature: signature.signature
-      },
-      success: (res) => {
-        if(res.statusCode === 204)
-          resolve(getApp().globalData.ossHost + filename)
-         else
-          reject(err)
-      },
-      fail: (err) => {
-        reject(err)
-      }
-    })
-  })
+var COS = require('./COS.js')
+Vue.prototype.gUploadFile = (filePath,signature) => {
+	return new Promise((resolve,reject) => {
+		const cos = new COS({
+			getAuthorization: function (options, callback) {
+				callback({
+					Authorization: signature.authorization
+				})
+			}
+		})
+		/* 转化成二进制 */
+		wx.getFileSystemManager().readFile({
+			filePath,
+			success: (res) => {
+				cos.putObject({
+					Bucket: signature.bucketName,
+					Region: signature.region,
+					Key: signature.filename,
+					Body: res.data,
+				}, (err,data) => {
+					if(err){
+						reject(err)
+					}
+					else{
+						resolve("https://" + data.Location)
+					}
+				})
+			},
+			fail: (err) => {
+				reject(err)
+			}
+		})
+	})
+}
+
+/* 
+	获取文件
+	@params signature: Object,签名
+*/
+Vue.prototype.gGetFileUrl = (signature) => {
+	return new Promise((resolve,reject) => {
+		const cos = new COS({
+			getAuthorization: function (options, callback) {
+				callback({
+					Authorization: signature.authorization
+				})
+			}
+		})
+		/* 获取数据 */
+		cos.getObjectUrl({
+			Bucket: signature.bucketName,
+			Region: signature.region,
+			Key: signature.filename,
+			Sign: true,
+			Expires: 60,
+		}, (err, data) => {
+			if (err){
+				reject(err)
+			}
+			resolve(data.Url)
+		})
+	})
 }
 
 /* 
@@ -102,7 +144,7 @@ Vue.prototype.gPutUserInfo = (data) => {
 		getApp().globalData.gUserInfo.userInfo[key] = data[key]
 	}
 	console.log(getApp().globalData.gUserInfo);
-	return {...getApp().globalData.gUserInfo}
+	return getApp().globalData.gUserInfo
 }
 
 /* 
@@ -111,7 +153,7 @@ Vue.prototype.gPutUserInfo = (data) => {
 	input: Date
 	return: String
 */
-Vue.prototype.gformatDate = (time) => {
+Vue.prototype.gformatDate = (time,noAddr=false) => {
 	const date = new Date(time)
 	const year = date.getFullYear()
 	const month = date.getMonth() + 1
@@ -123,13 +165,16 @@ Vue.prototype.gformatDate = (time) => {
 	const nyear = nDay.getFullYear()
 	const nmonth = nDay.getMonth() + 1
 	const nday = nDay.getDate()
+	if(noAddr){
+		return `${year}/${month < 10 ? '0'+month : month}/${day < 10 ? '0'+day : day} ${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
+	}
 	if(year === nyear && month === nmonth && day === nday){
 		`${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
 	}
 	if(year === nyear){
 		return `${month < 10 ? '0'+month : month}/${day < 10 ? '0'+day : day} ${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
 	}
-	return `${year < 10 ? '0'+year : year}/${month < 10 ? '0'+month : month}/${day < 10 ? '0'+day : day} ${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
+	return `${year}/${month < 10 ? '0'+month : month}/${day < 10 ? '0'+day : day} ${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
 }
 
 /* 展示/隐藏等待 */
@@ -142,4 +187,39 @@ Vue.prototype.gLoading  = (that,type,delay=0) => {
 			}
 		},delay)
 	}
+}
+
+/* 
+	调用menu弹窗进行单选,将选择的结果返回
+	@params list: Array,选择列表，每个元素为一个对象，对象必须包含label属性,或者每个元素为字符串
+	@return 选择的元素
+	time: 2020/12/31
+*/
+Vue.prototype.gMenuPicker = (list) => {
+	return new Promise((resolve,reject) => {
+		uni.showActionSheet({
+			itemList: typeof list[0] === "object" ? list.map(item => item.label) : list,
+			success: (res) => {
+				resolve(list[res.tapIndex])
+			},
+			fail: (err) => {
+				reject(err)
+			}
+		})
+	})
+}
+
+/* 未设计界面提示 */
+Vue.prototype.gUndesign = (back=true) => {
+	uni.showModal({
+		title: "提示",
+		content: "该模块正在设计,尽情期待!",
+		confirmText: "期待",
+		showCancel: false,
+		success: () => {
+			uni.navigateBack({
+				delta: 1
+			})
+		}
+	})
 }

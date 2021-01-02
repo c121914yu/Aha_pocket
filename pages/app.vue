@@ -79,6 +79,12 @@ export default {
 			uni.setNavigationBarTitle({
 				title: text
 			})
+			if(newNav === 1 || newNav === 2){
+				uni.showToast({
+					title: "该模块正在开发!",
+					icon: "none"
+				})
+			}
 		}
 	},
 	components:{
@@ -92,9 +98,10 @@ export default {
 		.then(res => {
 			this.arr_systemNotice = res.data
 		})
-		console.log(getApp().globalData.gUserInfo)
 		this.loadCompetitionInfo()
 		this.loadNav()
+		/* 隐藏返回主页 */
+		wx.hideHomeButton()
 	},
 	onReachBottom(){
 		if(this.currentNav === 0){

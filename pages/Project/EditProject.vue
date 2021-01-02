@@ -80,7 +80,8 @@ export default {
 				return {
 					...file,
 					status: 2,
-					progress: 100
+					progress: 100,
+					type: getApp().globalData.arr_fileTypes.find((item) => item.value === file.type)
 				}
 			})
 			/* 同步成员信息 */
@@ -143,55 +144,89 @@ export default {
 			/* 空值检验 */
 			if(data.name === ""){
 				this.gToastError("请输入资源标题")
+				this.gLoading(this,false)
 				return
 			}
-		
-			let status = 0
-			const putProj = () => {
-				if(status === 2){
-					putProject(this.project.id,data)
-					.then(res => {
-						this.gToastSuccess("修改成功")
-					})
-                    this.gLoading(this,false)
+			
+			/* 触发更新项目 */
+			let successNum = 0
+			const postProj = () => {
+				if(successNum < 2){
+					return
 				}
+				putProject(this.project.id,data)
+					.then(res => {
+						this.gToastSuccess("更新成功")
+						this.gLoading(this, false);
+					})
+					.catch(err => {
+						this.gLoading(this, false);
+					});
+			};
+			
+			/* 判断是否有需要上传图片 */
+			if (!data.avatarUrl && !data.awardProveUrl) {
+				successNum = 2
+				postProj()
+				return
+			}
+			/* 上传头像*/
+			const reg = /\/tmp\//
+			if (data.avatarUrl && reg.test(data.avatarUrl)) {
+				getPublicSignature(`${Date.now()}.JPG`)
+				.then(signature => {
+					this.gUploadFile(data.avatarUrl, signature.data)
+						.then(url => {
+							console.log("头像上传成功");
+							data.avatarUrl = url
+							base.avatarUrl = url
+							successNum++
+							postProj()
+						})
+						.catch(err => {
+							this.gToastError('头像上传失败')
+							successNum++
+							postProj()
+						})
+				})
+				.catch(err => {
+					this.gToastError('头像上传失败')
+					successNum++
+					postProj()
+				})
+			}
+			else{
+				successNum++
 			}
 			
-			if(data.avatarUrl || data.awardProveUrl)
-				  /* 获取上传文件签名*/
-				  getPublicSignature()
-				  .then(sign => {
-				    /* 检查是否是临时路径*/
-				    const reg = /\/tmp\//
-				    /* 上传头像*/
-				    if(data.avatarUrl && reg.test(data.avatarUrl))
-				      this.gUploadFile(data.avatarUrl,`avatar/${data.name}`,sign.data)
-				      .then(res => {
-				        console.log("头像上传成功")
-				        data.avatarUrl = res
-				        status++
-				        putProj()
-				      })
-				    else
-				      status++
-				    /* 上传证明*/
-				    if(data.awardProveUrl && reg.test(data.awardProveUrl))
-				      this.gUploadFile(data.awardProveUrl,`awardProve/${data.name}`,sign.data)
-				      .then(res => {
-				        console.log("证明上传成功")
-				        data.awardProveUrl = res
-				        status++
-				        putProj()
-				      })
-				    else{
-				      status++
-				      putProj()
-				    }
-				  })
-				 else{
-				   status = 2
-				   putProj()
-				 }
+			/* 上传证明 */
+			if (data.awardProveUrl && reg.test(data.awardProveUrl)) {
+				getPublicSignature(`${Date.now()}.JPG`)
+				.then(signature => {
+					this.gUploadFile(data.awardProveUrl, signature.data)
+						.then(url => {
+							console.log("证明上传成功");
+							data.awardProveUrl = url
+							base.awardProveUrl = url
+							successNum++
+							postProj()
+						})
+						.catch(err => {
+							this.gToastError('证明上传失败')
+							successNum++
+							postProj()
+						})
+				})
+				.catch(err => {
+					this.gToastError('证明上传失败')
+					successNum++
+					postProj()
+				})
+			}
+			else{
+				successNum++
+				postProj()
+			}
 		},
 		/* 更新附件 */
 		updateFiles()
@@ -262,7 +297,6 @@ export default {
 		position fixed
 		top 0
 		width 100%
-		padding 10px
 		border-radius 8px
 		background-color #FFFFFF
 		box-shadow var(--shadow2)
@@ -271,6 +305,7 @@ export default {
 		overflow hidden
 		.nav
 			z-index 2
+			padding 10px
 			text-align center
 			transition .3s
 			&.active

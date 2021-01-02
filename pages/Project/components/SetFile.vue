@@ -6,13 +6,17 @@
 			<form @submit="sure">
 				<view class="item">
 					<text class="label">文件名</text>
-					<input name="name" type="text" placeholder="文件名" v-model="name">
+					<input type="text" placeholder="文件名" v-model="name">
 				</view>
 				<view class="item">
-					<text class="label">贡献值</text>
-					<input name="price" type="number" placeholder="购买所需贡献值" v-model.number="price">
+					<text class="label">文件类型</text>
+					<input type="text" placeholder="文件类型" :value="type.label" disabled @click="setFileType">
 				</view>
-				<view class="label center">(最大值: 100,最小值: 70)</view>
+				<view class="item">
+					<text class="label">AHa点</text>
+					<input type="number" placeholder="购买所需贡献值" v-model.number="price">
+				</view>
+				<view class="remark center">(最大值: 100,最小值: 70)</view>
 				<view class="btns">
 					<button form-type="submit">确认</button>
 					<button class="cancel" @click="$emit('close')">取消</button>
@@ -30,17 +34,30 @@ export default {
 	data() {
 		return {
 			name: "",
-			price: ""
+			price: "",
+			type: null
 		}
 	},
 	created() {
-		console.log(this.fileInfo.price);
 		if(this.fileInfo){
 			this.name = this.fileInfo.name
 			this.price = this.fileInfo.price
+			this.type = this.fileInfo.type
 		}
 	},
 	methods: {
+		/* 
+			设置文件类型，调用gMenuPicker弹窗进行选择
+			@set type: Object,文件类型
+			time: 2020/12/31
+		*/
+	    setFileType()
+		{
+			this.gMenuPicker(getApp().globalData.arr_fileTypes)
+			.then(res => {
+				this.type = res
+			})
+		},
 		/* 确认修改 */
 		sure(e)
 		{
@@ -53,7 +70,8 @@ export default {
 			else{
 				const data = {
 					name: this.name,
-					price: this.price
+					price: this.price,
+					type: this.type
 				}
 				/* 调用修改附件信息API */
 				this.$emit("success",data)
@@ -75,7 +93,10 @@ export default {
 			display flex
 			align-items center
 			.label
-				margin-right 10px
+				width 58px
+				font-size 22rpx
+			.remark
+				margin 5px
 			input
 				flex 1
 				border var(--border2)

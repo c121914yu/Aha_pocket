@@ -2,11 +2,11 @@
 <template>
 	<view class="wallet">
 		<view class="head">
-			<view>
+			<view class="bi">
 				<view class="small">Aha币</view>
 				<view class="h3">{{AhaB}}</view>
 				<view class="function">
-					<view class="ctr">
+					<view class="ctr" @click="isShowPay=true">
 						<text class="iconfont icon-qian"></text>
 						<text>充值</text>
 					</view>
@@ -16,15 +16,15 @@
 					</view>
 				</view>
 			</view>
-			<view>
+			<view class="dian">
 				<view class="small">Aha点</view>
 				<view class="h3">{{AhaD}}</view>
-				<view class="function">
+				<!-- <view class="function">
 					<view class="ctr" @click="isShowGive=true">
 						<text class="iconfont icon-duihuan"></text>
 						<text>兑换</text>
 					</view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<!-- 卡片操作 -->
@@ -40,16 +40,19 @@
 			<text class="name">账单信息</text>
 			<text class="right iconfont icon-right"></text>
 		</navigator>
+		
 		<GivePoint
 			v-if="isShowGive"
 			@close="isShowGive=false"
 			@success="upDate">
 		</GivePoint>
+		<PayAha v-if="isShowPay" @close="isShowPay=false"></PayAha>
 	</view>
 </template>
 
 <script>
 import GivePoint from "./components/GivePoint.vue"
+import PayAha from "./components/PayAha.vue"
 import { getMe } from "@/static/request/api_userInfo.js"
 export default {
 	data() {
@@ -57,13 +60,16 @@ export default {
 			AhaB: 50,
 			AhaD: 100.5,
 			myPoint: getApp().globalData.gUserInfo.contribPoint,
-			isShowGive: false
+			isShowGive: false,
+			isShowPay: false
 		}
 	},
 	components: {
-		GivePoint
+		GivePoint,
+		PayAha
 	},
 	onShow() {
+		this.gUndesign()
 		getMe()
 		.then(res => {
 			getApp().globalData.gUserInfo = res.data
@@ -99,6 +105,8 @@ export default {
 		text-align center
 		display flex
 		justify-content space-around
+		.dian
+			margin-right 10px
 		.small
 			color var(--gray2)
 			font-size 22rpx

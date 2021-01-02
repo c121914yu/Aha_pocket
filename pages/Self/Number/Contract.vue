@@ -1,6 +1,8 @@
 <!-- 合同 & 电子前面 -->
 <template>
-	<view class="contract">
+	<view 
+		class="contract"
+		:class="showSign ? 'unmove' : ''">
 		<view class="center h3">Aha 平台知识产权许可使用合同</view>
 		<view class="title">
 			<view class="item">
@@ -111,6 +113,10 @@ export default {
 		{
 			this.signUrl = url
 			this.showSign = false
+			uni.pageScrollTo({
+				duration: 0,
+				scrollTop: 10000
+			})
 		},
 		/* 
 			name: 确认签署
@@ -138,8 +144,10 @@ export default {
 				},
 				success: (res) => {
 					const data = JSON.parse(res.data)
-					uni.setStorageSync("token",data.data.token)
-					getApp().globalData.gUserInfo.signedContract = true
+					if(data.code === 200){
+						uni.setStorageSync("token",data.data.token)
+						getApp().globalData.gUserInfo.signedContract = true
+					}
 					uni.navigateBack({
 						delta: 1,
 						success: () => {
@@ -161,10 +169,13 @@ export default {
 
 <style lang="stylus" scoped>
 .contract
-	min-height 100
+	min-height 100vh
 	padding 10px
 	white-space pre-wrap
 	font-size 26rpx
+	&.unmove
+		height 100vh
+		overflow hidden
 	.title .item
 		margin 10px 10% 10px 0
 		display flex

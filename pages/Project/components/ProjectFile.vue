@@ -57,6 +57,7 @@
 <script>
 import { getFilesSignature,postResource,putResource,deleteResource } from "@/static/request/api_project.js"
 import SetFile from "./SetFile"
+const COS = require('@/static/js/COS.js')
 export default {
 	data() {
 		return {
@@ -79,6 +80,10 @@ export default {
 		*/
 		chooseFile()
 		{
+			if(this.files.length > 10){
+				this.gToastMsg("文件数量不能大于10")
+				return
+			}
             this.gLoading(this,true)
 			function renderSize(fsize){
 				const unitArr = new Array("Bytes","KB","MB","GB","TB","PB","EB","ZB","YB")
@@ -95,7 +100,7 @@ export default {
 				type: 'all',
 				success: (res) => {
 					/* 限制50M */
-					let files = res.tempFiles.filter(file => file.size < 50000000)
+					let files = res.tempFiles.filter(file => file.size < 500000000)
 					if(files.length < res.tempFiles.length){
 						this.gToastError("文件大于50M")
 					}
@@ -104,9 +109,10 @@ export default {
 							name: file.name,
 							url: file.path,
 							size: renderSize(file.size),
+							type: getApp().globalData.arr_fileTypes.find((item) => item.reg.test(file.name)),
 							progress: 0,
 							status: 0, // 0 待上传，1 上传中，2上传完成，3上传失败
-							price: 100
+							price: 100,
 						}
 					})
 					this.files = this.files.concat(files)
@@ -126,14 +132,47 @@ export default {
 		/* 点击文件，打开操作菜单 */
 		clickFile(index)
 		{
+			const file = this.files[index]
+			console.log(file);
+			let itemList = ["修改附件信息", "删除附件"]
+			if(file.type.value === 1){
+				itemList = ["设置预览片段", "修改附件信息", "删除附件"]
+			}
 			uni.showActionSheet({
-				itemList: ['修改附件信息', '删除附件'],
+				itemList,
 				success: res => {
-					if (res.tapIndex === 0) {
+					if (itemList[res.tapIndex] === "修改附件信息") {
 						this.setFileIndex = index
 					} 
-					else if (res.tapIndex === 1) {
+					else if (itemList[res.tapIndex] === "删除附件") {
 						this.removeFile(index)
+					}
+					/* 设置视频预览片段 */
+					else if (itemList[res.tapIndex] === "设置预览片段") {
+						if(file.status !== 2){
+							this.gToastError("请先上传该视频")
+						}
+						else{
+							wx.openVideoEditor({
+								filePath: file.url,
+								success: (res) => {
+									if(res.size > 20000000){
+										this.gToastError("大于20M")
+									}
+									else{
+										/* 上传预览视频 */
+										wx.previewMedia({
+											sources: [{
+												url: res.tempFilePath,
+												type: "video"
+											}],
+											showmenu: false
+										})
+										console.log(res.tempFilePath);
+									}
+								}
+							})
+						}
 					}
 				}
 			})
@@ -152,7 +191,9 @@ export default {
 			this.gShowModal(
 				`确认删除 ${this.files[index].name}?`,
 				() => {
-					deleteResource(this.files[index].id)
+					if(this.files[index].status === 2){
+						deleteResource(this.files[index].id)
+					}
 					this.files.splice(index,1)
 					this.gToastSuccess("删除成功")
 				}
@@ -165,111 +206,107 @@ export default {
 			.then(res => {
 				this.gToastSuccess("修改成功")
 			})
-			this.files[this.setFileIndex].name = e.name
-			this.files[this.setFileIndex].price = e.price
+			for(let key in e){
+				this.files[this.setFileIndex][key] = e[key]
+			}
 			this.setFileIndex = null
 		},
 		/* 
-			name: 上传附近
-			desc: 调用签名接口，上传附件
+			上传附件
+			time: 2020/12/30
 		*/
 		upload()
 		{
-			if(this.files.length === 0)
+			if(this.files.length === 0){
 				return
-			if(this.btnText === "已全部上传")
+			}
+			if(this.btnText === "已全部上传"){
 				return
+			}
 			this.uploading = true
 			this.gLoading(this,true)
-			/* 请求服务器更新资源状态 */
-			const api_postResource = async (file) => {
-				try{
-					const data = await postResource(this.projectId,{
-						name: file.name,
-						filename: file.filename,
-						price: file.price,
-						discount: 0
-					})
-					return data.data.id
+			/* 提示错误 */
+			const showErr = (err,index) => {
+				console.log(err);
+				this.files[index].status = 2
+				this.gToastError("上传错误")
+				this.gLoading(this,false)
+				this.uploading = false
+			}
+			/* 下一个,传入下一个index */
+			const nextFile = (index) => {
+				if(index === this.files.length){
+					this.gToastSuccess("已全部上传")
+					this.uploading = false
+					this.gLoading(this,false)
 				}
-				catch(err){
-					return false
+				/* 非上传成功状态 */
+				else if(this.files[index].status === 2){
+					nextFile(++index)
+				}
+				else{
+					upFile(index)
 				}
 			}
-		 
-			/* 获取签名 */
-			getFilesSignature(this.projectId)
-			.then(sign => {
-				const signature = sign.data
-				/* 开始上传任务，传入对应资源的下标 */
-				const startUpload = (i) => {
-					/* 
-						判断文件是否是待上传状态
-						是上传状态且非最后一个，则上传下一个
-						是最后一个附件则提示完成上传
-					*/
-					if(this.files[i].status === 2){
-						if(i < this.files.length-1){
-							startUpload(i+1)
-						}
-						else{
-							this.gToastSuccess("已全部上传")
-							this.uploading = false
-						}
-						return
-					}
-					this.files[i].status = 1
-					this.files[i].filename = `${signature.dir}${Date.now()}/${this.files[i].name}`
+			/* 上传文件 */
+			const upFile = (index) => {
+				const file = this.files[index]
+				this.files[index].status = 1
+				/* 获取签名 */
+				getFilesSignature(this.projectId,file.name)
+				.then(signature => {
+					signature = signature.data
 					/* 上传文件 */
-					const uploadTask =	uni.uploadFile({
-						url: signature.host,
-						filePath: this.files[i].url,
-						name: "file",
-						formData: {
-							key: this.files[i].filename, // 文件名
-							policy: signature.policy,
-							OSSAccessKeyId: signature.accessid,
-							signature: signature.signature
-						},
-						success: async(res) => {
-							/* 上传文件成功 */
-							if(res.statusCode === 204){
-								/* 判断更新资源文件是否成功 */
-								const postRes = await api_postResource(this.files[i])
-								if(postRes !== false){
-									this.files[i].id = postRes
-									this.files[i].status = 2
+					const cos = new COS({getAuthorization: function (options, callback) {callback({Authorization: signature.authorization})}})
+					/* 转化成二进制 */
+					wx.getFileSystemManager().readFile({
+						filePath: file.url,
+						success: (res) => {
+							/* 上传文件 */
+							cos.putObject({
+								Bucket: signature.bucketName,
+								Region: signature.region,
+								Key: signature.filename,
+								Body: res.data,
+								onProgress: (info) => {
+									console.log(JSON.stringify(info))
+									this.files[index].progress = info.percent*100
 								}
-								else
-									this.files[i].status = 3
-							}
-							else
-								this.files[i].status = 3
+							}, (err,data) => {
+								if(err){
+									showErr(err,index)
+								}
+								else{
+									this.files[index].status = 2
+									this.files[index].filename = signature.filename
+									/* 更新至数据库 */
+									postResource(this.projectId,{
+										name: file.name,
+										filename: file.filename,
+										price: file.price,
+										type: file.type.value,
+										discount: 0
+									})
+									.then(res => {
+										this.files[index].id = res.data.id
+										nextFile(++index)
+									})
+									.catch(err => {
+										showErr(err,index)
+									})
+								}
+							})
 						},
 						fail: (err) => {
-							console.log(err)
-							this.files[i].status = 3
-						},
-						complete: () => {
-							/* 判断是否需要上传下一个文件或是上传完成 */
-							if(i < this.files.length-1)
-							  startUpload(i+1)
-							else{
-								this.gLoading(this,false)
-								this.gToastSuccess("已全部上传")
-								this.uploading = false
-							}
+							showErr(err,index)
 						}
 					})
-					uploadTask.onProgressUpdate(res => {this.files[i].progress = res.progress})
-				}
-				startUpload(0)
-			})
-			.catch(err => {
-				console.log("无法获取上传凭证")
-				this.uploading = false
-				this.gLoading(this,false)
-			})
+				})
+				.catch(err => {
+					showErr(err,index)
+				})
+			}
+			nextFile(0)
 		}
 	},
 	computed:{

@@ -99,7 +99,7 @@
   color: var(--gray2);
 }
 .login .bottom .other.data-v-3a2da0cc {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   text-align: center;
 }
 .login .bottom .other .strong.data-v-3a2da0cc {
@@ -139,7 +139,7 @@
   line-height: 1;
   color: #04be02;
   background-color: transparent;
-  font-size: 80rpx;
+  font-size: 45px;
   display: block;
 }
 .login .bottom .weixin.data-v-3a2da0cc:active {

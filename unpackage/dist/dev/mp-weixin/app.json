@@ -20,6 +20,7 @@
     "pages/Self/MyCollection",
     "pages/Self/Feedback/Feedback",
     "pages/Self/Feedback/FeedBack_self",
+    "pages/Self/AdminMD",
     "pages/Project/UpProject",
     "pages/Project/EditProject",
     "pages/Project/Projects",
@@ -27,7 +28,8 @@
     "pages/Project/readFile",
     "pages/Project/PurchasedProjects",
     "pages/Epiboly/MyEpiboly",
-    "pages/Epiboly/EpibolyDetail"
+    "pages/Epiboly/EpibolyDetail",
+    "pages/Competition/MyCompetition"
   ],
   "subPackages": [],
   "window": {

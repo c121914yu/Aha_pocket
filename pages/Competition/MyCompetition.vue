@@ -1,7 +1,6 @@
-<!-- 比赛信息 -->
 <template>
 	<view>
-		该模块设计中，尽情期待！
+		比赛招募
 	</view>
 </template>
 
@@ -10,7 +9,10 @@ export default {
 	data() {
 		return {
 			
-		}
+		};
+	},
+	onLoad() {
+		this.gUndesign()
 	}
 }
 </script>

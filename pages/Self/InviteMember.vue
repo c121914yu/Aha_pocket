@@ -35,6 +35,9 @@ export default {
 			desc: "Aha口袋邀您加入",
 			imageUrl: "http://blogs.jinlongyuchitang.cn/background.jpg"
 		}
+	},
+	onLoad() {
+		this.gUndesign()
 	}
 }
 </script>

@@ -15,7 +15,7 @@
 				<text class="iconfont icon-bottom"></text>
 			</navigator>
 		</view>
-		<view class="content" v-if="type">
+		<view class="content" v-if="type !== null">
 			<textarea
 				placeholder="写下您的意见或遇到的问题..." 
 				maxlength="-1"
@@ -66,7 +66,7 @@ export default {
 .feedback
 	.feedback-type
 		.item
-			padding 10px 10px 5px
+			padding 15px 10px
 			border-bottom var(--border2)
 			display flex
 			justify-content space-between

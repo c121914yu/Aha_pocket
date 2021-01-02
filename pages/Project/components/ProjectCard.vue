@@ -84,19 +84,15 @@ export default {
 	computed: {
 		rankingIcon() {
 			switch (this.ranking) {
-				case 1:
-					return 'icon-first';
-				case 2:
-					return 'icon-second';
-				case 3:
-					return 'icon-third';
-				default:
-					return '';
+				case 1: return 'icon-first';
+				case 2: return 'icon-second';
+				case 3: return 'icon-third';
+				default: return '';
 			}
 		},
 		compName() {
 			if (this.project.compId !== 0) {
-				const match = getApp().globalData.Competitions.find(match => match.compTagId === this.project.compId);
+				const match = getApp().globalData.Competitions.find(match => match.id === this.project.compId)
 				if (match){
 					return match.name;
 				} 
@@ -178,18 +174,23 @@ export default {
 		.head
 			height 18px
 			display flex
-			justify-content space-between
 			align-items flex-start
 			.name
+				flex 1
 				font-size 20rpx
+				overflow hidden
+				text-overflow ellipsis
+				white-space nowrap
 			.award
 				border-radius 22px
+				white-space nowrap
 				display flex
 				align-items center
 				text
 					padding 0 7px 0 5px
 					color #FFFFFF
 				image
+					margin-left 5px
 					width 18px
 					height 18px
 		.comp-name

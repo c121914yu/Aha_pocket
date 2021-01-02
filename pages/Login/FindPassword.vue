@@ -20,7 +20,7 @@
 				<!-- 获取验证码 -->
 				<view class="input code">
 					<text class="iconfont icon-password"></text>
-					<input type="number" placeholder="验证码" placeholder-class="placeholderStyle" maxlength="6" v-model="code" />
+					<input type="number" placeholder="验证码:1234" placeholder-class="placeholderStyle" maxlength="6" v-model="code" />
 					<view
 						class="get-code"
 						:style="{
@@ -233,6 +233,7 @@ export default {
 						white-space nowrap
 						text-align center
 						transform translateX(5%)
+						color #FFFFFF
 						padding 5% 0
 						border-top-right-radius 10px
 						border-bottom-right-radius 10px

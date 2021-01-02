@@ -41,7 +41,7 @@ export default {
 	data() {
 		return {
 			navs: [
-				{name: "项目",val: "project",amount: 10},
+				{name: "项目",val: "project",amount: 0},
 				{name: "组队",val: "project",amount: 6},
 				{name: "外包",val: "project",amount: 6},
 			],
@@ -80,6 +80,7 @@ export default {
 						...item.project
 					}
 				})
+				this.navs[0].amount = this.list.length
 				console.log(this.list)
 				this.gLoading(this,false)
 			})

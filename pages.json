@@ -25,7 +25,7 @@
 			"path": "pages/app",
 			"style": {
 				"navigationBarTitleText": "项目分享",
-				"onReachBottomDistance": 100
+				"onReachBottomDistance": 150
 			}
 		},
 		/* 次界面，不含主导航 */
@@ -113,7 +113,12 @@
 				"navigationBarTitleText": "我的反馈",
 				"onReachBottomDistance": 100
 			}
-		},
+		}, {
+			"path": "pages/Self/AdminMD",
+			"style": {
+				"navigationBarTitleText": "管理员编辑"
+			}
+		}, 
 		/* 项目相关 */
 		{
 			"path": "pages/Project/UpProject",
@@ -142,7 +147,8 @@
 		}, {
 			"path": "pages/Project/readFile",
 			"style": {
-				"navigationBarTitleText": "阅读项目"
+				"navigationBarTitleText": "阅读项目",
+				"onReachBottomDistance": 150
 			}
 		}, {
 			"path": "pages/Project/PurchasedProjects",
@@ -160,6 +166,14 @@
 			"path": "pages/Epiboly/EpibolyDetail",
 			"style": {
 				"navigationBarTitleText": "外包信息"
+			}
+		},
+		
+		/* 比赛 */
+		{
+			"path": "pages/Competition/MyCompetition",
+			"style": {
+				"navigationBarTitleText": "我的比赛"
 			}
 		}
     ],

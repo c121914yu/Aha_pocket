@@ -99,7 +99,7 @@
 
 <script>
 import eIcon from './icon'
-import { getPublicSignature } from "@/static/request/api_project.js"
+import { getPublicFileSign } from "@/static/request/api_userInfo.js"
 export default {
 	props: {
 		// 占位符
@@ -226,38 +226,53 @@ export default {
 		/* 插入图片 */
 		insertImage() 
 		{
-			const upLoad = (urls,signature) => {
-				uni.showLoading({
-					title: "上传图片中...",
-					mask: true
-				})
-				let success = 0
-				urls.forEach(url => {
-					/* 获取文件名 */
-					const name = url.split("\/tmp\/")[1]
-					this.gUploadFile(url,name,signature)
-					.then(res => {
-						this.editorCtx.insertImage({
-							src: res, 
-							alt: name,
-							width: "100%"
-						})
-						success++
-						if(success === urls.length)
-							uni.hideLoading()
-					})
-					.catch(() => {
-						uni.hideLoading()
-					})
-				})
-			}
+			uni.showLoading({
+				title: "上传图片中...",
+				mask: true
+			})
+			let success = 0
 			uni.chooseImage({
-				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-				success:  (img) => {
-					getPublicSignature()
-					.then(sign => {
-						upLoad(img.tempFilePaths,sign.data)
+				sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
+				success:  (imgs) => {
+					imgs.tempFilePaths.forEach(img => {
+						/* 获取签名 */
+						getPublicFileSign(`${Date.now()}.JPG`)
+						.then(signature => {
+							/* 上传文件 */
+							this.gUploadFile(img,signature.data)
+							.then(url => {
+								/* 插入图片 */
+								this.editorCtx.insertImage({
+									src: url, 
+									alt: "插图",
+									width: "100%"
+								})
+								/* 判断上传进度，全部上传了则关闭等待 */
+								success++
+								if(success === imgs.tempFilePaths.length){
+									this.gToastSuccess("上传图片成功")
+									uni.hideLoading()
+								}
+							})
+							.catch((err) => {
+								this.gToastError("上传图片失败")
+								success++
+								if(success === imgs.tempFilePaths.length){
+									uni.hideLoading()
+								}
+							})
+						})
+						.catch(() => {
+							this.gToastError("上传图片失败")
+							success++
+							if(success === imgs.tempFilePaths.length){
+								uni.hideLoading()
+							}
+						})
 					})
+				},
+				fail() {
+					uni.hideLoading()
 				}
 			})
 		},
@@ -278,7 +293,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .mdeditor
 	box-sizing border-box
 	height 100vh
@@ -296,4 +311,6 @@ export default {
 		background #eee
 		display grid
 		grid-template-columns repeat(6,1fr)
+	img
+		border-radius 8px
 </style>

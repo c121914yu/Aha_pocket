@@ -24,7 +24,7 @@
 					:key="index"
 					margin="0 0 10px 0"
 					:radius="index === 0 ? '0 0 16px 16px' : '16px'"
-					:backgroundColor="project.passed ? '#ffffff' : 'rgba(248,184,107,0.1)'"
+					:backgroundColor="project.passed ? '#ffffff' : 'rgba(248,184,107,0.2)'"
 					:project="project"
 					@click="projectSetting(project)"
 				></projectCard>

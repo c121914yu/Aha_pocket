@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "项目分享",
-  "onReachBottomDistance": 100,
+  "onReachBottomDistance": 150,
   "usingComponents": {
     "loading": "/components/Loading/Loading",
     "user-agreement": "/components/UserAgreement/UserAgreement",

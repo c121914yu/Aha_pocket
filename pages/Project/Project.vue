@@ -80,26 +80,44 @@
 				</view>
 				<view class="small">非媒体类附件将从外部应用打开,请通过外部应用保存至本地.</view>
 				<view class="list">
-					<view class="val">可预览</view>
-					<view class="file"
-						v-for="(file, index) in previewFiles" 
-						:key="index">
-						<view class="name" @click="preview(file, index)">{{ file.name }}</view>
-						<button v-if="!file.isBuy" @click="buyFile(file)">{{file.price}}贡献点购买</button>
+					<!-- 已购买 -->
+					<view v-if="arr_purchasedFiles.length > 0">
+						<view class="val">已购买</view>
+						<view class="file"
+							v-for="(file, index) in arr_purchasedFiles" 
+							:key="index">
+							<view class="name" @click="readFile(file,index)">{{ file.name }}</view>
+						</view>
 					</view>
-					<view class="val">不可预览</view>
-					<view class="file" 
-						v-for="(file, index) in unPreviewFiles" 
-						:key="index">
-						<view class="name" @click="readFile(file, index)">{{ file.name }}242424</view>
-						<button v-if="!file.isBuy" @click="buyFile(file)">{{file.price}}贡献度购买</button>
+					<!-- 可预览 -->
+					<view v-if="arr_previewFiles.length > 0">
+						<view class="val">可预览</view>
+						<view class="file"
+							v-for="(file, index) in arr_previewFiles" 
+							:key="index">
+							<view class="name" @click="preview(file)">{{ file.name }}</view>
+							<button v-if="!file.isBuy" @click="buyFile(file)">{{file.price}}Aha点购买</button>
+						</view>
 					</view>
+					<!-- 不可预览 -->
+					<view v-if="arr_unpreviewFiles.length > 0">
+						<view class="val">不可预览</view>
+						<view class="file" 
+							v-for="(file, index) in arr_unpreviewFiles" 
+							:key="index">
+							<view class="name">{{ file.name }}242424</view>
+							<button v-if="!file.isBuy" @click="buyFile(file)">{{file.price}}Aha点购买</button>
+						</view>
+					</view>
+					
 				</view>
 			</view>
 			<!-- 项目评价 -->
 			<view class="item">
 				<view class="title" id="comments">项目评论</view>
+				<view v-if="comments.length===0" class="center nocomment">暂无评论</view>
 				<view 
+					v-else
 					class="comment"
 					v-for="(comment,index) in comments"
 					:key="index">
@@ -156,8 +174,9 @@ export default {
 			awardTime: '',
 			members: [],
 			resources: [],
-			previewFiles: [],
-			unPreviewFiles: [],
+			arr_purchasedFiles: [],
+			arr_previewFiles: [],
+			arr_unpreviewFiles: [],
 			comments: [],
 			/* 分页获取评论信息 */
 			pageNum: 1,
@@ -178,7 +197,7 @@ export default {
 		arr_tags() {
 			if (this.tags){
 				return this.tags.split(" ")
-			} 
+			}
 			return ''
 		}
 	},
@@ -186,6 +205,7 @@ export default {
 		this.gLoading(this,true)
 		getProject(e.id)
 		.then(res => {
+			console.log(res.data);
 			for (let key in res.data){
 				this[key] = res.data[key]
 			}
@@ -218,20 +238,22 @@ export default {
 	},
 	methods: {
 		/* 初始化附件 */
-		initFiles(file)
+		initFiles()
 		{
-			/* 图片 & 含预览路径的文件分一类 */
-			const reg = /\.(gif|jpg|jpeg|png)$/i
-			let success = 0
 			checkResourcePurchased(this.id)
 			.then(res => {
 				this.resources.forEach(file => {
 					file.isBuy = res.data.indexOf(file.id) > -1 ? true : false
-					if (reg.test(file.filename) || file.previewUrl){
-						this.previewFiles.push(file)
-					} 
+					if(file.isBuy){
+						this.arr_purchasedFiles.push(file)
+					}
+					else if(file.previewUrl){
+						this.arr_purchasedFiles.push(file)
+						// this.arr_previewFiles.push(file)
+					}
 					else{
-						this.unPreviewFiles.push(file)
+						this.arr_purchasedFiles.push(file)
+						// this.arr_unpreviewFiles.push(file)
 					}
 				})
 				this.gLoading(this,false)
@@ -291,48 +313,86 @@ export default {
 				})
 			})
 		},
-		/* 打开图片 */
-		previewImg(image, index) 
+		/* 
+			阅读项目, 先判断类型,文档类跳转预览，其他类型需要获取下载地址再进行操作
+			@params file:Object,文件信息
+		*/
+	    readFile(file,index)
 		{
-			this.gLoading(this,true)
-			const viewImg = (url) => {
-				uni.previewImage({
-					urls: [url],
-					success: () => {
-						this.gLoading(this,false)
-					}
+			const type = getApp().globalData.arr_fileTypes.find(item => item.reg.test(file.filename)).value
+			/* 文档类跳转previewFile界面 */
+			if(type === 2){
+				uni.navigateTo({
+					url: "readFile?id=" + file.id
 				})
 			}
-			if (image.previewLoad){
-				viewImg(image.previewUrl)
-			} 
-			else {
-				getLoadSignature(image.id)
-				.then(res => {
-					this.previewFiles[index].previewUrl = res.data.url
-					this.previewFiles[index].previewLoad = true
-					viewImg(res.data.url)
-				})
-				.catch(err => {
-					this.gLoading(this,false)
-				})
+			else{
+				this.gLoading(this,true)
+				if(file.url){
+					console.log(file.url);
+					/* 图片/视频直接打开 */
+					if(type === 0 || type === 1){
+						wx.previewMedia({
+							sources: [{
+								url: file.url,
+								type: file.type === 0 ? "image" : "video"
+							}],
+							showmenu: false,
+							complete: () => {
+								this.gLoading(this,false)
+							}
+						})
+					}
+					else{
+						/* 其他类需要下载到本地 */
+						this.gToastMsg("文件下载-设计中")
+						this.gLoading(this,false)
+					}
+				}
+				/* 没有缓存下载路径，请求签名路径后再回调该函数 */
+				else {
+					getLoadSignature(file.id)
+					.then(res => {
+						this.gGetFileUrl(res.data)
+						.then(url => {
+							this.arr_purchasedFiles[index].url = url
+							this.readFile(this.arr_purchasedFiles[index],index)
+							this.gLoading(this,false)
+						})
+						.catch(err => {
+							console.error(err)
+							this.gLoading(this,false)
+						})
+					})
+					.catch(err => {
+						console.error(err)
+						this.gLoading(this,false)
+					})
+				}
 			}
 		},
 		/* 
-			name: 预览项目
-			desc: 判断是否已经购买，如果已经购买触发下载
+			预览项目，先判断类型,文档类跳转预览，图片/视频直接打开
+			@params file:Object,文件信息
 		*/
-		preview(file, index) 
+		preview(file) 
 		{
-			/* 图片：获取预览连接后打开图片 */
-			const reg = /\.(gif|jpg|jpeg|png)$/i;
-			if(reg.test(file.filename)){
-				this.previewImg(file, index)
-			} 
-			else if(file.isBuy) {
-				this.readFile(file, index);
-				return;
+			const type = getApp().globalData.arr_fileTypes.find(item => item.reg.test(file.filename)).value
+			/* 文档类跳转previewFile界面 */
+			if(type === 2){
+				const urls = []
+				for(let i=1;i<=5;i++){
+					const url = `${file.previewUrl}${i}.jpg`
+					urls.push({url})
+				}
+				wx.previewMedia({
+					sources: urls
+				})
 			}
+			return
+			if(reg.test(file.filename)){
+				this.previewImg(file)
+			} 
 			/* 文档类：下载后打开 */ 
 			else {
 				this.gLoading(this,true)
@@ -348,11 +408,11 @@ export default {
 					uni.downloadFile({
 						url: file.previewUrl,
 						success: res => {
-							this.previewFiles[index].previewUrl = res.tempFilePath
-							this.previewFiles[index].previewLoad = true
+							this.arr_previewFiles[index].previewUrl = res.tempFilePath
+							this.arr_previewFiles[index].previewLoad = true
 							uni.openDocument({
 								filePath: res.tempFilePath,
-								complete() {
+								complete: () => {
 									this.gLoading(this,false)
 								}
 							})
@@ -365,28 +425,6 @@ export default {
 					})
 				}
 			}
-		},
-		/* 
-			name: 阅读完整附件
-			desc: 阅读完整附件,如果是视频则跳转播放页
-		*/
-		readFile(file, index) 
-		{
-			if (!file.isBuy) {
-				this.gToastError('无权下载')
-				return
-			}
-			const imgReg = /\.(gif|jpg|jpeg|png)$/i
-			/* 图片格式：直接打开 */
-			if (imgReg.test(file.name)) {
-				this.previewImg(file, index)
-			} 
-			/* 其他类型 */
-			else {
-				uni.navigateTo({
-					url: "readFile?id=" + file.id
-				})
-			} 
 		},
 		/* 滚动到评论区 */
 		scrollComment()
@@ -482,6 +520,7 @@ export default {
 					background-color var(--origin4)
 					color var(--gray1)
 					font-weight 24rpx
+					font-size 26rpx
 					/* 标题 */
 					&.name
 						min-width 50%
@@ -493,6 +532,7 @@ export default {
 						margin 0 5px 5px 0
 					/* 描述 */
 					&.desc
+						width 100%
 						border-radius 8px
 						padding 0 5px
 		/* 附件 */
@@ -527,8 +567,8 @@ export default {
 					font-size 26rpx
 					display flex
 					align-items center
-					justify-content space-between
 					.name
+						flex 1
 						text-decoration underline
 						font-size 24rpx
 						color var(--origin1)
@@ -585,4 +625,8 @@ export default {
 						font-size 22rpx
 					.iconfont
 						color var(--origin1)
+		.nocomment
+			font-size 20rpx
+			margin-top 5px
+			color var(--gray2)
 </style>
