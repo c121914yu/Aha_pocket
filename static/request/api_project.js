@@ -24,7 +24,6 @@ const getProject = (projectId) => request(`/project/${projectId}`,"GET",{})
 const putProject = (projectId,data) => request(`/project/${projectId}`,"PUT",data)
 /* 删除项目 */
 const deleteProject = (projectId) => request(`/project/${projectId}`,"DELETE",{})
-
 /* 获取评论
 	@prams	pageNum: Number,页码
 	@prams	pageSize: Number,分页大小
@@ -53,7 +52,9 @@ const deleteResource = (projectResourceId) => request(`/project/resource/${proje
 /* 修改资源信息 */
 const putResource = (projectResourceId,data) => request(`/project/resource/${projectResourceId}`,"PUT",data)
 /* 获取下载签名 */
-const getLoadSignature = (projectResourceId) => request(`/project/resource/${projectResourceId}/sign/download`,"GET",{})
+const getLoadSignature = (projectResourceId) => request(`/project/resource/${projectResourceId}/sign/download/v2 `,"GET",{})
+/* 获取阅读签名 */
+const getReadSignature = (projectResourceId) => request(`/project/resource/${projectResourceId}/sign/read/v2 `,"GET",{})
 
 /* 创建成员 */
 const postMember = (projectId,data) => request(`/project/member/${projectId}`,"POST",data)
@@ -75,7 +76,9 @@ export {
 	postResource,
 	deleteResource,
 	putResource,
+	getReadSignature,
 	getLoadSignature,
+	
 	getRemarks,
 	postRemark,
 	deleteRemark,

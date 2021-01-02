@@ -76,6 +76,7 @@
           border-radius: 0;
 }
 .self .head .right .tags.data-v-bf8d8ef4 {
+  padding-right: 5px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

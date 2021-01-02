@@ -147,7 +147,8 @@
 		}, {
 			"path": "pages/Project/readFile",
 			"style": {
-				"navigationBarTitleText": "阅读项目"
+				"navigationBarTitleText": "阅读项目",
+				"onReachBottomDistance": 150
 			}
 		}, {
 			"path": "pages/Project/PurchasedProjects",

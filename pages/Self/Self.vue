@@ -113,7 +113,7 @@ export default {
 				{ name: '个人简历', icon: 'icon-jianli', to: '/pages/Self/Resume/Resume'},
 				{ name: '意见反馈', icon: 'icon-feedback', to: '/pages/Self/Feedback/Feedback'},
 			],
-			isCheckTags: false // 是否进入选择标签
+			isCheckTags: false, // 是否进入选择标签
 		};
 	},
 	computed: {
@@ -289,6 +289,7 @@ bgSetting(size, color)
 				border-bottom 2px solid var(--origin2)
 				border-radius 0
 			.tags
+				padding-right 5px
 				display flex
 				flex-wrap wrap
 				.tag

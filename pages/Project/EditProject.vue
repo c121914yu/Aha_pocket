@@ -80,7 +80,8 @@ export default {
 				return {
 					...file,
 					status: 2,
-					progress: 100
+					progress: 100,
+					type: getApp().globalData.arr_fileTypes.find((item) => item.value === file.type)
 				}
 			})
 			/* 同步成员信息 */

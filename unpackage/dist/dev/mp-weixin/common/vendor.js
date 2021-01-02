@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1806,7 +1806,7 @@ uni$1;exports.default = _default;
 
 /***/ }),
 
-/***/ 10:
+/***/ 11:
 /*!**********************************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
   \**********************************************************************************************************/
@@ -1935,7 +1935,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 11:
+/***/ 12:
 /*!*********************************************!*\
   !*** D:/服务外包/竞赛统计/static/icon/iconfont.css ***!
   \*********************************************/
@@ -1948,7 +1948,7 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 12:
+/***/ 13:
 /*!*******************************************!*\
   !*** D:/服务外包/竞赛统计/static/js/globalFun.js ***!
   \*******************************************/
@@ -1959,11 +1959,16 @@ function normalizeComponent (
 /* WEBPACK VAR INJECTION */(function(uni) {var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 /* 
                                                                                                                                                              	name: showSuccess
-                                                                                                                                                             	description: 展示成功提示
-                                                                                                                                                             	input: 
-                                                                                                                                                             				title: String,提示文字
-                                                                                                                                                             				mask: Boolean,是否展示蒙层
+                                                                                                                                                             	description: 无图标提示
                                                                                                                                                              */
+_vue.default.prototype.gToastMsg = function (title) {var mask = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
+  uni.showToast({
+    title: title,
+    mask: mask,
+    duration: duration,
+    icon: "none" });
+
+};
 _vue.default.prototype.gToastSuccess = function (title) {var mask = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
   uni.showToast({
     title: title,
@@ -2021,7 +2026,7 @@ _vue.default.prototype.gShowModal = function (content, _success, cancel) {
    				fileUrl: String,文件路径
    	time: 2020/12/30
    */
-var COS = __webpack_require__(/*! ./COS.js */ 13);
+var COS = __webpack_require__(/*! ./COS.js */ 14);
 _vue.default.prototype.gUploadFile = function (filePath, signature) {
   return new Promise(function (resolve, reject) {
     var cos = new COS({
@@ -2053,6 +2058,35 @@ _vue.default.prototype.gUploadFile = function (filePath, signature) {
         reject(err);
       } });
 
+  });
+};
+
+/* 
+   	获取文件
+   	@params signature: Object,签名
+   */
+_vue.default.prototype.gGetFileUrl = function (signature) {
+  return new Promise(function (resolve, reject) {
+    var cos = new COS({
+      getAuthorization: function getAuthorization(options, callback) {
+        callback({
+          Authorization: signature.authorization });
+
+      } });
+
+    /* 获取数据 */
+    cos.getObjectUrl({
+      Bucket: signature.bucketName,
+      Region: signature.region,
+      Key: signature.filename,
+      Sign: true,
+      Expires: 60 },
+    function (err, data) {
+      if (err) {
+        reject(err);
+      }
+      resolve(data.Url);
+    });
   });
 };
 
@@ -2113,10 +2147,24 @@ _vue.default.prototype.gLoading = function (that, type) {var delay = arguments.l
   }
 };
 
-/*  根据后缀名判断文件类型*/
-_vue.default.prototype.gGetFileType = function (filename) {
-  var res = getApp().globalData.arr_fileTypes.find(function (item) {return item.reg.test(filename);});
-  return res.type;
+/* 
+   	调用menu弹窗进行单选,将选择的结果返回
+   	@params list: Array,选择列表，每个元素为一个对象，对象必须包含label属性,或者每个元素为字符串
+   	@return 选择的元素
+   	time: 2020/12/31
+   */
+_vue.default.prototype.gMenuPicker = function (list) {
+  return new Promise(function (resolve, reject) {
+    uni.showActionSheet({
+      itemList: typeof list[0] === "object" ? list.map(function (item) {return item.label;}) : list,
+      success: function success(res) {
+        resolve(list[res.tapIndex]);
+      },
+      fail: function fail(err) {
+        reject(err);
+      } });
+
+  });
 };
 
 /* 未设计界面提示 */
@@ -2137,7 +2185,7 @@ _vue.default.prototype.gUndesign = function () {var back = arguments.length > 0 
 
 /***/ }),
 
-/***/ 13:
+/***/ 14:
 /*!*************************************!*\
   !*** D:/服务外包/竞赛统计/static/js/COS.js ***!
   \*************************************/
@@ -2148,7 +2196,7 @@ _vue.default.prototype.gUndesign = function () {var back = arguments.length > 0 
 
 /***/ }),
 
-/***/ 145:
+/***/ 146:
 /*!*************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_resume.js ***!
   \*************************************************/
@@ -2156,7 +2204,7 @@ _vue.default.prototype.gUndesign = function () {var back = arguments.length > 0 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.putResume = exports.getResume = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.putResume = exports.getResume = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 
                                                                                                                                                                                                                                                                                        	description: 获取简历信息
@@ -7699,7 +7747,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7720,14 +7768,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7813,7 +7861,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8220,7 +8268,7 @@ internalMixin(Vue);
 
 /***/ }),
 
-/***/ 20:
+/***/ 21:
 /*!************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_login.js ***!
   \************************************************/
@@ -8228,7 +8276,7 @@ internalMixin(Vue);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.loginOut = exports.WXLogin = exports.Login = exports.ChangePassword = exports.Register = exports.sendCode = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.loginOut = exports.WXLogin = exports.Login = exports.ChangePassword = exports.Register = exports.sendCode = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 
                                                                                                                                                                                                                                                                                                                                                                    	description: 发送验证码
@@ -8286,7 +8334,7 @@ var loginOut = function loginOut() {return (0, _request.default)("/logout ", "GE
 
 /***/ }),
 
-/***/ 21:
+/***/ 22:
 /*!**********************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/request.js ***!
   \**********************************************/
@@ -8360,7 +8408,7 @@ myRequest;exports.default = _default;
 
 /***/ }),
 
-/***/ 22:
+/***/ 23:
 /*!***************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_userInfo.js ***!
   \***************************************************/
@@ -8368,7 +8416,7 @@ myRequest;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getPublicFileSign = exports.getPurchased = exports.getCollectedProjects = exports.deleteMessage = exports.postMessage = exports.getMessage = exports.getMessages = exports.getUnreadCount = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = exports.bindWxchat = exports.bindPhone = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.getPublicFileSign = exports.getPurchased = exports.getCollectedProjects = exports.deleteMessage = exports.postMessage = exports.getMessage = exports.getMessages = exports.getUnreadCount = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = exports.bindWxchat = exports.bindPhone = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	name: 绑定手机号
@@ -8462,7 +8510,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 47:
+/***/ 48:
 /*!******************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_competition.js ***!
   \******************************************************/
@@ -8470,14 +8518,14 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getAllCompetition = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.getAllCompetition = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /*  获取所有竞赛信息 */
 var getAllCompetition = function getAllCompetition() {return (0, _request.default)("/competition", "GET", {});};exports.getAllCompetition = getAllCompetition;
 
 /***/ }),
 
-/***/ 48:
+/***/ 49:
 /*!*************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_system.js ***!
   \*************************************************/
@@ -8485,7 +8533,7 @@ var getAllCompetition = function getAllCompetition() {return (0, _request.defaul
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.feedbackProblem = exports.getFeedbackMe = exports.getNotice = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.feedbackProblem = exports.getFeedbackMe = exports.getNotice = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 获取系统公告 */
 var getNotice = function getNotice() {return (0, _request.default)("/notice", "GET", {});};
@@ -8496,7 +8544,7 @@ var feedbackProblem = function feedbackProblem(data) {return (0, _request.defaul
 
 /***/ }),
 
-/***/ 55:
+/***/ 56:
 /*!**************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
   \**************************************************/
@@ -8504,7 +8552,7 @@ var feedbackProblem = function feedbackProblem(data) {return (0, _request.defaul
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteProject = exports.putProject = exports.postProject = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteRemark = exports.postRemark = exports.getRemarks = exports.getLoadSignature = exports.putResource = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.getProject = exports.getMeProjects = exports.getProjects = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteProject = exports.putProject = exports.postProject = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteRemark = exports.postRemark = exports.getRemarks = exports.getLoadSignature = exports.getReadSignature = exports.putResource = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.getProject = exports.getMeProjects = exports.getProjects = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 获取上传头像/证明材料签名 */
 var getPublicSignature = function getPublicSignature(filename) {return (0, _request.default)("/project/sign/upload/public/v2?filename=" + filename, "GET", {});};
@@ -8530,7 +8578,6 @@ var getProject = function getProject(projectId) {return (0, _request.default)("/
 var putProject = function putProject(projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
 /* 删除项目 */exports.putProject = putProject;
 var deleteProject = function deleteProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
-
 /* 获取评论
                                                                                                                                     	@prams	pageNum: Number,页码
                                                                                                                                     	@prams	pageSize: Number,分页大小
@@ -8559,9 +8606,11 @@ var deleteResource = function deleteResource(projectResourceId) {return (0, _req
 /* 修改资源信息 */exports.deleteResource = deleteResource;
 var putResource = function putResource(projectResourceId, data) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "PUT", data);};
 /* 获取下载签名 */exports.putResource = putResource;
-var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download"), "GET", {});};
+var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download/v2 "), "GET", {});};
+/* 获取阅读签名 */exports.getLoadSignature = getLoadSignature;
+var getReadSignature = function getReadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/read/v2 "), "GET", {});};
 
-/* 创建成员 */exports.getLoadSignature = getLoadSignature;
+/* 创建成员 */exports.getReadSignature = getReadSignature;
 var postMember = function postMember(projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};
 /* 更新成员 */exports.postMember = postMember;
 var putMember = function putMember(projectId, memberUserId, data) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "PUT", data);};
@@ -8572,7 +8621,69 @@ var deleteMember = function deleteMember(projectId, memberPhone) {return (0, _re
 
 /***/ }),
 
-/***/ 96:
+/***/ 8:
+/*!********************************************!*\
+  !*** D:/服务外包/竞赛统计/static/js/globalData.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  baseUrl: 'https://ahapocket.cn/api',
+  ossHost: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/', // OSS Host域名
+  gCodeTime: 0, // 用户允许发送验证码的倒计时
+  gCodeMaxTime: 10, // 倒计时时长
+  gUserInfo: {}, // 用户信息
+  Schools: ['浙江工业大学', '杭州电子科技大学', '浙江大学', '杭州师范大学'], // 学校列表
+  Degress: ['博士后', '博士', '硕士', '本科', '专科', '高中', '初中'], // 学历列表
+  Grads: ['前1%', '1%-5%', '5%-20%', '20%-50%', '50%-100%'], // 成绩等级
+  Competitions: [], // 所有比赛
+  prizeLevels: [
+  { label: '国一', value: 53 },
+  { label: '国二', value: 52 },
+  { label: '国三', value: 51 },
+  { label: '省一', value: 43 },
+  { label: '省二', value: 42 },
+  { label: '省三', value: 41 },
+  { label: '市一', value: 33 },
+  { label: '市二', value: 32 },
+  { label: '市三', value: 31 },
+  { label: '校一', value: 23 },
+  { label: '校二', value: 22 },
+  { label: '校三', value: 21 }
+  // { label: '参与奖', value: 11 }
+  ],
+  compType: [
+  { label: "经济类", value: 1 },
+  { label: "管理类", value: 2 },
+  { label: "法学类", value: 3 },
+  { label: "公管类", value: 4 },
+  { label: "语言类", value: 5 },
+  { label: "艺术传媒类", value: 6 },
+  { label: "学科类", value: 7 },
+  { label: "计算机类", value: 8 },
+  { label: "机械类", value: 9 },
+  { label: "建筑类", value: 10 },
+  { label: "化工类", value: 11 },
+  { label: "科研创业类", value: 12 }],
+
+  feedbackTypes: [
+  { label: "平台BUG", value: 0 },
+  { label: "平台体验修改建议", value: 1 },
+  { label: "劣质项目", value: 2 },
+  { label: "订单缺失/购买错误", value: 3 }],
+
+  arr_fileTypes: [
+  { label: "图片", value: 0, reg: /\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$/i }, //图片
+  { label: "视频/音频", value: 1, reg: /\.(avi|wmv|mpg|mpeg|mov|rm|ram|swf|raw|flv|mp4|mp3|wma|avi|rmvb|mkv)$/i }, //视频,音频
+  { label: "文档", value: 2, reg: /\.(txt|doc|docx|ppt|csv|xls|xlsx)$/i }, //文档
+  { label: "其他", value: 3, reg: /./ } //其他
+  ] };exports.default = _default;
+
+/***/ }),
+
+/***/ 97:
 /*!************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_order.js ***!
   \************************************************/
@@ -8580,7 +8691,7 @@ var deleteMember = function deleteMember(projectId, memberPhone) {return (0, _re
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.checkResourcePurchased = exports.getOrder = exports.getOrders = exports.putOrder = exports.postOrder = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.checkResourcePurchased = exports.getOrder = exports.getOrders = exports.putOrder = exports.postOrder = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 
                                                                                                                                                                                                                                                                                                                                                               	购买附件-创建订单

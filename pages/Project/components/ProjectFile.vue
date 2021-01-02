@@ -96,7 +96,7 @@ export default {
 				type: 'all',
 				success: (res) => {
 					/* 限制50M */
-					let files = res.tempFiles.filter(file => file.size < 50000000)
+					let files = res.tempFiles.filter(file => file.size < 500000000)
 					if(files.length < res.tempFiles.length){
 						this.gToastError("文件大于50M")
 					}
@@ -105,9 +105,10 @@ export default {
 							name: file.name,
 							url: file.path,
 							size: renderSize(file.size),
+							type: getApp().globalData.arr_fileTypes.find((item) => item.reg.test(file.name)),
 							progress: 0,
 							status: 0, // 0 待上传，1 上传中，2上传完成，3上传失败
-							price: 100
+							price: 100,
 						}
 					})
 					this.files = this.files.concat(files)
@@ -127,14 +128,47 @@ export default {
 		/* 点击文件，打开操作菜单 */
 		clickFile(index)
 		{
+			const file = this.files[index]
+			console.log(file);
+			let itemList = ["修改附件信息", "删除附件"]
+			if(file.type.value === 1){
+				itemList = ["设置预览片段", "修改附件信息", "删除附件"]
+			}
 			uni.showActionSheet({
-				itemList: ['修改附件信息', '删除附件'],
+				itemList,
 				success: res => {
-					if (res.tapIndex === 0) {
+					if (itemList[res.tapIndex] === "修改附件信息") {
 						this.setFileIndex = index
 					} 
-					else if (res.tapIndex === 1) {
+					else if (itemList[res.tapIndex] === "删除附件") {
 						this.removeFile(index)
+					}
+					/* 设置视频预览片段 */
+					else if (itemList[res.tapIndex] === "设置预览片段") {
+						if(file.status !== 2){
+							this.gToastError("请先上传该视频")
+						}
+						else{
+							wx.openVideoEditor({
+								filePath: file.url,
+								success: (res) => {
+									if(res.size > 20000000){
+										this.gToastError("大于20M")
+									}
+									else{
+										/* 上传预览视频 */
+										wx.previewMedia({
+											sources: [{
+												url: res.tempFilePath,
+												type: "video"
+											}],
+											showmenu: false
+										})
+										console.log(res.tempFilePath);
+									}
+								}
+							})
+						}
 					}
 				}
 			})
@@ -153,7 +187,9 @@ export default {
 			this.gShowModal(
 				`确认删除 ${this.files[index].name}?`,
 				() => {
-					deleteResource(this.files[index].id)
+					if(this.files[index].status === 2){
+						deleteResource(this.files[index].id)
+					}
 					this.files.splice(index,1)
 					this.gToastSuccess("删除成功")
 				}
@@ -166,13 +202,13 @@ export default {
 			.then(res => {
 				this.gToastSuccess("修改成功")
 			})
-			this.files[this.setFileIndex].name = e.name
-			this.files[this.setFileIndex].price = e.price
+			for(let key in e){
+				this.files[this.setFileIndex][key] = e[key]
+			}
 			this.setFileIndex = null
 		},
 		/* 
-			name: 上传附近
-			desc: 调用签名接口，上传附件
+			上传附件
 			time: 2020/12/30
 		*/
 		upload()
@@ -239,17 +275,16 @@ export default {
 								else{
 									this.files[index].status = 2
 									this.files[index].filename = signature.filename
-									this.files[index].type = this.gGetFileType(signature.filename)
 									/* 更新至数据库 */
 									postResource(this.projectId,{
 										name: file.name,
 										filename: file.filename,
 										price: file.price,
+										type: file.type.value,
 										discount: 0
 									})
 									.then(res => {
 										this.files[index].id = res.data.id
-										console.log(this.files[index])
 										nextFile(++index)
 									})
 									.catch(err => {

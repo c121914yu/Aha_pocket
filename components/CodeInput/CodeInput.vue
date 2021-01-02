@@ -1,6 +1,7 @@
 <template>
 	<view class="code">
 		<view class="center">请输入验证码</view>
+		<view class="small center">(验证码:1234)</view>
 		<view @click="startInput">
 			<!-- 辅助输入框，用于调起键盘 -->
 			<input 

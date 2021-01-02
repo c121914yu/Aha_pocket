@@ -79,13 +79,12 @@ export default {
 			uni.setNavigationBarTitle({
 				title: text
 			})
-			if(newNav === 1 || newNav === 2)
-				uni.showModal({
-					title: "提示",
-					content: "该模块正在设计,尽情期待!",
-					confirmText: "期待",
-					showCancel: false,
+			if(newNav === 1 || newNav === 2){
+				uni.showToast({
+					title: "该模块正在开发!",
+					icon: "none"
 				})
+			}
 		}
 	},
 	components:{

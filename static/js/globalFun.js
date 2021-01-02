@@ -1,11 +1,16 @@
 import Vue from 'vue'
 /* 
 	name: showSuccess
-	description: 展示成功提示
-	input: 
-				title: String,提示文字
-				mask: Boolean,是否展示蒙层
+	description: 无图标提示
 */
+Vue.prototype.gToastMsg = (title,mask=false,duration=1500) => {
+	uni.showToast({
+		title,
+		mask,
+		duration,
+		icon: "none"
+	})
+}
 Vue.prototype.gToastSuccess = (title,mask=false,duration=1500) => {
 	uni.showToast({
 		title,
@@ -99,6 +104,35 @@ Vue.prototype.gUploadFile = (filePath,signature) => {
 }
 
 /* 
+	获取文件
+	@params signature: Object,签名
+*/
+Vue.prototype.gGetFileUrl = (signature) => {
+	return new Promise((resolve,reject) => {
+		const cos = new COS({
+			getAuthorization: function (options, callback) {
+				callback({
+					Authorization: signature.authorization
+				})
+			}
+		})
+		/* 获取数据 */
+		cos.getObjectUrl({
+			Bucket: signature.bucketName,
+			Region: signature.region,
+			Key: signature.filename,
+			Sign: true,
+			Expires: 60,
+		}, (err, data) => {
+			if (err){
+				reject(err)
+			}
+			resolve(data.Url)
+		})
+	})
+}
+
+/* 
 	name: putUserInfo
 	description: 修改用户信息
 	input: userInfo里的任意字段
@@ -155,10 +189,24 @@ Vue.prototype.gLoading  = (that,type,delay=0) => {
 	}
 }
 
-/*  根据后缀名判断文件类型*/
-Vue.prototype.gGetFileType = (filename) => {
-	const res = getApp().globalData.arr_fileTypes.find((item) => item.reg.test(filename))
-	return res.type
+/* 
+	调用menu弹窗进行单选,将选择的结果返回
+	@params list: Array,选择列表，每个元素为一个对象，对象必须包含label属性,或者每个元素为字符串
+	@return 选择的元素
+	time: 2020/12/31
+*/
+Vue.prototype.gMenuPicker = (list) => {
+	return new Promise((resolve,reject) => {
+		uni.showActionSheet({
+			itemList: typeof list[0] === "object" ? list.map(item => item.label) : list,
+			success: (res) => {
+				resolve(list[res.tapIndex])
+			},
+			fail: (err) => {
+				reject(err)
+			}
+		})
+	})
 }
 
 /* 未设计界面提示 */
