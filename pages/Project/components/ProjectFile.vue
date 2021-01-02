@@ -80,6 +80,10 @@ export default {
 		*/
 		chooseFile()
 		{
+			if(this.files.length > 10){
+				this.gToastMsg("文件数量不能大于10")
+				return
+			}
             this.gLoading(this,true)
 			function renderSize(fsize){
 				const unitArr = new Array("Bytes","KB","MB","GB","TB","PB","EB","ZB","YB")

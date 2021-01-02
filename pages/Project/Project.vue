@@ -345,6 +345,7 @@ export default {
 					}
 					else{
 						/* 其他类需要下载到本地 */
+						this.gToastMsg("文件下载-设计中")
 						this.gLoading(this,false)
 					}
 				}
