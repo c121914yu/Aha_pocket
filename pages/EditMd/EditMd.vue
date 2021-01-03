@@ -4,7 +4,7 @@
 			id="editor"
 			ref="editot"
 			class="editor"
-			:placeholder="placeholder"
+			placeholder="开始输入..."
 			:show-img-size="true"
 			:show-img-toolbar="true"
 			:show-img-resize="true"
@@ -101,17 +101,6 @@
 import eIcon from './icon'
 import { getPublicFileSign } from "@/static/request/api_userInfo.js"
 export default {
-	props: {
-		// 占位符
-		placeholder: {
-			type: String,
-			default: '开始输入...'
-		},
-		html: {
-			type: String,
-			default: ""
-		}
-	},
 	data() {
 		return {
 			showH1: false,
@@ -141,7 +130,7 @@ export default {
 				},res => {
 					this.editorCtx = res.context;
 					this.editorCtx.setContents({
-						html: this.html
+						html: getApp().globalData.gEditContent
 					})
 				})
 				.exec()
@@ -284,8 +273,11 @@ export default {
 		finish() 
 		{
 			this.editorCtx.getContents({
-				success: res => {
-					this.$emit('editOk', res.html)
+				success: (res) => {
+					getApp().globalData.gEditContent = res.html
+					uni.navigateBack({
+						delta: 1
+					})
 				} 
 			})
 		},

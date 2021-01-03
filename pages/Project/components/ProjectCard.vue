@@ -26,6 +26,7 @@
 			<view v-if="compName">
 				<text class="comp-name strong">{{ compName }}</text>
 			</view>
+			<view v-else class="blank"></view>
 			<!-- 标签 -->
 			<view class="tags">
 				<view 
@@ -97,7 +98,7 @@ export default {
 					return match.name;
 				} 
 			}
-			return '全国大学生服务外包大赛';
+			return ""
 		},
 		awardLevel() {
 			if (this.project.awardLevel) {

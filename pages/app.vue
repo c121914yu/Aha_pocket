@@ -108,6 +108,13 @@ export default {
 			this.$refs.projectHome.loadMore()
 		}
 	},
+	onShareAppMessage(e){
+		return {
+			title: "Aha口袋",
+			path: "pages/Login/Login",
+			desc: "加入Aha口袋",
+		}
+	},
 	methods: {
 		/* 完成协议签署 */
 		successSign()

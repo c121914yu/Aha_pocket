@@ -45,7 +45,7 @@
         "appid" : "wx2af10f72ca23e721",
         "cloudfunctionRoot" : "static/cloudfunction/",
         "setting" : {
-            "urlCheck" : false,
+            "urlCheck" : true,
             "postcss" : true,
             "minified" : true
         },

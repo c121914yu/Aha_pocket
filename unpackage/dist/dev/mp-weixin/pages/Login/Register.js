@@ -92,12 +92,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components = {
-  CodeInput: function() {
-    return __webpack_require__.e(/*! import() | components/CodeInput/CodeInput */ "components/CodeInput/CodeInput").then(__webpack_require__.bind(null, /*! @/components/CodeInput/CodeInput.vue */ 264))
-  },
-  Loading: function() {
-    return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 257))
+var components
+try {
+  components = {
+    CodeInput: function() {
+      return __webpack_require__.e(/*! import() | components/CodeInput/CodeInput */ "components/CodeInput/CodeInput").then(__webpack_require__.bind(null, /*! @/components/CodeInput/CodeInput.vue */ 274))
+    },
+    Loading: function() {
+      return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 267))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
   }
 }
 var render = function() {
@@ -182,7 +201,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _api_login = __webpack_require__(/*! ../../static/request/api_login.js */ 21); //
+var _api_login = __webpack_require__(/*! ../../static/request/api_login.js */ 23); //
 //
 //
 //

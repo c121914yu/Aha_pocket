@@ -60,7 +60,8 @@
 		}, {
 			"path": "pages/Self/Wallet/Orders",
 			"style": {
-				"navigationBarTitleText": "账单"
+				"navigationBarTitleText": "账单",
+				"onReachBottomDistance": 150
 			}
 		}, {
 			"path": "pages/Self/Wallet/OrderDetail",
@@ -114,9 +115,9 @@
 				"onReachBottomDistance": 100
 			}
 		}, {
-			"path": "pages/Self/AdminMD",
+			"path": "pages/EditMd/EditMd",
 			"style": {
-				"navigationBarTitleText": "管理员编辑"
+				"navigationBarTitleText": "信息编辑"
 			}
 		}, 
 		/* 项目相关 */
@@ -145,10 +146,15 @@
 				"onReachBottomDistance": 100
 			}
 		}, {
-			"path": "pages/Project/readFile",
+			"path": "pages/Project/ReadFile",
 			"style": {
 				"navigationBarTitleText": "阅读项目",
-				"onReachBottomDistance": 150
+				"onReachBottomDistance": 250
+			}
+		}, {
+			"path": "pages/Project/PreviewFile",
+			"style": {
+				"navigationBarTitleText": "预览项目"
 			}
 		}, {
 			"path": "pages/Project/PurchasedProjects",

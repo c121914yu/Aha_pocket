@@ -90,15 +90,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components = {
-  Loading: function() {
-    return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 257))
-  },
-  UserAgreement: function() {
-    return Promise.all(/*! import() | components/UserAgreement/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/UserAgreement/UserAgreement")]).then(__webpack_require__.bind(null, /*! @/components/UserAgreement/UserAgreement.vue */ 271))
-  },
-  TabBar: function() {
-    return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 278))
+var components
+try {
+  components = {
+    Loading: function() {
+      return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 267))
+    },
+    UserAgreement: function() {
+      return Promise.all(/*! import() | components/UserAgreement/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/UserAgreement/UserAgreement")]).then(__webpack_require__.bind(null, /*! @/components/UserAgreement/UserAgreement.vue */ 281))
+    },
+    TabBar: function() {
+      return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 288))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
   }
 }
 var render = function() {
@@ -228,7 +247,7 @@ var _api_system = __webpack_require__(/*! @/static/request/api_system.js */ 49);
 //
 //
 //
-var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages/Project/ProjectHome */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Project/ProjectHome")]).then((function () {return resolve(__webpack_require__(/*! ./Project/ProjectHome.vue */ 285));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Competition = function Competition() {__webpack_require__.e(/*! require.ensure | pages/Competition/Competition */ "pages/Competition/Competition").then((function () {return resolve(__webpack_require__(/*! ./Competition/Competition */ 292));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Epiboly = function Epiboly() {__webpack_require__.e(/*! require.ensure | pages/Epiboly/Epiboly */ "pages/Epiboly/Epiboly").then((function () {return resolve(__webpack_require__(/*! ./Epiboly/Epiboly */ 297));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 304));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { /* 
+var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages/Project/ProjectHome */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Project/ProjectHome")]).then((function () {return resolve(__webpack_require__(/*! ./Project/ProjectHome.vue */ 295));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Competition = function Competition() {__webpack_require__.e(/*! require.ensure | pages/Competition/Competition */ "pages/Competition/Competition").then((function () {return resolve(__webpack_require__(/*! ./Competition/Competition */ 302));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Epiboly = function Epiboly() {__webpack_require__.e(/*! require.ensure | pages/Epiboly/Epiboly */ "pages/Epiboly/Epiboly").then((function () {return resolve(__webpack_require__(/*! ./Epiboly/Epiboly */ 307));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 314));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { /* 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	第一次不直接加载界面，防止加载时间过长
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	切换到未缓存的界面时再进行加载
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */navs: [{ name: "ProjectHome", loaded: false }, { name: "Competition", loaded: false }, { name: "Epiboly", loaded: false }, { name: "Self", loaded: false }], currentNav: 0, signedNotice: getApp().globalData.gUserInfo.signedNotice, arr_systemNotice: [] };}, watch: { currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "竞赛信息";break;case 2:text = "服务外包";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });if (newNav === 1 || newNav === 2) {uni.showToast({ title: "该模块正在开发!", icon: "none" });}} }, components: { ProjectHome: ProjectHome, Competition: Competition, Epiboly: Epiboly, Self: Self },
@@ -247,6 +266,13 @@ var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages
     if (this.currentNav === 0) {
       this.$refs.projectHome.loadMore();
     }
+  },
+  onShareAppMessage: function onShareAppMessage(e) {
+    return {
+      title: "Aha口袋",
+      path: "pages/Login/Login",
+      desc: "加入Aha口袋" };
+
   },
   methods: {
     /* 完成协议签署 */

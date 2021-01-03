@@ -1,8 +1,17 @@
-import Vue from 'vue'
 /* 
-	name: showSuccess
-	description: 无图标提示
+	gToastMsg - 无图标文字提示
+	gToastSuccess - 成功提示
+	gToastError - 错误提示
+	gShowModal - 确认提示
+	gUploadFile - 上传文件
+	gGetFileUrl - 获取文件路径
+	gGetMeInfo - 更新个人信息
+	gformatDate - 格式化日期输出
+	gLoading - 显示/隐藏加载动画
+	gMenuPicker - 调用菜单选择框
 */
+import Vue from 'vue'
+/* 普通文本提示*/
 Vue.prototype.gToastMsg = (title,mask=false,duration=1500) => {
 	uni.showToast({
 		title,
@@ -11,6 +20,7 @@ Vue.prototype.gToastMsg = (title,mask=false,duration=1500) => {
 		icon: "none"
 	})
 }
+/* 成功文本提示 */
 Vue.prototype.gToastSuccess = (title,mask=false,duration=1500) => {
 	uni.showToast({
 		title,
@@ -18,13 +28,7 @@ Vue.prototype.gToastSuccess = (title,mask=false,duration=1500) => {
 		duration
 	})
 }
-/* 
-	name: showError
-	description: 展示错误提示
-	input: 
-				title: String,提示文字
-				mask: Boolean,是否展示蒙层
-*/
+/*  展示错误提示 */
 Vue.prototype.gToastError = (title,mask=false,duration=1500) => {
 	uni.showToast({
 		title,
@@ -34,12 +38,10 @@ Vue.prototype.gToastError = (title,mask=false,duration=1500) => {
 	})
 }
 /* 
-	name: showModal
-	description: 提示确认操作
-	input: 
-		content: String,提示文字
-		success: Function,点击确认后的操作
-		cancel: Function,点击取消后的操作
+	提示确认操作
+	@params content: String,提示文字
+	@params success: Function,点击确认后的操作
+	@params cancel: Function,点击取消后的操作
 */
 Vue.prototype.gShowModal = (content,success,cancel) => {
 	uni.showModal({
@@ -64,8 +66,7 @@ Vue.prototype.gShowModal = (content,success,cancel) => {
 	description: 上传文件至OSS存储空间
 	@params filePath: String,待上传的临时路径
 	@params signature: Object,签名
-	return: 
-				fileUrl: String,文件路径
+	@return: fileUrl: String,文件路径
 	time: 2020/12/30
 */
 var COS = require('./COS.js')
@@ -104,8 +105,9 @@ Vue.prototype.gUploadFile = (filePath,signature) => {
 }
 
 /* 
-	获取文件
+	获取文件路径
 	@params signature: Object,签名
+	@return filePath: String,文件路径
 */
 Vue.prototype.gGetFileUrl = (signature) => {
 	return new Promise((resolve,reject) => {
@@ -133,25 +135,32 @@ Vue.prototype.gGetFileUrl = (signature) => {
 }
 
 /* 
-	name: putUserInfo
-	description: 修改用户信息
-	input: userInfo里的任意字段
-	return: 
-					userInfo: Object,新的userInfo
+	更新个人信息，重新请求getMe
+	@set getApp().globalData.gUserInfo: Object,全局个人信息变量
+	@return gUserInfo: Object,个人信息变量
 */
-Vue.prototype.gPutUserInfo = (data) => {
-	for(let key in data){
-		getApp().globalData.gUserInfo.userInfo[key] = data[key]
-	}
-	console.log(getApp().globalData.gUserInfo);
-	return getApp().globalData.gUserInfo
+import { getMe } from "@/static/request/api_userInfo.js"
+Vue.prototype.gGetMeInfo = () => {
+	return new Promise((resolve,reject) => {
+		getMe()
+		.then(res => {
+			getApp().globalData.gUserInfo = res.data
+			resolve(res.data)
+		})
+		.catch(err => {
+			console.error(err)
+			reject(err)
+		})
+	})
+	
 }
 
 /* 
-	name: formatDate
-	desc: 格式化日期成yy/mm/dd HH:mm
-	input: Date
-	return: String
+	格式化日期输出，默认简写模式（当天仅显示时间，当年不显示年份)
+	@params time: Date,日期
+	@params noAddr: Boolean,是否简写
+	@return: String,日期字符串
+	time: 2021/1/3
 */
 Vue.prototype.gformatDate = (time,noAddr=false) => {
 	const date = new Date(time)
@@ -165,11 +174,12 @@ Vue.prototype.gformatDate = (time,noAddr=false) => {
 	const nyear = nDay.getFullYear()
 	const nmonth = nDay.getMonth() + 1
 	const nday = nDay.getDate()
+	
 	if(noAddr){
 		return `${year}/${month < 10 ? '0'+month : month}/${day < 10 ? '0'+day : day} ${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
 	}
 	if(year === nyear && month === nmonth && day === nday){
-		`${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
+		return `${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
 	}
 	if(year === nyear){
 		return `${month < 10 ? '0'+month : month}/${day < 10 ? '0'+day : day} ${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`

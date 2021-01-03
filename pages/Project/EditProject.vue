@@ -52,6 +52,28 @@ export default {
 			pageIndex: 0
 		}
 	},
+	components: {
+		baseInfo,
+		fileInfo,
+		MemberInfo,
+	},
+	onLoad(e) {
+	    this.gLoading(this,true)
+		getProject(e.id)
+		.then(res => {
+			this.project = res.data
+	        this.$nextTick(this.initPageInfo)
+		})
+	    .catch(err => {
+	        this.gLoading(this,false)
+	    })
+	},
+	onShow() {
+		if(this.$refs.baseInfo.editMD){
+			this.$refs.baseInfo.intro = getApp().globalData.gEditContent
+			this.$refs.baseInfo.editMD = false
+		}
+	},
 	methods: {
 		/* 
 			name: 初始化页面信息
@@ -115,21 +137,12 @@ export default {
             this.gLoading(this,true)
 			const base = this.$refs.baseInfo
 			/* 赛事类型和获奖等级需要转化成数值 */
-			let awardLevel = ""
-			getApp().globalData.prizeLevels.find(item => {
-				if(item.label === base.awardLevel){
-					awardLevel = item.value
-					return
-				}
-			})
-			let compId = ""
-			getApp().globalData.Competitions.find(item => {
-				if(item.name === base.compName){
-					compId = item.compTagId
-					return
-				}
-			})
-			compId = compId ? compId : 0
+			let awardLevel = getApp().globalData.prizeLevels.find(item => item.label === base.awardLevel)
+			awardLevel = awardLevel ? awardLevel.value : null
+			/* 计算compId */
+			let compId = getApp().globalData.Competitions.find(item => item.name === base.compName)
+			compId = compId ? compId.id : 0
+			
 			let data = {
 				name: base.name,
 				avatarUrl: base.avatarUrl,
@@ -171,14 +184,14 @@ export default {
 				return
 			}
 			/* 上传头像*/
-			const reg = /\/tmp\//
-			if (data.avatarUrl && reg.test(data.avatarUrl)) {
+			if (data.avatarUrl && data.avatarUrl !== this.project.avatarUrl) {
 				getPublicSignature(`${Date.now()}.JPG`)
 				.then(signature => {
 					this.gUploadFile(data.avatarUrl, signature.data)
 						.then(url => {
 							console.log("头像上传成功");
 							data.avatarUrl = url
+							this.project.avatarUrl = url
 							base.avatarUrl = url
 							successNum++
 							postProj()
@@ -200,13 +213,14 @@ export default {
 			}
 			
 			/* 上传证明 */
-			if (data.awardProveUrl && reg.test(data.awardProveUrl)) {
+			if (data.awardProveUrl && data.awardProveUrl !== this.project.awardProveUrl) {
 				getPublicSignature(`${Date.now()}.JPG`)
 				.then(signature => {
 					this.gUploadFile(data.awardProveUrl, signature.data)
 						.then(url => {
 							console.log("证明上传成功");
 							data.awardProveUrl = url
+							this.project.awardProveUrl = url
 							base.awardProveUrl = url
 							successNum++
 							postProj()
@@ -266,22 +280,6 @@ export default {
                 this.gLoading(this,false)
             })
 		}
-	},
-	onLoad(e) {
-        this.gLoading(this,true)
-		getProject(e.id)
-		.then(res => {
-			this.project = res.data
-            this.$nextTick(this.initPageInfo)
-		})
-        .catch(err => {
-            this.gLoading(this,false)
-        })
-	},
-	components: {
-		baseInfo,
-		fileInfo,
-		MemberInfo,
 	}
 }
 </script>

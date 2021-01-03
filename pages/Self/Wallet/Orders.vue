@@ -14,15 +14,36 @@
 			:key="index"
 			:url="'./OrderDetail?id=' + order.id">
 			<view class="left">
-				<view class="title">{{order.title}}</view>
-				<view class="type small">项目</view>
+				<view class="head">
+					<text class="type">附件购买</text>
+					<text class="hyphen">-</text>
+					<text class="name">{{order.project.name}}</text>
+				</view>
+				<!-- 所购附件名 -->
+				<view 
+					class="filename"
+					v-for="(file,index) in order.orderResources"
+					:key="index">
+					<text>{{file.resource.name}}</text>
+				</view>
 				<view class="time small">{{order.createTime}}</view>
 			</view>
-			<view class="right price">
-				{{order.price > 0 ? `+${order.price}` : order.price}}
+			<!-- 右侧：花费情况 & 订单状态 -->
+			<view class="right">
+				<view class="amount">
+					{{order.status === 0 ? order.totalCost : `-${order.totalCost}`}}
+				</view>
+				<view 
+					class="status"
+					:style="{
+						color: order.status === 0 ? 'var(--gray1)' : 'var(--origin2)'
+					}">
+					{{order.status === 0 ? "已取消" : "已支付"}}
+				</view>
 			</view>
 		</navigator>
-		<!-- <p class="center small remark">{{is_showAll ? "已加载全部" : ""}}</p> -->
+		<p class="center small remark">{{is_showAll ? "已加载全部" : ""}}</p>
+		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
@@ -32,40 +53,50 @@ export default {
 	data() {
 		return {
 			orders: [],
-			type: 0,
 			pageNum: 1,
-			pageSize: 20,
-			is_showAll: true
+			pageSize: 15,
+			is_showAll: false
 		}
 	},
 	onLoad() {
-		this.getOrdersInfo(true)
+		this.getOrdersInfo(true,true)
+	},
+	onReachBottom(){
+		if(!this.is_showAll){
+			this.getOrdersInfo()
+		}
 	},
 	methods: {
-		/* 判断是否加载全部 */
-		judgeLoadAll(size)
-		{
-			if(size < this.pageSize){
-				this.is_showAll = true
-			}
-			else{
-				this.pageNum++
-			}
-		},
 		/* 加载订单 */
-		getOrdersInfo(init=false)
+		getOrdersInfo(init=false,loading=false)
 		{
+			this.gLoading(this,loading)
 			if(init){
 				this.pageNum = 1
 			}
-			getOrders()
+			getOrders({
+				pageNum: this.pageNum,
+				pageSize: this.pageSize
+			})
 			.then(res => {
-				// this.judgeLoadAll(res.data.pageData.length)
-				res.data.forEach(item => {
+				if(res.data.pageData.length < this.pageSize){
+					this.is_showAll = true
+				}
+				else{
+					this.pageNum++
+				}
+				res.data.pageData.forEach(item => {
 					item.createTime = this.gformatDate(item.createTime)
+					// if(item.payTime){
+					// 	item.payTime = this.gformatDate(item.payTime)
+					// }
 					this.orders.push(item)
 				})
-				console.log(this.orders[0]);
+				console.log(this.orders)
+				this.gLoading(this,false)
+			})
+			.catch(err => {
+				this.gLoading(this,false)
 			})
 		}
 	},
@@ -92,18 +123,59 @@ export default {
 			margin-left 10px
 			font-size 26rpx
 	.order
-		padding 10px
+		padding 10px 10px 5px
 		border-bottom var(--border2)
 		display flex
 		.left
+			width 50%
 			flex 1
-		.small
-			color var(--gray2)
-		.price
-			font-size 36rpx
-			color var(--origin1)
-			font-weight 700
+			.head
+				width 100%
+				padding-bottom 5px
+				font-size 26rpx
+				overflow hidden
+				white-space nowrap
+				text-overflow ellipsis
+				.type
+					color var(--origin1)
+				.hyphen
+					margin 0 3px
+			.filename
+				position relative
+				width 100%
+				padding-left 10px
+				font-size 24rpx
+				color var(--gray1)
+				overflow hidden
+				white-space nowrap
+				text-overflow ellipsis
+				&::before
+					content ""
+					position absolute
+					left 0
+					top 50%
+					transform translateY(-50%)
+					width 5px
+					height 5px
+					border-radius 50%
+					background-color var(--gray1)
+			.time
+				color var(--gray2)
+		.right
+			padding 0 5px
+			white-space nowrap
+			display flex
+			flex-direction column
+			align-items center
+			justify-content center
+			.amount
+				font-size 32rpx
+				font-weight 700
+				color var(--origin1)
+			.status
+				margin-top 5px
+				font-size 24rpx
 	.remark
-		margin-top 10px
+		padding 10px 0
 		color var(--gray2)
 </style>

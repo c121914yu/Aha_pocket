@@ -38,8 +38,7 @@
 		<view class="input-info">
 			<view class="h4">自定义描述:</view>
 			<view class="intro" v-if="intro" v-html="intro"></view>
-			<button @click="editMD = true">编辑</button>
-			<view v-if="editMD" class="editMD"><MdEdit :html="intro" @editOk="editOk"></MdEdit></view>
+			<button @click="startEdit">编辑</button>
 		</view>
 	</view>
 </template>
@@ -60,16 +59,14 @@ export default {
 			intro: '', // 描述
 			Matches, // 比赛名称
 			prizeLevels, // 获奖等级
-			editMD: false
+			is_edit: false
 		};
 	},
 	computed: {
 		/*
-			desc: 监听输入标签内容改变，根据空格分隔
-			input: 
-						tags: String,标签输入框内容
-			return: 
-						tagArray: Array,标签数组
+			监听输入标签内容改变，根据空格分隔
+			@parms tags: String,标签输入框内容
+			@return tagArray: Array,标签数组
 			time: 2020/11/9
 		*/
 		tagList() {
@@ -116,14 +113,16 @@ export default {
 			});
 		},
 		/* 
-			name: 编辑描述完成
-			desc: 编辑描述完成，将值赋予description,并关闭描述填写状态
-			change:
-						this.description: Object,资源自定义描述
+			开始编辑内容，设置is_edit为true，并清空全局内容
+			@set this.editMD: Boolean
+			@set getApp().globalData.gEditContent: String
 		*/
-		editOk(e) {
-			this.intro = e;
-			this.editMD = false;
+		startEdit() {
+			this.editMD = true
+			getApp().globalData.gEditContent = this.intro
+			uni.navigateTo({
+				url: "../EditMd/EditMd"
+			})
 		}
 	}
 }

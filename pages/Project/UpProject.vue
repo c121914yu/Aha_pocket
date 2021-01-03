@@ -39,7 +39,13 @@ export default {
 				success: () => {
 					this.gToastError('请先签署合同');
 				}
-			});
+			})
+			return
+		}
+		/* 判断是否需要更新介绍编辑 */
+		if(this.$refs.baseInfo.editMD){
+			this.$refs.baseInfo.intro = getApp().globalData.gEditContent
+			this.$refs.baseInfo.editMD = false
 		}
 	},
 	components: {
@@ -56,20 +62,12 @@ export default {
 			this.gLoading(this, true);
 			const base = this.$refs.baseInfo;
 			/* 赛事类型和获奖等级需要转化成数值 */
-			let awardLevel = '';
-			getApp().globalData.prizeLevels.find(item => {
-				if (item.label === base.awardLevel) {
-					awardLevel = item.value;
-					return;
-				}
-			});
-			let compId = '';
-			getApp().globalData.Competitions.find(item => {
-				if (item.name === base.compName) {
-					compId = item.compTagId;
-					return;
-				}
-			});
+			let awardLevel = getApp().globalData.prizeLevels.find(item => item.label === base.awardLevel)
+			awardLevel = awardLevel ? awardLevel.value : null
+			/* 计算compId */
+			let compId = getApp().globalData.Competitions.find(item => item.name === base.compName)
+			compId = compId ? compId.id : 0
+			
 			compId = compId ? compId : 0;
 			let data = {
 				name: base.name,
@@ -113,8 +111,7 @@ export default {
 				return
 			}
 			/* 上传头像*/
-			const reg = /\/tmp\//
-			if (data.avatarUrl && reg.test(data.avatarUrl)) {
+			if (data.avatarUrl) {
 				getPublicSignature(`${Date.now()}.JPG`)
 				.then(signature => {
 					this.gUploadFile(data.avatarUrl, signature.data)
@@ -141,7 +138,7 @@ export default {
 			}
 			
 			/* 上传证明 */
-			if (data.awardProveUrl && reg.test(data.awardProveUrl)) {
+			if (data.awardProveUrl) {
 				getPublicSignature(`${Date.now()}.JPG`)
 				.then(signature => {
 					this.gUploadFile(data.awardProveUrl, signature.data)

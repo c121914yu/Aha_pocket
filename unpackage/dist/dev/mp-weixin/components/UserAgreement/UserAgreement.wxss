@@ -18,10 +18,8 @@
   padding: 10px;
   background-color: #fff;
   color: #333;
-  -webkit-border-radius: 10px;
-          border-radius: 10px;
-  -webkit-box-shadow: var(--shadow1);
-          box-shadow: var(--shadow1);
+  border-radius: 10px;
+  box-shadow: var(--shadow1);
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

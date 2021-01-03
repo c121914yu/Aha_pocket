@@ -1,8 +1,7 @@
 .picker.data-v-72af98f0 {
   position: relative;
   padding-left: 20rpx;
-  -webkit-border-radius: 15px;
-          border-radius: 15px;
+  border-radius: 15px;
   background-color: var(--origin3);
 }
 .picker .msg.data-v-72af98f0 {

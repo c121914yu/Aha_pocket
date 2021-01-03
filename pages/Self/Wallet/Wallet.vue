@@ -2,9 +2,9 @@
 <template>
 	<view class="wallet">
 		<view class="head">
-			<view class="bi">
+			<view class="credit">
 				<view class="small">Aha币</view>
-				<view class="h3">{{AhaB}}</view>
+				<view class="h3">{{ahaCredit}}</view>
 				<view class="function">
 					<view class="ctr" @click="isShowPay=true">
 						<text class="iconfont icon-qian"></text>
@@ -16,15 +16,9 @@
 					</view>
 				</view>
 			</view>
-			<view class="dian">
+			<view class="point">
 				<view class="small">Aha点</view>
-				<view class="h3">{{AhaD}}</view>
-				<!-- <view class="function">
-					<view class="ctr" @click="isShowGive=true">
-						<text class="iconfont icon-duihuan"></text>
-						<text>兑换</text>
-					</view>
-				</view> -->
+				<view class="h3">{{ahaPoint}}</view>
 			</view>
 		</view>
 		<!-- 卡片操作 -->
@@ -53,13 +47,11 @@
 <script>
 import GivePoint from "./components/GivePoint.vue"
 import PayAha from "./components/PayAha.vue"
-import { getMe } from "@/static/request/api_userInfo.js"
 export default {
 	data() {
 		return {
-			AhaB: 50,
-			AhaD: 100.5,
-			myPoint: getApp().globalData.gUserInfo.contribPoint,
+			ahaCredit: 0,
+			ahaPoint: 0,
 			isShowGive: false,
 			isShowPay: false
 		}
@@ -69,17 +61,19 @@ export default {
 		PayAha
 	},
 	onShow() {
-		this.gUndesign()
-		getMe()
-		.then(res => {
-			getApp().globalData.gUserInfo = res.data
-			this.myPoint = res.data.contribPoint
-		})
+		// this.gUndesign()
+		this.upDate()
 	},
 	methods: {
 		/* 重新更新余额和贡献点 */
 		upDate()
 		{
+			this.gGetMeInfo()
+			.then(res => {
+				this.ahaCredit = res.ahaCredit
+				this.ahaPoint = res.ahaPoint
+				console.log(res);
+			})
 			this.isShowGive = false
 		},
 		/* 提现，判断是否实名认证，若未实名认证则跳转实名认证 */

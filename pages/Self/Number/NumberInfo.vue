@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { getMe,bindWxchat } from "@/static/request/api_userInfo.js"
+import { bindWxchat } from "@/static/request/api_userInfo.js"
 export default {
 	data() {
 		return {
@@ -107,10 +107,9 @@ export default {
 		{
 			this.showNotice = false
 			this.showBindPhone = false
-			getMe()
+			this.gGetMeInfo()
 			.then(res => {
-				this.userInfo = res.data
-				getApp().globalData.gUserInfo = res.data
+				this.userInfo = res
 			})
 			.catch(err => {
 				uni.navigateBack({

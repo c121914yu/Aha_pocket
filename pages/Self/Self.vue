@@ -79,7 +79,7 @@
 		<!-- 登出 -->
 		<button style="width: 90%;margin: auto;background-color: #e86452;" @click="out">退出登录</button>
 		<!-- 管理员按键 -->
-		<navigator class="admin-edit" url="Self/AdminMD">管理员MD编辑器</navigator>
+		<navigator class="admin-edit" url="./EditMd/EditMd">管理员MD编辑器</navigator>
 		<!-- 兴趣选择 -->
 		<SelectInterest v-if="isCheckTags" @close="isCheckTags = false"></SelectInterest>
 		<!-- 加载动画 -->
@@ -102,7 +102,7 @@ export default {
 			],
 			/* 功能列表 */
 			funtions1: [
-				{ name: 'userId', icon: 'icon-ID', to: '', val: getApp().globalData.gUserInfo.userInfo.userId },
+				{ name: 'userId', icon: 'icon-ID', to: '#', val: getApp().globalData.gUserInfo.userInfo.userId },
 				{ name: '消息通知', icon: 'icon-tongzhi1', to: '/pages/Self/Inform/Informs', val: 0 },
 				{ name: '我的钱包', icon: 'icon-ziyuan', to: '/pages/Self/Wallet/Wallet'},
 				{ name: '账号信息', icon: 'icon-zhanghao', to: '/pages/Self/Number/NumberInfo' },
@@ -153,7 +153,8 @@ export default {
 				putMe({
 					nickname: value
 				}).then(res => {
-					this.userInfo = this.gPutUserInfo({ nickname: value }).userInfo
+					console.log(res);
+					this.userInfo = this.gGetMeInfo({ nickname: value }).userInfo
 					this.gToastSuccess('修改昵称成功!')
 				})
 			}
@@ -192,7 +193,7 @@ export default {
 											avatarUrl: url
 										})
 										.then(putRes => {
-											this.userInfo = this.gPutUserInfo({ avatarUrl: url }).userInfo;
+											this.userInfo = this.gGetMeInfo({ avatarUrl: url }).userInfo;
 											this.gToastSuccess('修改头像成功!')
 											this.gLoading(this, false)
 										})

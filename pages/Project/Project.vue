@@ -96,7 +96,7 @@
 							v-for="(file, index) in arr_previewFiles" 
 							:key="index">
 							<view class="name" @click="preview(file)">{{ file.name }}</view>
-							<button v-if="!file.isBuy" @click="buyFile(file)">{{file.price}}Aha点购买</button>
+							<button v-if="!file.isBuy" @click="buyFile(file,'arr_previewFiles',index)">{{file.price}}Aha点购买</button>
 						</view>
 					</view>
 					<!-- 不可预览 -->
@@ -106,7 +106,7 @@
 							v-for="(file, index) in arr_unpreviewFiles" 
 							:key="index">
 							<view class="name">{{ file.name }}242424</view>
-							<button v-if="!file.isBuy" @click="buyFile(file)">{{file.price}}Aha点购买</button>
+							<button v-if="!file.isBuy" @click="buyFile(file,'arr_unpreviewFiles',index)">{{file.price}}Aha点购买</button>
 						</view>
 					</view>
 					
@@ -248,12 +248,12 @@ export default {
 						this.arr_purchasedFiles.push(file)
 					}
 					else if(file.previewUrl){
-						this.arr_purchasedFiles.push(file)
-						// this.arr_previewFiles.push(file)
+						// this.arr_purchasedFiles.push(file)
+						this.arr_previewFiles.push(file)
 					}
 					else{
-						this.arr_purchasedFiles.push(file)
-						// this.arr_unpreviewFiles.push(file)
+						// this.arr_purchasedFiles.push(file)
+						this.arr_unpreviewFiles.push(file)
 					}
 				})
 				this.gLoading(this,false)
@@ -295,9 +295,15 @@ export default {
 			})
 		},
 		/* 购买文件 */
-	    buyFile(file)
+	    buyFile(file,arr,index)
 		{
-			this.gShowModal(`确认花费${file.price}个贡献度购买该附件？`,() => {
+			const ahaCredit = getApp().globalData.gUserInfo.ahaCredit
+			const ahaPoint = getApp().globalData.gUserInfo.ahaPoint
+			if(ahaCredit + ahaPoint < file.price){
+				this.gToastError("余额不足")
+				return
+			}
+			this.gShowModal(`确认花费${file.price}个Aha点购买该附件？`,() => {
 				postOrder({
 					projectId: file.projectId,
 					resourceIds: [file.id]
@@ -305,9 +311,10 @@ export default {
 				.then(res => {
 					const orderId = res.data
 					/* 调用微信支付 */
-					putOrder(orderId,"pay")
+					putOrder(orderId, "pay")
 					.then(res => {
-						console.log(res.data);
+						this[arr].splice(index,1)
+						this.arr_purchasedFiles.push(file)
 						this.gToastSuccess("购买成功")
 					})
 				})
@@ -316,6 +323,7 @@ export default {
 		/* 
 			阅读项目, 先判断类型,文档类跳转预览，其他类型需要获取下载地址再进行操作
 			@params file:Object,文件信息
+			@params index: Number,文件数组下标
 		*/
 	    readFile(file,index)
 		{
@@ -323,7 +331,7 @@ export default {
 			/* 文档类跳转previewFile界面 */
 			if(type === 2){
 				uni.navigateTo({
-					url: "readFile?id=" + file.id
+					url: "ReadFile?id=" + file.id
 				})
 			}
 			else{
@@ -374,56 +382,16 @@ export default {
 		/* 
 			预览项目，先判断类型,文档类跳转预览，图片/视频直接打开
 			@params file:Object,文件信息
+			time: 2021/1/3
 		*/
 		preview(file) 
 		{
 			const type = getApp().globalData.arr_fileTypes.find(item => item.reg.test(file.filename)).value
-			/* 文档类跳转previewFile界面 */
+			/* 文档类跳转*/
 			if(type === 2){
-				const urls = []
-				for(let i=1;i<=5;i++){
-					const url = `${file.previewUrl}${i}.jpg`
-					urls.push({url})
-				}
-				wx.previewMedia({
-					sources: urls
+				uni.navigateTo({
+					url: "PreviewFile?url=" + file.previewUrl
 				})
-			}
-			return
-			if(reg.test(file.filename)){
-				this.previewImg(file)
-			} 
-			/* 文档类：下载后打开 */ 
-			else {
-				this.gLoading(this,true)
-				if (file.previewLoad) {
-					uni.openDocument({
-						filePath: file.previewUrl,
-						complete() {
-							this.gLoading(this,false)
-						}
-					})
-				} 
-				else {
-					uni.downloadFile({
-						url: file.previewUrl,
-						success: res => {
-							this.arr_previewFiles[index].previewUrl = res.tempFilePath
-							this.arr_previewFiles[index].previewLoad = true
-							uni.openDocument({
-								filePath: res.tempFilePath,
-								complete: () => {
-									this.gLoading(this,false)
-								}
-							})
-							console.log(res)
-						},
-						fail: err => {
-							console.log(err)
-							this.gLoading(this,false)
-						}
-					})
-				}
 			}
 		},
 		/* 滚动到评论区 */

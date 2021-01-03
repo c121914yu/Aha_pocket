@@ -13,8 +13,17 @@
 		</view>
 		<!-- 通知列表 -->
 		<view class="informs">
-			<navigator class="item" hover-class="none" v-for="(item, index) in informs" :key="index" :url="'Inform?id=' + item.id">
-				<image :class="item.status === 0 ? 'unread' : ''" src="https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png"></image>
+			<navigator 
+				class="item" 
+				:class="item.type === 0 ? 'system' : ''"
+				v-for="(item, index) in arr_informs" 
+				:key="index" 
+				:url="'Inform?id=' + item.id"
+				hover-class="none">
+				<image 
+					:class="item.status === 0 ? 'unread' : ''" 
+					src="https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png">
+				</image>
 				<view class="right small">
 					<view class="title">
 						<text class="title">{{ item.title }}</text>
@@ -24,7 +33,7 @@
 				</view>
 			</navigator>
 		</view>
-		<view class="remark small center">{{ is_showAll ? "已加载全部" : "" }}</view>
+		<view class="remark center">{{ is_showAll ? "已加载全部" : "" }}</view>
 		<!-- 发送信息 -->
 		<navigator class="send-inform" hover-class="none" url="Inform_send"><text class="iconfont icon-tianjia"></text></navigator>
 		<!-- 加载动画 -->
@@ -39,17 +48,17 @@ export default {
 		return {
 			pageNum: 1,
 			pageSize: 15,
-			informs: [],
+			arr_informs: [],
 			is_showAll: false
 		};
 	},
 	computed: {
 		unreaded() {
-			return this.informs.filter(item => item.status === 0).length;
+			return this.arr_informs.filter(item => item.status === 0).length
 		}
 	},
-	onLoad() {
-		this.getMsg(true)
+	onShow() {
+		this.getMsg(true,true)
 	},
 	onPullDownRefresh() {
 		this.getMsg(true)
@@ -60,14 +69,6 @@ export default {
 		}
 	},
 	methods: {
-		/* 判断是否加载全部 */
-		judgeLoadAll(size)
-		{
-			if(size < this.pageSize)
-				this.is_showAll = true
-			else
-				this.pageNum++
-		},
 		/* 获取消息列表 */
 		getMsg(init=false,loading=true) 
 		{
@@ -80,19 +81,24 @@ export default {
 				pageSize: this.pageSize
 			})
 			.then(res => {
-				this.gLoading(this, false)
-				const data = res.data.pageData.map(item => {
-					return {
-						...item,
-						receiveDate: this.gformatDate(item.receiveDate)
-					}
+				/* 是否加载所有 */
+				if(res.data.pageData < this.pageSize){
+					this.is_showAll = true
+				}
+				else{
+					this.pageNum++
+				}
+				
+				if(init){
+					this.arr_informs = []
+				}
+				res.data.pageData.forEach(item => {
+					item.receiveDate = this.gformatDate(item.receiveDate)
+					this.arr_informs.push(item)
 				})
-				
-				this.informs = init ?  data : this.informs.concat(data)
-				
-				this.judgeLoadAll(res.data.pageSize)
-				console.log(this.informs)
+				console.log(this.arr_informs);
 				uni.stopPullDownRefresh()
+				this.gLoading(this, false)
 			})
 			.catch(err => {
 				this.gLoading(this, false)
@@ -100,7 +106,7 @@ export default {
 			})
 		}
 	}
-};
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -117,7 +123,7 @@ export default {
 		right 10px
 		bottom 20px
 		text
-			font-size 50rpx
+			font-size 60rpx
 			color var(--origin1)
 	/* 通知列表 */
 	.informs
@@ -161,7 +167,12 @@ export default {
 					white-space nowrap
 					overflow hidden
 					text-overflow ellipsis
+			&:last-child .right
+				border none
+		.system
+			background-color var(--origin4)
 	.remark
 		padding 10px 0
 		color var(--gray1)
+		font-size 22rpx
 </style>

@@ -114,7 +114,7 @@ export default {
                 compTags
             })
             .then(res => {
-                this.gPutUserInfo({
+                this.gGetMeInfo({
                     specialtyTags,
                     compTags
                 });

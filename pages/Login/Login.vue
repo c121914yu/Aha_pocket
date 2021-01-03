@@ -38,8 +38,7 @@
 </template>
 
 <script>
-import { Login, WXLogin } from '@/static/request/api_login.js';
-import { getMe } from '@/static/request/api_userInfo.js';
+import { Login, WXLogin } from '@/static/request/api_login.js'
 export default {
 	data() {
 		return {
@@ -56,9 +55,11 @@ export default {
 				url: '../app',
 				success: () => {
 					this.gToastSuccess('登录成功')
+				},
+				complete: () => {
+					this.gLoading(this, false);
 				}
 			})
-			this.gLoading(this, false);
 		},
 		login() {
 			if (this.phone === '') this.gToastError('手机号不能为空');
@@ -110,9 +111,10 @@ export default {
 	mounted() {
 		/* 检查是否有存储token，验证登录身份 */
 		if (uni.getStorageSync('token')) {
-			getMe()
+			this.gLoading(this, true);
+			this.gGetMeInfo()
 			.then(res => {
-				this.loginSuccess(res.data)
+				this.loginSuccess(res)
 			})
 		}
 	}

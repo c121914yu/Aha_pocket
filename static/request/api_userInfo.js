@@ -11,7 +11,7 @@ const bindPhone = (data) => request("/bind/phone","POST",data)
 const bindWxchat = (data) => request("/bind/wechat?code="+data.code,"POST",data)
 
 /* 获取个人信息 */
-const getMe = (data) => request("/userInfo/me","GET",data)
+const getMe = () => request("/userInfo/me","GET",{})
 /* 修改个人基本资料 */
 const putMe = (data) => request("/userInfo/me","PUT",data)
 /* 签署须知协议 */

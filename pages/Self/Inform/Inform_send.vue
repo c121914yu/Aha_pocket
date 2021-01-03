@@ -14,18 +14,17 @@
 				<text class="label">发件人:</text>{{sendName}}
 			</view>
 		</view>
+		<!-- 信息内容 -->
 		<view class="content">
 			<view v-if="content" v-html="content"></view>
-			<view v-else>无内容...</view>
-			<button @click="editContent=true">编辑内容</button>
+			<view class="hint" v-else>无内容...</view>
 		</view>
+		<!-- 操作按键 -->
 		<view class="btns">
-			<button @click="sendMsg">发送</button>
+			<button class="edit" @click="startEdit">编辑</button>
+			<button class="send" @click="sendMsg">发送</button>
 		</view>
 		
-		<view class="edit" v-if="editContent">
-			<MdEdit :html="content" @editOk="editOk"></MdEdit>
-		</view>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
@@ -37,48 +36,68 @@ export default {
 	data() {
 		return {
 			name: "",
-			sendName: "余金隆",
+			sendName: getApp().globalData.gUserInfo.userInfo.nickname,
 			receiverUserId: "",
 			title: "",
 			content: "",
 			editContent: false
 		}
 	},
-	methods: {
-		/* 富文本编辑完成 */
-		editOk(html)
-		{
-			this.content = html
-			this.editContent = false
-		},
-		/* 点击发送 */
-		sendMsg()
-		{
-			this.gLoading(this,true)
-			postMessage({
-				receiverUserId: this.receiverUserId,
-				title: this.title,
-				content: this.content
-			})
-			.then(res => {
-				uni.navigateBack({
-					delta: 1,
-					success: () => {
-						this.gToastSuccess("发送成功")
-					}
-				})
-				this.gLoading(this,false)
-			})
-			.catch(err => {
-				this.gLoading(this,false)
-			})
-		}
-	},
 	onLoad(e) {
 		if(e.id){
 			this.receiverUserId = e.id
 		}
-	}
+	},
+	onShow() {
+		if(this.editContent){
+			this.content = getApp().globalData.gEditContent
+			this.editContent = false
+		}
+	},
+	methods: {
+		/* 开始编辑 */
+		startEdit()
+		{
+			this.editContent = true
+			getApp().globalData.gEditContent = this.content
+			uni.navigateTo({
+				url: "../../EditMd/EditMd"
+			})
+		},
+		/* 点击发送 */
+		sendMsg()
+		{
+			if(this.title === ""){
+				this.gToastError("主题为空")
+			}
+			else if(this.receiverUserId === ""){
+				this.gToastError("收件人为空")
+			}
+			else if(this.content === ""){
+				this.gToastError("内容为空")
+			}
+			else{
+				this.gLoading(this,true)
+				postMessage({
+					receiverUserId: this.receiverUserId,
+					title: this.title,
+					content: this.content
+				})
+				.then(res => {
+					uni.navigateBack({
+						delta: 1,
+						success: () => {
+							this.gToastSuccess("发送成功")
+						}
+					})
+					this.gLoading(this,false)
+				})
+				.catch(err => {
+					this.gLoading(this,false)
+				})
+			}
+		}
+	},
 }
 </script>
 
@@ -99,13 +118,13 @@ export default {
 			.label
 				margin-right 10px
 				color var(--gray1)
+				font-size 24rpx
 	.content
 		padding 10px
 		word-break break-all
 		padding-bottom 70px
-		button
-			width 50%
-			background-color var(--gray1)
+		.hint
+			color var(--gray2)
 	.btns
 		position absolute
 		bottom 0
@@ -117,9 +136,12 @@ export default {
 		border-top-left-radius 22px
 		border-top-right-radius 22px
 		display flex
+		justify-content space-around
 		button
-			width 100%
-	.edit
+			width 35%
+		.edit
+			background-color var(--gray1)
+	.editor
 		z-index 5
 		position fixed
 		top 0

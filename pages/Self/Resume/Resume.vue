@@ -142,6 +142,7 @@ export default {
 <style lang="stylus">
 .resume
 	position relative
+	min-height 100vh
 	padding 30rpx 30rpx 100rpx
 	background-color var(--white1)
 	/* 不同种类卡片 */
