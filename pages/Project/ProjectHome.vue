@@ -205,6 +205,7 @@ export default {
 					color #FFFFFF
 					border-radius 22px
 		.list
+			min-height 200px
 			transform translateY(-40px)
 			border-radius 22px
 			overflow hidden

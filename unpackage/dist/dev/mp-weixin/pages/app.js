@@ -202,8 +202,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _api_competition = __webpack_require__(/*! @/static/request/api_competition.js */ 48);
 var _api_system = __webpack_require__(/*! @/static/request/api_system.js */ 49); //
+//
 //
 //
 //
@@ -251,7 +253,6 @@ var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	第一次不直接加载界面，防止加载时间过长
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	切换到未缓存的界面时再进行加载
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */navs: [{ name: "ProjectHome", loaded: false }, { name: "Competition", loaded: false }, { name: "Epiboly", loaded: false }, { name: "Self", loaded: false }], currentNav: 0, signedNotice: getApp().globalData.gUserInfo.signedNotice, arr_systemNotice: [] };}, watch: { currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "竞赛信息";break;case 2:text = "服务外包";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });if (newNav === 1 || newNav === 2) {uni.showToast({ title: "该模块正在开发!", icon: "none" });}} }, components: { ProjectHome: ProjectHome, Competition: Competition, Epiboly: Epiboly, Self: Self },
-
   onLoad: function onLoad() {var _this = this;
     (0, _api_system.getNotice)().
     then(function (res) {

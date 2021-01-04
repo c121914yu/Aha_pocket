@@ -21,7 +21,7 @@
 					</view>
 				</view>
 				<view class="right">
-					<image :src="avatarUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'" mode="widthFix"></image>
+					<image :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" mode="widthFix"></image>
 				</view>
 			</view>
 			<!-- 项目成员 -->
@@ -353,8 +353,24 @@ export default {
 					}
 					else{
 						/* 其他类需要下载到本地 */
-						this.gToastMsg("文件下载-设计中")
-						this.gLoading(this,false)
+						wx.saveFileToDisk({
+							filePath: file.url,
+							success: (res) => {
+								console.log(res);
+								this.gLoading(this,false)
+							},
+							fail: (err) => {
+								uni.setClipboardData({
+								    data: file.url,
+									success: () => {
+										this.gToastMsg("已复制下载链接")
+									},
+									complete: () => {
+										this.gLoading(this,false)
+									}
+								})
+							}
+						})
 					}
 				}
 				/* 没有缓存下载路径，请求签名路径后再回调该函数 */

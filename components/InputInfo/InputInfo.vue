@@ -201,7 +201,7 @@ export default {
 			top 50rpx
 			width 100%
 			max-height 350rpx
-			overflow hidden
+			overflow auto
 			background-color #FFFFFF
 			box-shadow 0 0 5px var(--origin2)
 			border-radius 20rpx
@@ -210,6 +210,7 @@ export default {
 				height 60rpx
 				line-height 60rpx
 				font-size 24rpx
+				white-space nowrap
 				&.active
 					background-color rgba(144,140,139,0.5)
 </style>

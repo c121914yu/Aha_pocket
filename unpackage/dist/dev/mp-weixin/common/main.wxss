@@ -97,17 +97,13 @@ navigator {
   right: 0;
   bottom: 0;
   background-color: rgba(0,0,0,0.2);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
 }
 .fix-screen .content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   padding: 10px;
   background-color: #fff;
 }

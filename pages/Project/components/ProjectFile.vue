@@ -5,7 +5,7 @@
 			<text class="h3">上传附件:</text>
 			<text class="add iconfont icon-tianjia" @click="chooseFile"></text>
 		</view>
-		<view class="remark">(注: 附件必须小于50M)</view>
+		<view class="remark">(注: 附件必须小于500M.。)</view>
 		<view 
 			class="file"
 			v-for="(file,index) in files"
@@ -35,7 +35,7 @@
 				<text style="color: #956134" v-if="file.status === 1" class="text">上传中</text>
 				<text style="color: #67C23A" v-if="file.status === 2" class="text">上传成功</text>
 				<text style="color: #F56C6C" v-if="file.status === 3" class="text">上传失败</text>
-				<text class="price">{{file.price}}</text>
+				<text class="price"><text class="iconfont icon-qian"></text>{{file.price}}</text>
 			</view>
 		</view>
 		<!-- 上传按键 -->
@@ -80,12 +80,7 @@ export default {
 		*/
 		chooseFile()
 		{
-			if(this.files.length > 10){
-				this.gToastMsg("文件数量不能大于10")
-				return
-			}
-            this.gLoading(this,true)
-			function renderSize(fsize){
+			const renderSize = (fsize) => {
 				const unitArr = new Array("Bytes","KB","MB","GB","TB","PB","EB","ZB","YB")
 				let index = 0
 				let srcsize = parseFloat(fsize)
@@ -94,6 +89,11 @@ export default {
 				size = size.toFixed(2)
 				return size + unitArr[index]
 			}
+			if(this.files.length > 10){
+				this.gToastMsg("文件数量不能大于10")
+				return
+			}
+            this.gLoading(this,true)
 			/* 选择文件API */
 			wx.chooseMessageFile({
 				count: 10,
@@ -102,9 +102,9 @@ export default {
 					/* 限制50M */
 					let files = res.tempFiles.filter(file => file.size < 500000000)
 					if(files.length < res.tempFiles.length){
-						this.gToastError("文件大于50M")
+						this.gToastError("文件大于500M")
 					}
-					files = files.map(file => {
+					this.files = this.files.concat(files.map(file => {
 						return{
 							name: file.name,
 							url: file.path,
@@ -114,8 +114,8 @@ export default {
 							status: 0, // 0 待上传，1 上传中，2上传完成，3上传失败
 							price: 100,
 						}
-					})
-					this.files = this.files.concat(files)
+					}))
+					console.log(this.files);
 				},
 				fail: err => {
 					console.log(err)
@@ -133,7 +133,7 @@ export default {
 		clickFile(index)
 		{
 			const file = this.files[index]
-			console.log(file);
+			// console.log(file);
 			let itemList = ["修改附件信息", "删除附件"]
 			if(file.type.value === 1){
 				itemList = ["设置预览片段", "修改附件信息", "删除附件"]
@@ -227,7 +227,7 @@ export default {
 			this.gLoading(this,true)
 			/* 提示错误 */
 			const showErr = (err,index) => {
-				console.log(err);
+				console.error(err);
 				this.files[index].status = 2
 				this.gToastError("上传错误")
 				this.gLoading(this,false)
@@ -268,6 +268,7 @@ export default {
 								Region: signature.region,
 								Key: signature.filename,
 								Body: res.data,
+								// FilePath: file.url,
 								onProgress: (info) => {
 									console.log(JSON.stringify(info))
 									this.files[index].progress = info.percent*100
@@ -339,6 +340,14 @@ export default {
 		flex-wrap wrap
 		align-items center
 		justify-content space-between
+		.price
+			display flex
+			align-items center
+			.iconfont
+				margin-right 2px
+				font-size 24rpx
+				font-weight 400
+				color var(--origin1)
 		.size
 			color var(--origin1)
 	.progress

@@ -22,7 +22,6 @@ export default  {
 		{ label: '校一', value: 23 },
 		{ label: '校二', value: 22 },
 		{ label: '校三', value: 21 },
-		// { label: '参与奖', value: 11 }
 	],
 	compType: [
 		{label: "经济类",value: 1},
@@ -47,7 +46,7 @@ export default  {
 	arr_fileTypes: [
 		{label: "图片",value: 0,reg: /\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$/i}, //图片
 		{label: "视频/音频",value: 1,reg: /\.(avi|wmv|mpg|mpeg|mov|rm|ram|swf|raw|flv|mp4|mp3|wma|avi|rmvb|mkv)$/i}, //视频,音频
-		{label: "文档",value: 2,reg: /\.(txt|doc|docx|ppt|pptx|csv|xls|xlsx)$/i}, //文档
+		{label: "文档/PPT",value: 2,reg: /\.(txt|doc|docx|ppt|pptx|csv|xls|xlsx)$/i}, //文档
 		{label: "其他",value: 3,reg: /./}, //其他
 	]
 }

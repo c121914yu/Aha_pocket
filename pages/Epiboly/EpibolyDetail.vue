@@ -42,7 +42,7 @@ export default {
 				workReward: 1000,
 				place: "浙江工业大学",
 				issuer: {
-					avatarUrl: "https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png",
+					avatarUrl: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png",
 					name: "****公司"
 				},
 				description:"大的撒广撒点5广东省十多个ds16g415大嘎达6ds41g5ds4g5sd",

@@ -84,7 +84,8 @@ export default {
 <style lang="stylus" scoped>
 .set-file
 	.content
-		width 80%
+		margin 0
+		width 85%
 		border-radius 8px
 		padding 10px
 		.item

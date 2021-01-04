@@ -7,7 +7,7 @@
 				<view class="bg bg3"></view>
 				<view class="bg bg2"></view>
 				<view class="bg bg1"></view>
-				<image :src="userInfo.avatarUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'"></image>
+				<image :src="userInfo.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
 			</view>
 			<!-- 右侧昵称 & 标签 -->
 			<view class="right">
@@ -93,7 +93,7 @@ import { loginOut } from '@/static/request/api_login.js';
 export default {
 	data() {
 		return {
-			userInfo: { ...getApp().globalData.gUserInfo.userInfo },
+			userInfo: getApp().globalData.gUserInfo.userInfo,
 			/* 任务列表 */
 			tasks: [
 				{ name: '已购项目', icon: 'icon-shouye', to: "/pages/Project/PurchasedProjects" },
@@ -140,8 +140,14 @@ export default {
 		.then(res => {
 			this.funtions1[1].val = res.data
 		})
+		uni.$on("upDateUnread",this.upDateUnread)
 	},
 	methods: {
+		/* 更新未读信息 */
+		upDateUnread(amount)
+		{
+			this.funtions1[1].val = amount
+		},
 		/* 
 			name: 设置昵称
 			description: 失去焦点时修改账号的昵称，需要预先判断是否有修改，即对比原数据与新输入的内容是否相等
@@ -153,8 +159,8 @@ export default {
 				putMe({
 					nickname: value
 				}).then(res => {
-					console.log(res);
-					this.userInfo = this.gGetMeInfo({ nickname: value }).userInfo
+					this.userInfo = getApp().globalData.gUserInfo.userInfo
+					console.log(this.userInfo);
 					this.gToastSuccess('修改昵称成功!')
 				})
 			}
@@ -215,9 +221,6 @@ export default {
 							url: 'Self/UserHome?userId=' + this.userInfo.userId
 						})
 					}
-				},
-				fail: function(res) {
-					console.log(res.errMsg);
 				}
 			});
 		},

@@ -48,6 +48,19 @@ export default {
 			else{
 				amount = this.amount
 			}
+			wx.requestPayment({
+				timeStamp: '',
+				nonceStr: '',
+				package: '',
+				signType: 'MD5',
+				paySign: '',
+				success: (res) => {
+					console.log(res)
+				},
+				fail: (err) => {
+					console.log(err)
+				}
+			})
 			console.log(amount);
 			this.$emit("close")
 		}

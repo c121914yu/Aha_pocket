@@ -12,8 +12,8 @@
 			</view>
 		</view>
 		<!-- 二维码 -->
-		<view class="QR-code">
-			<image src="../../static/icon/close.png"></image>
+		<view class="QR-code" @click="preview">
+			<image :src="url" mode="widthFix"></image>
 		</view>
 		<!-- 分享给好友 -->
 		<button open-type="share">分享好友</button>
@@ -24,20 +24,25 @@
 export default {
 	data() {
 		return {
-			
-		};
-	},
-	onShareAppMessage(e){
-		console.log(e)
-		return {
-			title: "Aha口袋",
-			path: "pages/Login/Login",
-			desc: "Aha口袋邀您加入",
-			imageUrl: "http://blogs.jinlongyuchitang.cn/background.jpg"
+			url: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/erweima.jpg"
 		}
 	},
-	onLoad() {
-		this.gUndesign()
+	onShareAppMessage(e){
+		console.log(`pages/Login/Login?token=${uni.getStorageSync('token')}`)
+		return {
+			title: "Aha口袋",
+			path: `pages/Login/Login?token=${uni.getStorageSync('token')}`,
+			desc: `${getApp().globalData.gUserInfo.userInfo.nickname}邀您加入Aha口袋`,
+			imageUrl: this.url
+		}
+	},
+	methods: {
+		preview()
+		{
+			uni.previewImage({
+				urls: [this.url]
+			})
+		}
 	}
 }
 </script>
@@ -64,4 +69,5 @@ export default {
 		height 90vw
 		border var(--border2)
 		border-radius 8px
+		overflow hidden
 </style>

@@ -55,7 +55,9 @@ export default {
 			this.gLoading(this,false)
 		})
 		.catch(err => {
-			this.gLoading(this,false)
+			uni.navigateBack({
+				delta: 1
+			})
 		})
 	},
 	methods: {

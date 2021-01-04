@@ -11,7 +11,7 @@
 		<!-- 排名图标 -->
 		<text v-if="ranking !== 0" :class="'ranking iconfont ' + rankingIcon"></text>
 		<!-- 头像 -->
-		<view class="logo"><image :src="project.avatarUrl || 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png'" mode="widthFix"></image></view>
+		<view class="logo"><image :src="project.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" mode="widthFix"></image></view>
 		<!-- 资源信息 -->
 		<view class="info" :class="border ? 'border' : ''">
 			<!-- 资源名称 -->
@@ -39,7 +39,7 @@
 			<view class="blank"></view>
 			<!-- 数据统计 -->
 			<view class="footer">
-				<view class="time"><text v-if="project.awardTime">{{ project.awardTime }}</text></view>
+				<view class="time"><text v-if="project.awardTime && compName">{{ project.awardTime }}</text></view>
 				<view class="read">
 					<text class="iconfont icon-readed"></text>
 					<text>{{ project.read }}</text>

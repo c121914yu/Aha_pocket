@@ -22,7 +22,7 @@
 				hover-class="none">
 				<image 
 					:class="item.status === 0 ? 'unread' : ''" 
-					src="https://aha-public.oss-cn-hangzhou.aliyuncs.com/AhaIcon/logo.png">
+					src="https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png">
 				</image>
 				<view class="right small">
 					<view class="title">
@@ -54,7 +54,10 @@ export default {
 	},
 	computed: {
 		unreaded() {
-			return this.arr_informs.filter(item => item.status === 0).length
+			const unread = this.arr_informs.filter(item => item.status === 0).length
+			/* 更新未读信息 */
+			uni.$emit("upDateUnread",unread)
+			return unread
 		}
 	},
 	onShow() {

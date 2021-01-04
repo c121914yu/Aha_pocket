@@ -240,100 +240,106 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _api_userInfo = __webpack_require__(/*! @/static/request/api_userInfo.js */ 14);
-var _api_login = __webpack_require__(/*! @/static/request/api_login.js */ 23);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
-{
-  data: function data() {
-    return {
-      userInfo: _objectSpread({}, getApp().globalData.gUserInfo.userInfo),
-      /* 任务列表 */
-      tasks: [
-      { name: '已购项目', icon: 'icon-shouye', to: "/pages/Project/PurchasedProjects" },
-      { name: '已完成', icon: 'icon-yiwancheng', to: "/pages/Project/PurchasedProjects" },
-      { name: '贡献详情', icon: 'icon-icon', to: "/pages/Project/PurchasedProjects" }],
-
-      /* 功能列表 */
-      funtions1: [
-      { name: 'userId', icon: 'icon-ID', to: '#', val: getApp().globalData.gUserInfo.userInfo.userId },
-      { name: '消息通知', icon: 'icon-tongzhi1', to: '/pages/Self/Inform/Informs', val: 0 },
-      { name: '我的钱包', icon: 'icon-ziyuan', to: '/pages/Self/Wallet/Wallet' },
-      { name: '账号信息', icon: 'icon-zhanghao', to: '/pages/Self/Number/NumberInfo' },
-      { name: '邀请好友', icon: 'icon-iconfontzhizuobiaozhun49', to: '/pages/Self/InviteMember' }],
-
-      funtions2: [
-      { name: '我的收藏', icon: 'icon-shoucang', to: '/pages/Self/MyCollection' },
-      { name: '个人简历', icon: 'icon-jianli', to: '/pages/Self/Resume/Resume' },
-      { name: '意见反馈', icon: 'icon-feedback', to: '/pages/Self/Feedback/Feedback' }],
-
-      isCheckTags: false // 是否进入选择标签
-    };
-  },
-  computed: {
-    tags: function tags() {
-      var isCheckTags = this.isCheckTags; // 检测标签更改
-      var userInfo = getApp().globalData.gUserInfo.userInfo;
-      var specialtyTags = [];
-      var compTags = [];
-      if (userInfo.specialtyTags) {
-        specialtyTags = userInfo.specialtyTags.split(',');
-      }
-      if (userInfo.compTags) {
-        compTags = userInfo.compTags.split(',');
-      }
-      var res = specialtyTags.concat(compTags);
-      if (res.length === 0) {
-        res = ['点击定制个人标签'];
-      }
-      return res;
-    } },
-
-  created: function created() {var _this = this;
-    (0, _api_userInfo.getUnreadCount)().
-    then(function (res) {
-      _this.funtions1[1].val = res.data;
-    });
-  },
-  methods: {
-    /* 
-             	name: 设置昵称
-             	description: 失去焦点时修改账号的昵称，需要预先判断是否有修改，即对比原数据与新输入的内容是否相等
-             */
-    setNickName: function setNickName(e) {var _this2 = this;
-      var value = e.detail.value;
-      /* 判断value与原本的nickName是否相同，相同则无需请求，不同则请求服务器修改nickName */
-      if (value !== this.userInfo.nickname) {
-        (0, _api_userInfo.putMe)({
-          nickname: value }).
-        then(function (res) {
-          console.log(res);
-          _this2.userInfo = _this2.gGetMeInfo({ nickname: value }).userInfo;
-          _this2.gToastSuccess('修改昵称成功!');
-        });
-      }
-    },
-    /*
-       	name: 点击头像
-       	description: 点击头像打开操作菜单，可选择预览或者修改头像点击预览，触发预览效果点击修改头像，进入选择头像模式，选择完成后上传头像至oss，然后将链接存储到数据库中。
-                 time: 2020/11/15
-       */
-    clickAvatar: function clickAvatar() {var _this3 = this;
-      /* 进入操作菜单 */
-      uni.showActionSheet({
-        itemList: ['预览头像', '修改头像', '查看个人信息'],
-        success: function success(res) {
-          /* 预览头像 */
-          if (res.tapIndex === 0) {
-            uni.previewImage({
-              urls: [_this3.userInfo.avatarUrl] });
-
-          } else
-          if (res.tapIndex === 1) {
-            /* 修改头像 */
-            uni.chooseImage({
-              count: 1, //默认9
-              sizeType: ['compressed'],
-              success: function success(img) {
-                _this3.gLoading(_this3, true);
-                var start = Date.now();
+var _api_login = __webpack_require__(/*! @/static/request/api_login.js */ 23); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { data: function data() {return { userInfo: getApp().globalData.gUserInfo.userInfo, /* 任务列表 */tasks: [{ name: '已购项目', icon: 'icon-shouye', to: "/pages/Project/PurchasedProjects" }, { name: '已完成', icon: 'icon-yiwancheng', to: "/pages/Project/PurchasedProjects" }, { name: '贡献详情', icon: 'icon-icon', to: "/pages/Project/PurchasedProjects" }], /* 功能列表 */funtions1: [{ name: 'userId', icon: 'icon-ID', to: '#', val: getApp().globalData.gUserInfo.userInfo.userId }, { name: '消息通知', icon: 'icon-tongzhi1', to: '/pages/Self/Inform/Informs', val: 0 }, { name: '我的钱包', icon: 'icon-ziyuan', to: '/pages/Self/Wallet/Wallet' }, { name: '账号信息', icon: 'icon-zhanghao', to: '/pages/Self/Number/NumberInfo' }, { name: '邀请好友', icon: 'icon-iconfontzhizuobiaozhun49', to: '/pages/Self/InviteMember' }], funtions2: [{ name: '我的收藏', icon: 'icon-shoucang', to: '/pages/Self/MyCollection' }, { name: '个人简历', icon: 'icon-jianli', to: '/pages/Self/Resume/Resume' }, { name: '意见反馈', icon: 'icon-feedback', to: '/pages/Self/Feedback/Feedback' }], isCheckTags: false // 是否进入选择标签
+    };}, computed: { tags: function tags() {var isCheckTags = this.isCheckTags; // 检测标签更改
+      var userInfo = getApp().globalData.gUserInfo.userInfo;var specialtyTags = [];var compTags = [];if (userInfo.specialtyTags) {specialtyTags = userInfo.specialtyTags.split(',');}if (userInfo.compTags) {compTags = userInfo.compTags.split(',');}var res = specialtyTags.concat(compTags);if (res.length === 0) {res = ['点击定制个人标签'];}return res;} }, created: function created() {var _this = this;(0, _api_userInfo.getUnreadCount)().then(function (res) {_this.funtions1[1].val = res.data;});uni.$on("upDateUnread", this.upDateUnread);}, methods: { /* 更新未读信息 */upDateUnread: function upDateUnread(amount) {this.funtions1[1].val = amount;}, /* 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          	name: 设置昵称
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          	description: 失去焦点时修改账号的昵称，需要预先判断是否有修改，即对比原数据与新输入的内容是否相等
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          */setNickName: function setNickName(e) {var _this2 = this;var value = e.detail.value; /* 判断value与原本的nickName是否相同，相同则无需请求，不同则请求服务器修改nickName */if (value !== this.userInfo.nickname) {(0, _api_userInfo.putMe)({ nickname: value }).then(function (res) {_this2.userInfo = getApp().globalData.gUserInfo.userInfo;console.log(_this2.userInfo);_this2.gToastSuccess('修改昵称成功!');});}}, /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               	name: 点击头像
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               	description: 点击头像打开操作菜单，可选择预览或者修改头像点击预览，触发预览效果点击修改头像，进入选择头像模式，选择完成后上传头像至oss，然后将链接存储到数据库中。
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         time: 2020/11/15
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */clickAvatar: function clickAvatar() {var _this3 = this; /* 进入操作菜单 */uni.showActionSheet({ itemList: ['预览头像', '修改头像', '查看个人信息'], success: function success(res) {/* 预览头像 */if (res.tapIndex === 0) {uni.previewImage({ urls: [_this3.userInfo.avatarUrl] });} else if (res.tapIndex === 1) {/* 修改头像 */uni.chooseImage({ count: 1, //默认9
+              sizeType: ['compressed'], success: function success(img) {_this3.gLoading(_this3, true);var start = Date.now();
                 /* 获取签名 */
                 (0, _api_userInfo.getAvatarOssSignature)("".concat(Date.now(), ".JPG")).
                 then(function (res) {
@@ -366,9 +372,6 @@ var _api_login = __webpack_require__(/*! @/static/request/api_login.js */ 23);fu
               url: 'Self/UserHome?userId=' + _this3.userInfo.userId });
 
           }
-        },
-        fail: function fail(res) {
-          console.log(res.errMsg);
         } });
 
     },

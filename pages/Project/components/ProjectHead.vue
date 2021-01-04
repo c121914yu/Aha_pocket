@@ -294,7 +294,6 @@ export default {
 							border-radius 22px
 							background-color var(--origin4)
 							color var(--origin1)
-							font-weight 700
 				.level
 					grid-template-columns repeat(4,1fr)
 				.competion-type

@@ -46,7 +46,12 @@
 					}"
 				></text>
 			</view>
-			<navigator class="item" hover-class="none" v-for="(item, index) in projects" :key="index" :url="'../Project/Project?id=' + item.id">
+			<navigator 
+				class="item" 
+				hover-class="none" 
+				v-for="(item, index) in projects" 
+				:key="index" 
+				:url="'../Project/Project?id=' + item.id">
 				<view class="name">{{ item.name }}</view>
 				<view class="collect">
 					<text class="iconfont icon-collection"></text>
@@ -54,7 +59,13 @@
 				</view>
 				<text class="go iconfont icon-arrow-right"></text>
 			</navigator>
-			<navigator v-if="projects.length === 5" class="center" hover-class="none" :url="'../Project/Projects?userId=' + userId">查看更多</navigator>
+			<navigator 
+				v-if="projects.length === 5" 
+				class="center" 
+				hover-class="none" 
+				:url="'../Project/Projects?userId=' + userId">
+				查看更多
+			</navigator>
 		</view>
 		<!-- 外包 -->
 		<view
@@ -103,6 +114,54 @@ export default {
 			epibolies: [{ name: '***小程序', id: 0 }, { name: '***网页', id: 0 }, { name: '***算法', id: 0 }]
 		};
 	},
+	onLoad(e) {
+		if (!e.userId) {
+			this.gToastError('ID为空');
+		} else {
+			this.gLoading(this, true);
+			this.userId = e.userId;
+			/* 获取用户userId，请求数据 */
+			getUser(e.userId)
+			.then(res => {
+				this.gLoading(this, false);
+				let tagArr = [];
+				for (let i = 0; i < 8; i++) {
+					tagArr.push('');
+					this.translate.push([0, 0]);
+				}
+				/* 格式化比赛标签和特征标签 */
+				if (res.data.compTags) {
+					res.data.compTags.split(',').forEach((item, i) => {
+						tagArr[i] = item;
+					});
+				}
+				if (res.data.specialtyTags) {
+					res.data.specialtyTags.split(',').forEach((item, i) => {
+						tagArr[i + 4] = item;
+					});
+				}
+				this.tags = tagArr;
+				this.avatarUrl = res.data.avatarUrl;
+				this.nickname = res.data.nickname;
+				this.intro = res.data.intro;
+				this.$nextTick(this.moveTag);
+			})
+			.catch(err => {
+				this.gLoading(this, false);
+			});
+			/* 获取5条收藏量最多的项目项目 */
+			getProjects({
+				userId: e.userId,
+				pageNum: 1,
+				pageSize: 5,
+				sortBy: 'collect'
+			})
+			.then(res => {
+				this.projects = res.data.pageData
+				console.log(res.data)
+			})
+		}
+	},
 	methods: {
 		/* 移动标签位置 */
 		moveTag() {
@@ -136,53 +195,6 @@ export default {
 			setTimeout(() => {
 				this.$forceUpdate();
 			}, 10);
-		}
-	},
-	onLoad(e) {
-		if (!e.userId) {
-			this.gToastError('ID为空');
-		} else {
-			this.gLoading(this, true);
-			this.userId = e.userId;
-			/* 获取用户userId，请求数据 */
-			getUser(e.userId)
-				.then(res => {
-					this.gLoading(this, false);
-					let tagArr = [];
-					for (let i = 0; i < 8; i++) {
-						tagArr.push('');
-						this.translate.push([0, 0]);
-					}
-					/* 格式化比赛标签和特征标签 */
-					if (res.data.compTags) {
-						res.data.compTags.split(',').forEach((item, i) => {
-							tagArr[i] = item;
-						});
-					}
-					if (res.data.specialtyTags) {
-						res.data.specialtyTags.split(',').forEach((item, i) => {
-							tagArr[i + 4] = item;
-						});
-					}
-					this.tags = tagArr;
-					this.avatarUrl = res.data.avatarUrl;
-					this.nickname = res.data.nickname;
-					this.intro = res.data.intro;
-					this.$nextTick(this.moveTag);
-				})
-				.catch(err => {
-					this.gLoading(this, false);
-				});
-			/* 获取5条收藏量最多的项目项目 */
-			getProjects({
-				userId: e.userId,
-				pageNum: 1,
-				pageSize: 5,
-				sortBy: 'collect'
-			}).then(res => {
-				this.projects = res.data.pageData;
-				console.log(res.data);
-			});
 		}
 	}
 };

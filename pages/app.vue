@@ -37,7 +37,8 @@
 		<!-- 个人 -->
 		<Self
 			v-show="currentNav === 3"
-			v-if="navs[currentNav].loaded">
+			v-if="navs[currentNav].loaded"
+			ref="Self">
 		</Self>
 	</view>
 </template>

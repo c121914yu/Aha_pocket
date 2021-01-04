@@ -2,6 +2,19 @@
 <template>
 	<view class="my-projects">
 		<!-- 数据统计 -->
+		<view class="data">
+			<view class="amount">
+				<view class="title">
+					项目总数
+					<text class="mini">(<text class="strong">{{checkAmount}}</text> 个审核中)</text>
+				</view>
+				<view class="h3">{{projects.length}}</view>
+			</view>
+			<view class="collect">
+				<view class="title">被收藏量</view>
+				<view class="h3">{{collection}}</view>
+			</view>
+		</view>
 		<!-- 上传项目 -->
 		<navigator 
 			v-if="couldSet" 
@@ -49,10 +62,22 @@ export default {
 			couldSet: true,
 			projects: [],
 			pageNum: 1,
-			pageSize: 10,
+			pageSize: 100,
 			sortBy: "read",
 			filter: null,
 			is_showAll: false, 
+		}
+	},
+	computed: {
+		checkAmount(){
+			return this.projects.filter(item => !item.passed).length
+		},
+		collection(){
+			let collection = 0
+			this.projects.forEach(item => {
+				collection += item.collect
+			})
+			return collection
 		}
 	},
 	components: {
@@ -175,6 +200,20 @@ export default {
 .my-projects
 	min-height 100vh
 	background-color var(--white1)
+	/* 数据统计 */
+	.data
+		display grid
+		grid-template-columns 1fr 1fr
+		text-align center
+		padding 10px
+		font-size 26rpx
+		background-color var(--origin3)
+		border-bottom-left-radius 22px
+		border-bottom-right-radius 22px
+		.h3
+			color var(--origin1)
+		.amount
+			border-right var(--border1)
 	/* 上传项目按键 */
 	.up-project
 		z-index 5

@@ -2,12 +2,16 @@
 	<view class="read-file">
 		<image
 			class="file"
+			:style="{
+				height: imgHeight ? `${imgHeight}px` : 'auto'
+			}"
 			v-for="(url,index) in urls"
 			:key="index"
 			:src="url"
 			mode="widthFix"
-			lazy-load
-			@longpress="viewImg(index)">
+			@longpress="viewImg(index)"
+			@load="loadSuccess($event,index)"
+			@error="tempUrls[index]=0">
 		</image>
 		<view class="page-control">
 			<slider 
@@ -20,11 +24,12 @@
 				block-color="#956134"
 				block-size="18"
 				show-value
-				@change="changePage"/>
+				@change="changePage"
+				@error="loadCount"/>
 			<text class="hyphen">/</text>
 			<text class="max">{{maxPage}}</text>
 		</view>
-		<is_loading ref="is_loading"></is_loading>
+		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
@@ -36,31 +41,26 @@ export default {
 			id: null,
 			signature: null,
 			currentPage: 1,
-			imgHeight: 0, //记录图片高度
+			imgHeight: null, //记录图片高度
 			loadNum: 1, // 每次加载多少张图片
-			maxPage: 5, // 文档最大页数
-			is_loading: false, //是否加载中
-			urls: []
+			maxPage: 1, // 文档最大页数
+			urls: [],
+			tempUrls: [],
+			movinng: false
 		}
 	},
 	onLoad(e) {
 		this.id = Number(e.id)
 		this.getSignature()
 	},
-	// onReachBottom() {
-	// 	if(!this.is_loading){
-	// 		this.loadPage(2)
-	// 	}
-	// },
 	/* 监听滚动,判断当前页是否加载 */
-	// onPageScroll(e) {
-	// 	this.currentPage = Math.round(e.scrollTop / this.imgHeight) + 1
-	// 	/* 判断当前页是否加载,若没有加载则去加载它 */
-	// 	if(!this.urls[this.currentPage-1] && !this.is_loading){
-	// 		this.loadedPage = this.currentPage
-	// 		this.loadPage(1)
-	// 	}
-	// },
+	onPageScroll(e) {
+		if(!this.movinng){
+			/* 计算当前页 */
+			this.currentPage = Math.round((e.scrollTop - this.imgHeight*0.3) / this.imgHeight) + 1
+			this.loadCurrentPage()
+		}
+	},
 	methods: {
 		/* 
 			获取签名
@@ -73,31 +73,46 @@ export default {
 			getReadSignature(this.id)
 			.then(res => {
 				this.signature = res.data
-				this.loadPage(1,1)
+				this.loadPage(1)
+				this.$nextTick(() => {
+					this.gLoading(this,false)
+				})
 			})
 			.catch(err => {
 				console.error(err)
 				this.gLoading(this,false)
 			})
 		},
-		/* 
-			第一次加载成功
-			1. 获取屏幕高度
-			2. 获取单张图片高度
-			3. 计算3屏幕需要多少张图片
-		*/
-		firstLoad()
+		/* 图片加载成功 */
+		loadSuccess(e,index)
 		{
-			/* 获取DOM高度 */
-			uni.createSelectorQuery().select(".file").boundingClientRect((data) => {
-				this.imgHeight = data.height
-				/* 获取系统高度 */
+			/* 第一次加载 */
+			if(index === 0){
+				/* 获取屏幕宽高 */
 				const screenHeight = uni.getSystemInfoSync().screenHeight
-				this.loadNum = Math.ceil(screenHeight*3 / this.imgHeight)
-				this.loadPage(2,this.loadNum)
-				console.log(this.imgHeight)
-				this.gLoading(this,false)
-			}).exec()
+				const screenWidth = uni.getSystemInfoSync().screenWidth
+				/* 计算图片标签的高度，图片宽度/屏幕宽度 * 图片高度 */
+				this.imgHeight = screenWidth / e.detail.width * e.detail.height 
+				/* 获取3屏需要多少张图片 */
+				this.loadNum = Math.round(screenHeight*3 / this.imgHeight)
+				this.loadCurrentPage()
+			}
+		},
+		/* 根据currentPage加载周围的图片 */
+		loadCurrentPage()
+		{
+			const half = Math.floor(this.loadNum/2)
+			let start = this.currentPage - half
+			if(start < 1){
+				start = 1
+			}
+			let end = start + this.loadNum
+			if(end > this.maxPage){
+				end = this.maxPage
+			}
+			for(let i=start;i<=end;i++){
+				this.loadPage(i)
+			}
 		},
 		/* 
 			加载界面
@@ -105,62 +120,71 @@ export default {
 			@set this.urls: Array,图片路径
 			time: 2021/1/3
 		*/
-		loadPage(startPage,endPage)
+		loadPage(page)
 		{
-			this.is_loading = true
-			/* 页码限定 */
-			if(startPage < 1) {
-				startPage = 1
+			/* 已经加载过，跳过 */
+			if(this.tempUrls[page-1]){
+				return
 			}
-			if(endPage > this.maxPage) {
-				endPage = this.maxPage
-			}
-			/* 遍历加载 */
-			for(let i=startPage;i<=endPage;i++) {
-				/* 已经加载过，跳过 */
-				if(this.urls[i-1]){
-					continue
-				}
-				uni.request({
-					url: `https://${this.signature.bucketName}.cos.${this.signature.region}.myqcloud.com${this.signature.filename}`,
-					method: "GET",
-					data: {
-						"ci-process": "doc-preview",
-						"page": i
-					},
-					header: {
-						'Authorization': this.signature.authorization
-					},
-					responseType: "arraybuffer",
-					success: (res) => {
-						if(res.statusCode === 200){
-							console.log(i)
-							/* 二进制转base64,生成图片 */
-							const url = 'data:image/png;base64,' + uni.arrayBufferToBase64(res.data)
-							this.urls[i-1] = url
-							this.$forceUpdate()
-							/* 第一次请求，从响应头获取最大页码 */
-							if(i === 1) {
-								this.maxPage = Number(res.header["X-Total-Page"])
-								this.$nextTick(this.firstLoad)
-							}
+			this.tempUrls[page-1] = 1
+			uni.request({
+				url: `https://${this.signature.bucketName}.cos.${this.signature.region}.myqcloud.com${this.signature.filename}`,
+				method: "GET",
+				data: {
+					"ci-process": "doc-preview",
+					"page": page
+				},
+				header: {
+					'Authorization': this.signature.authorization
+				},
+				responseType: "arraybuffer",
+				success: (res) => {
+					if(res.statusCode === 200){
+						console.log("加载第: " + page)
+						/* 第一次请求，从响应头获取最大页码 */
+						if(page === 1) {
+							this.maxPage = Number(res.header["X-Total-Page"])
 						}
-						else {
-							this.gToastMsg("请求错误")
-							this.gLoading(this,false)
-						}
-					},
-					fail: (err) => {
-						console.error(err)
-						this.gToastMsg("请求错误")
-						this.gLoading(this,false)
+						/* 二进制转base64,生成图片 */
+						const url = 'data:image/png;base64,' + uni.arrayBufferToBase64(res.data)
+						this.urls[page-1] = url
+						this.$forceUpdate()
 					}
-				})
-			}
+					else {
+						this.tempUrls[page-1] = 0
+						console.log(res);
+						this.gToastMsg("请求错误")
+					}
+				},
+				fail: (err) => {
+					this.tempUrls[page-1] = 0
+					console.error(err)
+					this.gToastMsg("请求错误")
+				}
+			})
 		},
 		/* 拖动选择页码 */
 		changePage(e)
 		{
+			this.movinng = true
+			this.gLoading(this,true)
+			this.$nextTick(() => {
+				this.currentPage = e.detail.value
+				if(!this.urls[this.currentPage-1]){
+					this.urls[this.currentPage-1] = null
+				}
+				this.loadCurrentPage()
+				this.$nextTick(() => {
+					uni.pageScrollTo({
+						duration:0,
+						scrollTop: (this.currentPage-1)*this.imgHeight + this.imgHeight*0.5,
+						complete: () => {
+							this.movinng = false
+							this.gLoading(this,false)
+						}
+					})
+				})
+			})
 			
 		},
 		/* 
@@ -182,19 +206,19 @@ export default {
 .read-file
 	min-height 100vh
 	overflow-x hidden
-	padding-bottom 45px
+	padding-top 45px
 	.file
 		width 100vw
 	.page-control
 		position fixed
-		bottom 0
+		top 0
 		left 0
 		right 0
-		height 40px
-		padding  0 20px
+		height 35px
+		padding 0 20px
 		background-color var(--origin3)
-		border-top-left-radius 22px
-		border-top-right-radius 22px
+		border-bottom-left-radius 22px
+		border-bottom-right-radius 22px
 		display flex
 		align-items center
 		.current
