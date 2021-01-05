@@ -76,7 +76,7 @@ export default {
 			getProject(id)
 			.then(res => {
 				this.arr_project[index].project = res.data
-				console.log(this.arr_project[index]);
+				console.log("arr_project[index]", this.arr_project[index]);
 			})
 		},
 		/* 获取项目，追加到projects中 */
@@ -85,8 +85,10 @@ export default {
 			this.gLoading(this,loading)
 			getPurchased()
 			.then(res => {
+				console.log("res", res)
 				/* 遍历所有附件，将其按项目分组 */
 				res.data.forEach(file => {
+					console.log("file", file)  // test
 					const index = this.arr_projectId.indexOf(file.resource.projectId)
 					/* 第一次加载到该项目 */
 					if(index === -1){
@@ -101,7 +103,7 @@ export default {
 						this.arr_project[index].files.push(file.resource)
 					}
 				})
-				console.log(res.data);
+				console.log("res.data", res.data);
 				this.gLoading(this,false)
 			})
 			.catch(err => {
@@ -129,7 +131,7 @@ export default {
 			uni.navigateTo({
 				url: `Project?id=${id}`
 			});
-		}
+		},
 	}
 }
 </script>

@@ -1,11 +1,10 @@
-.picker.data-v-72af98f0 {
+.picker.data-v-e7ec9ff2 {
   position: relative;
   padding-left: 20rpx;
-  -webkit-border-radius: 15px;
-          border-radius: 15px;
+  border-radius: 15px;
   background-color: var(--origin3);
 }
-.picker .msg.data-v-72af98f0 {
+.picker .msg.data-v-e7ec9ff2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -13,7 +12,7 @@
   -webkit-align-items: center;
           align-items: center;
 }
-.picker .value.data-v-72af98f0 {
+.picker .value.data-v-e7ec9ff2 {
   height: 53rpx;
   line-height: 53rpx;
   -webkit-box-flex: 1;
@@ -21,7 +20,7 @@
           flex: 1;
   font-size: 24rpx;
 }
-.picker .iconfont.data-v-72af98f0 {
+.picker .iconfont.data-v-e7ec9ff2 {
   margin: 0 5px;
   color: var(--origin2);
 }

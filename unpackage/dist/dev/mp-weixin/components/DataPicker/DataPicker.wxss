@@ -1,12 +1,11 @@
-.picker.data-v-4824a8c4 {
+.picker.data-v-f89eebfa {
   position: relative;
   height: 54rpx;
   min-width: 130rpx;
   line-height: 54rpx;
   padding: 0 15rpx;
   text-align: center;
-  -webkit-border-radius: 15px;
-          border-radius: 15px;
+  border-radius: 15px;
   background-color: var(--origin3);
   font-size: 24rpx;
 }

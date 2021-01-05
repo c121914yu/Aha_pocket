@@ -30,20 +30,17 @@ page {
 page,
 view,
 textarea {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 input,
 textarea {
   font-size: 26rpx;
   padding: 5px;
-  -webkit-border-radius: 8px;
-          border-radius: 8px;
+  border-radius: 8px;
 }
 button {
   border: none;
-  -webkit-border-radius: 12px;
-          border-radius: 12px;
+  border-radius: 12px;
   font-size: 26rpx;
   padding: 5px;
   background-color: var(--origin2);

@@ -1,8 +1,8 @@
-.login.data-v-3a2da0cc {
+.login.data-v-1a54d83b {
   height: 100vh;
   width: 100%;
 }
-.login .logo.data-v-3a2da0cc {
+.login .logo.data-v-1a54d83b {
   z-index: 5;
   position: absolute;
   top: 3vh;
@@ -12,7 +12,7 @@
   width: 20vh;
   height: 20vh;
 }
-.login .top.data-v-3a2da0cc {
+.login .top.data-v-1a54d83b {
   z-index: 1;
   position: absolute;
   top: 0;
@@ -20,17 +20,15 @@
   width: 100%;
   background-image: var(--bg-linear);
 }
-.login .bottom.data-v-3a2da0cc {
+.login .bottom.data-v-1a54d83b {
   z-index: 2;
   position: absolute;
   bottom: 0;
   height: 70%;
   width: 100%;
   background-color: var(--white1);
-  -webkit-border-top-left-radius: 60rpx;
-          border-top-left-radius: 60rpx;
-  -webkit-border-top-right-radius: 60rpx;
-          border-top-right-radius: 60rpx;
+  border-top-left-radius: 60rpx;
+  border-top-right-radius: 60rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -45,26 +43,22 @@
   -webkit-justify-content: space-between;
           justify-content: space-between;
 }
-.login .bottom .card.data-v-3a2da0cc {
+.login .bottom .card.data-v-1a54d83b {
   -webkit-transform: translateY(-5vh);
           transform: translateY(-5vh);
   width: 80%;
   padding: 5%;
   background-color: var(--white2);
-  -webkit-border-radius: 22px;
-          border-radius: 22px;
-  -webkit-box-shadow: var(--shadow1);
-          box-shadow: var(--shadow1);
+  border-radius: 22px;
+  box-shadow: var(--shadow1);
 }
-.login .bottom .card .input.data-v-3a2da0cc {
+.login .bottom .card .input.data-v-1a54d83b {
   position: relative;
   margin: 30px 0 10px;
   width: 100%;
   padding: 5px;
-  -webkit-border-radius: 40px;
-          border-radius: 40px;
-  -webkit-box-shadow: var(--shadow-beside);
-          box-shadow: var(--shadow-beside);
+  border-radius: 40px;
+  box-shadow: var(--shadow-beside);
   font-size: 30rpx;
   display: -webkit-box;
   display: -webkit-flex;
@@ -73,36 +67,36 @@
   -webkit-align-items: center;
           align-items: center;
 }
-.login .bottom .card .input text.data-v-3a2da0cc {
+.login .bottom .card .input text.data-v-1a54d83b {
   position: absolute;
   margin-left: 8px;
   font-size: 46rpx;
   color: var(--gray1);
 }
-.login .bottom .card .input text.readed.data-v-3a2da0cc {
+.login .bottom .card .input text.readed.data-v-1a54d83b {
   right: 10px;
 }
-.login .bottom .card .input input.data-v-3a2da0cc {
+.login .bottom .card .input input.data-v-1a54d83b {
   width: 100%;
   padding-left: 40px;
 }
-.login .bottom .card .forget-password.data-v-3a2da0cc {
+.login .bottom .card .forget-password.data-v-1a54d83b {
   text-align: end;
   color: var(--origin2);
 }
-.login .bottom .card button.data-v-3a2da0cc {
+.login .bottom .card button.data-v-1a54d83b {
   margin: 20px 0 15px;
   color: #fff;
   background-color: var(--origin2);
 }
-.login .bottom .card .register.data-v-3a2da0cc {
+.login .bottom .card .register.data-v-1a54d83b {
   color: var(--gray2);
 }
-.login .bottom .other.data-v-3a2da0cc {
+.login .bottom .other.data-v-1a54d83b {
   margin-bottom: 20px;
   text-align: center;
 }
-.login .bottom .other .strong.data-v-3a2da0cc {
+.login .bottom .other .strong.data-v-1a54d83b {
   margin-bottom: 15px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -115,34 +109,32 @@
           justify-content: center;
   color: var(--gray2);
 }
-.login .bottom .other .strong.data-v-3a2da0cc::before {
+.login .bottom .other .strong.data-v-1a54d83b::before {
   content: '';
   position: absolute;
   margin-left: -100px;
   width: 22%;
   height: 1px;
   background-color: var(--gray2);
-  -webkit-border-radius: 10px;
-          border-radius: 10px;
+  border-radius: 10px;
 }
-.login .bottom .other .strong.data-v-3a2da0cc::after {
+.login .bottom .other .strong.data-v-1a54d83b::after {
   content: '';
   position: absolute;
   margin-left: 100px;
   width: 22%;
   height: 1px;
   background-color: var(--gray2);
-  -webkit-border-radius: 10px;
-          border-radius: 10px;
+  border-radius: 10px;
 }
-.login .bottom .weixin.data-v-3a2da0cc {
+.login .bottom .weixin.data-v-1a54d83b {
   line-height: 1;
   color: #04be02;
   background-color: transparent;
   font-size: 45px;
   display: block;
 }
-.login .bottom .weixin.data-v-3a2da0cc:active {
+.login .bottom .weixin.data-v-1a54d83b:active {
   -webkit-transform: none;
           transform: none;
 }

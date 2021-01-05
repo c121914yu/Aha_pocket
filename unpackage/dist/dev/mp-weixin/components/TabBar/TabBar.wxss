@@ -1,4 +1,4 @@
-.tabBar.data-v-43a9aa84 {
+.tabBar.data-v-07ee3ac3 {
   z-index: 10;
   position: fixed;
   bottom: 0;
@@ -14,7 +14,7 @@
   -webkit-justify-content: space-around;
           justify-content: space-around;
 }
-.tabBar .bar.data-v-43a9aa84 {
+.tabBar .bar.data-v-07ee3ac3 {
   z-index: 2;
   height: 70px;
   -webkit-box-flex: 1;
@@ -36,21 +36,20 @@
   -webkit-align-items: center;
           align-items: center;
 }
-.tabBar .bar .iconfont.data-v-43a9aa84 {
+.tabBar .bar .iconfont.data-v-07ee3ac3 {
   font-size: 40rpx;
 }
-.tabBar .bar .text.data-v-43a9aa84 {
+.tabBar .bar .text.data-v-07ee3ac3 {
   font-weight: 600;
   font-size: 24rpx;
 }
-.tabBar .slide-card.data-v-43a9aa84 {
+.tabBar .slide-card.data-v-07ee3ac3 {
   z-index: 1;
   position: absolute;
   width: 25vw;
   height: 90%;
   background-color: var(--origin1);
-  -webkit-border-radius: 10px;
-          border-radius: 10px;
+  border-radius: 10px;
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }

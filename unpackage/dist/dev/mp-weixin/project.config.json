@@ -9,24 +9,23 @@
     "minified": true
   },
   "compileType": "miniprogram",
-  "libVersion": "",
+  "libVersion": "2.9.2",
   "appid": "wx2af10f72ca23e721",
   "projectname": "竞赛统计",
+  "cloudfunctionRoot": "static/cloudfunction/",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
-      "current": -1,
       "list": []
     },
     "conversation": {
-      "current": -1,
       "list": []
     },
     "game": {
-      "current": -1,
       "list": []
     },
     "miniprogram": {
-      "current": 0,
       "list": [
         {
           "name": "找回密码",
@@ -50,6 +49,5 @@
         }
       ]
     }
-  },
-  "cloudfunctionRoot": "static/cloudfunction/"
+  }
 }

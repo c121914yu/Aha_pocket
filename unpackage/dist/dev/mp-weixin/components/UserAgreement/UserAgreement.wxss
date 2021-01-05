@@ -1,4 +1,4 @@
-.user-agreement.data-v-146c3178 {
+.user-agreement.data-v-7bd19d43 {
   z-index: 15;
   position: fixed;
   top: 0;
@@ -7,7 +7,7 @@
   width: 100vw;
   background-color: rgba(144,140,139,0.65);
 }
-.user-agreement .content.data-v-146c3178 {
+.user-agreement .content.data-v-7bd19d43 {
   position: absolute;
   top: 45%;
   left: 50%;
@@ -18,10 +18,8 @@
   padding: 10px;
   background-color: #fff;
   color: #333;
-  -webkit-border-radius: 10px;
-          border-radius: 10px;
-  -webkit-box-shadow: var(--shadow1);
-          box-shadow: var(--shadow1);
+  border-radius: 10px;
+  box-shadow: var(--shadow1);
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -33,11 +31,11 @@
 /* 勾选协议 */
 /* 已阅读按键 */
 }
-.user-agreement .content .title.data-v-146c3178 {
+.user-agreement .content .title.data-v-7bd19d43 {
   font-size: 40rpx;
   font-weight: 600;
 }
-.user-agreement .content .agreement.data-v-146c3178 {
+.user-agreement .content .agreement.data-v-7bd19d43 {
   margin: 5px 0;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -47,7 +45,7 @@
   overflow-y: scroll;
   text-indent: 60rpx;
 }
-.user-agreement .content .sign.data-v-146c3178 {
+.user-agreement .content .sign.data-v-7bd19d43 {
   padding: 10px 0;
   display: -webkit-box;
   display: -webkit-flex;
@@ -59,7 +57,7 @@
   -webkit-justify-content: center;
           justify-content: center;
 }
-.user-agreement .content .sign .square.data-v-146c3178 {
+.user-agreement .content .sign .square.data-v-7bd19d43 {
   margin: 5px;
   width: 32rpx;
   height: 32rpx;
@@ -74,25 +72,25 @@
   -webkit-justify-content: center;
           justify-content: center;
 }
-.user-agreement .content .sign .square.active.data-v-146c3178 {
+.user-agreement .content .sign .square.active.data-v-7bd19d43 {
   border-color: var(--origin2);
   color: var(--origin2);
   font-weight: 600;
 }
-.user-agreement .content .sign .strong.data-v-146c3178 {
+.user-agreement .content .sign .strong.data-v-7bd19d43 {
   color: var(--origin2);
 }
-.user-agreement .content .readed-btn.data-v-146c3178 {
+.user-agreement .content .readed-btn.data-v-7bd19d43 {
   margin-top: 10px;
   width: 100%;
   background-color: rgba(144,140,139,0.65);
   color: #333;
 }
-.user-agreement .content .readed-btn.noReady.data-v-146c3178:active {
+.user-agreement .content .readed-btn.noReady.data-v-7bd19d43:active {
   -webkit-transform: none;
           transform: none;
 }
-.user-agreement .content .readed-btn.already.data-v-146c3178 {
+.user-agreement .content .readed-btn.already.data-v-7bd19d43 {
   background-color: var(--origin2);
   color: #fff;
 }
