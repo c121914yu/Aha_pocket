@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { getPublicSignature,getProject,putProject,putMembers } from "@/static/request/api_project.js"
+import { getPublicSignature,getProject,getResources,putProject,putMembers } from "@/static/request/api_project.js"
 import baseInfo from "./components/ProjectBase.vue"
 import fileInfo from "./components/ProjectFile.vue"
 import MemberInfo from "./components/ProjectMember.vue"
@@ -97,14 +97,21 @@ export default {
 			domBaseInfo.awardTime = this.project.awardTime
 			domBaseInfo.awardProveUrl = this.project.awardProveUrl
 			domBaseInfo.intro = this.project.intro
-			/* 同步附件信息 */
-			this.$refs.fileInfo.files = this.project.resources.map(file => {
-				return {
-					...file,
-					status: 2,
-					progress: 100,
-					type: getApp().globalData.arr_fileTypes.find((item) => item.value === file.type)
-				}
+			/* 请求个人项目的所有附件，同步附件信息 */
+			getResources({
+				projectId: this.project.id,
+				edit: true
+			})
+			.then(res => {
+				this.$refs.fileInfo.files = res.data.map(file => {
+					return {
+						...file,
+						status: 2,
+						progress: 100,
+						type: getApp().globalData.arr_fileTypes.find((item) => item.value === file.type)
+					}
+				})
+				this.project.resources = this.$refs.fileInfo.files
 			})
 			/* 同步成员信息 */
 			this.$refs.memberInfo.members = this.project.members.map(item => {
@@ -254,10 +261,12 @@ export default {
 				}
 			})
 			/* 含未上传文件 */
-			if(correct)
+			if(correct){
 				this.gToastSuccess("更新附件成功")
-			else
+			}
+			else{
 				this.$refs.fileInfo.upload()
+			}
 		},
 		/* 更新成员信息 */
 		updateMembers()

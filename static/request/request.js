@@ -9,7 +9,7 @@ function myRequest(url,method,data){
 		'Authorization': token
 	}
 	
-	return new Promise((res,rej) => {
+	return new Promise((resolve,reject) => {
 		uni.request({
 			url: baseUrl + url,
 			method: method,
@@ -21,7 +21,7 @@ function myRequest(url,method,data){
 				if(result.data.code === 200)
 				{
 					// console.log(result.header)
-					res(result.data)
+					resolve(result.data)
 				}
 				/* 请求错误 */
 				else
@@ -39,7 +39,7 @@ function myRequest(url,method,data){
 							}
 						})
 					}
-					rej(result.data)
+					reject(result.data)
 				}
 			},
 			fail(err) 
@@ -47,7 +47,7 @@ function myRequest(url,method,data){
 				console.log("服务器错误")
 				console.log(err.data)
 				Vue.prototype.gToastError("服务器错误")
-				rej(err)
+				reject(err)
 			},
 			complete(result) {
 				/* 判断是否有新token,有则替换旧的token */

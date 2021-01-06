@@ -6,14 +6,13 @@ const getPublicSignature = (filename) => request("/project/sign/upload/public/v2
 /* 创建项目数据，保存至数据库 */
 const postProject = (data) => request("/project","POST",data)
 /* 获取所有项目粗略信息表
-	params:
-		pageNum： 第几页
-		pageSize: 每页的条数
-        userId: 用户userId
-        compId: 竞赛Id
-        awardLevel: 获奖等级
-        sortBy: 排序字段
-        orderBy: 排序方式
+	@params pageNum:Number 第几页
+	@params	pageSize:Number 每页的条数
+    @params userId:Number 用户userId
+    @params compId:Number 竞赛Id
+    @params awardLevel:Number 获奖等级
+    @params sortBy:String 排序字段
+    @params orderBy:String 排序方式
 */
 const getProjects = (params) => request("/project","GET",params)
 /* 获取个人项目列表 */
@@ -43,8 +42,10 @@ const collectProject = (projectId) => request(`/project/collection/${projectId}`
 /* 取消收藏 */
 const cancleCollectProject = (projectId) => request(`/project/collection/${projectId}`,"DELETE",{})
 
+/* 获取项目所有资源信息 */
+const getResources = (params) => request(`/project/${params.projectId}/resources`,"GET",params)
 /* 获取上传文件签名 */
-const getFilesSignature = (projectId,filename) => request(`/project/${projectId}/resources/sign/upload/private/v2?filename=${filename}`,"GET",{})
+const getFilesSignature = (projectId,filename) => request(`/project/${projectId}/resources/sign/upload/private?filename=${filename}`,"GET",{})
 /* 创建项目的资源信息 */
 const postResource = (projectId,data) => request(`/project/resource/${projectId}`,"POST",data)
 /* 删除资源 */
@@ -52,9 +53,9 @@ const deleteResource = (projectResourceId) => request(`/project/resource/${proje
 /* 修改资源信息 */
 const putResource = (projectResourceId,data) => request(`/project/resource/${projectResourceId}`,"PUT",data)
 /* 获取下载签名 */
-const getLoadSignature = (projectResourceId) => request(`/project/resource/${projectResourceId}/sign/download/v2 `,"GET",{})
+const getLoadSignature = (projectResourceId) => request(`/project/resource/${projectResourceId}/sign/download `,"GET",{})
 /* 获取阅读签名 */
-const getReadSignature = (projectResourceId) => request(`/project/resource/${projectResourceId}/sign/read/v2 `,"GET",{})
+const getReadSignature = (projectResourceId) => request(`/project/resource/${projectResourceId}/sign/read `,"GET",{})
 
 /* 创建成员 */
 const postMember = (projectId,data) => request(`/project/member/${projectId}`,"POST",data)
@@ -72,6 +73,7 @@ export {
 	getMeProjects,
 	getProject,
 	
+	getResources,
 	getFilesSignature,
 	postResource,
 	deleteResource,

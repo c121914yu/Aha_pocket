@@ -13,7 +13,7 @@
 			<button class="icon iconfont icon-share share" open-type="share"></button>
 		</view>
 		<!-- 简要写评论模块 -->
-		<view v-if="type===1" class="brief-write fix-screen">
+		<view v-if="type===1" class="brief-write">
 			<view class="blank" @click="type=0"></view>
 			<view class="content">
 				<view class="header">
@@ -153,6 +153,14 @@ export default {
 				color var(--black)
 	/* 简要写评论 */
 	.brief-write
+		z-index 100
+		position fixed
+		top 0
+		left 0
+		right 0
+		bottom 0
+		background-color rgba(0,0,0,0.2)
+		display flex
 		flex-direction column
 		justify-content space-between
 		.blank
@@ -160,6 +168,8 @@ export default {
 			width 100%
 		.content
 			width 100%
+			padding 10px
+			background-color #FFFFFF
 			.header
 				margin-bottom 5px
 				display flex
