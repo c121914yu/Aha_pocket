@@ -189,6 +189,7 @@ Vue.prototype.gformatDate = (time,noAddr=false) => {
 
 /* 展示/隐藏等待 */
 Vue.prototype.gLoading  = (that,type,delay=0) => {
+	/* 获取DOM */
 	const dom = that.$refs.loading
 	if(dom){
 		setTimeout(() => {

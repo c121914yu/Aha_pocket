@@ -230,10 +230,8 @@ var _api_userInfo = __webpack_require__(/*! @/static/request/api_userInfo.js */ 
 //
 //
 var _default = { data: function data() {return { specialtyTags: [{ text: '前端', select: false }, { text: '后端', select: false }, { text: '爬虫', select: false }, { text: '视觉', select: false }, { text: '图像处理', select: false }, { text: '大数据分析', select: false }, { text: 'PPT', select: false }, { text: '商业模式', select: false }], compTags: [{ text: '互联网+', select: false }, { text: '挑战杯', select: false }, { text: '服务外包', select: false }, { text: '电子商务', select: false }, { text: '数据挖掘大赛', select: false }, { text: '智能车竞赛', select: false }, { text: '机器人竞赛', select: false }, { text: '运河杯', select: false }] };}, computed: { specialtyAmount: function specialtyAmount() {if (this.specialtyTags) return this.specialtyTags.filter(function (item) {return item.select;}).length;return 0;}, compAmount: function compAmount() {if (this.compTags) return this.compTags.filter(function (item) {return item.select;}).length;return 0;} }, methods: { /* 点击标签，切换选中状态 */selectTag: function selectTag(key, tag) {if (!tag.select) {if (this[key] < 4) tag.select = !tag.select;} else {tag.select = !tag.select;}}, /* 点击确认 */sure: function sure() {var _this = this;var specialtyTags = this.specialtyTags.filter(function (item) {return item.select;}).map(function (item) {return item.text;}).join(',');var compTags = this.compTags.filter(function (item) {return item.select;}).map(function (item) {return item.text;}).join(',');(0, _api_userInfo.putMe)({ specialtyTags: specialtyTags, compTags: compTags }).then(function (res) {
-        _this.gGetMeInfo({
-          specialtyTags: specialtyTags,
-          compTags: compTags });
-
+        getApp().globalData.gUserInfo.userInfo.specialtyTags = specialtyTags;
+        getApp().globalData.gUserInfo.userInfo.compTags = compTags;
         _this.gToastSuccess('选择成功');
         _this.$emit('close');
       });

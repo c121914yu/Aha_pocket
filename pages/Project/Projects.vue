@@ -162,9 +162,14 @@ export default {
 				})
 			}
 			else {
+				/* 如果项目已经通过，不允许删除 */
+				const itemList = ["阅读项目", "修改项目"]
+				if(!project.passed){
+					itemList.push("删除项目")
+				}
 				uni.showActionSheet({
-					itemList: ['阅读项目', '修改项目', '删除项目'],
-					success: res => {
+					itemList,
+					success: (res) => {
 						/* 阅读项目，跳转阅读界面 */
 						if (res.tapIndex === 0){
 							uni.navigateTo({

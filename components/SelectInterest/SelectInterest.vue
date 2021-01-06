@@ -114,10 +114,8 @@ export default {
                 compTags
             })
             .then(res => {
-                this.gGetMeInfo({
-                    specialtyTags,
-                    compTags
-                });
+				getApp().globalData.gUserInfo.userInfo.specialtyTags = specialtyTags
+				getApp().globalData.gUserInfo.userInfo.compTags = compTags
                 this.gToastSuccess('选择成功')
                 this.$emit('close')
             })

@@ -81,7 +81,7 @@
 		<!-- 管理员按键 -->
 		<navigator class="admin-edit" url="./EditMd/EditMd">管理员MD编辑器</navigator>
 		<!-- 兴趣选择 -->
-		<SelectInterest v-if="isCheckTags" @close="isCheckTags = false"></SelectInterest>
+		<SelectInterest v-if="isCheckTags" @close="isCheckTags=false;tags"></SelectInterest>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
@@ -118,7 +118,6 @@ export default {
 	},
 	computed: {
 		tags() {
-			let isCheckTags = this.isCheckTags // 检测标签更改
 			const userInfo = getApp().globalData.gUserInfo.userInfo
 			let specialtyTags = []
 			let compTags = []
@@ -159,8 +158,8 @@ export default {
 				putMe({
 					nickname: value
 				}).then(res => {
-					this.userInfo = getApp().globalData.gUserInfo.userInfo
-					console.log(this.userInfo);
+					this.userInfo.nickname = value
+					getApp().globalData.gUserInfo.userInfo = this.userInfo
 					this.gToastSuccess('修改昵称成功!')
 				})
 			}
@@ -199,7 +198,8 @@ export default {
 											avatarUrl: url
 										})
 										.then(putRes => {
-											this.userInfo = this.gGetMeInfo({ avatarUrl: url }).userInfo;
+											this.userInfo.avatarUrl = url
+											getApp().globalData.gUserInfo.userInfo = this.userInfo
 											this.gToastSuccess('修改头像成功!')
 											this.gLoading(this, false)
 										})

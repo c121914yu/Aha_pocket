@@ -2069,6 +2069,7 @@ var _api_userInfo = __webpack_require__(/*! @/static/request/api_userInfo.js */ 
 
 /* 展示/隐藏等待 */
 _vue.default.prototype.gLoading = function (that, type) {var delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+  /* 获取DOM */
   var dom = that.$refs.loading;
   if (dom) {
     setTimeout(function () {
@@ -2144,7 +2145,7 @@ var putMe = function putMe(data) {return (0, _request.default)("/userInfo/me", "
 /* 签署须知协议 */exports.putMe = putMe;
 var signNotice = function signNotice() {return (0, _request.default)("/sign/notice", "POST", {});};
 /* 获取头像上传签名 */exports.signNotice = signNotice;
-var getAvatarOssSignature = function getAvatarOssSignature(filename) {return (0, _request.default)("/userInfo/avatar/sign/upload/v2?filename=" + filename, "GET", {});};
+var getAvatarOssSignature = function getAvatarOssSignature(filename) {return (0, _request.default)("/userInfo/avatar/sign/upload?filename=" + filename, "GET", {});};
 /* 根据userId获取用户详细信息 */exports.getAvatarOssSignature = getAvatarOssSignature;
 var getUser = function getUser(userId) {return (0, _request.default)("/userInfo/" + userId, "GET", {});};
 
@@ -2173,7 +2174,7 @@ var getCollectedProjects = function getCollectedProjects() {return (0, _request.
 var getPurchased = function getPurchased() {return (0, _request.default)("/project/resource/purchased", "GET", {});};
 
 /* 获取公共文件上次接口 */exports.getPurchased = getPurchased;
-var getPublicFileSign = function getPublicFileSign(filename) {return (0, _request.default)("/cos/sign/upload/public/v2?filename=" + filename, "GET", {});};exports.getPublicFileSign = getPublicFileSign;
+var getPublicFileSign = function getPublicFileSign(filename) {return (0, _request.default)("/cos/sign/upload/public?filename=" + filename, "GET", {});};exports.getPublicFileSign = getPublicFileSign;
 
 /***/ }),
 
@@ -2221,7 +2222,7 @@ function myRequest(url, method, data) {
     'Authorization': token };
 
 
-  return new Promise(function (res, rej) {
+  return new Promise(function (resolve, reject) {
     uni.request({
       url: baseUrl + url,
       method: method,
@@ -2233,7 +2234,7 @@ function myRequest(url, method, data) {
         if (result.data.code === 200)
         {
           // console.log(result.header)
-          res(result.data);
+          resolve(result.data);
         }
         /* 请求错误 */else
 
@@ -2251,7 +2252,7 @@ function myRequest(url, method, data) {
                 } });
 
             }
-            rej(result.data);
+            reject(result.data);
           }
       },
       fail: function fail(err)
@@ -2259,7 +2260,7 @@ function myRequest(url, method, data) {
         console.log("服务器错误");
         console.log(err.data);
         _vue.default.prototype.gToastError("服务器错误");
-        rej(err);
+        reject(err);
       },
       complete: function complete(result) {
         /* 判断是否有新token,有则替换旧的token */
@@ -8484,7 +8485,7 @@ var feedbackProblem = function feedbackProblem(data) {return (0, _request.defaul
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteProject = exports.putProject = exports.postProject = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteRemark = exports.postRemark = exports.getRemarks = exports.getLoadSignature = exports.getReadSignature = exports.putResource = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.getProject = exports.getMeProjects = exports.getProjects = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteProject = exports.putProject = exports.postProject = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteRemark = exports.postRemark = exports.getRemarks = exports.getLoadSignature = exports.getReadSignature = exports.putResource = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.getResources = exports.getProject = exports.getMeProjects = exports.getProjects = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 获取上传头像/证明材料签名 */
 var getPublicSignature = function getPublicSignature(filename) {return (0, _request.default)("/project/sign/upload/public/v2?filename=" + filename, "GET", {});};
@@ -8492,14 +8493,13 @@ var getPublicSignature = function getPublicSignature(filename) {return (0, _requ
 /* 创建项目数据，保存至数据库 */exports.getPublicSignature = getPublicSignature;
 var postProject = function postProject(data) {return (0, _request.default)("/project", "POST", data);};
 /* 获取所有项目粗略信息表
-                                                                                                        	params:
-                                                                                                        		pageNum： 第几页
-                                                                                                        		pageSize: 每页的条数
-                                                                                                                userId: 用户userId
-                                                                                                                compId: 竞赛Id
-                                                                                                                awardLevel: 获奖等级
-                                                                                                                sortBy: 排序字段
-                                                                                                                orderBy: 排序方式
+                                                                                                        	@params pageNum:Number 第几页
+                                                                                                        	@params	pageSize:Number 每页的条数
+                                                                                                            @params userId:Number 用户userId
+                                                                                                            @params compId:Number 竞赛Id
+                                                                                                            @params awardLevel:Number 获奖等级
+                                                                                                            @params sortBy:String 排序字段
+                                                                                                            @params orderBy:String 排序方式
                                                                                                         */exports.postProject = postProject;
 var getProjects = function getProjects(params) {return (0, _request.default)("/project", "GET", params);};
 /* 获取个人项目列表 */exports.getProjects = getProjects;
@@ -8529,8 +8529,10 @@ var collectProject = function collectProject(projectId) {return (0, _request.def
 /* 取消收藏 */exports.collectProject = collectProject;
 var cancleCollectProject = function cancleCollectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "DELETE", {});};
 
-/* 获取上传文件签名 */exports.cancleCollectProject = cancleCollectProject;
-var getFilesSignature = function getFilesSignature(projectId, filename) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private/v2?filename=").concat(filename), "GET", {});};
+/* 获取项目所有资源信息 */exports.cancleCollectProject = cancleCollectProject;
+var getResources = function getResources(params) {return (0, _request.default)("/project/".concat(params.projectId, "/resources"), "GET", params);};
+/* 获取上传文件签名 */exports.getResources = getResources;
+var getFilesSignature = function getFilesSignature(projectId, filename) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private?filename=").concat(filename), "GET", {});};
 /* 创建项目的资源信息 */exports.getFilesSignature = getFilesSignature;
 var postResource = function postResource(projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
 /* 删除资源 */exports.postResource = postResource;
@@ -8538,9 +8540,9 @@ var deleteResource = function deleteResource(projectResourceId) {return (0, _req
 /* 修改资源信息 */exports.deleteResource = deleteResource;
 var putResource = function putResource(projectResourceId, data) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "PUT", data);};
 /* 获取下载签名 */exports.putResource = putResource;
-var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download/v2 "), "GET", {});};
+var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download "), "GET", {});};
 /* 获取阅读签名 */exports.getLoadSignature = getLoadSignature;
-var getReadSignature = function getReadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/read/v2 "), "GET", {});};
+var getReadSignature = function getReadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/read "), "GET", {});};
 
 /* 创建成员 */exports.getReadSignature = getReadSignature;
 var postMember = function postMember(projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};

@@ -1,6 +1,7 @@
 <template>
 	<view class="project">
 		<view class="content">
+			<view v-if="!passed" class="mini unpassed-hint">当前项目审核中,仅创建者可预览,附件信息将不被展示.</view>
 			<!-- 头像 & 首作者 & 创建时间 & 收藏 & 阅读-->
 			<view class="head">
 				<view class="left">
@@ -74,7 +75,7 @@
 				<view class="values"><view class="val desc" v-html="intro"></view></view>
 			</view>
 			<!-- 附件 -->
-			<view class="item files">
+			<view v-if="resources.length>0" class="item files">
 				<view class="title">
 					项目附件
 				</view>
@@ -125,8 +126,8 @@
 					<view class="right">
 						<view class="head">
 							<view class="name">{{comment.user.nickname}}</view>
-							<view class="blank"></view>
 							<view class="score"><text class="iconfont icon-start"></text>{{comment.score}}</view>
+							<view class="blank"></view>
 							<view class="time">{{comment.time}}</view>
 						</view>
 						<view class="container">
@@ -178,6 +179,7 @@ export default {
 			arr_previewFiles: [],
 			arr_unpreviewFiles: [],
 			comments: [],
+			passed: true,
 			/* 分页获取评论信息 */
 			pageNum: 1,
 			pageSize: 5,
@@ -205,17 +207,17 @@ export default {
 		this.gLoading(this,true)
 		getProject(e.id)
 		.then(res => {
-			console.log(res.data);
+			res.data.members = res.data.members.sort((a, b) => a.rank - b.rank)
 			for (let key in res.data){
 				this[key] = res.data[key]
 			}
-			this.members = this.members.sort((a, b) => a.rank - b.rank)
 			if(this.resources.length > 0){
 				this.initFiles()
 			}
 			else{
 				this.gLoading(this,false,500)
 			}
+			console.log(res.data);
 		})
 		.catch(err => {
 			this.gLoading(this,false)
@@ -248,11 +250,9 @@ export default {
 						this.arr_purchasedFiles.push(file)
 					}
 					else if(file.previewUrl){
-						// this.arr_purchasedFiles.push(file)
 						this.arr_previewFiles.push(file)
 					}
 					else{
-						// this.arr_purchasedFiles.push(file)
 						this.arr_unpreviewFiles.push(file)
 					}
 				})
@@ -444,6 +444,10 @@ export default {
 		padding 20px 30px
 		border-radius 22px
 		background-color #FFFFFF
+		/* 审核中项目通知 */
+		.unpassed-hint
+			margin-bottom 5px
+			color var(--origin1)
 		/* 头像 & 首作者 & 创建时间 & 收藏 & 阅读 */
 		.head
 			display flex
@@ -589,12 +593,12 @@ export default {
 						color #FFFFFF
 						font-size 24rpx
 					.score
+						margin-left 5px
 						font-size 22rpx
 						color var(--origin2)
 						.iconfont
 							font-size 22rpx
 					.time
-						margin-left 5px
 						font-size 22rpx
 						color var(--gray1)
 				.container

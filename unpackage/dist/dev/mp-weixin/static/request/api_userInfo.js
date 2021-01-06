@@ -17,7 +17,7 @@ const putMe = (data) => request("/userInfo/me","PUT",data)
 /* 签署须知协议 */
 const signNotice = () => request("/sign/notice","POST",{})
 /* 获取头像上传签名 */
-const getAvatarOssSignature = (filename) => request("/userInfo/avatar/sign/upload/v2?filename="+filename,"GET",{})
+const getAvatarOssSignature = (filename) => request("/userInfo/avatar/sign/upload?filename="+filename,"GET",{})
 /* 根据userId获取用户详细信息 */
 const getUser = (userId) => request("/userInfo/" + userId,"GET",{})
 
@@ -46,7 +46,7 @@ const getCollectedProjects = () => request("/project/collection","GET",{})
 const getPurchased = () => request("/project/resource/purchased","GET",{})
 
 /* 获取公共文件上次接口 */
-const getPublicFileSign = (filename) => request("/cos/sign/upload/public/v2?filename="+filename,"GET",{})
+const getPublicFileSign = (filename) => request("/cos/sign/upload/public?filename="+filename,"GET",{})
 
 export {
 	bindPhone,
