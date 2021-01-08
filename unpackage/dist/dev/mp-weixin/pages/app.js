@@ -99,6 +99,9 @@ try {
     UserAgreement: function() {
       return Promise.all(/*! import() | components/UserAgreement/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/UserAgreement/UserAgreement")]).then(__webpack_require__.bind(null, /*! @/components/UserAgreement/UserAgreement.vue */ 281))
     },
+    SystemNotice: function() {
+      return __webpack_require__.e(/*! import() | components/SystemNotice/SystemNotice */ "components/SystemNotice/SystemNotice").then(__webpack_require__.bind(null, /*! @/components/SystemNotice/SystemNotice.vue */ 604))
+    },
     TabBar: function() {
       return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 288))
     }
@@ -124,6 +127,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  if (!_vm._isMounted) {
+    _vm.e0 = function($event) {
+      _vm.arr_systemNotice = []
+    }
+  }
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -256,7 +264,10 @@ var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages
   onLoad: function onLoad() {var _this = this;
     (0, _api_system.getNotice)().
     then(function (res) {
-      _this.arr_systemNotice = res.data;
+      res.data.forEach(function (item) {
+        item.createTime = _this.gformatDate(item.createTime, true);
+        _this.arr_systemNotice.push(item);
+      });
     });
     this.loadCompetitionInfo();
     this.loadNav();

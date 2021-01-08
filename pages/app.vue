@@ -8,11 +8,11 @@
 			@readed="successSign">
 		</UserAgreement>
 		<!-- 系统公告 -->
-		<!-- <SystemNotice 
+		<SystemNotice 
 			v-if="arr_systemNotice.length>0" 
 			:notices="arr_systemNotice"
 			@close="arr_systemNotice=[]">
-		</SystemNotice> -->
+		</SystemNotice>
 		<!-- 导航 -->
 		<TabBar 
 			:currentNav="currentNav"
@@ -97,7 +97,10 @@ export default {
 	onLoad() {
 		getNotice()
 		.then(res => {
-			this.arr_systemNotice = res.data
+			res.data.forEach(item => {
+				item.createTime = this.gformatDate(item.createTime,true)
+				this.arr_systemNotice.push(item)
+			})
 		})
 		this.loadCompetitionInfo()
 		this.loadNav()

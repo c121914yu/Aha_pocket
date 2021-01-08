@@ -8488,7 +8488,7 @@ var feedbackProblem = function feedbackProblem(data) {return (0, _request.defaul
 Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteProject = exports.putProject = exports.postProject = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteRemark = exports.postRemark = exports.getRemarks = exports.getLoadSignature = exports.getReadSignature = exports.putResource = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.getResources = exports.getProject = exports.getMeProjects = exports.getProjects = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 获取上传头像/证明材料签名 */
-var getPublicSignature = function getPublicSignature(filename) {return (0, _request.default)("/project/sign/upload/public/v2?filename=" + filename, "GET", {});};
+var getPublicSignature = function getPublicSignature(filename) {return (0, _request.default)("/project/sign/upload/public?filename=" + filename, "GET", {});};
 
 /* 创建项目数据，保存至数据库 */exports.getPublicSignature = getPublicSignature;
 var postProject = function postProject(data) {return (0, _request.default)("/project", "POST", data);};
@@ -8540,9 +8540,9 @@ var deleteResource = function deleteResource(projectResourceId) {return (0, _req
 /* 修改资源信息 */exports.deleteResource = deleteResource;
 var putResource = function putResource(projectResourceId, data) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "PUT", data);};
 /* 获取下载签名 */exports.putResource = putResource;
-var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download "), "GET", {});};
+var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download"), "GET", {});};
 /* 获取阅读签名 */exports.getLoadSignature = getLoadSignature;
-var getReadSignature = function getReadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/read "), "GET", {});};
+var getReadSignature = function getReadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/read"), "GET", {});};
 
 /* 创建成员 */exports.getReadSignature = getReadSignature;
 var postMember = function postMember(projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};
