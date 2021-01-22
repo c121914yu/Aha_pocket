@@ -4,6 +4,7 @@
   "usingComponents": {
     "loading": "/components/Loading/Loading",
     "user-agreement": "/components/UserAgreement/UserAgreement",
+    "system-notice": "/components/SystemNotice/SystemNotice",
     "tab-bar": "/components/TabBar/TabBar",
     "project-home": "/pages/Project/ProjectHome",
     "competition": "/pages/Competition/Competition",

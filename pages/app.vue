@@ -8,11 +8,11 @@
 			@readed="successSign">
 		</UserAgreement>
 		<!-- 系统公告 -->
-		<!-- <SystemNotice 
+		<SystemNotice 
 			v-if="arr_systemNotice.length>0" 
 			:notices="arr_systemNotice"
 			@close="arr_systemNotice=[]">
-		</SystemNotice> -->
+		</SystemNotice>
 		<!-- 导航 -->
 		<TabBar 
 			:currentNav="currentNav"
@@ -95,9 +95,11 @@ export default {
 		Self,
 	},
 	onLoad() {
+		/* 获取系统公告 */
 		getNotice()
 		.then(res => {
 			this.arr_systemNotice = res.data
+			console.log(res.data);
 		})
 		this.loadCompetitionInfo()
 		this.loadNav()
@@ -131,7 +133,7 @@ export default {
                 getAllCompetition()
                 .then(res => {
                     getApp().globalData.Competitions = res.data
-					console.log(getApp().globalData.Competitions);
+					// console.log(getApp().globalData.Competitions);
                 })
             }
 		},

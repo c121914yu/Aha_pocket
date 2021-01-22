@@ -1,6 +1,6 @@
 export default  {
 	baseUrl: 'https://ahapocket.cn/api',
-	ossHost: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/', // OSS Host域名
+	// ossHost: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/', // OSS Host域名
 	gCodeTime: 0, // 用户允许发送验证码的倒计时
 	gCodeMaxTime: 10, // 倒计时时长
 	gUserInfo: {}, // 用户信息
