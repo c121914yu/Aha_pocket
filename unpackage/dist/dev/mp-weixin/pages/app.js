@@ -262,6 +262,7 @@ var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                	切换到未缓存的界面时再进行加载
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */navs: [{ name: "ProjectHome", loaded: false }, { name: "Competition", loaded: false }, { name: "Epiboly", loaded: false }, { name: "Self", loaded: false }], currentNav: 0, signedNotice: getApp().globalData.gUserInfo.signedNotice, arr_systemNotice: [] };}, watch: { currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "竞赛信息";break;case 2:text = "服务外包";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });if (newNav === 1 || newNav === 2) {uni.showToast({ title: "该模块正在开发!", icon: "none" });}} }, components: { ProjectHome: ProjectHome, Competition: Competition, Epiboly: Epiboly, Self: Self },
   onLoad: function onLoad() {var _this = this;
+    /* 获取系统公告 */
     (0, _api_system.getNotice)().
     then(function (res) {
       res.data.forEach(function (item) {
@@ -301,7 +302,7 @@ var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages
         (0, _api_competition.getAllCompetition)().
         then(function (res) {
           getApp().globalData.Competitions = res.data;
-          console.log(getApp().globalData.Competitions);
+          // console.log(getApp().globalData.Competitions);
         });
       }
     },

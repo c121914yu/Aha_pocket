@@ -2,12 +2,24 @@
 <template>
 	<view class="notice fix-screen">
 		<view class="content">
+			<text class="iconfont icon-guanbi" @click="$emit('close')"></text>
 			<view class="notice">
-				<view class="center h3">{{notices[page].title}}</view>
-				<view class="small time">{{notices[page].createTime}}</view>
-				<view class="main" v-html="notices[page].content"></view>
+				<view class="center h3">{{notices[currentPage].title}}</view>
+				<view>{{notices[currentPage].content}}</view>
 			</view>
-			<button class="sure center" @click="$emit('close')">确认</button>
+			<text class="page small">{{currentPage+1}} / {{notices.length}}</text>
+			<view class="ctr">
+				<text 
+					v-if="currentPage!==0" 
+					class="left-icon iconfont icon-right"
+					@click="currentPage--">
+				</text>
+				<text 
+					v-if="currentPage!==notices.length-1" 
+					class="right-icon iconfont icon-right"
+					@click="currentPage++">
+				</text>
+			</view>
 		</view>
 	</view>
 </template>
@@ -19,28 +31,53 @@ export default {
 	},
 	data(){
 		return{
-			page: 0
+			currentPage: 0
 		}
 	},
-	created() {
-		console.log(this.notices[0]);
-	}
 }
 </script>
 
 <style lang="stylus" scoped>
 .notice
 	.content
-		width 90%
+		position relative
+		width 92%
+		min-height 30vh
 		box-shadow var(--shadow2)
 		border-radius 8px
+		/* 关闭图标 */
+		.icon-guanbi
+			position absolute
+			right 10px
+			top 5px
+			color var(--origin1)
+			font-size 40rpx
+		/* 公告内容 */
 		.notice
 			margin-bottom 10px
-			.main
-				min-height 150px
-				max-height 500px
-				overflow auto
-		.sure
-			width 100px
-			padding 0
+			padding 0 30px
+		/* 页码 */
+		.page
+			position absolute
+			right 10px
+			bottom 5px
+		/* 切页图标 */
+		.ctr
+			.iconfont
+				position absolute
+				top 50%
+				transform translateY(-50%)
+				display inline-block
+				font-size 40rpx
+				width 30px
+				height 30px
+				text-align center
+				line-height 30px
+				background-color var(--origin4)
+				border-radius 50%
+			.left-icon
+				left 5px
+				transform translateY(-50%) rotate(180deg)
+			.right-icon
+				right 5px
 </style>

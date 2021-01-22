@@ -95,6 +95,7 @@ export default {
 		Self,
 	},
 	onLoad() {
+		/* 获取系统公告 */
 		getNotice()
 		.then(res => {
 			res.data.forEach(item => {
@@ -134,7 +135,7 @@ export default {
                 getAllCompetition()
                 .then(res => {
                     getApp().globalData.Competitions = res.data
-					console.log(getApp().globalData.Competitions);
+					// console.log(getApp().globalData.Competitions);
                 })
             }
 		},
