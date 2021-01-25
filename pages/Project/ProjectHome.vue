@@ -39,7 +39,7 @@
 			<!-- 推荐比赛列表 -->
 			<view class="list">
 				<projectCard
-					v-for="(project, index) in commands"
+					v-for="(project, index) in arr_projects"
 					:key="index"
 					margin="0 0 5px 0"
 					:radius="index === 0 ? '0 0 16px 16px' : '16px'"
@@ -74,12 +74,16 @@ export default {
 			sortBy: "read",
 			filter: null,
 			RankingData: [],
-			commands: [],
+			arr_projects: [],
+			is_showAll: false
 		};
 	},
 	components: {
 		ProjectHead,
 		ProjectCard
+	},
+	created() {
+		this.loadProjects(true)
 	},
 	methods: {
 		/* 
@@ -110,18 +114,23 @@ export default {
 				else{
 					this.pageNum++
 				}
-				this.commands = init ? res.data.pageData : this.commands.concat(res.data.pageData)
+				if(init){
+					this.arr_projects = []
+				}
+				res.data.pageData.forEach(project => {
+					this.arr_projects.push(project)
+				})
 				
 				/* 获取推荐 */
-				if(this.commands.length >= 3){
-					this.RankingData = [this.commands[0], this.commands[1], this.commands[2]]
+				if(this.arr_projects.length >= 3){
+					this.RankingData = [this.arr_projects[0], this.arr_projects[1], this.arr_projects[2]]
 				}
-				else if(this.commands.length > 0){
-					this.RankingData = [].concat(this.commands)
+				else if(this.arr_projects.length > 0){
+					this.RankingData = [].concat(this.arr_projects)
 				}
 				this.gLoading(this, false)
 				uni.stopPullDownRefresh()
-				console.log(this.commands);
+				console.log(this.arr_projects);
 			})
 			.catch(err => {
 				this.gLoading(this, false)
@@ -160,9 +169,6 @@ export default {
 				url: `Project/Project?id=${id}`
 			})
 		}
-	},
-	created() {
-		this.loadProjects(true)
 	}
 }
 </script>
@@ -214,6 +220,5 @@ export default {
 		margin -15px auto 0
 		width 90%
 	.remark
-		transform translateY(-15px)
 		color var(--gray2)
 </style>

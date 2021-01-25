@@ -1,3 +1,4 @@
+<!-- 轮播图 -->
 <template>
 	<view class="slide-card">
 		<!-- 外边框 -->

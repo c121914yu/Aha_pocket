@@ -66,7 +66,7 @@ export default {
 		ProjectHead
 	},
 	onLoad() {
-		this.gUndesign()
+		// this.gUndesign()
 		this.loadPurchased()
 	},
 	methods: {
@@ -80,11 +80,12 @@ export default {
 			})
 		},
 		/* 获取项目，追加到projects中 */
-		loadPurchased(init=false,loading=true)
+		loadPurchased(init=false)
 		{	
-			this.gLoading(this,loading)
+			this.gLoading(this,true)
 			getPurchased()
 			.then(res => {
+				console.log(res.data);
 				/* 遍历所有附件，将其按项目分组 */
 				res.data.forEach(file => {
 					const index = this.arr_projectId.indexOf(file.resource.projectId)
@@ -101,7 +102,6 @@ export default {
 						this.arr_project[index].files.push(file.resource)
 					}
 				})
-				console.log(res.data);
 				this.gLoading(this,false)
 			})
 			.catch(err => {
@@ -112,7 +112,6 @@ export default {
 		sortChange(e)
 		{
 			this.sortBy = e.val
-			this.loadPurchased(true)
 		},
 		/* 
 			name: 确认筛选

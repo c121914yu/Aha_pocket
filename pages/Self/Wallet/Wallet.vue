@@ -19,6 +19,12 @@
 			<view class="point">
 				<view class="small">Aha点</view>
 				<view class="h3">{{ahaPoint}}</view>
+				<view class="function">
+					<view class="ctr" @click="isShowConversion=true">
+						<text class="iconfont icon-zengsong"></text>
+						<text>兑换码</text>
+					</view>
+				</view>
 			</view>
 		</view>
 		<!-- 卡片操作 -->
@@ -35,30 +41,30 @@
 			<text class="right iconfont icon-right"></text>
 		</navigator>
 		
-		<GivePoint
-			v-if="isShowGive"
-			@close="isShowGive=false"
-			@success="upDate">
-		</GivePoint>
+		<GivePoint v-if="isShowGive" @close="isShowGive=false" @success="upDate"></GivePoint>
 		<PayAha v-if="isShowPay" @close="isShowPay=false"></PayAha>
+		<Conversion v-if="isShowConversion" @close="isShowConversion=false"></Conversion>
 	</view>
 </template>
 
 <script>
 import GivePoint from "./components/GivePoint.vue"
 import PayAha from "./components/PayAha.vue"
+import Conversion from "./components/Conversion.vue"
 export default {
 	data() {
 		return {
 			ahaCredit: 0,
 			ahaPoint: 0,
 			isShowGive: false,
-			isShowPay: false
+			isShowPay: false,
+			isShowConversion: false
 		}
 	},
 	components: {
 		GivePoint,
-		PayAha
+		PayAha,
+		Conversion
 	},
 	onShow() {
 		// this.gUndesign()

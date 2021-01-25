@@ -298,13 +298,14 @@ export default {
 	position relative
 	min-height 96vh
 	padding 20rpx 0
-	background-color var(--origin3)
+	background-color var(--origin4)
 	.navs
 		z-index 10
 		position fixed
 		top 0
 		width 100%
-		border-radius 8px
+		border-bottom-left-radius 22px
+		border-bottom-right-radius 22px
 		background-color #FFFFFF
 		box-shadow var(--shadow2)
 		display grid
@@ -314,6 +315,8 @@ export default {
 			z-index 2
 			padding 10px
 			text-align center
+			color var(--origin1)
+			font-size 24rpx
 			transition .3s
 			&.active
 				color #FFFFFF
@@ -322,7 +325,7 @@ export default {
 			position absolute
 			width calc(100vw / 3)
 			height 100%
-			background-color var(--origin1)
+			background-color var(--origin2)
 			opacity 0.8
 			transition .3s
 	/* 按键 */
@@ -338,7 +341,8 @@ export default {
 		display flex
 		justify-content space-around
 		button
-			margin 0 20px
+			margin 0 15%
+			padding 0
 			flex 1
 			background-color #FFFFFF
 			color var(--origin2)

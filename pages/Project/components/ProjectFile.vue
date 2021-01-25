@@ -5,7 +5,7 @@
 			<text class="h3">上传附件:</text>
 			<text class="add iconfont icon-tianjia" @click="chooseFile"></text>
 		</view>
-		<view class="remark">(注: 附件必须小于500M.。)</view>
+		<view style="color: var(--font-dark);" class="remark">(注: 附件必须小于500M)</view>
 		<view 
 			class="file"
 			v-for="(file,index) in files"
@@ -23,24 +23,24 @@
 				show-info 
 				stroke-width="3" 
 				border-radius="10"
-				font-size="12"
+				font-size="10"
 				backgroundColor="#FFFFFF"
-				activeColor="#f8b86b"
+				activeColor="#956134"
 				active="true"
 				active-mode="forwards"
 				duration="5"/>
 			<!-- 操作及提示 -->
 			<view class="control">
-				<text v-if="file.status === 0" class="text">待上传</text>
-				<text style="color: #956134" v-if="file.status === 1" class="text">上传中</text>
-				<text style="color: #67C23A" v-if="file.status === 2" class="text">上传成功</text>
-				<text style="color: #F56C6C" v-if="file.status === 3" class="text">上传失败</text>
-				<text class="price"><text class="iconfont icon-qian"></text>{{file.price}}</text>
+				<view style="background-color: var(--gray2)" v-if="file.status === 0" class="text">待上传</view>
+				<view style="background-color: var(--origin1)" v-if="file.status === 1" class="text">上传中</view>
+				<view style="background-color: #67C23A" v-if="file.status === 2" class="text">上传成功</view>
+				<view style="background-color: #F56C6C" v-if="file.status === 3" class="text">上传失败</view>
+				<view class="price"><text class="iconfont icon-qian"></text>{{file.price}}</view>
 			</view>
 		</view>
 		<!-- 上传按键 -->
 		<button v-if="!uploading" class="startUpload" @click="upload">{{btnText}}</button>
-		<button v-if="uploading" loading class="uploading">上传中,请勿离开界面</button>
+		<button v-if="uploading" class="uploading" loading>上传中,请勿离开界面</button>
 		<view v-if="uploading" class="mask"></view>
 		
 		<SetFile 
@@ -59,6 +59,9 @@ import { getFilesSignature,postResource,putResource,deleteResource } from "@/sta
 import SetFile from "./SetFile"
 const COS = require('@/static/js/COS.js')
 export default {
+	props: {
+		projectId: String
+	},
 	data() {
 		return {
 			files: [],
@@ -66,8 +69,14 @@ export default {
 			setFileIndex: null
 		}
 	},
-	props: {
-		projectId: String
+	computed:{
+		btnText(){
+			for(let i=0;i<this.files.length;i++){
+				if(this.files[i].status !== 2)
+					return "开始上传"
+			}
+			return "已全部上传"
+		}
 	},
 	components: {
 		SetFile
@@ -133,14 +142,19 @@ export default {
 		clickFile(index)
 		{
 			const file = this.files[index]
+			/* 若已经通过，直接打开设置界面 */
+			if(file.passed){
+				this.setFileIndex = index
+				return
+			}
 			// console.log(file);
 			let itemList = ["修改附件信息", "删除附件"]
 			if(file.type.value === 1){
-				itemList = ["设置预览片段", "修改附件信息", "删除附件"]
+				itemList.unshift("设置预览片段")
 			}
 			uni.showActionSheet({
 				itemList,
-				success: res => {
+				success: (res) => {
 					if (itemList[res.tapIndex] === "修改附件信息") {
 						this.setFileIndex = index
 					} 
@@ -309,15 +323,6 @@ export default {
 			}
 			nextFile(0)
 		}
-	},
-	computed:{
-		btnText(){
-			for(let i=0;i<this.files.length;i++){
-				if(this.files[i].status !== 2)
-					return "开始上传"
-			}
-			return "已全部上传"
-		}
 	}
 }
 </script>
@@ -340,6 +345,11 @@ export default {
 		flex-wrap wrap
 		align-items center
 		justify-content space-between
+		.text
+			color #FFFFFF
+			font-size 18rpx
+			padding 0 5px
+			border-radius 4px
 		.price
 			display flex
 			align-items center
@@ -352,6 +362,10 @@ export default {
 			color var(--origin1)
 	.progress
 		width 100%
+/* 已全部上传 & 上传中 */
+.startUpload,.uploading
+	border-radius 22px
+	padding 3px
 /* 上传中 */
 .uploading
 	background-color var(--gray2)

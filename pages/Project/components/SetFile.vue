@@ -1,22 +1,22 @@
 <!-- 文件设置 -->
 <template>
-	<view class="set-file fix-screen">
+	<view class="set-file fix-screen" @touchmove.stop.prevent>
 		<div class="content">
-			<view class="h3 center">文件信息设置</view>
+			<view class="title">文件信息设置</view>
 			<form @submit="sure">
 				<view class="item">
 					<text class="label">文件名</text>
-					<input type="text" placeholder="文件名" v-model="name">
+					<input type="text" placeholder="文件名" maxlength="30" v-model="name">
 				</view>
 				<view class="item">
 					<text class="label">文件类型</text>
 					<input type="text" placeholder="文件类型" :value="type.label" disabled @click="setFileType">
 				</view>
 				<view class="item">
-					<text class="label">AHa点</text>
+					<text class="label">Aha点</text>
 					<input type="number" placeholder="购买所需贡献值" v-model.number="price">
 				</view>
-				<view class="remark center">(最大值: 100,最小值: 70)</view>
+				<view class="mini max-min">(最大值: 100,最小值: 70)</view>
 				<view class="btns">
 					<button form-type="submit">确认</button>
 					<button class="cancel" @click="$emit('close')">取消</button>
@@ -88,25 +88,39 @@ export default {
 		width 85%
 		border-radius 8px
 		padding 10px
+		.title
+			margin 5px 0
+			text-align center
+			color var(--gray1)
+			font-weight 700
 		.item
 			position relative
 			margin-top 10px
+			background-color var(--origin4)
+			padding 2px 2px 2px 5px
+			border-radius 8px
 			display flex
 			align-items center
 			.label
 				width 58px
+				color var(--origin1)
+				font-weight 700
 				font-size 22rpx
-			.remark
-				margin 5px
+				text-align center
 			input
 				flex 1
-				border var(--border2)
+				background-color #FFFFFF
+				padding-left 10px
+		.max-min
+			color var(--origin2)
+			margin 3px 0 3px 65px
 		.btns
 			margin-top 10px
 			display flex
 			button
 				width 35%
 				padding 0 10px
+				border-radius 22px
 			.cancel
 				background-color var(--gray2)
 </style>

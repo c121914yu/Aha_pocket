@@ -1,3 +1,4 @@
+<!-- 带搜索图标输入框 -->
 <template>
 	<view class="search-input">
 		<text class="iconfont icon-sousuo"></text>
@@ -19,6 +20,7 @@ export default {
 
 <style lang="stylus" scoped>
 .search-input
+	position relative
 	border-radius 22px
 	display flex
 	align-items center

@@ -19,11 +19,12 @@
 				<view class="item explain">
 					<text class="label">商品说明</text>
 					<view class="val">
-						<view 
+						<navigator 
 							v-for="(file,index) in orderResources"
-							:key="index">
+							:key="index"
+							:url="'../../Project/Project?id='+file.resource.projectId">
 							{{file.resource.name}}
-						</view>
+						</navigator>
 					</view>
 				</view>
 				<view v-if="status == 1" class="item">

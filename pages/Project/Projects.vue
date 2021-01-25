@@ -226,7 +226,7 @@ export default {
 		right 10px
 		bottom 5vh
 		.iconfont
-			font-size 60rpx
+			font-size 70rpx
 			color var(--origin1)
 	.cards
 		width 90%

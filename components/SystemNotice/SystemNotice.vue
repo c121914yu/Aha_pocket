@@ -10,7 +10,7 @@
 			<text class="page small">{{currentPage+1}} / {{notices.length}}</text>
 			<view class="ctr">
 				<text 
-					v-if="currentPage!==0" 
+					v-if="currentPage!==0"
 					class="left-icon iconfont icon-right"
 					@click="currentPage--">
 				</text>

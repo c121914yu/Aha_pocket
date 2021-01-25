@@ -1,6 +1,6 @@
 <!-- 写评论 -->
 <template>
-	<view class="write-remark">
+	<view class="write-remark" @touchmove.stop.prevent>
 		<!-- 提示模块 -->
 		<view v-if="type===0" class="remark-hint">
 			<view class="input" @click="startComment">
@@ -29,7 +29,10 @@
 					placeholder="写下你的评论,让大家了解更多" 
 					v-model="commentContent"
 					maxlength="-1"
-					auto-height	/>
+					cursor-spacing="120"
+					:show-confirm-bar="false"
+					auto-height
+					fixed/>
 				<!-- 评分 -->
 				<view class="footer">
 					<CommentStar v-model="score"></CommentStar>
@@ -175,8 +178,11 @@ export default {
 				display flex
 				justify-content space-between
 			textarea
+				margin 5px 0
 				width 100%
-				min-height 100px
+				min-height 80px
+				max-height 300px
+				padding 5px
 				background-color var(--white1)
 			.footer
 				margin 10px 0 5px
@@ -185,4 +191,5 @@ export default {
 				.publish
 					margin-right 10px
 					color var(--origin1)
+					font-size 28rpx
 </style>

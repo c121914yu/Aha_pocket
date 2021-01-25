@@ -188,12 +188,11 @@ export default {
 				display flex
 				align-items center
 				text
-					padding 0 7px 0 5px
+					padding 0 10rpx
 					color #FFFFFF
 				image
-					margin-left 5px
-					width 18px
-					height 18px
+					width 36rpx
+					height 36rpx
 		.comp-name
 			padding 1px 12px
 			background-color #F5A200

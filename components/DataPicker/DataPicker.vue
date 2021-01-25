@@ -1,3 +1,4 @@
+<!-- 日期选择器 -->
 <template>
 	<picker
 		class="picker"
