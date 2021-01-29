@@ -1,5 +1,6 @@
 .login.data-v-3a2da0cc {
-  height: 100vh;
+  position: relative;
+  min-height: 100vh;
   width: 100%;
 }
 .login .logo.data-v-3a2da0cc {
@@ -16,7 +17,7 @@
   z-index: 1;
   position: absolute;
   top: 0;
-  height: 70%;
+  height: 70vh;
   width: 100%;
   background-image: var(--bg-linear);
 }
@@ -24,11 +25,12 @@
   z-index: 2;
   position: absolute;
   bottom: 0;
-  height: 70%;
+  height: 70vh;
   width: 100%;
+  padding-bottom: 10px;
   background-color: var(--white1);
-  border-top-left-radius: 60rpx;
-  border-top-right-radius: 60rpx;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -93,11 +95,21 @@
   color: var(--gray2);
 }
 .login .bottom .other.data-v-3a2da0cc {
-  margin-bottom: 20px;
-  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
 }
 .login .bottom .other .strong.data-v-3a2da0cc {
-  margin-bottom: 15px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -127,14 +139,16 @@
   background-color: var(--gray2);
   border-radius: 10px;
 }
-.login .bottom .weixin.data-v-3a2da0cc {
+.login .bottom .other .weixin.data-v-3a2da0cc {
   line-height: 1;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
   color: #04be02;
   background-color: transparent;
   font-size: 45px;
-  display: block;
 }
-.login .bottom .weixin.data-v-3a2da0cc:active {
+.login .bottom .other .weixin.data-v-3a2da0cc:active {
   -webkit-transform: none;
           transform: none;
 }

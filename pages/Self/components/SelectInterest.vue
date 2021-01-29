@@ -98,8 +98,9 @@ export default {
         /* 点击标签，切换选中状态 */
         selectTag(key,tag) {
             if (!tag.select) {
-                if (this[key] < 4) 
-                    tag.select = !tag.select
+                if (this[key] < 4) {
+					tag.select = !tag.select
+				}
             } 
             else{
               tag.select = !tag.select  
@@ -179,7 +180,7 @@ export default {
             align-items center
             .icon
                 line-height 0.8
-                font-size 100rpx
+                font-size 80rpx
                 color var(--origin2)
                 text-shadow var(--shadow2)
             .text
@@ -255,15 +256,15 @@ export default {
     .bottom
         position absolute
         bottom 0
-        padding 5px 0
+        padding 10px 0
         width 100%
         background-color #FFFFFF
-        border-top-left-radius 40px
-        border-top-right-radius 40px
+        border-top-left-radius 22px
+        border-top-right-radius 22px
         button
-            margin 10px auto
+            margin 0 auto
             width 70%
-            font-size 32rpx
+            padding 2px
             color #FFFFFF
             background-color var(--origin2)
 </style>

@@ -61,22 +61,27 @@ export default {
 			type: Object,
 			default: () => {}
 		},
+		/* 是否显示排行 */
 		ranking: {
 			type: Number,
 			default: 0
 		},
+		/* 是否显示下边框 */
 		border: {
 			type: Boolean,
 			default: false
 		},
+		/* 间距 */
 		margin: {
 			type: String,
 			default: '0'
 		},
+		/* 圆角 */
 		radius: {
 			type: String,
 			default: '0'
 		},
+		/* 背景颜色 */
 		backgroundColor: {
 			type: String,
 			default: '#ffffff'

@@ -23,7 +23,11 @@
 			<!-- 第三方登录内容 -->
 			<view class="small other">
 				<view class="strong">第三方登录</view>
-				<button class="iconfont icon-weixin weixin" open-type="getUserInfo" @getuserinfo="wxLogin"></button>
+				<button 
+					class="iconfont icon-weixin weixin" 
+					open-type="getUserInfo" 
+					@getuserinfo="wxLogin">
+				</button>
 				<view style="color: var(--gray2);">微信登录</view>
 				<view style="margin-top:10rpx;color:var(--gray2);">
 					登录后需要同意
@@ -84,11 +88,12 @@ export default {
 				provider: 'weixin',
 				withCredentials: true,
 				lang: 'zh_CN',
-				success: res => {
+				success: (res) => {
 					// 获取code，请求openid
 					uni.login({
 						provider: 'weixin',
-						success: loginRes => {
+						success: (loginRes) => {
+							console.log(loginRes);
 							// 调用wx登录接口，获取token
 							WXLogin({
 								code: loginRes.code,
@@ -116,6 +121,9 @@ export default {
 			.then(res => {
 				this.loginSuccess(res)
 			})
+			.catch(err => {
+				this.gLoading(this, false);
+			})
 		}
 	}
 }
@@ -123,7 +131,8 @@ export default {
 
 <style lang="stylus" scoped>
 .login
-	height 100vh
+	position relative
+	min-height 100vh
 	width 100%
 	.logo
 		z-index 5
@@ -137,18 +146,19 @@ export default {
 		z-index 1
 		position absolute
 		top 0
-		height 70%
+		height 70vh
 		width 100%
 		background-image var(--bg-linear)
 	.bottom
 		z-index 2
 		position absolute
 		bottom 0
-		height 70%
+		height 70vh
 		width 100%
+		padding-bottom 10px
 		background-color var(--white1)
-		border-top-left-radius 60rpx
-		border-top-right-radius 60rpx
+		border-top-left-radius 30px
+		border-top-right-radius 30px
 		display flex
 		flex-direction column
 		align-items center
@@ -190,10 +200,11 @@ export default {
 			.register
 				color var(--gray2)
 		.other
-			margin-bottom 20px
-			text-align center
+			display flex
+			flex-direction column
+			align-items center
+			justify-content space-between
 			.strong
-				margin-bottom 15px
 				display flex
 				align-items center
 				justify-content center
@@ -214,12 +225,12 @@ export default {
 					height 1px
 					background-color var(--gray2)
 					border-radius 10px
-		.weixin
-			line-height 1
-			color #04BE02
-			background-color transparent
-			font-size 45px
-			display block
-			&:active
-				transform none
+			.weixin
+				line-height 1
+				flex 1
+				color #04BE02
+				background-color transparent
+				font-size 45px
+				&:active
+					transform none
 </style>

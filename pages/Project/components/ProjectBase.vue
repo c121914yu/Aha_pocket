@@ -1,32 +1,67 @@
 <template>
 	<view class="content">
-		<div class="head">
+		<view class="head">
 			<view class="h3">基本信息</view>
-			<view v-if="!avatarUrl" class="addAvatar" @click="chooseImg('avatarUrl')">
-				<text class="add">+</text>
-				<text>添加头像</text>
+			<view class="avatar">
+				<view v-if="!avatarUrl" class="addAvatar" @click="chooseImg('avatarUrl')">
+					<text class="add">+</text>
+					<text>添加头像</text>
+				</view>
+				<image v-else :src="avatarUrl" @click="showMenu('avatarUrl')"></image>
 			</view>
-			<image v-else :src="avatarUrl" @click="showMenu('avatarUrl')"></image>
-		</div>
-		<InputInfo title="题目" v-model="name"></InputInfo>
+		</view>
+		<!-- 是否为所有者 -->
+		<!-- <view class="is_owner">
+			<SelfRadio
+				label="是否为项目所有者"
+				:radio="[
+					{text:'是',value:true},
+					{text:'否',value:false}
+				]"
+				v-model="is_owner">
+			</SelfRadio>
+		</view> -->
+		<SelfInput 
+			label="题目" 
+			circle 
+			v-model="name">
+		</SelfInput>
 		<!-- 标签 -->
-		<InputInfo title="标签" remark="(注: 不同标签用空格隔开)" v-model="tags"></InputInfo>
+		<SelfInput label="标签" circle remark="(注: 不同标签用空格隔开)" v-model="tags"></SelfInput>
 		<view class="tags">
 			<view class="tag" v-for="(tag, index) in tagList" :key="index">{{ tag }}</view>
 		</view>
 		<!-- 获奖情况 -->
-		<view class="input-info set-prize">
-			<view class="h4">获奖情况:</view>
-			<InputInfo title="比赛名称" type="search" :allResults="Matches" v-model="compName"></InputInfo>
-			<InputInfo v-if="compName" title="获奖等级" type="select" contentWidth="200rpx" :range="prizeLevels" v-model="awardLevel"></InputInfo>
-			<view v-if="compName" class="date">
-				<text>获奖日期:</text>
-				<DataPicker placeholder="2020-9" v-model="awardTime"></DataPicker>
-			</view>
+		<view class="set-prize">
+			<view class="title">获奖情况:</view>
+			<SelfInput 
+				label="比赛名称" 
+				circle 
+				search
+				:arr_search="Matches" 
+				v-model="compName">
+			</SelfInput>
+			<SelfPicker
+				v-if="compName" 
+				label="获奖等级" 
+				contentWidth="300rpx" 
+				circle
+				:arr_range="prizeLevels"
+				:startIndex="awardLevel ? prizeLevels.indexOf(awardLevel) : 0"
+				v-model="awardLevel">
+			</SelfPicker>
+			<SelfPicker
+				v-if="compName" 
+				label="获奖日期" 
+				contentWidth="300rpx" 
+				placeholder="2020-8"
+				circle
+				date
+				v-model="awardTime">
+			</SelfPicker>
 			<view v-if="compName">
 				<view class="title">
 					获奖证明:
-					<text>长按可删除证明</text>
 				</view>
 				<view class="prove">
 					<image v-if="awardProveUrl" :src="awardProveUrl" mode="widthFix" @click="showMenu('awardProveUrl')"></image>
@@ -35,8 +70,8 @@
 			</view>
 		</view>
 		<!-- md编辑 -->
-		<view class="input-info">
-			<view class="h4">自定义描述:</view>
+		<view class="description">
+			<view class="title">自定义描述</view>
 			<view class="intro" v-if="intro" v-html="intro"></view>
 			<button @click="startEdit">编辑</button>
 		</view>
@@ -46,9 +81,10 @@
 <script>
 export default {
 	data() {
-		const Matches = getApp().globalData.Competitions.map(item => item.name);
-		const prizeLevels = getApp().globalData.prizeLevels;
+		const Matches = getApp().globalData.Competitions.map(item => item.name)
+		const prizeLevels = getApp().globalData.prizeLevels
 		return {
+			is_owner: true,
 			name: '', // 项目名称
 			avatarUrl: '', // 团队头像
 			tags: '', // 标签
@@ -71,11 +107,17 @@ export default {
 		*/
 		tagList() {
 			return this.tags.split(' ').filter(tag => tag !== '');
+		},
+		/* 获取获奖等级的下标 */
+	    levelIndex() {
+			let index = this.prizeLevels.findIndex(item => item.label === this.awardLevel)
+			return this.awardLevel ? index : 0
 		}
 	},
 	methods: {
 		/* 选择图片 */
-		chooseImg(item) {
+		chooseImg(item) 
+		{
 			uni.chooseImage({
 				count: 1, //默认9
 				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
@@ -90,7 +132,8 @@ export default {
 			input: 输入一个变量的字段
 			time: 2020/11/12
 		*/
-		showMenu(item) {
+		showMenu(item) 
+		{
 			/* 进入操作菜单 */
 			uni.showActionSheet({
 				itemList: ['预览图片', '修改图片', '删除图片'],
@@ -117,7 +160,8 @@ export default {
 			@set this.editMD: Boolean
 			@set getApp().globalData.gEditContent: String
 		*/
-		startEdit() {
+		startEdit() 
+		{
 			this.editMD = true
 			getApp().globalData.gEditContent = this.intro
 			uni.navigateTo({
@@ -130,14 +174,13 @@ export default {
 
 <style lang="stylus" scoped>
 .head
-	margin-bottom 10px
 	display flex
 	justify-content space-between
 	.addAvatar, image
-		width 50px
-		height 50px
-		border-radius 5px
-		border 1px solid var(--origin2)
+		width 60px
+		height 60px
+		border-radius 8px
+		border 2px solid var(--origin1)
 	image
 		border-color transparent
 	.addAvatar
@@ -151,7 +194,12 @@ export default {
 		.add
 			font-size 50rpx
 /* 标签框 */
+.title
+	margin 5px 0
+	font-size 26rpx
+	font-weight 700
 .tags
+	margin-top 15px
 	width 100%
 	display flex
 	flex-wrap wrap
@@ -159,14 +207,10 @@ export default {
 		margin 0 5px 5px 0
 		padding 0 10rpx
 		border 1px solid var(--origin2)
-		border-radius 22rpx
-		font-size 12px
+		border-radius 8px
+		font-size 22rpx
 /* 获奖情况 */
 .set-prize
-	.title
-		margin-top 10px
-		color var(--origin2)
-		font-size 24rpx
 	/* 日期 */
 	.date
 		display flex
@@ -181,7 +225,7 @@ export default {
 		width 95%
 		min-height 100px
 		background-color var(--origin3)
-		border-radius 20px
+		border-radius 8px
 		display flex
 		align-items center
 		justify-content center
@@ -200,16 +244,15 @@ export default {
 				background-color var(--gray2)
 				color var(--white2)
 /* markdown编辑 */
-.editMD
-	z-index 10
-	position absolute
-	top 0
-	left 0
-	right 0
-	bottom 0
-	background-color #FFFFFF
-.intro
-	*
-		white-space pre-wrap
-		word-wrap break-word
+.description
+	button
+		margin-top 10px
+		padding 0
+	.intro
+		*
+			white-space pre-wrap
+			word-wrap break-word
+		padding 2px
+		border 2px solid var(--origin2)
+		border-radius 8px
 </style>

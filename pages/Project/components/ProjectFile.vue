@@ -194,10 +194,8 @@ export default {
 		/* 
 			name: 删除文件
 			desc: 根据下标删除附件列表,需要先调用modal提示框
-			input:
-						index: Number,下标
-			change: 
-						this.files: Array,附件列表
+			@params index: Number,下标
+			@change this.files: Array,附件列表
 			time: 2020/10/25
 		*/
 		removeFile(index)
@@ -216,13 +214,13 @@ export default {
 		/* 根据setFileIndex修改文件信息 */
 		changeFileInfo(e)
 		{
-			putResource(this.files[this.setFileIndex].id,e)
-			.then(res => {
-				this.gToastSuccess("修改成功")
-			})
+			if(this.files[this.setFileIndex].status === 2) {
+				putResource(this.files[this.setFileIndex].id,e)
+			}
 			for(let key in e){
 				this.files[this.setFileIndex][key] = e[key]
 			}
+			this.gToastSuccess("修改成功")
 			this.setFileIndex = null
 		},
 		/* 

@@ -8,8 +8,7 @@
 					color: is_filterActive ? 'var(--origin2)' : ''
 				}"
 				class="filter"
-				@click="is_showFileter = true"
-			>
+				@click="is_showFileter = true">
 				筛选
 				<text class="iconfont icon-shaixuan"></text>
 			</text>
@@ -23,7 +22,14 @@
 				</view>
 				<view class="filter">
 					<!-- 搜索框 -->
-					<SearchInput v-model="searchText" @input="searchChange" placeholder="根据项目题目搜索"></SearchInput>
+					<view class="search-input">
+						<text class="iconfont icon-sousuo"></text>
+						<input 
+							type="text" 
+							placeholder="根据项目题目搜索" 
+							@input="searchChange"
+							v-model="searchText"/>	
+					</view>
 					<!-- 赛事 | 获奖 -->
 					<view class="filter-nav">
 						<view
@@ -242,6 +248,20 @@ export default {
 				border-top-right-radius 22px
 				font-size 12px
 				overflow auto
+				.search-input
+					position relative
+					border-radius 22px
+					display flex
+					align-items center
+					overflow hidden
+					.iconfont
+						position absolute
+						margin-left 10px
+						color var(--origin2)
+					input
+						flex 1
+						padding-left 30px
+						background-color #FFFFFF
 				.filter-nav
 					margin 10px
 					padding 10px

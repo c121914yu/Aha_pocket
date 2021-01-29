@@ -209,6 +209,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 var _api_login = __webpack_require__(/*! @/static/request/api_login.js */ 23); //
 //
 //
@@ -248,18 +252,19 @@ var _api_login = __webpack_require__(/*! @/static/request/api_login.js */ 23); /
 //
 //
 //
+//
+//
+//
+//
 var _default = { data: function data() {return { phone: '', password: '', isPassword: true // 是否展示密码
-    };}, methods: { loginSuccess: function loginSuccess(data) {var _this = this;getApp().globalData.gUserInfo = data;console.log(data);uni.reLaunch({ url: '../app', success: function success() {_this.gToastSuccess('登录成功');}, complete: function complete() {_this.gLoading(_this, false);} });}, login: function login() {var _this2 = this;if (this.phone === '') this.gToastError('手机号不能为空');else {this.gLoading(this, true);(0, _api_login.Login)({ phone: this.phone, password: this.password }).then(function (res) {uni.setStorageSync('token', res.data.token);_this2.loginSuccess(res.data.personalUserInfo);}).catch(function (err) {_this2.gLoading(_this2, false);});}}, wxLogin: function wxLogin() {var _this3 = this;
-      this.gLoading(this, true);
-      uni.getUserInfo({
-        provider: 'weixin',
-        withCredentials: true,
+    };}, methods: { loginSuccess: function loginSuccess(data) {var _this = this;getApp().globalData.gUserInfo = data;console.log(data);uni.reLaunch({ url: '../app', success: function success() {_this.gToastSuccess('登录成功');}, complete: function complete() {_this.gLoading(_this, false);} });}, login: function login() {var _this2 = this;if (this.phone === '') this.gToastError('手机号不能为空');else {this.gLoading(this, true);(0, _api_login.Login)({ phone: this.phone, password: this.password }).then(function (res) {uni.setStorageSync('token', res.data.token);_this2.loginSuccess(res.data.personalUserInfo);}).catch(function (err) {_this2.gLoading(_this2, false);});}}, wxLogin: function wxLogin() {var _this3 = this;this.gLoading(this, true);uni.getUserInfo({ provider: 'weixin', withCredentials: true,
         lang: 'zh_CN',
         success: function success(res) {
           // 获取code，请求openid
           uni.login({
             provider: 'weixin',
             success: function success(loginRes) {
+              console.log(loginRes);
               // 调用wx登录接口，获取token
               (0, _api_login.WXLogin)({
                 code: loginRes.code,
@@ -286,6 +291,9 @@ var _default = { data: function data() {return { phone: '', password: '', isPass
       this.gGetMeInfo().
       then(function (res) {
         _this4.loginSuccess(res);
+      }).
+      catch(function (err) {
+        _this4.gLoading(_this4, false);
       });
     }
   } };exports.default = _default;

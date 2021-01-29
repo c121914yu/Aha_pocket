@@ -4,14 +4,15 @@
 		:style="{
 			'min-width': width + 'rpx'
 		}"
-		:range="range"
+		:range="arr_range"
+		range-key="label"
 		:value="startIndex"
-		@change="check">
+		@change="select">
 		<view class="msg">
 			<view 
 				class="value"
-				:class="value === '' ? 'input-placeholder' : ''">
-				{{value === "" ? placeholder : value}}
+				:class="value ? '' : 'input-placeholder'">
+				{{value ? value.label : placeholder}}
 			</view>
 			<text class="iconfont icon-xiala"></text>
 		</view>
@@ -27,7 +28,7 @@ export default {
 			default: 200
 		},
 		/* 数组 */
-		range: {
+		arr_range: {
 			type: Array,
 			default: () => []
 		},
@@ -42,14 +43,11 @@ export default {
 			default: 0
 		},
 		/* 绑定值 */
-		value: {
-			type: String,
-			default: ""
-		},
+		value: Object || String || Number
 	},
 	methods:{
-		check(e){
-			this.$emit('input',this.range[e.detail.value])
+		select(e){
+			this.$emit('input',this.arr_range[e.detail.value])
 		}
 	}
 }

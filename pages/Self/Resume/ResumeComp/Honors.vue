@@ -33,10 +33,10 @@
 			<!-- 获得时间 -->
 			<view class="item edu-time">
 				<text>获得时间</text>
-				<DataPicker
+				<SelfPicker
 					placeholder="2020-9"
 					v-model="honor.time">
-				</DataPicker>
+				</SelfPicker>
 			</view>
 			<!-- 获奖描述 -->
 			<view class="item description">

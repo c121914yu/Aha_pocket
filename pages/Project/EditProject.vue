@@ -82,18 +82,14 @@ export default {
 		initPageInfo()
 		{
 			/* 获取获奖等级名称 */
-			let awardLevel = ""
-			getApp().globalData.prizeLevels.forEach(item => {
-				if(item.value === this.project.awardLevel)
-					awardLevel = item.label
-			})
+			let awardLevel = getApp().globalData.prizeLevels.find(item => item.value === this.project.awardLevel)
 			/* 同步基础信息 */
 			const domBaseInfo = this.$refs.baseInfo
 			domBaseInfo.name = this.project.name
 			domBaseInfo.avatarUrl = this.project.avatarUrl
 			domBaseInfo.tags = this.project.tags
 			domBaseInfo.compName = this.project.compName
-			domBaseInfo.awardLevel = awardLevel
+			domBaseInfo.awardLevel = awardLevel || null
 			domBaseInfo.awardTime = this.project.awardTime
 			domBaseInfo.awardProveUrl = this.project.awardProveUrl
 			domBaseInfo.intro = this.project.intro
@@ -144,13 +140,13 @@ export default {
             this.gLoading(this,true)
 			const base = this.$refs.baseInfo
 			/* 赛事类型和获奖等级需要转化成数值 */
-			let awardLevel = getApp().globalData.prizeLevels.find(item => item.label === base.awardLevel)
-			awardLevel = awardLevel ? awardLevel.value : null
+			let awardLevel = base.awardLevel ? base.awardLevel.value : null
 			/* 计算compId */
 			let compId = getApp().globalData.Competitions.find(item => item.name === base.compName)
 			compId = compId ? compId.id : 0
 			
 			let data = {
+				is_owner: base.is_owner,
 				name: base.name,
 				avatarUrl: base.avatarUrl,
 				compId,
@@ -175,13 +171,13 @@ export default {
 					return
 				}
 				putProject(this.project.id,data)
-					.then(res => {
-						this.gToastSuccess("更新成功")
-						this.gLoading(this, false);
-					})
-					.catch(err => {
-						this.gLoading(this, false);
-					});
+				.then(res => {
+					this.gToastSuccess("更新成功")
+					this.gLoading(this, false);
+				})
+				.catch(err => {
+					this.gLoading(this, false);
+				});
 			};
 			
 			/* 判断是否有需要上传图片 */

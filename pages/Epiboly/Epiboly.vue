@@ -20,20 +20,20 @@
 			</view>
 			<!-- 筛选 -->
 			<view class="filters">
-				<InputInfo
+				<SelfInput
 					title="地点"
 					type="select"
 					contentWidth="200rpx"
 					:range="places"
 					v-model="place">
-				</InputInfo>
-				<InputInfo
+				</SelfInput>
+				<SelfInput
 					title="工作内容"
 					type="select"
 					contentWidth="200rpx"
 					:range="workContents"
 					v-model="workContent">
-				</InputInfo>
+				</SelfInput>
 			</view>
 		</view>
 		<!-- 外包卡片 -->

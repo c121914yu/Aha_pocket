@@ -328,7 +328,7 @@ export default {
 	    readFile(file,index)
 		{
 			const type = getApp().globalData.arr_fileTypes.find(item => item.reg.test(file.filename)).value
-			/* 文档类跳转previewFile界面 */
+			/* 文档类跳转readFile界面 */
 			if(type === 2){
 				uni.navigateTo({
 					url: "ReadFile?id=" + file.id
@@ -337,7 +337,6 @@ export default {
 			else{
 				this.gLoading(this,true)
 				if(file.url){
-					console.log(file.url);
 					/* 图片/视频直接打开 */
 					if(type === 0 || type === 1){
 						wx.previewMedia({
@@ -352,23 +351,14 @@ export default {
 						})
 					}
 					else{
-						/* 其他类需要下载到本地 */
-						wx.saveFileToDisk({
-							filePath: file.url,
-							success: (res) => {
-								console.log(res);
-								this.gLoading(this,false)
+						/* 复制到剪切板 */
+						uni.setClipboardData({
+						    data: file.url,
+							success: () => {
+								this.gToastMsg("已复制下载链接")
 							},
-							fail: (err) => {
-								uni.setClipboardData({
-								    data: file.url,
-									success: () => {
-										this.gToastMsg("已复制下载链接")
-									},
-									complete: () => {
-										this.gLoading(this,false)
-									}
-								})
+							complete: () => {
+								this.gLoading(this,false)
 							}
 						})
 					}

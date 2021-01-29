@@ -1,24 +1,22 @@
 <!-- 设置成员信息 -->
 <template>
-	<view class="set-member">
-		<view class="content">
+	<view class="set-member" @click="$emit('close')">
+		<view class="content" @click.stop>
 			<text class="h3">成员信息</text>
 			<image :src="member.avatarUrl"></image>
             <view>uid: <text class="value">{{member.memberUserId}}</text></view>
 			<view>姓名: <text class="value">{{member.nickname}}</text></view>
 			<!-- 是否允许编辑 -->
 			<view>
-				允许编辑项目: 
-				<text class="label">不允许</text>
-				<radio
-					color="#f8b86b"
-					:checked="!member.editable"
-					@click="member.editable=false"/>
-				<text class="label">允许</text>
-				<radio 
-					color="#f8b86b"
-					:checked="member.editable"
-					@click="member.editable=true"/>
+				<SelfRadio
+					label="允许编辑项目:"
+					labelColor="var(--font-dark)"
+					:radio="[
+						{label:'允许',value:true},
+						{label:'不允许',value:false}
+					]"
+					v-model="member.editable">
+				</SelfRadio>
 			</view>
 			<!-- 负责工作 -->
 			<view class="job">
@@ -85,6 +83,7 @@ export default {
 		image
 			width 60px
 			height 60px
+			border-radius 8px
 		view
 			margin 2px 0
 			width 90%

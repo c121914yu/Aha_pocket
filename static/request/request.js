@@ -15,6 +15,7 @@ function myRequest(url,method,data){
 			method: method,
 			data: data,
 			header: headers,
+			timeout: 10000,
 			success(result) 
 			{
 				/* 请求成功 */

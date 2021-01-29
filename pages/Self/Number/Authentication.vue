@@ -6,25 +6,28 @@
 				<text class="h3">实名信息</text>
 				<text class="state" :class="stateObj.class">*{{stateObj.msg}}</text>
 			</view>
-			<InputInfo
-				title="姓&emsp;名"
-				contentWidth="300rpx"
-				v-model="name">
-			</InputInfo>
-			<InputInfo
-				title="手机号"
+			<SelfInput
+				label="姓名"
 				contentWidth="350rpx"
-				disable="true"
+				circle
+				v-model="name">
+			</SelfInput>
+			<SelfInput
+				label="手机号"
+				contentWidth="450rpx"
+				type="Number"
+				circle
 				v-model="phone">
-			</InputInfo>
+			</SelfInput>
 			<!-- 身份 -->
-			<radio-group @change="identify=$event.detail.value">
-				<text class="label">当前身份</text>
-				<radio value="学生" color="#f8b86b" :checked="identify === '学生'"/>
-				<text>学生</text>
-				<radio value="非学生" color="#f8b86b" :checked="identify === '非学生'"/>
-				<text>非学生</text>
-			</radio-group>
+			<SelfRadio
+				label="当前身份"
+				:radio="[
+					{label:'学生',value:'学生'},
+					{label:'非学生',value:'非学生'}
+				]"
+				v-model="identify">
+			</SelfRadio>
 			<!-- 图片 -->
 			<view class="proves">
 				<!-- 身份证正面 -->
@@ -52,7 +55,10 @@
 					</view>
 				</view>
 			</view>
-			<button @click="submit">提交</button>
+			<!-- 提交 -->
+			<view class="submit">
+				<button @click="submit">提交</button>
+			</view>
 		</view>
 	</view>
 </template>
@@ -65,9 +71,9 @@ export default {
 			name: "",
 			phone: getApp().globalData.gUserInfo.phone,
 			identify: "学生",
-			identifyFront: "",
-			identifyBack: "",
-			identifyStu: "",
+			identifyFront: "", //身份证正面
+			identifyBack: "", //身份证反面
+			identifyStu: "", //学生证
 		}
 	},
 	computed: {
@@ -127,23 +133,28 @@ export default {
 		submit()
 		{
 			/* 已通过验证提醒 */
-			if(this.state === 3)
+			if(this.state === 3){
 				this.gShowModal("重新提交需重新审核。",() => {
 					this.prove()
 				})
-			else
+			}
+			else{
 				this.prove()
+			}
 		},
 		/* 请求上传证明 */
 		prove()
 		{
 			/* 空值检测 */
-			if(this.name === "")
+			if(this.name === ""){
 				this.gToastError("姓名为空")
-			else if(this.identifyFront === "" || this.identifyBack === "")
+			}
+			else if(this.identifyFront === "" || this.identifyBack === ""){
 				this.gToastError("身份证明为空")
-			else if(this.identify === "学生" && this.identifyStu === "")
+			}
+			else if(this.identify === "学生" && this.identifyStu === ""){
 				this.gToastError("学生证明为空")
+			}
 			else{
 				/* 上传图片 */
 			}
@@ -155,17 +166,20 @@ export default {
 <style lang="stylus">
 .authentication
 	min-height 100vh
-	padding 20px 5%
+	padding 15px 5% 65px
 	background-color var(--white1)
 	.content
 		padding 10px 30px
 		border-radius 22px
 		background-color #FFFFFF
 		.head
+			margin-bottom 10px
 			display flex
 			justify-content space-between
+			.h3
+				color var(--origin1)
 			.state
-				font-size 30rpx
+				font-size 24rpx
 				font-weight 700
 				&.unauth
 					color var(--gray1)
@@ -175,17 +189,14 @@ export default {
 					color #04BE02
 				&.authErr
 					color #e86452
-		.input-info
-			margin 5px 0
-		radio
-			margin-left 10px
 		.proves
 			.item
 				margin 5px 0
 				width 100%
-				min-height 100px
+				min-height 150px
 				background-color var(--origin4)
-				border-radius 10px
+				border 2px solid var(--origin2)
+				border-radius 8px
 				overflow hidden
 				display flex
 				align-items center
@@ -199,6 +210,17 @@ export default {
 						font-size 40rpx
 			image
 				width 100%
-		button
-			margin-top 10px
+		.submit
+			position fixed
+			bottom 0
+			left 0
+			right 0
+			padding 8px 15%
+			background-color var(--origin2)
+			border-top-left-radius 22px
+			border-top-right-radius 22px
+			button
+				background-color #FFFFFF
+				color var(--origin2)
+				padding 2px
 </style>

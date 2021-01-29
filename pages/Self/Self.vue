@@ -79,7 +79,12 @@
 		<!-- 登出 -->
 		<button style="width: 90%;margin: auto;background-color: #e86452;" @click="out">退出登录</button>
 		<!-- 管理员按键 -->
-		<navigator class="admin-edit" url="./EditMd/EditMd">管理员MD编辑器</navigator>
+		<navigator 
+			v-if="isAdmin" 
+			class="admin-edit" 
+			url="./EditMd/EditMd">
+			管理员MD编辑器
+		</navigator>
 		<!-- 兴趣选择 -->
 		<SelectInterest v-if="isCheckTags" @close="isCheckTags=false;tags"></SelectInterest>
 		<!-- 加载动画 -->
@@ -89,7 +94,8 @@
 
 <script>
 import { getAvatarOssSignature, putMe, getUnreadCount } from '@/static/request/api_userInfo.js';
-import { loginOut } from '@/static/request/api_login.js';
+import { loginOut } from '@/static/request/api_login.js'
+import SelectInterest from "./components/SelectInterest.vue"
 export default {
 	data() {
 		return {
@@ -117,7 +123,12 @@ export default {
 		};
 	},
 	computed: {
-		tags() {
+		isAdmin()
+		{
+			return getApp().globalData.gUserInfo.role.id === 2
+		},
+		tags() 
+		{
 			const userInfo = getApp().globalData.gUserInfo.userInfo
 			let specialtyTags = []
 			let compTags = []
@@ -133,6 +144,9 @@ export default {
 			} 
 			return res
 		}
+	},
+	components: {
+		SelectInterest
 	},
 	created() {
 		getUnreadCount()
@@ -151,7 +165,8 @@ export default {
 			name: 设置昵称
 			description: 失去焦点时修改账号的昵称，需要预先判断是否有修改，即对比原数据与新输入的内容是否相等
 		*/
-		setNickName(e) {
+		setNickName(e) 
+		{
 			const value = e.detail.value
 			/* 判断value与原本的nickName是否相同，相同则无需请求，不同则请求服务器修改nickName */
 			if (value !== this.userInfo.nickname) {
@@ -169,7 +184,8 @@ export default {
 			description: 点击头像打开操作菜单，可选择预览或者修改头像点击预览，触发预览效果点击修改头像，进入选择头像模式，选择完成后上传头像至oss，然后将链接存储到数据库中。
             time: 2020/11/15
 		*/
-		clickAvatar() {
+		clickAvatar() 
+		{
 			/* 进入操作菜单 */
 			uni.showActionSheet({
 				itemList: ['预览头像', '修改头像', '查看个人信息'],
@@ -225,7 +241,8 @@ export default {
 			});
 		},
 		/* 退出登录，调用modal确认*/
-		out() {
+		out() 
+		{
 			this.gShowModal('确认退出登录?', () => {
 				loginOut();
 				uni.clearStorageSync('token');

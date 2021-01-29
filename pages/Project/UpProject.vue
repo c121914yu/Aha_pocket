@@ -43,7 +43,7 @@ export default {
 			return
 		}
 		/* 判断是否需要更新介绍编辑 */
-		if(this.$refs.baseInfo.editMD){
+		if(this.step === 0 && this.$refs.baseInfo.editMD){
 			this.$refs.baseInfo.intro = getApp().globalData.gEditContent
 			this.$refs.baseInfo.editMD = false
 		}
@@ -62,14 +62,14 @@ export default {
 			this.gLoading(this, true);
 			const base = this.$refs.baseInfo;
 			/* 赛事类型和获奖等级需要转化成数值 */
-			let awardLevel = getApp().globalData.prizeLevels.find(item => item.label === base.awardLevel)
-			awardLevel = awardLevel ? awardLevel.value : null
+			let awardLevel = base.awardLevel ? base.awardLevel.value : null
 			/* 计算compId */
 			let compId = getApp().globalData.Competitions.find(item => item.name === base.compName)
 			compId = compId ? compId.id : 0
 			
 			compId = compId ? compId : 0;
 			let data = {
+				is_owner: base.is_owner,
 				name: base.name,
 				avatarUrl: base.avatarUrl,
 				compId,
@@ -78,8 +78,9 @@ export default {
 				awardLevel,
 				awardTime: base.awardTime,
 				awardProveUrl: base.awardProveUrl,
-				intro: base.intro
+				intro: base.intro,
 			};
+			console.log(data);
 			/* 空值检验 */
 			if (data.name === '') {
 				this.gToastError('请输入资源标题');
@@ -93,16 +94,16 @@ export default {
 					return
 				}
 				postProject(data)
-					.then(res => {
-						this.projectId = res.data.id;
-						/* 进入下一步*/
-						this.step = 1;
-						this.gLoading(this, false);
-					})
-					.catch(err => {
-						this.gLoading(this, false);
-					});
-			};
+				.then(res => {
+					this.projectId = res.data
+					/* 进入下一步*/
+					this.step = 1
+					this.gLoading(this, false)
+				})
+				.catch(err => {
+					this.gLoading(this, false)
+				})
+			}
 			
 			/* 判断是否有需要上传图片 */
 			if (!data.avatarUrl && !data.awardProveUrl) {
@@ -231,7 +232,7 @@ export default {
 .up-project
 	position relative
 	min-height 96vh
-	padding 20rpx 0
+	padding 10px 0
 	background-color var(--origin3)
 	/* 按键 */
 	.btn
@@ -246,7 +247,8 @@ export default {
 		display flex
 		justify-content space-around
 		button
-			margin 0 20px
+			margin 0 15%
+			padding 0
 			flex 1
 			background-color #FFFFFF
 			color var(--origin2)
@@ -261,10 +263,7 @@ export default {
 		/* 大标题 */
 		.h3
 			padding 20rpx 0
-			color var(--origin1)
-		/* 小标题 */
-		.h4
-			color var(--origin1)
+			color var(--origin2)
 		/* 输入框 */
 		.input-info
 			margin 15rpx 0

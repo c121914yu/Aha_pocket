@@ -21,22 +21,22 @@
 			<!-- 学历 -->
 			<view class="item degree">
 				<text>学历</text>
-				<SPicker 
+				<SelfPicker2 
 					placeholder="本科,硕士"
 					startIndex="3"
 					:range="Degress"
 					v-model="edu.degree">
-				</SPicker>
+				</SelfPicker2>
 			</view>
 			<!-- 学校选择，可选择输入框 -->
 			<view class="item school">
-				<InputInfo
+				<SelfInput
 					title="学校"
 					type="search"
 					:allResults="Schools"
 					contentWidth="400rpx"
 					v-model="edu.school">
-				</InputInfo>
+				</SelfInput>
 			</view>
 			<!-- 专业 -->
 			<view class="item specialty">
@@ -49,27 +49,27 @@
 			<!-- 成绩 -->
 			<view class="item degree">
 				<text>成绩排名</text>
-				<SPicker 
+				<SelfPicker2 
 					:range="Grades"
 					v-model="edu.grade">
-				</SPicker>
+				</SelfPicker2>
 			</view>
 			<!-- 在校时间 -->
 			<view class="item edu-time">
 				<text>在校时间</text>
-				<DataPicker
+				<SelfPicker
 					placeholder="2018-9"
 					startTime="2010-1"
 					endTime="2030-12"
 					v-model="edu.startTime">
-				</DataPicker>
+				</SelfPicker>
 				<view>-</view>
-				<DataPicker
+				<SelfPicker
 					placeholder="2018-9"
 					startTime="2010-1"
 					endTime="2030-12"
 					v-model="edu.endTime">
-				</DataPicker>
+				</SelfPicker>
 			</view>
 			<!-- 删除按键 -->
 			<text class="remove iconfont icon-remove" @click="removeEdu(index)"></text>

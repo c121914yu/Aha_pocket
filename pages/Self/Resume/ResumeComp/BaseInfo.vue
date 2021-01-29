@@ -63,21 +63,21 @@
 		<!-- 出生年月 -->
 		<view class="item both">
 			<text>出生年份</text>
-			<DataPicker 
+			<SelfPicker 
 				placeholder="2000-4"
 				endTime="2010-12"
 				v-model="birth">
-			</DataPicker>
+			</SelfPicker>
 		</view>
 		<!-- 最高学历 -->
 		<view class="item highest-degree">
 			<text>最高学历</text>
-			<SPicker 
+			<SelfPicker2 
 				placeholder="包括在读"
 				:startIndex="highestDegree ? Degress.indexOf(highestDegree) : 3"
 				:range="Degress"
 				v-model="highestDegree">
-			</SPicker>
+			</SelfPicker2>
 		</view>
 		<!-- 是否在读学生 -->
 		<view class="item gender">

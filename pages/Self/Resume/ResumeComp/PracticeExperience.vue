@@ -38,15 +38,15 @@
 			<!-- 经历时间 -->
 			<view class="item edu-time">
 				<text>时间</text>
-				<DataPicker
+				<SelfPicker
 					placeholder="2018-9"
 					v-model="exp.startTime">
-				</DataPicker>
+				</SelfPicker>
 				<view>-</view>
-				<DataPicker
+				<SelfPicker
 					placeholder="2020-9"
 					v-model="exp.endTime">
-				</DataPicker>
+				</SelfPicker>
 				<label
 					class="checkbox"  
 					@click="practiceExperiences[index].endTime = exp.endTime === '至今' ? '' : '至今'">
