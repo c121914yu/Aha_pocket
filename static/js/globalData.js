@@ -10,14 +10,14 @@ export default  {
 	Grads: ['前1%', '1%-5%', '5%-20%', '20%-50%', '50%-100%'], // 成绩等级
 	Competitions: [], // 所有比赛
 	prizeLevels: [
-		{ label: '国一', value: 53 },
-		{ label: '国二', value: 52 },
-		{ label: '国三', value: 51 },
-		{ label: '省一', value: 43 },
-		{ label: '省二', value: 42 },
-		{ label: '省三', value: 41 },
-		{ label: '市一', value: 33 },
-		{ label: '市二', value: 32 },
+		{ label: '国一', value: 53,rate: 40 },
+		{ label: '国二', value: 52,rate: 40 },
+		{ label: '国三', value: 51,rate: 40 },
+		{ label: '省一', value: 43,rate: 40 },
+		{ label: '省二', value: 42,rate: 40 },
+		{ label: '省三', value: 41,rate: 40 },
+		{ label: '市一', value: 33,rate: 40 },
+		{ label: '市二', value: 32,rate: 40 },
 		{ label: '市三', value: 31 },
 		{ label: '校一', value: 23 },
 		{ label: '校二', value: 22 },

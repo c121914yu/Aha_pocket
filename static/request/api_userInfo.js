@@ -1,10 +1,10 @@
 import request from "./request.js"
 
+
 /* 
 	name: 绑定手机号
-	params:
-			phone: String
-			code: String
+	@params phone: String
+	@params code: String
 */
 const bindPhone = (data) => request("/bind/phone","POST",data)
 /* 绑定微信号 */

@@ -4,27 +4,27 @@
 		<view class="content">
 			<view class="head">
 				<text class="h3">实名信息</text>
-				<text class="state" :class="stateObj.class">*{{stateObj.msg}}</text>
+				<text class="state" :class="statusObj.class">*{{statusObj.msg}}</text>
 			</view>
 			<SelfInput
 				label="姓名"
 				contentWidth="350rpx"
 				circle
-				v-model="name">
+				v-model="trueName">
 			</SelfInput>
-			<SelfInput
+		<!-- 	<SelfInput
 				label="手机号"
 				contentWidth="450rpx"
 				type="Number"
 				circle
 				v-model="phone">
-			</SelfInput>
+			</SelfInput> -->
 			<!-- 身份 -->
 			<SelfRadio
 				label="当前身份"
 				:radio="[
-					{label:'学生',value:'学生'},
-					{label:'非学生',value:'非学生'}
+					{label:'学生',value:1},
+					{label:'非学生',value:0}
 				]"
 				v-model="identify">
 			</SelfRadio>
@@ -32,24 +32,24 @@
 			<view class="proves">
 				<!-- 身份证正面 -->
 				<view class="item identify-front">
-					<image v-if="identifyFront" :src="identifyFront" mode="widthFix" @click="showMenu('identifyFront')"></image>
-					<view v-else class="remark" @click="chooseImg('identifyFront')">
+					<image v-if="idCardFront" :src="idCardFront" mode="widthFix" @click="showMenu('idCardFront')"></image>
+					<view v-else class="remark" @click="chooseImg('idCardFront')">
 						<text class="iconfont icon-tianjia"></text>
 						<text>身份证正面图</text>
 					</view>
 				</view>
 				<!-- 身份证反面 -->
 				<view class="item identify-front">
-					<image v-if="identifyBack" :src="identifyBack" mode="widthFix" @click="showMenu('identifyBack')"></image>
-					<view v-else class="remark" @click="chooseImg('identifyBack')">
+					<image v-if="idCardBack" :src="idCardBack" mode="widthFix" @click="showMenu('idCardBack')"></image>
+					<view v-else class="remark" @click="chooseImg('idCardBack')">
 						<text class="iconfont icon-tianjia"></text>
 						<text>身份证反面图</text>
 					</view>
 				</view>
 				<!-- 学生证 -->
-				<view v-if="identify === '学生'" class="item identify-front">
-					<image v-if="identifyStu" :src="identifyStu" mode="widthFix" @click="showMenu('identifyStu')"></image>
-					<view v-else class="remark" @click="chooseImg('identifyStu')">
+				<view v-if="identify === 1" class="item identify-front">
+					<image v-if="studentCard" :src="studentCard" mode="widthFix" @click="showMenu('studentCard')"></image>
+					<view v-else class="remark" @click="chooseImg('studentCard')">
 						<text class="iconfont icon-tianjia"></text>
 						<text>学生证/校园卡</text>
 					</view>
@@ -60,24 +60,26 @@
 				<button @click="submit">提交</button>
 			</view>
 		</view>
+		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
+const Multipart = require('@/static/js/Multipart.min.js') 
 export default {
 	data() {
 		return {
-			state: 0, // 0未验证，1验证中，2验证失败，3验证通过
-			name: "",
-			phone: getApp().globalData.gUserInfo.phone,
-			identify: "学生",
-			identifyFront: "", //身份证正面
-			identifyBack: "", //身份证反面
-			identifyStu: "", //学生证
+			state: getApp().globalData.gUserInfo.authenticated, // 0未验证，1验证中，2验证失败，3验证通过
+			trueName: "",
+			// phone: getApp().globalData.gUserInfo.phone,
+			identify: 1,
+			idCardFront: "", //身份证正面
+			idCardBack: "", //身份证反面
+			studentCard: "", //学生证
 		}
 	},
 	computed: {
-		stateObj(){
+		statusObj(){
 			switch(this.state){
 				case 0: return{msg:"未验证",class:"unauth"};break;
 				case 1: return{msg:"验证中",class:"authing"};break;
@@ -92,14 +94,14 @@ export default {
 		{
 			uni.chooseImage({
 				count: 1, //默认9
-				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+				sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
 				success:  (img) => {
 					this[item] = img.tempFilePaths[0]
 				}
 			})
 		},
 		/*
-			name: 进入操作菜单
+			trueName: 进入操作菜单
 			desc: 点击图片进入操作菜单，提示修改图片或者预览图片
 			input: 输入一个变量的字段
 			time: 2020/11/12
@@ -146,17 +148,45 @@ export default {
 		prove()
 		{
 			/* 空值检测 */
-			if(this.name === ""){
+			if(this.trueName === ""){
 				this.gToastError("姓名为空")
 			}
-			else if(this.identifyFront === "" || this.identifyBack === ""){
-				this.gToastError("身份证明为空")
-			}
-			else if(this.identify === "学生" && this.identifyStu === ""){
-				this.gToastError("学生证明为空")
-			}
+			// else if(this.idCardFront === "" || this.idCardBack === ""){
+			// 	this.gToastError("身份证明为空")
+			// }
+			// else if(this.identify === 1 && this.studentCard === ""){
+			// 	this.gToastError("学生证明为空")
+			// }
 			else{
-				/* 上传图片 */
+				this.gLoading(this,true)
+				/* 上传文件 */
+				let m = new Multipart({
+					files:[], 
+					fields:[],
+					header: {
+						'Authorization': uni.getStorageSync("token")
+					}
+				})
+				m.field({
+				  name: 'trueName',
+				  value: this.trueName
+				})
+				m.file({name:"idCardFront",filePath: this.idCardFront})
+				m.file({name:"idCardBack",filePath: this.idCardBack})
+				if(this.studentCard){
+					m.file({name:"studentCard",filePath: this.studentCard})
+				}
+				m.submit(`${getApp().globalData.baseUrl}/authenticate`,{
+					header:{'Cookie':'name=1'},
+				})
+				.then(res => {
+					console.log(res)
+					this.gLoading(this,false)
+				})
+				.catch(err => {
+					console.log(err)
+					this.gLoading(this,false)
+				})
 			}
 		}
 	}

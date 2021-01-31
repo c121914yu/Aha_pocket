@@ -210,11 +210,11 @@ export default {
 		display grid
 		grid-template-columns 1fr 1fr
 		text-align center
-		padding 10px
+		padding 5px
 		font-size 26rpx
 		background-color var(--origin3)
-		border-bottom-left-radius 22px
-		border-bottom-right-radius 22px
+		border-bottom-left-radius 44px
+		border-bottom-right-radius 44px
 		.h3
 			color var(--origin1)
 		.amount

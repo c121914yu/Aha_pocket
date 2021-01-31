@@ -13,8 +13,8 @@
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  width: 80vw;
-  height: 60vh;
+  width: 90%;
+  height: 80vh;
   padding: 10px;
   background-color: #fff;
   color: #333;
@@ -32,8 +32,8 @@
 /* 已阅读按键 */
 }
 .user-agreement .content .title.data-v-146c3178 {
-  font-size: 40rpx;
-  font-weight: 600;
+  font-size: 28rpx;
+  font-weight: 700;
 }
 .user-agreement .content .agreement.data-v-146c3178 {
   margin: 5px 0;
@@ -41,12 +41,12 @@
   -webkit-flex: 1;
           flex: 1;
   padding: 5px;
-  font-size: 30rpx;
-  overflow-y: scroll;
-  text-indent: 60rpx;
+  font-size: 22rpx;
+  white-space: pre-wrap;
+  overflow-y: auto;
 }
 .user-agreement .content .sign.data-v-146c3178 {
-  padding: 10px 0;
+  padding-top: 5px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -75,7 +75,6 @@
 .user-agreement .content .sign .square.active.data-v-146c3178 {
   border-color: var(--origin2);
   color: var(--origin2);
-  font-weight: 600;
 }
 .user-agreement .content .sign .strong.data-v-146c3178 {
   color: var(--origin2);
@@ -93,5 +92,8 @@
 .user-agreement .content .readed-btn.already.data-v-146c3178 {
   background-color: var(--origin2);
   color: #fff;
+}
+.user-agreement .content button.data-v-146c3178 {
+  padding: 0;
 }
 

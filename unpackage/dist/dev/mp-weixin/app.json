@@ -13,7 +13,6 @@
     "pages/Self/Wallet/OrderDetail",
     "pages/Self/Number/NumberInfo",
     "pages/Self/Number/Contract",
-    "pages/Self/InviteMember",
     "pages/Self/Number/Authentication",
     "pages/Self/Resume/Resume",
     "pages/Self/Resume/ResumePreview",

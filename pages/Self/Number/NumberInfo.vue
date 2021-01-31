@@ -9,7 +9,7 @@
 		<view class="item wxnumber">
 			<text class="iconfont icon-VIP"></text>
 			<text class="label">VIP</text>
-			<text class="small bind">开通VIP</text>
+			<text class="small bind" @click="openVip">开通VIP</text>
 		</view>
 		<!-- 微信号 -->
 		<view class="item wxnumber">
@@ -119,6 +119,11 @@ export default {
 					}
 				})
 			})
+		},
+		/* 开通VIP */
+		openVip()
+		{
+			this.gToastMsg("功能未开放！")
 		},
 		/* 绑定微信号 */
 		bindWx()

@@ -363,7 +363,7 @@ export default {
 /* 已全部上传 & 上传中 */
 .startUpload,.uploading
 	border-radius 22px
-	padding 3px
+	padding 0 3px
 /* 上传中 */
 .uploading
 	background-color var(--gray2)

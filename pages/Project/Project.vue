@@ -72,7 +72,7 @@
 			<!-- 描述 -->
 			<view v-if="intro" class="item intro">
 				<view class="title">项目描述</view>
-				<view class="values"><view class="val desc" v-html="intro"></view></view>
+				<view class="values"><view class="desc" v-html="intro"></view></view>
 			</view>
 			<!-- 附件 -->
 			<view v-if="resources.length>0" class="item files">
@@ -508,11 +508,12 @@ export default {
 					/* 数组格式 */
 					&.arr
 						margin 0 5px 5px 0
-					/* 描述 */
-					&.desc
-						width 100%
-						border-radius 8px
-						padding 0 5px
+				/* 描述 */
+				.desc
+					width 100%
+					border-radius 8px
+					padding 2px
+					border 2px solid var(--origin2)
 		/* 附件 */
 		.files
 			.all-buy

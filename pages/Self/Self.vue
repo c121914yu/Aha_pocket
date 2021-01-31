@@ -53,6 +53,13 @@
 				<text v-if="item.val >= 0" class="small val">{{ item.val }}</text>
 				<text v-else class="right iconfont icon-arrow-right"></text>
 			</navigator>
+			<button
+				class="item" 
+				open-type="share">
+				<text class="iconfont icon-iconfontzhizuobiaozhun49"></text>
+				<text class="name small">邀请好友</text>
+				<!-- <text class="right iconfont icon-arrow-right"></text> -->
+			</button>
 		</view>
 		<view class="list">
 			<navigator
@@ -112,7 +119,6 @@ export default {
 				{ name: '消息通知', icon: 'icon-tongzhi1', to: '/pages/Self/Inform/Informs', val: 0 },
 				{ name: '我的钱包', icon: 'icon-ziyuan', to: '/pages/Self/Wallet/Wallet'},
 				{ name: '账号信息', icon: 'icon-zhanghao', to: '/pages/Self/Number/NumberInfo' },
-				{ name: '邀请好友', icon: 'icon-iconfontzhizuobiaozhun49', to: '/pages/Self/InviteMember'},
 			],
 			funtions2: [
 				{ name: '我的收藏', icon: 'icon-shoucang', to: '/pages/Self/MyCollection'},

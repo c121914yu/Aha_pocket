@@ -78,11 +78,6 @@
 			"style": {
 				"navigationBarTitleText": "Aha口袋用户合同"
 			}
-		},{
-			"path": "pages/Self/InviteMember",
-			"style": {
-				"navigationBarTitleText": "邀请好友"
-			}
 		}, {
 			"path": "pages/Self/Number/Authentication",
 			"style": {

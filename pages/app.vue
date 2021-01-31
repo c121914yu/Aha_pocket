@@ -116,8 +116,8 @@ export default {
 	onShareAppMessage(e){
 		return {
 			title: "Aha口袋",
-			path: "pages/Login/Login",
-			desc: "加入Aha口袋",
+			path: `pages/Login/Login?token=${uni.getStorageSync('token')}`,
+			desc: `${getApp().globalData.gUserInfo.userInfo.nickname}邀您加入Aha口袋`
 		}
 	},
 	methods: {
