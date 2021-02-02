@@ -1,244 +1,286 @@
 <template>
-	<!-- 个人简历 -->
 	<view class="resume">
-		<view  v-if="loaded">
-			<!-- 基本信息卡片 -->
-			<BaseInfo ref="baseInfo"></BaseInfo>
-			<!-- 教育经历 -->
-			<EduExperience ref="eduExperience"></EduExperience>
-			<!-- 校园经历 -->
-			<SchoolExperience ref="schoolExperience"></SchoolExperience>
-			<!-- 项目经历 -->
-			<ProjectExperience ref="projectExperience"></ProjectExperience>
-			<!-- 实习经历 -->
-			<PracticeExperience ref="practiceExperience"></PracticeExperience>
-			<!-- 专业技能卡片 -->
-			<ProSkill ref="projectSkill"></ProSkill>
-			<!-- 荣誉情况 -->
-			<Honors ref="honors"></Honors>
-			<!-- 自我介绍 -->
-			<SelfDescription ref="selfDescription"></SelfDescription>
-			<!-- 按键 -->
-			<view class="btns">
-				<button class="preview" @click="preview">预览</button>
-				<button class="save" @click="commitResume(true)">保存</button>
+		<!-- 头部 -->
+		<navigator 
+			class="header"
+			hover-class="none"
+			url="components/BaseInfo">
+			<image class="avatar" :src="avatarUrl"></image>
+			<view class="right">
+				<view class="name">
+					{{resume.name || "姓名"}}
+					<image v-if="resume.gender === '男'" class="gender"  src="@/static/icon/male.png"></image>
+					<image v-else-if="resume.gender === '女'" class="gender"  src="@/static/icon/female.png"></image>
+				</view>
+				<view class="edit">
+					<text class="iconfont icon-write"></text>
+					<text>编辑基本信息</text>
+				</view>
+			</view>
+		</navigator>
+		<!-- 教育经历 -->
+		<view class="resume-item edu">
+			<navigator class="head" hover-class="none" url="components/EduExperience">
+				<view class="h3">教育经历</view>
+				<text class="desc"></text>
+				<text class="iconfont icon-add-fill"></text>
+			</navigator>
+			<view class="list">
+				<navigator 
+					class="item"
+					hover-class="none"
+					v-for="(item,index) in resume.eduExperiences"
+					:key="index"
+					:url="'components/EduExperience?index=' + index">
+					<view class="head">{{item.school}}</view>
+					<view class="small degree">
+						{{item.degree}}
+						<text v-if="item.specialty">/{{item.specialty}}</text>
+						<text v-if="item.grade">(排名: {{item.grade}})</text>
+					</view>
+					<view class="small time">
+						<text v-if="item.startTime">{{item.startTime}}-</text>
+						{{item.endTime}}
+					</view>
+					<text class="iconfont icon-right"></text>
+				</navigator>
 			</view>
 		</view>
-		<!-- 加载动画 -->
+		<!-- 校园经历 -->
+		<view class="resume-item school">
+			<navigator class="head" hover-class="none" url="components/SchoolExperience">
+				<view class="h3">校园经历</view>
+				<text class="desc"></text>
+				<text class="iconfont icon-add-fill"></text>
+			</navigator>
+			<view class="list">
+				<navigator 
+					class="item"
+					hover-class="none"
+					v-for="(item,index) in resume.schoolExperiences"
+					:key="index"
+					:url="'components/SchoolExperience?index=' + index">
+					<view class="head">{{item.organization}}</view>
+					<view class="small">{{item.post}}</view>
+					<view class="small">
+						<text v-if="item.startTime">{{item.startTime}}-</text>
+						{{item.endTime}}
+					</view>
+					<text class="iconfont icon-right"></text>
+				</navigator>
+			</view>
+		</view>
+		<!-- 项目经历 -->
+		<view class="resume-item project">
+			<navigator class="head" hover-class="none" url="components/ProjectExperience">
+				<view class="h3">项目经历</view>
+				<text class="desc"></text>
+				<text class="iconfont icon-add-fill"></text>
+			</navigator>
+			<view class="list">
+				<navigator
+					class="item"
+					hover-class="none"
+					v-for="(item,index) in resume.projectExperiences"
+					:key="index"
+					:url="'components/ProjectExperience?index=' + index">
+					<view class="head">{{item.name}}</view>
+					<view class="small">{{item.content}}</view>
+					<view class="small">
+						<text v-if="item.startTime">{{item.startTime}}-</text>
+						{{item.endTime}}
+					</view>
+					<text class="iconfont icon-right"></text>
+				</navigator>
+			</view>
+		</view>
+		<!-- 实习经历 -->
+		<view class="resume-item protect">
+			<navigator class="head" hover-class="none" url="components/PracticeExperience">
+				<view class="h3">实习经历</view>
+				<text class="desc"></text>
+				<text class="iconfont icon-add-fill"></text>
+			</navigator>
+			<view class="list">
+				<navigator
+					class="item"
+					hover-class="none"
+					v-for="(item,index) in resume.practiceExperiences"
+					:key="index"
+					:url="'components/PracticeExperience?index=' + index">
+					<view class="head">{{item.company}}</view>
+					<view class="small">{{item.post}}</view>
+					<view class="small">
+						<text v-if="item.startTime">{{item.startTime}}-</text>
+						{{item.endTime}}
+					</view>
+					<text class="iconfont icon-right"></text>
+				</navigator>
+			</view>
+		</view>
+		<!-- 个人技能描述 -->
+		<navigator class="resume-item skill" hover-class="none" url="components/Skill">
+			<view class="head">
+				<view class="h3">个人技能描述</view>
+				<text class="desc"></text>
+				<text style="color: var(--gray1);font-weight:700;" class="iconfont icon-right"></text>
+			</view>
+			<view class="message">
+				{{resume.projectSkill || ""}}
+			</view>
+		</navigator>
+		<!-- 个人荣誉 -->
+		<view class="resume-item honors">
+			<navigator class="head" hover-class="none" url="components/Honors">
+				<view class="h3">个人荣誉</view>
+				<text class="desc"></text>
+				<text class="iconfont icon-add-fill"></text>
+			</navigator>
+			<view class="list">
+				<navigator 
+					class="item"
+					hover-class="none"
+					v-for="(item,index) in resume.honors"
+					:key="index"
+					:url="'components/Honors?index='+index">
+					<view class="head">{{item.name}}</view>
+					<view class="small">{{item.time}}</view>
+					<text class="iconfont icon-right"></text>
+				</navigator>
+			</view>
+		</view>
+		<!-- 自我描述 -->
+		<navigator class="resume-item description" hover-class="none" url="components/SelfIntro">
+			<view class="head">
+				<view class="h3">自我描述</view>
+				<text class="desc"></text>
+				<text style="color: var(--gray1);font-weight:700;" class="iconfont icon-right"></text>
+			</view>
+			<view class="message">
+				{{resume.intro || ""}}
+			</view>
+		</navigator>
 		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { getResume, putResume } from '@/static/request/api_resume.js';
-import BaseInfo from './ResumeComp/BaseInfo.vue';
-import EduExperience from './ResumeComp/EduExperience.vue';
-import SchoolExperience from './ResumeComp/SchoolExperience.vue';
-import ProjectExperience from './ResumeComp/ProjectExperience.vue';
-import PracticeExperience from './ResumeComp/PracticeExperience.vue';
-import ProSkill from './ResumeComp/ProSkill.vue';
-import Honors from './ResumeComp/Honors.vue';
-import SelfDescription from './ResumeComp/SelfDescription.vue';
-var timer;
+import { getResume, putResume } from '@/static/request/api_userInfo.js'
 export default {
 	data() {
 		return {
-			loaded: false
-		};
-	},
-	components: {
-		BaseInfo,
-		EduExperience,
-		SchoolExperience,
-		ProjectExperience,
-		PracticeExperience,
-		ProSkill,
-		Honors,
-		SelfDescription
-	},
-	onLoad() {
-		this.gLoading(this, true);
-		getResume(getApp().globalData.gUserInfo.userInfo.userId)
-			.then(res => {
-				console.log(res.data);
-				getApp().globalData.gResume = res.data;
-				this.gLoading(this, false);
-				this.loaded = true;
-			})
-			.catch(err => {
-				this.gLoading(this, false);
-			});
+			resume: null,
+			avatarUrl: getApp().globalData.gUserInfo.userInfo.avatarUrl
+		}
 	},
 	onShow() {
-		timer = setInterval(() => {
-			this.commitResume();
-		}, 30000);
-	},
-	beforeDestroy() {
-		clearInterval(timer);
-		this.commitResume();
-	},
-	onHide() {
-		clearInterval(timer);
+		this.gLoading(this, true);
+		/* 已经有简历记录 */
+		if(getApp().globalData.gResume){
+			this.resume = getApp().globalData.gResume
+			this.$forceUpdate()
+			this.updateProgress()
+		}
+		else {
+			getResume(getApp().globalData.gUserInfo.userInfo.userId)
+			.then(res => {
+				this.resume = res.data
+				getApp().globalData.gResume = res.data
+				this.updateProgress()
+			})
+			.catch(err => {
+				this.gLoading(this, false)
+			})
+		}
 	},
 	methods: {
-		/* 
-			name: 提交个人简历
-			description: 提交个人简历至服务器
-		*/
-		commitResume(toast = false) {
-			if (toast) this.gLoading(this, true);
-			const data = {
-				// 基础信息表
-				name: this.$refs.baseInfo.name || '',
-				phone: this.$refs.baseInfo.phone || '',
-				email: this.$refs.baseInfo.email || '',
-				gender: this.$refs.baseInfo.gender || '男',
-				birth: this.$refs.baseInfo.birth || '',
-				highestDegree: this.$refs.baseInfo.highestDegree || '',
-				identity: this.$refs.baseInfo.identity || '学生',
-				currentGrade: this.$refs.baseInfo.currentGrade || '',
-				workPlace: this.$refs.baseInfo.workPlace || '',
-				profession: this.$refs.baseInfo.profession || '',
-				// 教育经历
-				eduExperiences: this.$refs.eduExperience.eduExperiences,
-				// 校园经历
-				schoolExperiences: this.$refs.schoolExperience.schoolExperiences,
-				// 项目经历
-				projectExperiences: this.$refs.projectExperience.projectExperiences,
-				// 实习经历
-				practiceExperiences: this.$refs.practiceExperience.practiceExperiences,
-				// 专业技能
-				projectSkill: this.$refs.projectSkill.projectSkill,
-				// 荣誉情况
-				honors: this.$refs.honors.honors,
-				// 自我描述
-				intro: this.$refs.selfDescription.intro
-			};
-			getApp().globalData.gResume = { ...data };
-			putResume(data)
-				.then(res => {
-					this.gLoading(this, false);
-					if (toast) this.gToastSuccess('简历保存成功');
-				})
-				.catch(err => {
-					this.gLoading(this, false);
-				});
-		},
-		/*
-			name: 预览简历
-			description: 保存数据并跳转预览界面
-		*/
-		preview() {
-			this.commitResume();
-			uni.navigateTo({
-				url: './ResumePreview'
-			});
+		/* 更新导航栏标题 */
+		updateProgress()
+		{
+			let length = -1
+			let noBlank = 0
+			/* 统计完整度 */
+			for(let key in this.resume){
+				length++
+				if(this.resume[key] && this.resume[key].length > 0){
+					noBlank++
+				}
+			}
+			/* 更新导航文字 */
+			uni.setNavigationBarTitle({
+				title: `个人简历(${Math.round(noBlank/length*100)}%)`
+			})
+			console.log(this.resume);
+			this.gLoading(this, false)
 		}
 	}
-};
+}
 </script>
 
 <style lang="stylus">
 .resume
-	position relative
-	min-height 100vh
-	padding 30rpx 30rpx 100rpx
-	background-color var(--white1)
-	/* 不同种类卡片 */
-	.card
-		margin-bottom 15px
-		padding 30rpx 60rpx
-		background-color #FFFFFF
-		filter brightness(98%)
-		border-radius 22px
-		overflow hidden
-		/* 折叠图标 */
-		.fold
-			position absolute
-			right 30rpx
-			top 30rpx
-			color var(--origin1)
-			font-size 40rpx
-			transition 0.4s
-		// 大标题
-		.h3
-			padding-bottom 10px
-			color var(--origin1)
-		/* 小字提示 */
-		.small
-			color var(--gray2)
-		// 子元素
-		.item
+	padding 20px 5% 60px 5%
+	.header
+		margin-bottom 20px
+		display flex
+		.avatar
 			position relative
-			margin 20rpx 0
+			width 60px
+			height 60px
+			border-radius 50%
+		.right
+			padding-left 20px
+			display flex
+			flex-direction column
+			justify-content space-around
+			.name
+				font-size 40rpx
+				font-weight 700
+				display flex
+				align-items center
+				.gender
+					margin-left 10px
+					width 18px
+					height 18px
+			.edit
+				color var(--gray1)
+				font-size 24rpx
+				.iconfont
+					margin-right 10px
+	.resume-item
+		padding 15px 0
+		border-bottom var(--border2)
+		display block
+		.head
 			display flex
 			align-items center
-			// 开头提示文字
-			text
-				margin-right 20rpx
+			.h3
+				flex 1
+				font-size 32rpx
+			.desc
+				margin 0 10px
+				color var(--gray2)
+				font-size 24rpx
+			.iconfont
 				color var(--origin2)
-				white-space nowrap
-			// 输入框
-			.input
-				padding 0 15rpx
-				background-color var(--origin3)
-				border-radius 20px
-				font-size 28rpx
-		/* textarea输入 */
-		textarea
-			margin-top 15rpx
-			width 100%
-			padding 15rpx
-			background-color var(--origin3)
-			border-radius 15px
-			font-size 28rpx
-		// 添加按键
-		.add-btn
-			margin-top 30rpx
-			border 1px solid var(--origin2)
-			background-color transparent
-			color var(--origin2)
-			font-size 28rpx
-			padding 5rpx
-		/* 多组中单个样式 */
-		.list-itme
-			position relative
-			border-bottom 2px dotted var(--origin2)
-			/* 删除图标 */
-			.remove
-				position absolute
-				right -20rpx
-				top -5px
-				color #e86452
-				font-size 34rpx
-			/* 最后一项不加边框 */
-			&:last-of-type
-				border none
-	/* 功能按键 */
-	.btns
-		position fixed
-		bottom 0
-		left 0
-		right 0
-		height 120rpx
-		background-color var(--origin2)
-		border-top-left-radius 22px
-		border-top-right-radius 22px
-		display flex
-		align-items center
-		justify-content space-around
-		.small
-			flex 1
-		button
-			height 80rpx
-			width 30%
-		.preview
-			background-color transparent
-			border-radius 12px
-			color #FFFFFF
-			border 1px dotted #FFFFFF
-		.save
-			background-color #FFFFFF
-			color var(--origin2)
+		.list
+			.item
+				position relative
+				margin 15px 0
+				display block
+				.head
+					font-size 28rpx
+				.small
+					color var(--gray2)
+				.icon-right
+					position absolute
+					right 0
+					top 50%
+					transform translateY(-50%)
+					color var(--gray1)
+					font-weight 700
+		.message
+			font-size 24rpx
+			color var(--gray2)
+			white-space pre-wrap
 </style>

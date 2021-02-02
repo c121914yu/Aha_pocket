@@ -89,6 +89,46 @@
 				"navigationBarTitleText": "个人简历"
 			}
 		}, {
+			"path": "pages/Self/Resume/components/BaseInfo",
+			"style": {
+				"navigationBarTitleText": "基本信息"
+			}
+		}, {
+			"path": "pages/Self/Resume/components/EduExperience",
+			"style": {
+				"navigationBarTitleText": "教育经历"
+			}
+		}, {
+			"path": "pages/Self/Resume/components/SchoolExperience",
+			"style": {
+				"navigationBarTitleText": "校园经历"
+			}
+		}, {
+			"path": "pages/Self/Resume/components/ProjectExperience",
+			"style": {
+				"navigationBarTitleText": "项目经历"
+			}
+		}, {
+			"path": "pages/Self/Resume/components/PracticeExperience",
+			"style": {
+				"navigationBarTitleText": "实习经历"
+			}
+		}, {
+			"path": "pages/Self/Resume/components/Skill",
+			"style": {
+				"navigationBarTitleText": "个人技能"
+			}
+		}, {
+			"path": "pages/Self/Resume/components/Honors",
+			"style": {
+				"navigationBarTitleText": "荣誉信息"
+			}
+		}, {
+			"path": "pages/Self/Resume/components/SelfIntro",
+			"style": {
+				"navigationBarTitleText": "个人总结"
+			}
+		}, {
 			"path": "pages/Self/Resume/ResumePreview",
 			"style": {
 				"navigationBarTitleText": "简历预览"

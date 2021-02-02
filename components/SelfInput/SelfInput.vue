@@ -110,7 +110,7 @@ export default {
 		inputing(e) {
 			const value = e.target.value
 			/* 搜索模式，触发搜索结果 */
-			if (this.search) {
+			if (this.arr_search.length > 0) {
 				/* 正则匹配包含字段的内容 */
 				const filReg = new RegExp(value, 'gi');
 				/* 过滤筛选 */

@@ -15,6 +15,14 @@
     "pages/Self/Number/Contract",
     "pages/Self/Number/Authentication",
     "pages/Self/Resume/Resume",
+    "pages/Self/Resume/components/BaseInfo",
+    "pages/Self/Resume/components/EduExperience",
+    "pages/Self/Resume/components/SchoolExperience",
+    "pages/Self/Resume/components/ProjectExperience",
+    "pages/Self/Resume/components/PracticeExperience",
+    "pages/Self/Resume/components/Skill",
+    "pages/Self/Resume/components/Honors",
+    "pages/Self/Resume/components/SelfIntro",
     "pages/Self/Resume/ResumePreview",
     "pages/Self/MyCollection",
     "pages/Self/Feedback/Feedback",
@@ -38,6 +46,10 @@
     "navigationBarBackgroundColor": "#f5c789",
     "backgroundColor": "#FFFFFF"
   },
-  "permission": {},
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取您当前的城市信息"
+    }
+  },
   "usingComponents": {}
 }

@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { getResume } from '@/static/request/api_resume.js';
+import { getResume } from '@/static/request/api_userInfo.js';
 export default {
 	data() {
 		return {

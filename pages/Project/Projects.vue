@@ -21,7 +21,8 @@
 			class="up-project" 
 			hover-class="none" 
 			url="UpProject">
-			<text class="iconfont icon-add-fill"></text>
+			<button>上传项目</button>
+			<!-- <text class="iconfont icon-add-fill"></text> -->
 		</navigator>
 		<!-- 项目卡片 -->
 		<view class="cards">
@@ -43,7 +44,7 @@
 				></projectCard>
 			</view>
 		</view>
-		<view class="center small remark">{{ is_showAll ? "已加载全部" : "" }}</view>
+		<view class="center mini remark">{{ is_showAll ? "已加载全部" : "" }}</view>
 		
 		<!-- 筛选组件 -->
 		<ProjectFilter v-if="isFilter" @sureFilter="sureFilter"></ProjectFilter>
@@ -205,6 +206,7 @@ export default {
 .my-projects
 	min-height 100vh
 	background-color var(--white1)
+	padding-bottom 55px
 	/* 数据统计 */
 	.data
 		display grid
@@ -223,15 +225,21 @@ export default {
 	.up-project
 		z-index 5
 		position fixed
-		right 10px
-		bottom 5vh
-		.iconfont
-			font-size 70rpx
-			color var(--origin1)
+		bottom 0
+		left 0
+		right 0
+		background-color var(--origin2)
+		padding 10px
+		border-top-left-radius 22px
+		border-top-right-radius 22px
+		button
+			margin 0 15%
+			padding 0
+			background-color #FFFFFF
+			color var(--origin2)
 	.cards
 		width 90%
 		margin 0 auto
 	.remark
-		padding 10px
-		color var(--gray1)
+		color var(--gray2)
 </style>

@@ -55,10 +55,10 @@
 			</navigator>
 			<button
 				class="item" 
+				style="animation-delay: 0.4s"
 				open-type="share">
 				<text class="iconfont icon-iconfontzhizuobiaozhun49"></text>
 				<text class="name small">邀请好友</text>
-				<!-- <text class="right iconfont icon-arrow-right"></text> -->
 			</button>
 		</view>
 		<view class="list">

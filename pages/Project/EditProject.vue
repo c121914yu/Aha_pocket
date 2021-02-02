@@ -201,14 +201,12 @@ export default {
 						})
 						.catch(err => {
 							this.gToastError('头像上传失败')
-							successNum++
-							postProj()
+							this.gLoading(this, false);
 						})
 				})
 				.catch(err => {
 					this.gToastError('头像上传失败')
-					successNum++
-					postProj()
+					this.gLoading(this, false);
 				})
 			}
 			else{
@@ -230,14 +228,12 @@ export default {
 						})
 						.catch(err => {
 							this.gToastError('证明上传失败')
-							successNum++
-							postProj()
+							this.gLoading(this, false);
 						})
 				})
 				.catch(err => {
 					this.gToastError('证明上传失败')
-					successNum++
-					postProj()
+					this.gLoading(this, false);
 				})
 			}
 			else{

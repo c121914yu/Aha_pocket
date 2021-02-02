@@ -49,6 +49,10 @@
             "postcss" : true,
             "minified" : true
         },
-        "permission" : {}
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "获取您当前的城市信息"
+            }
+        }
     }
 }

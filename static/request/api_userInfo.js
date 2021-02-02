@@ -21,6 +21,18 @@ const getAvatarOssSignature = (filename) => request("/userInfo/avatar/sign/uploa
 /* 根据userId获取用户详细信息 */
 const getUser = (userId) => request("/userInfo/" + userId,"GET",{})
 
+/* 
+	desc: 获取简历信息
+	@param userId: String,用户标识码
+*/
+const getResume = (userId) => request(`/resume/${userId}`,"GET",{})
+
+/* 
+	desc: 更新简历信息
+	@params resume: Object,简历的所有字段
+*/
+const putResume = (data) => request("/resume","PUT",data)
+
 /* 获取未读通知数量 */
 const getUnreadCount = () => request("/message/count/notRead","GET",{})
 /* 获取消息通知列表 */
@@ -58,6 +70,8 @@ export {
 	getAvatarOssSignature,
 	
 	getUser,
+	getResume,
+	putResume,
     
     getUnreadCount,
     getMessages,

@@ -2,12 +2,12 @@
 	<view class="content">
 		<view class="head">
 			<view class="h3">基本信息</view>
-			<view class="avatar">
-				<view v-if="!avatarUrl" class="addAvatar" @click="chooseImg('avatarUrl')">
-					<text class="add">+</text>
-					<text>添加头像</text>
-				</view>
-				<image v-else :src="avatarUrl" @click="showMenu('avatarUrl')"></image>
+			<view v-if="avatarUrl" class="avatar">
+				<image :src="avatarUrl" mode="widthFix" @click="showMenu('avatarUrl')"></image>
+			</view>
+			<view v-else class="addAvatar" @click="chooseImg('avatarUrl')">
+				<text class="add">+</text>
+				<text>添加头像</text>
 			</view>
 		</view>
 		<!-- 是否为所有者 -->
@@ -176,21 +176,25 @@ export default {
 .head
 	display flex
 	justify-content space-between
-	.addAvatar, image
+	.avatar,.addAvatar
+		position relative
 		width 60px
 		height 60px
 		border-radius 8px
-		border 2px solid var(--origin1)
-	image
-		border-color transparent
-	.addAvatar
-		line-height 1.2
-		color var(--origin2)
-		font-size 20rpx
+		overflow hidden
 		display flex
 		flex-direction column
 		align-items center
 		justify-content center
+	.avatar
+		background-color var(--origin4)
+		image
+			width 100%
+	.addAvatar
+		line-height 1.2
+		color var(--origin2)
+		font-size 20rpx
+		border 2px solid var(--origin1)
 		.add
 			font-size 50rpx
 /* 标签框 */
