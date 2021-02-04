@@ -127,7 +127,7 @@ export default {
 			this.gLoading(this, true);
 			signNotice()
 			.then(res => {
-				uni.setStorageSync('token', res.data.token);
+				uni.setStorageSync('token', res.data);
 				this.gToastSuccess(res.msg);
 				getApp().globalData.gUserInfo.signedNotice = true;
 				this.$emit('readed');

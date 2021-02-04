@@ -122,7 +122,11 @@
 					class="comment"
 					v-for="(comment,index) in comments"
 					:key="index">
-					<image :src="comment.user.avatarUrl"></image>
+					<navigator 
+						hover-class="none"
+						:url="'../Self/UserHome?userId=' + comment.user.userId">
+						<image :src="comment.user.avatarUrl"></image>
+					</navigator>
 					<view class="right">
 						<view class="head">
 							<view class="name">{{comment.user.nickname}}</view>
@@ -574,6 +578,7 @@ export default {
 			.right
 				flex 1
 				margin-left 10px
+				font-size 22rpx
 				.head
 					display flex
 					align-items center
@@ -582,26 +587,24 @@ export default {
 						border-radius 22px
 						background-color var(--origin2)
 						color #FFFFFF
-						font-size 24rpx
 					.score
 						margin-left 5px
-						font-size 22rpx
 						color var(--origin2)
+						display flex
+						align-items center
 						.iconfont
-							font-size 22rpx
+							margin-left 2px
+							font-size 20rpx
 					.time
-						font-size 22rpx
-						color var(--gray1)
+						color var(--gray2)
 				.container
 					padding 5px 0
-					font-size 24rpx
 				.file-control
 					display flex
 					align-items center
 					justify-content space-between
 					.filename
 						color var(--gray2)
-						font-size 22rpx
 					.iconfont
 						color var(--origin1)
 		.nocomment

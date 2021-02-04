@@ -123,7 +123,6 @@ export default {
 				if (value === ''){
 					this.searchResult = [];
 				} 
-				console.log(this.searchResult);
 			}
 			this.$emit('input', value)
 		},

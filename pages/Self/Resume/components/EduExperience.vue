@@ -36,6 +36,7 @@
 		<resumeDataPicker
 			label="毕业时间"
 			placeholder="毕业时间"
+			is_today
 			v-model="endTime">
 		</resumeDataPicker>
 		<view class="btns">

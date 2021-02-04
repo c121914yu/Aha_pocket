@@ -1,7 +1,6 @@
 <!-- 比赛信息 -->
 <template>
 	<view>
-		该模块设计中，尽情期待！
 	</view>
 </template>
 

@@ -2,24 +2,19 @@
 <template>
 	<view class="purchased-projects">
 		<view class="search">
-			<text class="iconfont icon-sousuo"></text>
-			<input 
-				type="text" 
-				placeholder="搜索相关项目" 
-				v-model="searchText"/>
-			<text class="small search-text">搜索</text>
+			<SearchInput placeholder="搜索相关项目" v-model="searchText"></SearchInput>
 		</view>
 		<!-- 统计 -->
 		<view class="statistics">
-			<view>
+			<view style="border-bottom-left-radius: 22px;" class="item">
 				<view>购买附件数量</view>
 				<view class="amount">{{purchaseAmount}}</view>
 			</view>
-			<view>
+			<view class="item">
 				<view>相关项目数量</view>
 				<view class="amount">{{arr_project.length}}</view>
 			</view>
-			<view>
+			<view style="border-bottom-right-radius: 22px;" class="item">
 				<view>花费Aha点</view>
 				<view class="amount">{{purchasePoint}}</view>
 			</view>
@@ -194,24 +189,8 @@ export default {
 	background-color var(--white1)
 	min-height 100vh
 	.search
-		position relative
 		background-color var(--origin2)
 		padding 3px 5%
-		display flex
-		align-items center
-		.iconfont
-			position absolute
-			margin-left 10px
-			color var(--origin2)
-		input
-			flex 1
-			padding 5px 0 5px 30px
-			border-radius 22px
-			background-color #FFFFFF
-			font-size 24rpx
-		.search-text
-			margin-left 15px
-			color #FFFFFF
 	/* 统计数据 */
 	.statistics
 		padding 5px
@@ -219,12 +198,22 @@ export default {
 		border-bottom-left-radius 22px
 		border-bottom-right-radius 22px
 		text-align center
+		padding 5px
 		font-size 24rpx
 		display grid
 		grid-template-columns repeat(3,1fr)
+		grid-gap 5px
+		.item
+			padding 5px 0
+			background-color var(--origin4)
+			color var(--gray1)
 		.amount
+			margin 2px auto
+			width 50%
 			color var(--origin2)
-			font-size 34rpx
+			background-color #FFFFFF
+			border-radius 22px
+			font-weight 700
 	/* 项目 */
 	.projects
 		margin 15px 5%
@@ -234,15 +223,17 @@ export default {
 			border-radius 8px
 			overflow hidden
 			.title
-				padding 8px 5px
-				background-color var(--origin4)
+				padding 8px 10px
+				background-color var(--origin3)
 				font-size 24rpx
+				font-weight 700
+				color #FFFFFF
 				display block
 			.files
 				background-color #FFFFFF
 				.file
 					position relative
-					padding 10px 5px 10px 15px
+					padding 10px 5px 10px 20px
 					font-size 22rpx
 					border-bottom var(--border2)
 					display flex
@@ -250,12 +241,12 @@ export default {
 					&::before
 						content ''
 						position absolute
-						left 4px
+						left 9px
 						width 5px
 						height 5px
 						border-radius 50%
 						background-color var(--origin1)
 	/* 提示文字 */
 	.hint
-		color var(--gray1)
+		color var(--gray2)
 </style>

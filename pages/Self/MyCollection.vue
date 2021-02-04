@@ -22,13 +22,13 @@
 				:key="index"
 				:url="'/pages/Project/Project?id='+project.id">
 				<projectCard
-					margin="10px 0 0"
+					margin="10px 0"
 					radius="16px"
 					:project="project"
 				></projectCard>
 			</navigator>
 		</view>
-		
+		<view class="remark small center">已加载全部</view>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
@@ -46,7 +46,7 @@ export default {
 				{name: "外包",val: "project",amount: 6},
 			],
 			activeNav: 0,
-			list: []
+			list: [],
 		}
 	},
 	components: {
@@ -100,38 +100,43 @@ export default {
 <style lang="stylus" scoped>
 .my-collection
 	min-height 100vh
-	background-color var(--origin4)
-	padding 10px
+	background-color var(--white1)
 	.navs
-		display flex
-		justify-content space-around
+		margin-bottom 10px
+		border-bottom-left-radius 22px
+		border-bottom-right-radius 22px
+		display grid
+		grid-template-columns repeat(3,1fr)
+		overflow hidden
 		.nav
-			background-color var(--white2)
-			padding 5px 10px
-			border-radius 8px
-			border 1px solid var(--origin1)
+			background-color #FFFFFF
+			padding 10px
+			font-size 26rpx
 			display flex
 			align-items center
+			justify-content center
 			.amount
-				margin-left 10px
-				width 25px
-				height 25px
+				margin-left 5px
+				width 14px
+				height 14px
 				text-align center
-				line-height 25px
+				line-height 14px
 				border-radius 50%
 				background-color var(--origin2)
 				color #FFFFFF
-				font-size 26rpx
+				font-size 22rpx
 				font-weight 700
-		.active
-			background-color var(--origin2)
-			color #FFFFFF
-			.amount
-				background-color #FFFFFF
-				color var(--black)
+			&.active
+				background-color var(--origin2)
+				color #FFFFFF
+				.amount
+					background-color #FFFFFF
+					color var(--origin2)
 	.list
+		margin 0 5%
 		.item
 			width 100%
 	.remark
 		margin-top 10px
+		color var(--gray2)
 </style>

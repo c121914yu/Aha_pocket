@@ -45,7 +45,8 @@
 		
 		<SetFile 
 			v-if="setFileIndex!==null" 
-			:fileInfo="files[setFileIndex]" 
+			:fileInfo="files[setFileIndex]"
+			:level="level"
 			@close="setFileIndex=null" 
 			@success="changeFileInfo">
 		</SetFile>
@@ -60,7 +61,8 @@ import SetFile from "./SetFile"
 const COS = require('@/static/js/COS.js')
 export default {
 	props: {
-		projectId: String
+		projectId: String,
+		level: Number
 	},
 	data() {
 		return {

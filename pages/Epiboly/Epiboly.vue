@@ -1,6 +1,6 @@
 <!-- 外包 -->
 <template>
-	<view class="epiboly">
+	<view v-if="false" class="epiboly">
 		<view class="head">
 			<!-- 搜索 -->
 			<view class="item search">

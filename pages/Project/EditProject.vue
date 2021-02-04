@@ -24,7 +24,8 @@
 		<fileInfo 
 			ref="fileInfo" 
 			v-show="pageIndex === 1" 
-			:projectId="project.id">
+			:projectId="project.id"
+			:level="project.awardLevel">
 		</fileInfo>
 		<MemberInfo 
 			ref="memberInfo" 

@@ -3,6 +3,7 @@
   width: 100%;
   padding-bottom: 150rpx;
   background-color: var(--white1);
+  overflow: hidden;
 /* 头部 */
 /* 核心导航 招募队友 & 资源分享 */
 /* 任务列表 */
@@ -61,31 +62,34 @@
   background-color: var(--origin2);
 }
 .self .head .right.data-v-bf8d8ef4 {
-  margin-left: 52vw;
-  width: 50vw;
-  padding: 10px 0;
+  width: 100vw;
+  padding-left: 40vw;
 }
 .self .head .right .name.data-v-bf8d8ef4 {
   color: var(--origin1);
-  font-weight: 600;
-  font-size: 38rpx;
+  background-color: var(--origin4);
+  font-weight: 700;
+  font-size: 36rpx;
+  padding: 10px 5px 10px 10vw;
   border-bottom: 2px solid var(--origin2);
   border-radius: 0;
 }
 .self .head .right .tags.data-v-bf8d8ef4 {
-  padding-right: 5px;
+  padding: 5px 0 5px 12vw;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-flex-wrap: wrap;
           flex-wrap: wrap;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
 }
 .self .head .right .tags .tag.data-v-bf8d8ef4 {
   margin: 3px;
-  padding: 0 5px;
-  border-radius: 10px;
-  background-color: var(--origin1);
-  color: #fff;
+  padding: 0 10px;
+  border-radius: 22px;
+  background-color: #fff;
+  color: var(--origin2);
   font-size: 22rpx;
 }
 .self .head .curtain.data-v-bf8d8ef4 {
@@ -197,18 +201,18 @@
           animation: funShow-data-v-bf8d8ef4 0.1s ease-out forwards;
 }
 .self .list .item.data-v-bf8d8ef4:first-child {
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
 }
 .self .list .item.data-v-bf8d8ef4:last-child {
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 22px;
+  border-bottom-right-radius: 22px;
 }
 .self .list .item .iconfont.data-v-bf8d8ef4 {
   font-size: 40rpx;
   color: var(--origin2);
 }
-.self .list .item .right.data-v-bf8d8ef4 {
+.self .list .item .icon-arrow-right.data-v-bf8d8ef4 {
   font-size: 50rpx;
 }
 .self .list .item .name.data-v-bf8d8ef4 {
@@ -220,11 +224,6 @@
 }
 .self .list .item .val.data-v-bf8d8ef4 {
   color: var(--origin2);
-}
-.self .list button.item.data-v-bf8d8ef4 {
-  text-align: start;
-  -webkit-animation-delay: 0.8s;
-          animation-delay: 0.8s;
 }
 .self .admin-edit.data-v-bf8d8ef4 {
   margin: 10px auto;

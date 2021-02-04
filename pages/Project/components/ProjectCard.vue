@@ -5,7 +5,6 @@
 		:style="{
 			margin: margin,
 			'border-radius': radius,
-			'background-color': backgroundColor
 		}"
 		@click="$emit('click')">
 		<!-- 排名图标 -->
@@ -37,16 +36,22 @@
 				</view>
 			</view>
 			<view class="blank"></view>
-			<!-- 数据统计 -->
+			<!-- 时间 & 数据统计 & 状态-->
 			<view class="footer">
-				<view class="time"><text v-if="project.awardTime && compName">{{ project.awardTime }}</text></view>
-				<view class="read">
+				<view class="time"><text v-if="compName && project.awardTime">{{ project.awardTime }}</text></view>
+				<view class="read" :class="is_showStatus ? 'tranform' : ''">
 					<text class="iconfont icon-readed"></text>
 					<text>{{ project.read }}</text>
 				</view>
-				<view class="collect">
+				<view class="collect" :class="is_showStatus ? 'tranform' : ''">
 					<text class="iconfont icon-collection"></text>
 					<text>{{ project.collect }}</text>
+				</view>
+				<view 
+					v-if="is_showStatus"
+					class="status"
+					:class="project.passed ? 'passed' : 'failed'">
+					{{project.passed ? '已通过' : '未通过'}}
 				</view>
 			</view>
 		</view>
@@ -81,10 +86,10 @@ export default {
 			type: String,
 			default: '0'
 		},
-		/* 背景颜色 */
-		backgroundColor: {
-			type: String,
-			default: '#ffffff'
+		/* 是否显示状态 */
+		is_showStatus: {
+			type: Boolean,
+			default: false
 		}
 	},
 	computed: {
@@ -150,6 +155,7 @@ export default {
 	padding 5px
 	display flex
 	align-items center
+	overflow hidden
 	.ranking
 		color var(--origin2)
 		font-size 34rpx
@@ -171,7 +177,7 @@ export default {
 		position relative
 		flex 1
 		min-height 57px
-		font-size 16rpx
+		font-size 18rpx
 		line-height 1.2
 		display flex
 		flex-direction column
@@ -225,7 +231,19 @@ export default {
 				color var(--origin1)
 				display flex
 				align-items center
+				&.tranform
+					transform translateX(25px)
 			.iconfont
 				margin-right 3px
 				font-size 24rpx
+			.status
+				color #FFFFFF
+				padding 2px 15px 12px
+				font-size 22rpx
+				transform rotate(-45deg) translate(12px,20px)
+				border-radius 5px
+				&.passed
+					background-color #67C23A
+				&.failed
+					background-color #F56C6C
 </style>

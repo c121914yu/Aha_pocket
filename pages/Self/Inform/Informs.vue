@@ -1,31 +1,29 @@
 <!-- 通知 -->
 <template>
 	<view class="inform">
-		<!-- 清除未读 -->
-		<view class="head small">
-			<text>
-				有
-				<text class="strong">{{ unreaded }}</text>
-				条消息未读取
-			</text>
-			<text class="iconfont icon-clear"></text>
-			<text class="strong">清除未读</text>
+		<view class="navs">
+			<view 
+				class="nav"
+				:class="index === currentNav ? 'active' : ''"
+				v-for="(nav,index) in navs"
+				:key="index"
+				@click="changeNav(index)">
+				<text>{{nav.text}}</text>
+				<view v-if="nav.unread>0" class="amount">{{nav.unread}}</view>
+			</view>
 		</view>
 		<!-- 通知列表 -->
 		<view class="informs">
 			<navigator 
 				class="item" 
-				:class="item.type === 0 ? 'system' : ''"
+				:class="item.status === 0 ? 'unread' : ''"
 				v-for="(item, index) in arr_informs" 
 				:key="index" 
 				:url="'Inform?id=' + item.id"
 				hover-class="none">
-				<image 
-					:class="item.status === 0 ? 'unread' : ''" 
-					src="https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png">
-				</image>
-				<view class="right small">
-					<view class="title">
+				<image :src="item.senderUser.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
+				<view class="right">
+					<view class="head">
 						<text class="title">{{ item.title }}</text>
 						<text class="time">{{ item.receiveDate }}</text>
 					</view>
@@ -46,46 +44,54 @@ import { getMessages } from '@/static/request/api_userInfo.js';
 export default {
 	data() {
 		return {
+			navs: [
+				{text: "系统通知",value: "system",unread: 0},
+				{text: "用户消息",value: "private",unread: 0},
+				{text: "企业通知",value: "企业通知",unread: 0}
+			],
+			currentNav: 0,
 			pageNum: 1,
-			pageSize: 15,
+			pageSize: 30,
 			arr_informs: [],
 			is_showAll: false
-		};
-	},
-	computed: {
-		unreaded() {
-			const unread = this.arr_informs.filter(item => item.status === 0).length
-			/* 更新未读信息 */
-			uni.$emit("upDateUnread",unread)
-			return unread
 		}
 	},
 	onShow() {
 		this.getMsg(true,true)
 	},
 	onPullDownRefresh() {
-		this.getMsg(true)
+		this.getMsg(true,true)
 	},
 	onReachBottom() {
 		if (!this.is_showAll) {
-			this.getMsg(false,false)
+			this.getMsg(false,false,false)
 		}
 	},
 	methods: {
 		/* 获取消息列表 */
-		getMsg(init=false,loading=true) 
+		getMsg(init=false,count=false,loading=true) 
 		{
 			this.gLoading(this, loading)
 			if(init){
 				this.pageNum = 1
 			}
-			getMessages({
+			let params = {
 				pageNum: this.pageNum,
 				pageSize: this.pageSize
-			})
+			}
+			if(!count){
+				params.type = this.navs[this.currentNav].value
+			}
+			/* 清空统计 */
+			else{
+				this.navs.forEach(item => {
+					item.unread = 0
+				})
+			}
+			getMessages(params)
 			.then(res => {
 				/* 是否加载所有 */
-				if(res.data.pageData < this.pageSize){
+				if(res.data.pageData.length < this.pageSize){
 					this.is_showAll = true
 				}
 				else{
@@ -96,8 +102,21 @@ export default {
 					this.arr_informs = []
 				}
 				res.data.pageData.forEach(item => {
-					item.receiveDate = this.gformatDate(item.receiveDate)
-					this.arr_informs.push(item)
+					if(count){
+						/* 统计未读 */
+						if(item.status === 0){
+							this.navs[item.type].unread++
+						}
+						/* 只筛选当前类型 */
+						if(item.type === this.currentNav){
+							item.receiveDate = this.gformatDate(item.receiveDate)
+							this.arr_informs.push(item)
+						}
+					}
+					else{
+						item.receiveDate = this.gformatDate(item.receiveDate)
+						this.arr_informs.push(item)
+					}
 				})
 				console.log(this.arr_informs);
 				uni.stopPullDownRefresh()
@@ -107,6 +126,13 @@ export default {
 				this.gLoading(this, false)
 				uni.stopPullDownRefresh()
 			})
+		},
+		changeNav(index)
+		{
+			if(index !== this.currentNav){
+				this.currentNav = index
+				this.getMsg(true)
+			}
 		}
 	}
 }
@@ -114,13 +140,43 @@ export default {
 
 <style lang="stylus" scoped>
 .inform
-	background-color #f9f9f9
+	background-color var(--white1)
 	min-height 100vh
-	.head
-		padding 10px
-		color var(--gray1)
-		.iconfont
-			margin 0 2px 0 10px
+	/* 导航 */
+	.navs
+		display grid
+		grid-template-columns repeat(3,1fr)
+		border-bottom-left-radius 22px
+		border-bottom-right-radius 22px
+		overflow hidden
+		.nav
+			padding 10px 0
+			background-color var(--origin3)
+			display flex
+			align-items center
+			justify-content center
+			text
+				color var(--origin1)
+				font-size 26rpx
+				font-weight 700
+			.amount
+				margin-left 5px
+				width 16px
+				height 16px
+				text-align center
+				line-height 16px
+				font-size 12px
+				border-radius 50%
+				background-color var(--origin2)
+				color #FFFFFF
+			&.active
+				 background-color var(--origin2)
+				 text
+					color #FFFFFF
+				 .amount
+					background-color #FFFFFF
+					color var(--origin2)
+	/* 未读信息 */
 	.send-inform
 		position fixed
 		right 10px
@@ -130,52 +186,40 @@ export default {
 			color var(--origin1)
 	/* 通知列表 */
 	.informs
-		box-shadow var(--shadow2)
 		.item
-			padding 10px
+			margin 10px 5%
 			background-color #FFFFFF
+			height 50px
+			border-radius 50px 16px 16px 50px
+			padding 5px
 			display flex
+			box-shadow var(--shadow2)
+			&.unread
+				background-color var(--origin4)
 			image
-				position relative
 				width 50px
 				height 50px
-				border-radius 4px
-				&.unread::after
-					z-index 10
-					content ''
-					position absolute
-					top 0
-					right 0
-					width 8px
-					height 8px
-					border-radius 50%
-					background-color #F56C6C
+				border-radius 50%
 			.right
-				flex 1
 				margin-left 5px
-				padding-bottom 5px
-				border-bottom 1px solid var(--gray2)
-				.title
+				flex 1
+				.head
 					display flex
 					justify-content space-between
-					.time
+					.title
 						font-size 24rpx
+						color var(--origin1)
+						font-weight 700
+					.time
+						font-size 22rpx
 						color var(--gray2)
 				.content
-					margin-top 4px
-					width calc(100vw - 75px)
-					height 20px
-					color var(--gray1)
-					text-overflow ellipsis
-					white-space nowrap
-					overflow hidden
-					text-overflow ellipsis
-			&:last-child .right
-				border none
-		.system
-			background-color var(--origin4)
+					font-size 22rpx
+					color var(--gray2)
+					line-height 1.2
+					padding 5px 15px 10px 0
 	.remark
-		padding 10px 0
-		color var(--gray1)
+		padding-bottom 10px
+		color var(--gray2)
 		font-size 22rpx
 </style>

@@ -160,6 +160,10 @@
 				{{resume.intro || ""}}
 			</view>
 		</navigator>
+		<!-- 预览 -->
+		<navigator class="preview" hover-class="none" url="ResumePreview">
+			<button>预览简历</button>
+		</navigator>
 		<Loading ref="loading"></Loading>
 	</view>
 </template>
@@ -219,7 +223,7 @@ export default {
 
 <style lang="stylus">
 .resume
-	padding 20px 5% 60px 5%
+	padding 20px 5% 65px 5%
 	.header
 		margin-bottom 20px
 		display flex
@@ -283,4 +287,19 @@ export default {
 			font-size 24rpx
 			color var(--gray2)
 			white-space pre-wrap
+	.preview
+		z-index 5
+		position fixed
+		bottom 0
+		left 0
+		right 0
+		background-color var(--origin2)
+		padding 10px
+		border-top-left-radius 22px
+		border-top-right-radius 22px
+		button
+			margin 0 15%
+			padding 3px
+			background-color #FFFFFF
+			color var(--origin2)
 </style>

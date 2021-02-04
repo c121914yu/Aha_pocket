@@ -11,8 +11,8 @@
 			v-model="time">
 		</resumeDataPicker>
 		<resumeTextarea
-			label="项目描述"
-			placeholder="项目描述"
+			label="荣誉描述"
+			placeholder="荣誉描述"
 			v-model="description">
 		</resumeTextarea>
 		<view class="btns">
@@ -53,7 +53,7 @@ export default {
 		console.log(getApp().globalData.gResume.honors);
 	},
 	beforeDestroy() {
-		if(!this.is_remove){
+		if(this.index && !this.is_remove){
 			this.putExperience()
 		}
 	},

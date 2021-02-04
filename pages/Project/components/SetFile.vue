@@ -29,7 +29,8 @@
 <script>
 export default {
 	props: {
-		fileInfo: Object
+		fileInfo: Object,
+		level: Number
 	},
 	data() {
 		return {
@@ -37,6 +38,9 @@ export default {
 			price: "",
 			type: null
 		}
+	},
+	computed: {
+		
 	},
 	created() {
 		if(this.fileInfo){

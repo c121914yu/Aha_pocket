@@ -1,21 +1,27 @@
 <template>
-	<picker
-		mode="date"
-		:start="startTime"
-		:end="endTime"
-		fields="month"
-		:value="value"
-		@change="pickered">
-		<view class="resume-input">
-			<view class="label">{{label}}</view>
-			<view
-				class="value"
-				:class="value ? '' : 'input-placeholder'">
-				<text>{{value ? value : placeholder}}</text>
+	<view class="picker">
+		<picker
+			mode="date"
+			:start="startTime"
+			:end="endTime"
+			fields="month"
+			:value="value"
+			@change="pickered">
+			<view class="data-picker">
+				<view class="label">{{label}}</view>
+				<view
+					class="value"
+					:class="value ? '' : 'input-placeholder'">
+					<text>{{value ? value : placeholder}}</text>
+				</view>
+				<text class="iconfont icon-xiala"></text>
 			</view>
-			<text class="iconfont icon-xiala"></text>
+		</picker>
+		<view v-if="is_today" class="today">
+			<view class="blank"></view>
+			<button v-if="value !== '至今'" @click="$emit('input','至今')">至今</button>
 		</view>
-	</picker>
+	</view>
 </template>
 
 <script>
@@ -38,6 +44,10 @@ export default {
 			type: String,
 			default: "2030/12"
 		},
+		is_today: {
+			type: Boolean,
+			default: false
+		}
 	},
 	data() {
 		return {
@@ -56,22 +66,37 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.resume-input
+.picker
 	position relative
-	padding 10px 0
-	.label
-		font-size 24rpx
-	.value
-		font-size 32rpx
-		font-weight 700
-		padding 0
-		color var(--black)
-		&.input-placeholder
+	.data-picker
+		position relative
+		padding 10px 0
+		.label
+			font-size 24rpx
+		.value
+			font-size 32rpx
+			font-weight 700
+			padding 0
+			color var(--black)
+			&.input-placeholder
+				color var(--gray2)
+		.iconfont
+			position absolute
+			right 0
+			top 50%
+			transform translateY(-50%)
 			color var(--gray2)
-	.iconfont
-		position absolute
-		right 0
-		top 50%
-		transform translateY(-50%)
-		color var(--gray2)
+	.today
+		margin-top -10px
+		display flex
+		.blank
+			height 20px
+		button
+			height 20px
+			width 40px
+			text-align center
+			line-height 20px
+			padding 0
+			border-radius 22px
+			font-size 22rpx
 </style>

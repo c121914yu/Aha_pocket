@@ -27,12 +27,17 @@
 		<!-- 我的项目 & 外包管理 & 招募队友 -->
 		<view class="navs">
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/Projects">我的项目</navigator>
-			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Epiboly/MyEpiboly">外包管理</navigator>
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Competition/MyCompetition">招募队友</navigator>
+			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Epiboly/MyEpiboly">外包需求</navigator>
 		</view>
 		<!-- 任务 进行中 & 已完成 & 贡献详情 -->
 		<view class="tasks">
-			<navigator class="task" v-for="(task, index) in tasks" :key="index" hover-class="none" :url="task.to">
+			<navigator 
+				class="task" 
+				v-for="(task, index) in tasks" 
+				:key="index" 
+				hover-class="none" 
+				:url="task.to">
 				<text :class="'iconfont ' + task.icon"></text>
 				<view>{{ task.name }}</view>
 			</navigator>
@@ -55,7 +60,7 @@
 			</navigator>
 			<button
 				class="item" 
-				style="animation-delay: 0.4s"
+				style="animation-delay: 0.4s;text-align: start;"
 				open-type="share">
 				<text class="iconfont icon-iconfontzhizuobiaozhun49"></text>
 				<text class="name small">邀请好友</text>
@@ -77,6 +82,7 @@
 			</navigator>
 			<button 
 				class="item" 
+				style="animation-delay: 0.7s;text-align: start;"
 				open-type="contact">
 				<text class="iconfont icon-lianxikefu"></text>
 				<text class="name small">联系客服</text>
@@ -110,8 +116,8 @@ export default {
 			/* 任务列表 */
 			tasks: [
 				{ name: '已购项目', icon: 'icon-shouye', to: "/pages/Project/PurchasedProjects" },
-				{ name: '已完成', icon: 'icon-yiwancheng', to: "/pages/Project/PurchasedProjects"},
-				{ name: '贡献详情', icon: 'icon-icon', to: "/pages/Project/PurchasedProjects" }
+				{ name: '组队信息', icon: 'icon-zudui', to: "/pages/Project/PurchasedProjects"},
+				{ name: '外包信息', icon: 'icon-waibao', to: "/pages/Project/PurchasedProjects" }
 			],
 			/* 功能列表 */
 			funtions1: [
@@ -274,6 +280,7 @@ bgSetting(size, color)
 	width 100%
 	padding-bottom 150rpx
 	background-color var(--white1)
+	overflow hidden
 	/* 头部 */
 	.head
 		position relative
@@ -306,25 +313,27 @@ bgSetting(size, color)
 				bgSetting(60vw, var(--origin2))
 		/* 右侧 */
 		.right
-			margin-left 52vw
-			width 50vw
-			padding 10px 0
+			width 100vw
+			padding-left 40vw
 			.name
 				color var(--origin1)
-				font-weight 600
-				font-size 38rpx
+				background-color var(--origin4)
+				font-weight 700
+				font-size 36rpx
+				padding 10px 5px 10px 10vw
 				border-bottom 2px solid var(--origin2)
 				border-radius 0
 			.tags
-				padding-right 5px
+				padding 5px 0 5px 12vw
 				display flex
 				flex-wrap wrap
+				justify-content space-around
 				.tag
 					margin 3px
-					padding 0 5px
-					border-radius 10px
-					background-color var(--origin1)
-					color #FFFFFF
+					padding 0 10px
+					border-radius 22px
+					background-color #FFFFFF
+					color var(--origin2)
 					font-size 22rpx
 		/* 幕布 */
 		.curtain
@@ -404,15 +413,15 @@ bgSetting(size, color)
 			align-items center
 			animation funShow 0.1s ease-out forwards
 			&:first-child
-				border-top-left-radius 20px
-				border-top-right-radius 20px
+				border-top-left-radius 22px
+				border-top-right-radius 22px
 			&:last-child
-				border-bottom-left-radius 20px
-				border-bottom-right-radius 20px
+				border-bottom-left-radius 22px
+				border-bottom-right-radius 22px
 			.iconfont
 				font-size 40rpx
 				color var(--origin2)
-			.right
+			.icon-arrow-right
 				font-size 50rpx
 			.name
 				margin-left 25rpx
@@ -420,9 +429,6 @@ bgSetting(size, color)
 				color var(--gray1)
 			.val
 				color var(--origin2)
-		button.item
-			text-align start
-			animation-delay .8s
 	/* 管理员编辑 */
 	.admin-edit
 		margin 10px auto

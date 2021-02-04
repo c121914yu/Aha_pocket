@@ -12,6 +12,10 @@ const postOrder = (data) => request("/contribPoint/order","POST",data)
 	@params action:String,取值pay/cancel
 */
 const putOrder = (orderId,action) => request(`/contribPoint/order/${orderId}?action=${action}`,"PUT",{})
+
+/* 获取贡献点变化 */
+const getPointOrder = () => request("/contribPoint/log/me","GET",{})
+
 /* 获取个人订单信息 */
 const getOrders = (params) => request("/contribPoint/order/me","GET",params)
 /* 获取订单详细 */
@@ -22,6 +26,9 @@ const checkResourcePurchased = (projectId) => request(`/project/purchased/${proj
 export {
 	postOrder,
 	putOrder,
+	
+	getPointOrder,
+	
 	getOrders,
 	getOrder,
 	checkResourcePurchased

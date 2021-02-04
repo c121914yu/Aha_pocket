@@ -65,10 +65,6 @@ export default {
 			type: String,
 			default: "#ffffff"
 		},
-		startIndex: {
-			type: Number,
-			default: 0
-		},
 		/* 标题 */
 		label: {
 			type: String,
@@ -101,6 +97,11 @@ export default {
 			type: String,
 			default: "2030-12"
 		},
+	},
+	computed: {
+		startIndex() {
+			return this.arr_range.findIndex(item => item.value === this.value.value)
+		}
 	},
 	methods: {
 		select(e) {

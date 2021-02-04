@@ -1,53 +1,71 @@
 <!-- 个人项目管理 -->
 <template>
 	<view class="my-projects">
-		<!-- 数据统计 -->
-		<view class="data">
-			<view class="amount">
-				<view class="title">
-					项目总数
-					<text class="mini">(<text class="strong">{{checkAmount}}</text> 个审核中)</text>
+		<!-- 头部 -->
+		<view class="header">
+			<!-- 数据统计 -->
+			<view class="data">
+				<view style="border-bottom-left-radius: 16px;" class="item amount">
+					<view class="title">
+						项目总数
+						<text class="mini">(<text class="strong">{{checkAmount}}</text> 个审核中)</text>
+					</view>
+					<view class="value">{{projects.length}}</view>
 				</view>
-				<view class="h3">{{projects.length}}</view>
+				<view style="border-bottom-right-radius: 16px;" class="item collect">
+					<view class="title">被收藏量</view>
+					<view class="value">{{collection}}</view>
+				</view>
 			</view>
-			<view class="collect">
-				<view class="title">被收藏量</view>
-				<view class="h3">{{collection}}</view>
+			<!-- 导航 -->
+			<view class="sorts">
+				<view 
+					class="sort"
+					:class="index === sortActive ? 'active' : ''"
+					v-for="(sort,index) in sortList"
+					:key="index"
+					@click="checkSort(sort, index)">
+					{{sort.text}}
+				</view>
+				<view 
+					:style="{
+						color: filter ? 'var(--origin2)' : ''
+					}"
+					class="iconfont icon-shaixuan"
+					@click="is_showFileter=true">
+				</view>
 			</view>
 		</view>
-		<!-- 上传项目 -->
-		<navigator 
-			v-if="couldSet" 
-			class="up-project" 
-			hover-class="none" 
-			url="UpProject">
-			<button>上传项目</button>
-			<!-- <text class="iconfont icon-add-fill"></text> -->
-		</navigator>
 		<!-- 项目卡片 -->
 		<view class="cards">
-			<ProjectHead
-				topRadius
-				@sortChange="sortChange" 
-				@filterChange="filterChange">
-			</ProjectHead>
 			<!-- 推荐比赛列表 -->
 			<view>
 				<projectCard
 					v-for="(project, index) in projects"
 					:key="index"
-					margin="0 0 10px 0"
-					:radius="index === 0 ? '0 0 16px 16px' : '16px'"
-					:backgroundColor="project.passed ? '#ffffff' : 'rgba(248,184,107,0.2)'"
+					margin="10px 0"
+					radius="16px"
+					is_showStatus
 					:project="project"
 					@click="projectSetting(project)"
 				></projectCard>
 			</view>
 		</view>
 		<view class="center mini remark">{{ is_showAll ? "已加载全部" : "" }}</view>
-		
+		<!-- 上传项目 -->
+		<navigator 
+			class="up-project" 
+			hover-class="none" 
+			url="UpProject">
+			<button>上传项目</button>
+			<!-- <text class="iconfont icon-add-fill"></text> -->
+		</navigator>
 		<!-- 筛选组件 -->
-		<ProjectFilter v-if="isFilter" @sureFilter="sureFilter"></ProjectFilter>
+		<ProjectFilter
+			v-if="is_showFileter"
+			@close="is_showFileter=false"
+			@filterChange="filterChange">
+		</ProjectFilter>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
@@ -56,17 +74,25 @@
 <script>
 import { getMeProjects, deleteProject } from '@/static/request/api_project.js';
 import ProjectCard from "./components/ProjectCard.vue"
-import ProjectHead from "./components/ProjectHead.vue"
+import ProjectFilter from "./components/ProjectFilter.vue"
 export default {
 	data() {
 		return {
-			couldSet: true,
+			sortList: [
+				{ text: '综合', val: 'read' }, 
+				{ text: '收藏量', val: 'collect' }, 
+				{ text: '最新', val: 'time' }, 
+				{ text: '获奖等级', val: 'awardLevel' },
+			],
+			sortActive: 0,
+			
 			projects: [],
 			pageNum: 1,
-			pageSize: 100,
+			pageSize: 15,
 			sortBy: "read",
 			filter: null,
 			is_showAll: false, 
+			is_showFileter: false
 		}
 	},
 	computed: {
@@ -82,8 +108,8 @@ export default {
 		}
 	},
 	components: {
-		ProjectHead,
-		ProjectCard
+		ProjectCard,
+		ProjectFilter
 	},
 	onShow() {
 		this.loadProjects(true)
@@ -134,20 +160,21 @@ export default {
 				uni.stopPullDownRefresh()
 			})
 		},
-		/* 排序发生改变，获取排序字段并重新请求数据 */
-		sortChange(e)
+		/*
+			name: 确定排序模式
+			time: 2020/12/26
+		*/
+		checkSort(sort, index) 
 		{
-			this.sortBy = e.val
+			this.sortActive = index
+			this.sortBy = sort.val
 			this.loadProjects(true)
 		},
-		/* 
-			name: 确认筛选
-			desc: 获取筛选模式，关闭弹窗，请求数据
-		*/
 		filterChange(e)
 		{
 			this.filter = e
 			this.loadProjects(true)
+			this.is_showFileter = false
 		},
 		/* 
 			name: 项目设置
@@ -156,47 +183,39 @@ export default {
 		*/
 		projectSetting(project) 
 		{
-			/* 如果是查看其他人项目，直接进入阅读 */
-			if (!this.couldSet){
-				uni.navigateTo({
-					url: `Project?id=${project.id}`
-				})
+			/* 如果项目已经通过，不允许删除 */
+			const itemList = ["阅读项目", "修改项目"]
+			if(!project.passed){
+				itemList.push("删除项目")
 			}
-			else {
-				/* 如果项目已经通过，不允许删除 */
-				const itemList = ["阅读项目", "修改项目"]
-				if(!project.passed){
-					itemList.push("删除项目")
-				}
-				uni.showActionSheet({
-					itemList,
-					success: (res) => {
-						/* 阅读项目，跳转阅读界面 */
-						if (res.tapIndex === 0){
-							uni.navigateTo({
-								url: `Project?id=${project.id}`
-							})
-						}
-						/* 编辑项目，跳转阅读界面 */ 
-						else if (res.tapIndex === 1){
-							uni.navigateTo({
-								url: `EditProject?id=${project.id}`
-							})
-						}
-						/* 删除项目 */ 
-						else if (res.tapIndex === 2) {
-							this.gShowModal('确认删除该项目?', () => {
-								console.log('删除项目');
-								const index = this.projects.indexOf(project);
-								deleteProject(project.id).then(res => {
-									this.gToastSuccess('删除成功');
-									this.projects.splice(index, 1);
-								})
-							})
-						}
+			uni.showActionSheet({
+				itemList,
+				success: (res) => {
+					/* 阅读项目，跳转阅读界面 */
+					if (res.tapIndex === 0){
+						uni.navigateTo({
+							url: `Project?id=${project.id}`
+						})
 					}
-				});
-			}
+					/* 编辑项目，跳转阅读界面 */ 
+					else if (res.tapIndex === 1){
+						uni.navigateTo({
+							url: `EditProject?id=${project.id}`
+						})
+					}
+					/* 删除项目 */ 
+					else if (res.tapIndex === 2) {
+						this.gShowModal('确认删除该项目?', () => {
+							console.log('删除项目');
+							const index = this.projects.indexOf(project);
+							deleteProject(project.id).then(res => {
+								this.gToastSuccess('删除成功');
+								this.projects.splice(index, 1);
+							})
+						})
+					}
+				}
+			})
 		}
 	},
 }
@@ -208,19 +227,51 @@ export default {
 	background-color var(--white1)
 	padding-bottom 55px
 	/* 数据统计 */
-	.data
-		display grid
-		grid-template-columns 1fr 1fr
-		text-align center
+	.header
+		margin-bottom 10px
 		padding 5px
-		font-size 26rpx
-		background-color var(--origin3)
-		border-bottom-left-radius 44px
-		border-bottom-right-radius 44px
-		.h3
-			color var(--origin1)
-		.amount
-			border-right var(--border1)
+		font-size 24rpx
+		background-color #FFFFFF
+		border-bottom-left-radius 16px
+		border-bottom-right-radius 16px
+		.data
+			text-align center
+			display grid
+			grid-template-columns 1fr 1fr
+			grid-gap 5px
+			.item
+				padding 5px
+				background-color var(--origin3)
+				.title
+					color var(--gray1)
+				.value
+					margin auto
+					width 30%
+					color var(--origin2)
+					background-color #FFFFFF
+					border-radius 22px
+					font-size 26rpx
+					font-weight 700
+		.sorts
+			margin-top 5px
+			width 100%
+			display flex
+			align-items center
+			.sort
+				margin-right 5px
+				flex 1
+				background-color var(--origin4)
+				color var(--origin1)
+				padding 5px
+				border-radius 22px
+				text-align center
+				font-weight 700
+				&.active
+					color #FFFFFF
+					background-color var(--origin2)
+			.iconfont
+				padding 0 10px 0 5px
+				font-size 30rpx
 	/* 上传项目按键 */
 	.up-project
 		z-index 5
@@ -234,12 +285,12 @@ export default {
 		border-top-right-radius 22px
 		button
 			margin 0 15%
-			padding 0
+			padding 2px
 			background-color #FFFFFF
 			color var(--origin2)
 	.cards
 		width 90%
-		margin 0 auto
+		margin auto
 	.remark
 		color var(--gray2)
 </style>

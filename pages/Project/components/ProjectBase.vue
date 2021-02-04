@@ -39,7 +39,8 @@
 				circle 
 				search
 				:arr_search="Matches" 
-				v-model="compName">
+				v-model="compName"
+				@input="awardLevel=''">
 			</SelfInput>
 			<SelfPicker
 				v-if="compName" 
@@ -47,7 +48,6 @@
 				contentWidth="300rpx" 
 				circle
 				:arr_range="prizeLevels"
-				:startIndex="awardLevel ? prizeLevels.indexOf(awardLevel) : 0"
 				v-model="awardLevel">
 			</SelfPicker>
 			<SelfPicker
@@ -82,7 +82,6 @@
 export default {
 	data() {
 		const Matches = getApp().globalData.Competitions.map(item => item.name)
-		const prizeLevels = getApp().globalData.prizeLevels
 		return {
 			is_owner: true,
 			name: '', // 项目名称
@@ -94,7 +93,6 @@ export default {
 			awardProveUrl: '', // 获奖证明
 			intro: '', // 描述
 			Matches, // 比赛名称
-			prizeLevels, // 获奖等级
 			is_edit: false
 		};
 	},
@@ -108,10 +106,17 @@ export default {
 		tagList() {
 			return this.tags.split(' ').filter(tag => tag !== '');
 		},
-		/* 获取获奖等级的下标 */
-	    levelIndex() {
-			let index = this.prizeLevels.findIndex(item => item.label === this.awardLevel)
-			return this.awardLevel ? index : 0
+		prizeLevels() {
+			let Levels = getApp().globalData.prizeLevels
+			const match = getApp().globalData.Competitions.find(item => item.name === this.compName)
+			if(match){
+				Levels = Levels.filter(item => {
+					if(String(item.value).indexOf(String(match.level)) === 0){
+						return true
+					}
+				})
+			}
+			return Levels
 		}
 	},
 	methods: {

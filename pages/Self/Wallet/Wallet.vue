@@ -21,7 +21,7 @@
 				<view class="h3">{{ahaPoint}}</view>
 				<view class="function">
 					<view class="ctr" @click="isShowConversion=true">
-						<text class="iconfont icon-zengsong"></text>
+						<text class="iconfont icon-duihuan"></text>
 						<text>兑换码</text>
 					</view>
 				</view>

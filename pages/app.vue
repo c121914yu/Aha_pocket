@@ -135,7 +135,7 @@ export default {
                 getAllCompetition()
                 .then(res => {
                     getApp().globalData.Competitions = res.data
-					// console.log(getApp().globalData.Competitions);
+					// console.log(getApp().globalData.Competitions)
                 })
             }
 		},

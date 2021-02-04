@@ -18,6 +18,7 @@
 		<resumeDataPicker
 			label="结束时间"
 			placeholder="结束时间"
+			is_today
 			v-model="endTime">
 		</resumeDataPicker>
 		<resumeTextarea
@@ -65,7 +66,7 @@ export default {
 		console.log(getApp().globalData.gResume.projectExperiences);
 	},
 	beforeDestroy() {
-		if(!this.is_remove){
+		if(this.index && !this.is_remove){
 			this.putExperience()
 		}
 	},

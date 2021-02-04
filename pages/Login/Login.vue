@@ -153,7 +153,7 @@ export default {
 		z-index 2
 		position absolute
 		bottom 0
-		height 70vh
+		min-height 70vh
 		width 100%
 		padding-bottom 10px
 		background-color var(--white1)

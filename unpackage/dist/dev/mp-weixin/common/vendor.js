@@ -801,7 +801,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7818,7 +7818,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7839,14 +7839,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7932,7 +7932,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8559,7 +8559,7 @@ var deleteMember = function deleteMember(projectId, memberPhone) {return (0, _re
 
 /***/ }),
 
-/***/ 574:
+/***/ 564:
 /*!***************************************************!*\
   !*** D:/服务外包/竞赛统计/components/SelectCity/citys.js ***!
   \***************************************************/
@@ -8771,18 +8771,21 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   gEditContent: "", // 编辑内容
   Competitions: [], // 所有比赛
   prizeLevels: [
-  { label: '国一', value: 53, rate: 40 },
-  { label: '国二', value: 52, rate: 40 },
-  { label: '国三', value: 51, rate: 40 },
-  { label: '省一', value: 43, rate: 40 },
-  { label: '省二', value: 42, rate: 40 },
-  { label: '省三', value: 41, rate: 40 },
-  { label: '市一', value: 33, rate: 40 },
-  { label: '市二', value: 32, rate: 40 },
-  { label: '市三', value: 31 },
-  { label: '校一', value: 23 },
-  { label: '校二', value: 22 },
-  { label: '校三', value: 21 }],
+  { label: '国际一', value: 53, rate: 40 },
+  { label: '国际二', value: 52, rate: 40 },
+  { label: '国际三', value: 51, rate: 40 },
+  { label: '国一', value: 43, rate: 40 },
+  { label: '国二', value: 42, rate: 40 },
+  { label: '国三', value: 41, rate: 40 },
+  { label: '省一', value: 33, rate: 40 },
+  { label: '省二', value: 32, rate: 40 },
+  { label: '省三', value: 31, rate: 40 },
+  { label: '市一', value: 23, rate: 40 },
+  { label: '市二', value: 22, rate: 40 },
+  { label: '市三', value: 21, rate: 40 },
+  { label: '校一', value: 13, rate: 40 },
+  { label: '校二', value: 12, rate: 40 },
+  { label: '校三', value: 11, rate: 40 }],
 
   compType: [
   { label: "经济类", value: 1 },
@@ -8821,13 +8824,13 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.checkResourcePurchased = exports.getOrder = exports.getOrders = exports.putOrder = exports.postOrder = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.checkResourcePurchased = exports.getOrder = exports.getOrders = exports.getPointOrder = exports.putOrder = exports.postOrder = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /* 
-                                                                                                                                                                                                                                                                                                                                                              	购买附件-创建订单
-                                                                                                                                                                                                                                                                                                                                                              	@params data.projectId:Int 项目ID
-                                                                                                                                                                                                                                                                                                                                                              	@params data.resourceId:Array 购买的附件id
-                                                                                                                                                                                                                                                                                                                                                              */
+                                                                                                                                                                                                                                                                                                                                                                                      	购买附件-创建订单
+                                                                                                                                                                                                                                                                                                                                                                                      	@params data.projectId:Int 项目ID
+                                                                                                                                                                                                                                                                                                                                                                                      	@params data.resourceId:Array 购买的附件id
+                                                                                                                                                                                                                                                                                                                                                                                      */
 var postOrder = function postOrder(data) {return (0, _request.default)("/contribPoint/order", "POST", data);};
 /* 
                                                                                                                	付款/取消付款
@@ -8835,7 +8838,11 @@ var postOrder = function postOrder(data) {return (0, _request.default)("/contrib
                                                                                                                	@params action:String,取值pay/cancel
                                                                                                                */exports.postOrder = postOrder;
 var putOrder = function putOrder(orderId, action) {return (0, _request.default)("/contribPoint/order/".concat(orderId, "?action=").concat(action), "PUT", {});};
-/* 获取个人订单信息 */exports.putOrder = putOrder;
+
+/* 获取贡献点变化 */exports.putOrder = putOrder;
+var getPointOrder = function getPointOrder() {return (0, _request.default)("/contribPoint/log/me", "GET", {});};
+
+/* 获取个人订单信息 */exports.getPointOrder = getPointOrder;
 var getOrders = function getOrders(params) {return (0, _request.default)("/contribPoint/order/me", "GET", params);};
 /* 获取订单详细 */exports.getOrders = getOrders;
 var getOrder = function getOrder(orderId) {return (0, _request.default)("/contribPoint/order/".concat(orderId), "GET", {});};
