@@ -3,10 +3,10 @@
 		<!-- 加载动画 -->
 		<Loading></Loading>
 		<!-- 用户须知 -->
-		<UserAgreement 
+		<userAgreement 
 			v-if="!signedNotice"
 			@readed="successSign">
-		</UserAgreement>
+		</userAgreement>
 		<!-- 系统公告 -->
 		<SystemNotice 
 			v-if="arr_systemNotice.length>0" 
@@ -46,6 +46,7 @@
 <script>
 import { getAllCompetition } from "@/static/request/api_competition.js"
 import { getNotice } from "@/static/request/api_system.js"
+import userAgreement from "./Self/Number/UserAgreement.vue"
 import ProjectHome from "./Project/ProjectHome.vue"
 import Competition from "./Competition/Competition"
 import Epiboly from "./Epiboly/Epiboly"
@@ -89,6 +90,7 @@ export default {
 		}
 	},
 	components:{
+		userAgreement,
 		ProjectHome,
 		Competition,
 		Epiboly,

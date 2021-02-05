@@ -3,9 +3,9 @@
   "onReachBottomDistance": 150,
   "usingComponents": {
     "loading": "/components/Loading/Loading",
-    "user-agreement": "/components/UserAgreement/UserAgreement",
     "system-notice": "/components/SystemNotice/SystemNotice",
     "tab-bar": "/components/TabBar/TabBar",
+    "user-agreement": "/pages/Self/Number/UserAgreement",
     "project-home": "/pages/Project/ProjectHome",
     "competition": "/pages/Competition/Competition",
     "epiboly": "/pages/Epiboly/Epiboly",

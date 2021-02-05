@@ -66,13 +66,18 @@ export default {
 		console.log(getApp().globalData.gResume.practiceExperiences);
 	},
 	beforeDestroy() {
-		if(this.index && !this.is_remove){
+		/* 新简历返回 | 删除时不触发 */
+		if(this.index !== null && !this.is_remove){
 			this.putExperience()
 		}
 	},
 	methods: {
 		save()
 		{
+			/* 新简历点击保存时手动触发更新 */
+			if(this.index === null){
+				this.putExperience()
+			}
 			uni.navigateBack({
 				delta: 1
 			})

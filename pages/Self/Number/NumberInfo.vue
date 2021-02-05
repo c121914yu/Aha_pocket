@@ -1,10 +1,10 @@
 <!-- 账号信息设置 -->
 <template>
 	<view class="number-info">
-		<UserAgreement
+		<userAgreement
 			v-if="showNotice"
 			@readed="showNotice=false">
-		</UserAgreement>
+		</userAgreement>
 		<!-- VIP -->
 		<view class="item wxnumber">
 			<text class="iconfont icon-VIP"></text>
@@ -77,6 +77,7 @@
 
 <script>
 import { bindWxchat } from "@/static/request/api_userInfo.js"
+import userAgreement from "./UserAgreement.vue"
 export default {
 	data() {
 		return {
@@ -97,6 +98,9 @@ export default {
 			}
 			return {}
 		}
+	},
+	components: {
+		userAgreement
 	},
 	onShow() {
 		this.reGetMe()

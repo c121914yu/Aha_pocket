@@ -6,7 +6,7 @@
 		<view class="center h3">Aha 平台知识产权许可使用合同</view>
 		<view class="title">
 			<view class="item">
-				<text>甲方: </text><view class="name">Aha 口袋科技有限公司</view>
+				<text>甲方: </text><view class="name">梵帝贸易有限公司</view>
 			</view>
 			<view class="item">
 				<text>乙方: </text><view class="name"></view>
