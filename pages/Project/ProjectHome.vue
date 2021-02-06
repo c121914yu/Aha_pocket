@@ -2,7 +2,7 @@
 	<view class="resource-home">
 		<!-- 轮播图 -->
 		<view class="header">
-			<SlideCard :images="images"></SlideCard>
+			<SlideCard></SlideCard>
 		</view>
 		<!-- 榜单 -->
 		<view class="ranking">
@@ -62,12 +62,6 @@ import ProjectHead from "./components/ProjectHead.vue"
 export default {
 	data() {
 		return {
-			images: [
-				{url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/53/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.l5VxpCL0psJU6a072385c43fa7d08b8ec38bf1b760ff.png',name: "反向寻车系统",to: '' },
-				{url: 'http://blogs.jinlongyuchitang.cn/background.jpg',name: "反向寻车系统", to: '' },
-				{url: 'http://blogs.jinlongyuchitang.cn/background.jpg',name: "反向寻车系统", to: '' },
-				{url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/55/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.XONdUyq1A2d5d0fdaf1a2189515e12e9ce2779f01da7.JPG',name: "反向寻车系统",to: ''}
-			],
 			rankType: 'week',
 			pageNum: 1,
 			pageSize: 10,
@@ -129,12 +123,10 @@ export default {
 					this.RankingData = [].concat(this.arr_projects)
 				}
 				this.gLoading(this, false)
-				uni.stopPullDownRefresh()
 				console.log(this.arr_projects);
 			})
 			.catch(err => {
 				this.gLoading(this, false)
-				uni.stopPullDownRefresh()
 			})
 		},
 		/* 
@@ -211,8 +203,9 @@ export default {
 					color #FFFFFF
 					border-radius 22px
 		.list
-			min-height 200px
+			min-height 150px
 			transform translateY(-40px)
+			background-color #FFFFFF
 			border-radius 22px
 			overflow hidden
 	/* 推荐列表 */

@@ -64,7 +64,7 @@ export default {
 				{name: "Epiboly",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 3,
+			currentNav: 0,
 			signedNotice: getApp().globalData.gUserInfo.signedNotice,
 			arr_systemNotice: []
 		}
@@ -97,18 +97,13 @@ export default {
 		Self,
 	},
 	onLoad() {
-		/* 获取系统公告 */
-		getNotice()
-		.then(res => {
-			res.data.forEach(item => {
-				item.createTime = this.gformatDate(item.createTime,true)
-				this.arr_systemNotice.push(item)
-			})
-		})
-		this.loadCompetitionInfo()
-		this.loadNav()
 		/* 隐藏返回主页 */
 		wx.hideHomeButton()
+		this.loadCompetitionInfo()
+		this.loadNav()
+		if(this.signedNotice){
+			this.getSystemNotice()
+		}
 	},
 	onReachBottom(){
 		if(this.currentNav === 0){
@@ -127,8 +122,18 @@ export default {
 		successSign()
 		{
 			this.signedNotice = true
-			this.loadCompetitionInfo()
-			this.$refs.projectHome.loadProjects(true)
+			this.getSystemNotice()
+		},
+		/* 获取系统公共 */
+		getSystemNotice()
+		{
+			getNotice()
+			.then(res => {
+				res.data.forEach(item => {
+					item.createTime = this.gformatDate(item.createTime,true)
+					this.arr_systemNotice.push(item)
+				})
+			})
 		},
 		/* 加载比赛信息 */
 		loadCompetitionInfo()

@@ -4,16 +4,22 @@
 		<!-- 外边框 -->
 		<view class="out-border"></view>
 		<!-- 内容 -->
-		<view class="content" @touchstart="touchstart" @touchend="touchend" @touchcancel="touchend" @touchmove="touchmove">
+		<view 
+			class="content" 
+			@touchstart="touchstart" 
+			@touchend="touchend" 
+			@touchcancel="touchend" 
+			@touchmove="touchmove">
 			<image
 				:style="{
 					transform: `translateX(${-(slideIndex + 1) * 100}%)`,
 					transition: imgAnimation ? 'var(--speed-slide)' : ''
 				}"
-				:src="img.url"
 				v-for="(img, index) in showImg"
 				:key="index"
-			></image>
+				:src="img.pictureUrl"
+				@click="clockSlide(img)">
+			</image>
 		</view>
 		<!-- 轮播点 -->
 		<view class="dots">
@@ -30,17 +36,18 @@
 </template>
 
 <script>
+import { getSlideCard } from "@/static/request/api_system.js"
 var slideTimer,chageTimer
 var slideTime = 3000
 export default {
-	props:{
-		images: {
-			type: Array,
-			default: () => []
-		}
-	},
 	data() {
 		return {
+			images: [
+				// {url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/53/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.l5VxpCL0psJU6a072385c43fa7d08b8ec38bf1b760ff.png',name: "反向寻车系统",to: '' },
+				// {url: 'http://blogs.jinlongyuchitang.cn/background.jpg',name: "反向寻车系统", to: '' },
+				// {url: 'http://blogs.jinlongyuchitang.cn/background.jpg',name: "反向寻车系统", to: '' },
+				// {url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/55/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.XONdUyq1A2d5d0fdaf1a2189515e12e9ce2779f01da7.JPG',name: "反向寻车系统",to: ''}
+			],
 			showImg: null, // 添加首尾两张图片，方便循环
 			slideIndex: 0, // 轮播图偏移下标
 			tempIndex: 0,
@@ -72,12 +79,22 @@ export default {
 		}
 	},
 	created() {
-		this.showImg = [
-			this.images[this.images.length-1],
-			...this.images,
-			this.images[0]
-		]
-		this.setTimer()
+		getSlideCard()
+		.then(res => {
+			this.images = res.data
+			this.showImg = [
+				this.images[this.images.length-1],
+				...this.images,
+				this.images[0]
+			]
+			this.setTimer()
+			console.log(this.images);
+		})
+		.catch(err => {
+			this.gToastError("轮播图错误")
+			console.log(err);
+		})
+		
 	},
 	mounted() {
 		/* 获取图片的宽度 */
@@ -99,7 +116,8 @@ export default {
 			input: null
 			return : null
 		*/
-		setTimer(){
+		setTimer()
+		{
 			slideTimer = setInterval(() => {
 				this.imgAnimation = true
 				this.slideIndex++
@@ -111,7 +129,8 @@ export default {
 			input: 当前轮播图下标
 			return : null
 		*/
-		indexChange(index){
+		indexChange(index)
+		{
 			/* 滑动过程不执行 */
 			if(this.startX !== null)
 			{
@@ -142,40 +161,55 @@ export default {
 			input: 系统参数
 			return: null
 		*/
-	 touchstart(e){
-		 clearInterval(slideTimer)
-		 clearTimeout(chageTimer)
-		 /* 停止切换动画*/
-		 this.imgAnimation = false
-		 /* 记录起始坐标*/
-		 this.startX = e.changedTouches[0].pageX
-	 },
-	 /*
-	 	name: 手指触碰结束
-	 	description: 监听手指离开事件，开始轮播计时
-	 	input: null
-	 	return: null
-	 */
-	 touchend(){
-		 /* 清空坐标标记，打开滑动记录*/
-		 this.startX = null
-		 this.slideIndex = Math.round(this.slideIndex)
-		 this.setTimer()
-	 },
-	 /*
-	 	name: 手指移动
-	 	description: 监听手指移动事件，改变图片偏移值
-	 	input: 系统参数
-	 	return: null
-	 */
-	 touchmove(e){
-		 const touchX = e.changedTouches[0].pageX - this.startX
-		 const rate = touchX / this.imgWidth
-		 this.slideIndex -= rate
-		 this.startX = e.changedTouches[0].pageX
-	 }
+		 touchstart(e){
+			 clearInterval(slideTimer)
+			 clearTimeout(chageTimer)
+			 /* 停止切换动画*/
+			 this.imgAnimation = false
+			 /* 记录起始坐标*/
+			 this.startX = e.changedTouches[0].pageX
+		 },
+		 /*
+			name: 手指触碰结束
+			description: 监听手指离开事件，开始轮播计时
+			input: null
+			return: null
+		 */
+		 touchend(){
+			 /* 清空坐标标记，打开滑动记录*/
+			 this.startX = null
+			 this.slideIndex = Math.round(this.slideIndex)
+			 this.setTimer()
+		 },
+		 /*
+			name: 手指移动
+			description: 监听手指移动事件，改变图片偏移值
+			input: 系统参数
+			return: null
+		 */
+		 touchmove(e){
+			 const touchX = e.changedTouches[0].pageX - this.startX
+			 const rate = touchX / this.imgWidth
+			 this.slideIndex -= rate
+			 this.startX = e.changedTouches[0].pageX
+		 },
+		 /* 点击轮播图*/
+		clockSlide(param)
+		{
+			/* linkType=1,小程序内跳转,linkType=2跳转webview */
+			if(param.linkType === 1){
+				console.log(param);
+				uni.navigateTo({
+					url: param.linkUrl
+				})
+			}
+			else if(param.linkType === 2){
+				uni.navigateTo({
+					url: "/pages/OutLink?url=" + param.linkUrl
+				})
+			}
+		}
 	},
-
 }
 </script>
 

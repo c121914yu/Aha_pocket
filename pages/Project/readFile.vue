@@ -74,9 +74,6 @@ export default {
 			.then(res => {
 				this.signature = res.data
 				this.loadPage(1)
-				this.$nextTick(() => {
-					this.gLoading(this,false)
-				})
 			})
 			.catch(err => {
 				console.error(err)
@@ -160,6 +157,9 @@ export default {
 					this.tempUrls[page-1] = 0
 					console.error(err)
 					this.gToastMsg("请求错误")
+				},
+				complete: () => {
+					this.gLoading(this,false)
 				}
 			})
 		},

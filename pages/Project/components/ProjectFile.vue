@@ -5,7 +5,7 @@
 			<text class="h3">上传附件:</text>
 			<text class="add iconfont icon-tianjia" @click="chooseFile"></text>
 		</view>
-		<view style="color: var(--font-dark);" class="remark">(注: 附件必须小于500M)</view>
+		<view style="color: var(--font-dark);" class="remark">(注: 附件必须小于500M,上传成功后不可删除,请确认后再上传)</view>
 		<view 
 			class="file"
 			v-for="(file,index) in files"
@@ -39,7 +39,13 @@
 			</view>
 		</view>
 		<!-- 上传按键 -->
-		<button v-if="!uploading" class="startUpload" @click="upload">{{btnText}}</button>
+		<button 
+			v-if="!uploading" 
+			class="startUpload" 
+			:class="btnText === '已全部上传' ? 'forbid' : ''"
+			@click="upload">
+			{{btnText}}
+		</button>
 		<button v-if="uploading" class="uploading" loading>上传中,请勿离开界面</button>
 		<view v-if="uploading" class="mask"></view>
 		
@@ -59,6 +65,7 @@
 import { getFilesSignature,postResource,putResource,deleteResource } from "@/static/request/api_project.js"
 import SetFile from "./SetFile"
 const COS = require('@/static/js/COS.js')
+var timer
 export default {
 	props: {
 		projectId: String,
@@ -100,32 +107,36 @@ export default {
 				size = size.toFixed(2)
 				return size + unitArr[index]
 			}
-			if(this.files.length > 10){
-				this.gToastMsg("文件数量不能大于10")
-				return
-			}
+			// if(this.files.length > 10){
+			// 	this.gToastMsg("文件数量不能大于10")
+			// 	return
+			// }
             this.gLoading(this,true)
 			/* 选择文件API */
 			wx.chooseMessageFile({
-				count: 10,
+				count: 1,
 				type: 'all',
 				success: (res) => {
-					/* 限制50M */
-					let files = res.tempFiles.filter(file => file.size < 500000000)
-					if(files.length < res.tempFiles.length){
+					/* 限制500M */
+					let file = res.tempFiles[0]
+					if(file.size > 500000000){
 						this.gToastError("文件大于500M")
+						return
 					}
-					this.files = this.files.concat(files.map(file => {
-						return{
-							name: file.name,
-							url: file.path,
-							size: renderSize(file.size),
-							type: getApp().globalData.arr_fileTypes.find((item) => item.reg.test(file.name)),
-							progress: 0,
-							status: 0, // 0 待上传，1 上传中，2上传完成，3上传失败
-							price: 100,
-						}
-					}))
+					/* 计算价格，取平均值 */
+					const award = getApp().globalData.prizeLevels.find(item => item.value === this.level)
+					const typeId = getApp().globalData.arr_fileClassify[3]
+					const data = {
+						name: file.name,
+						url: file.path,
+						size: renderSize(file.size),
+						typeId: typeId.value,
+						progress: 0,
+						status: 0, // 0 待上传，1 上传中，2上传完成，3上传失败
+						price: (award.max + award.min) * typeId.rate / 2,
+					}
+					this.files.push(data)
+					this.setFileIndex = this.files.length - 1
 					console.log(this.files);
 				},
 				fail: err => {
@@ -151,9 +162,9 @@ export default {
 			}
 			// console.log(file);
 			let itemList = ["修改附件信息", "删除附件"]
-			if(file.type.value === 1){
-				itemList.unshift("设置预览片段")
-			}
+			// if(file.type.value === 1){
+			// 	itemList.unshift("设置预览片段")
+			// }
 			uni.showActionSheet({
 				itemList,
 				success: (res) => {
@@ -222,7 +233,7 @@ export default {
 			for(let key in e){
 				this.files[this.setFileIndex][key] = e[key]
 			}
-			this.gToastSuccess("修改成功")
+			this.gToastMsg("修改成功")
 			this.setFileIndex = null
 		},
 		/* 
@@ -271,7 +282,19 @@ export default {
 				.then(signature => {
 					signature = signature.data
 					/* 上传文件 */
-					const cos = new COS({getAuthorization: function (options, callback) {callback({Authorization: signature.authorization})}})
+					const cos = new COS({
+						getAuthorization: function (options, callback) 
+						{
+							callback({Authorization: signature.authorization})
+						}
+					})
+					/* 自定义假进度条 */
+					timer = setInterval(() => {
+						this.files[index].progress++
+						if(this.files[index].progress > 90){
+							clearInterval(timer)
+						}
+					},300)
 					/* 转化成二进制 */
 					wx.getFileSystemManager().readFile({
 						filePath: file.url,
@@ -284,8 +307,11 @@ export default {
 								Body: res.data,
 								// FilePath: file.url,
 								onProgress: (info) => {
-									console.log(JSON.stringify(info))
+									// console.log(JSON.stringify(info))
 									this.files[index].progress = info.percent*100
+									if(this.files[index].progress > 90){
+										clearInterval(timer)
+									}
 								}
 							}, (err,data) => {
 								if(err){
@@ -297,9 +323,10 @@ export default {
 									/* 更新至数据库 */
 									postResource(this.projectId,{
 										name: file.name,
-										filename: file.filename,
+										filename: signature.filename,
 										price: file.price,
-										type: file.type.value,
+										typeId: file.typeId,
+										fileType: getApp().globalData.arr_fileTypes.find(item => item.reg.test(signature.filename)).value,
 										discount: 0
 									})
 									.then(res => {
@@ -366,6 +393,10 @@ export default {
 .startUpload,.uploading
 	border-radius 22px
 	padding 0 3px
+	&.forbid
+		background-color var(--gray2)
+		&:active
+			transform none
 /* 上传中 */
 .uploading
 	background-color var(--gray2)

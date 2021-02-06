@@ -45,7 +45,7 @@
 				}"
 				class="select"
 				:class="value ? '' : 'input-placeholder'">
-				<text>{{value ? value : placeholder}}</text>
+				<text class="value">{{value ? value : placeholder}}</text>
 			</view>
 		</picker>
 	</view>
@@ -100,6 +100,9 @@ export default {
 	},
 	computed: {
 		startIndex() {
+			if(!this.value){
+				return 0
+			}
 			return this.arr_range.findIndex(item => item.value === this.value.value)
 		}
 	},

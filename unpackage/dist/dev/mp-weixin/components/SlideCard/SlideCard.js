@@ -114,49 +114,56 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _api_system = __webpack_require__(/*! @/static/request/api_system.js */ 49);function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}
 var slideTimer, chageTimer;
-var slideTime = 3000;var _default2 =
+var slideTime = 3000;var _default =
 {
-  props: {
-    images: {
-      type: Array,
-      default: function _default() {return [];} } },
-
-
   data: function data() {
     return {
+      images: [
+        // {url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/53/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.l5VxpCL0psJU6a072385c43fa7d08b8ec38bf1b760ff.png',name: "反向寻车系统",to: '' },
+        // {url: 'http://blogs.jinlongyuchitang.cn/background.jpg',name: "反向寻车系统", to: '' },
+        // {url: 'http://blogs.jinlongyuchitang.cn/background.jpg',name: "反向寻车系统", to: '' },
+        // {url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/55/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.XONdUyq1A2d5d0fdaf1a2189515e12e9ce2779f01da7.JPG',name: "反向寻车系统",to: ''}
+      ],
       showImg: null, // 添加首尾两张图片，方便循环
       slideIndex: 0, // 轮播图偏移下标
       tempIndex: 0,
@@ -187,24 +194,34 @@ var slideTime = 3000;var _default2 =
       return this.slideIndex;
     } },
 
-  created: function created() {
-    this.showImg = [
-    this.images[this.images.length - 1]].concat(_toConsumableArray(
-    this.images), [
-    this.images[0]]);
+  created: function created() {var _this = this;
+    (0, _api_system.getSlideCard)().
+    then(function (res) {
+      _this.images = res.data;
+      _this.showImg = [
+      _this.images[_this.images.length - 1]].concat(_toConsumableArray(
+      _this.images), [
+      _this.images[0]]);
 
-    this.setTimer();
+      _this.setTimer();
+      console.log(_this.images);
+    }).
+    catch(function (err) {
+      _this.gToastError("轮播图错误");
+      console.log(err);
+    });
+
   },
-  mounted: function mounted() {var _this = this;
+  mounted: function mounted() {var _this2 = this;
     /* 获取图片的宽度 */
     uni.createSelectorQuery().in(this).select('.content').boundingClientRect(function (result) {
       if (result)
       {
-        _this.imgWidth = result.width;
+        _this2.imgWidth = result.width;
       } else
 
       {
-        _this.imgWidth = 325;
+        _this2.imgWidth = 325;
       }
     }).exec();
   },
@@ -215,10 +232,11 @@ var slideTime = 3000;var _default2 =
              	input: null
              	return : null
              */
-    setTimer: function setTimer() {var _this2 = this;
+    setTimer: function setTimer()
+    {var _this3 = this;
       slideTimer = setInterval(function () {
-        _this2.imgAnimation = true;
-        _this2.slideIndex++;
+        _this3.imgAnimation = true;
+        _this3.slideIndex++;
       }, slideTime);
     },
     /*
@@ -227,7 +245,8 @@ var slideTime = 3000;var _default2 =
        	input: 当前轮播图下标
        	return : null
        */
-    indexChange: function indexChange(index) {var _this3 = this;
+    indexChange: function indexChange(index)
+    {var _this4 = this;
       /* 滑动过程不执行 */
       if (this.startX !== null)
       {
@@ -236,12 +255,12 @@ var slideTime = 3000;var _default2 =
       /* 延迟切换轮播图下标 */
       var setIndex = function setIndex(i) {
         chageTimer = setTimeout(function () {
-          _this3.imgAnimation = false;
-          _this3.slideIndex = i;
+          _this4.imgAnimation = false;
+          _this4.slideIndex = i;
           setTimeout(function () {
-            _this3.imgAnimation = true;
+            _this4.imgAnimation = true;
           });
-        }, _this3.imgAnimation ? 1000 : 0);
+        }, _this4.imgAnimation ? 1000 : 0);
       };
       if (index === this.images.length)
       {
@@ -267,10 +286,10 @@ var slideTime = 3000;var _default2 =
       this.startX = e.changedTouches[0].pageX;
     },
     /*
-       	name: 手指触碰结束
-       	description: 监听手指离开事件，开始轮播计时
-       	input: null
-       	return: null
+       name: 手指触碰结束
+       description: 监听手指离开事件，开始轮播计时
+       input: null
+       return: null
        */
     touchend: function touchend() {
       /* 清空坐标标记，打开滑动记录*/
@@ -279,17 +298,33 @@ var slideTime = 3000;var _default2 =
       this.setTimer();
     },
     /*
-       	name: 手指移动
-       	description: 监听手指移动事件，改变图片偏移值
-       	input: 系统参数
-       	return: null
+       name: 手指移动
+       description: 监听手指移动事件，改变图片偏移值
+       input: 系统参数
+       return: null
        */
     touchmove: function touchmove(e) {
       var touchX = e.changedTouches[0].pageX - this.startX;
       var rate = touchX / this.imgWidth;
       this.slideIndex -= rate;
       this.startX = e.changedTouches[0].pageX;
-    } } };exports.default = _default2;
+    },
+    /* 点击轮播图*/
+    clockSlide: function clockSlide(param)
+    {
+      /* linkType=1,小程序内跳转,linkType=2跳转webview */
+      if (param.linkType === 1) {
+        console.log(param);
+        uni.navigateTo({
+          url: param.linkUrl });
+
+      } else
+      if (param.linkType === 2) {
+        uni.navigateTo({
+          url: "/pages/OutLink?url=" + param.linkUrl });
+
+      }
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

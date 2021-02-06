@@ -17,6 +17,13 @@
 				"navigationBarTitleText": "找回密码"
 			}
 		},
+		/* 外部webview */
+		{
+			"path": "pages/OutLink",
+			"style": {
+				"navigationBarTitleText": "Aha口袋"
+			}
+		},
 		/* 
 			主页
 			4个副页全部放在app.vue中

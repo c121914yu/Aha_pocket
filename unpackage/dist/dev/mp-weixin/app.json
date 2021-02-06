@@ -3,6 +3,7 @@
     "pages/Login/Login",
     "pages/Login/Register",
     "pages/Login/FindPassword",
+    "pages/OutLink",
     "pages/app",
     "pages/Self/UserHome",
     "pages/Self/Inform/Informs",

@@ -104,8 +104,7 @@ export default {
 					return {
 						...file,
 						status: 2,
-						progress: 100,
-						type: getApp().globalData.arr_fileTypes.find((item) => item.value === file.type)
+						progress: 100
 					}
 				})
 				this.project.resources = this.$refs.fileInfo.files
@@ -138,7 +137,6 @@ export default {
 		/* 更新基本信息 */
 		updateBaseInfo()
 		{
-            this.gLoading(this,true)
 			const base = this.$refs.baseInfo
 			/* 赛事类型和获奖等级需要转化成数值 */
 			let awardLevel = base.awardLevel ? base.awardLevel.value : null
@@ -161,9 +159,25 @@ export default {
 			/* 空值检验 */
 			if(data.name === ""){
 				this.gToastError("请输入资源标题")
-				this.gLoading(this,false)
 				return
 			}
+			else if(!data.compName){
+				this.gToastError('请输入获奖信息');
+				return false;
+			}
+			else if(!data.awardLevel){
+				this.gToastError('请输入获奖等级')
+				return false;
+			}
+			else if(!data.awardTime){
+				this.gToastError('请输入获奖时间')
+				return false
+			}
+			else if(!data.awardProveUrl){
+				this.gToastError('请选择证明材料');
+				return false;
+			}
+			this.gLoading(this,true)
 			
 			/* 触发更新项目 */
 			let successNum = 0
@@ -187,7 +201,8 @@ export default {
 				postProj()
 				return
 			}
-			/* 上传头像*/
+			
+			/* 上传头像,先判断是否是新 */
 			if (data.avatarUrl && data.avatarUrl !== this.project.avatarUrl) {
 				getPublicSignature(`${Date.now()}.JPG`)
 				.then(signature => {
@@ -215,7 +230,7 @@ export default {
 			}
 			
 			/* 上传证明 */
-			if (data.awardProveUrl && data.awardProveUrl !== this.project.awardProveUrl) {
+			if (data.awardProveUrl !== this.project.awardProveUrl) {
 				getPublicSignature(`${Date.now()}.JPG`)
 				.then(signature => {
 					this.gUploadFile(data.awardProveUrl, signature.data)
@@ -237,7 +252,7 @@ export default {
 					this.gLoading(this, false);
 				})
 			}
-			else{
+			else {
 				successNum++
 				postProj()
 			}

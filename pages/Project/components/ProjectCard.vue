@@ -51,7 +51,7 @@
 					v-if="is_showStatus"
 					class="status"
 					:class="project.passed ? 'passed' : 'failed'">
-					{{project.passed ? '已通过' : '未通过'}}
+					{{project.passed ? '已通过' : '审核中'}}
 				</view>
 			</view>
 		</view>
@@ -245,5 +245,5 @@ export default {
 				&.passed
 					background-color #67C23A
 				&.failed
-					background-color #F56C6C
+					background-color var(--gray2)
 </style>
