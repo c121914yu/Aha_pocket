@@ -106,9 +106,11 @@ export default {
 		tagList() {
 			return this.tags.split(' ').filter(tag => tag !== '');
 		},
+		/* 根据比赛名称计算获奖等级 */
 		prizeLevels() {
 			let Levels = getApp().globalData.prizeLevels
 			const match = getApp().globalData.Competitions.find(item => item.name === this.compName)
+			// console.log(getApp().globalData.Competitions);
 			if(match){
 				Levels = Levels.filter(item => {
 					if(String(item.value).indexOf(String(match.level)) === 0){
@@ -213,7 +215,7 @@ export default {
 	display flex
 	flex-wrap wrap
 	.tag
-		margin 0 5px 5px 0
+		margin 5px 5px 5px 0
 		padding 0 10rpx
 		border 1px solid var(--origin2)
 		border-radius 8px

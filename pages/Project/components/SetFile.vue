@@ -14,9 +14,13 @@
 				</view>
 				<view class="item">
 					<text class="label">Aha点</text>
-					<input type="number" placeholder="购买所需贡献值" v-model.number="price">
+					<input 
+						type="number" 
+						placeholder="购买所需Aha点" 
+						v-model.number="price"
+					>
 				</view>
-				<view class="mini max-min">(最大值: 100,最小值: 70)</view>
+				<view class="mini max-min">(最大值: {{priceRange[0]}},最小值: {{priceRange[1]}})</view>
 				<view class="btns">
 					<button form-type="submit">确认</button>
 					<button class="cancel" @click="$emit('close')">取消</button>
@@ -35,18 +39,29 @@ export default {
 	data() {
 		return {
 			name: "",
-			price: "",
-			type: null
+			price: 1000,
+			type: null,
+			max: 1000,
+			min: 0
 		}
 	},
 	computed: {
-		
+		priceRange() {
+			const award = getApp().globalData.prizeLevels.find(item => item.value === this.level)
+			if(!this.type){
+				return [0,0]
+			}
+			return [
+				award.max * this.type.rate,
+				award.min * this.type.rate,
+			]
+		}
 	},
 	created() {
 		if(this.fileInfo){
 			this.name = this.fileInfo.name
 			this.price = this.fileInfo.price
-			this.type = this.fileInfo.type
+			this.type = getApp().globalData.arr_fileClassify.find(item => item.value === this.fileInfo.typeId)
 		}
 	},
 	methods: {
@@ -57,9 +72,10 @@ export default {
 		*/
 	    setFileType()
 		{
-			this.gMenuPicker(getApp().globalData.arr_fileTypes)
+			this.gMenuPicker(getApp().globalData.arr_fileClassify)
 			.then(res => {
 				this.type = res
+				this.price = (this.priceRange[0] + this.priceRange[1]) / 2
 			})
 		},
 		/* 确认修改 */
@@ -69,13 +85,16 @@ export default {
 				this.gToastError("文件名为空")
 			}
 			else if(this.price === ""){
-				this.gToastError("贡献度为空")
+				this.gToastError("定价为空")
+			}
+			else if(this.price < this.priceRange[1] || this.price > this.priceRange[0]){
+				this.gToastError("定价范围错误")
 			}
 			else{
 				const data = {
 					name: this.name,
 					price: this.price,
-					type: this.type
+					typeId: this.type.value
 				}
 				/* 调用修改附件信息API */
 				this.$emit("success",data)

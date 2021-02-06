@@ -6,9 +6,12 @@ const getNotice = () => request("/notice","GET",{})
 const getFeedbackMe = (param) => request("/feedback/me","GET",param)
 /* 反馈问题 */
 const feedbackProblem = (data) => request("/feedback","POST",data)
+/* 获取轮播图 */
+const getSlideCard = () => request("/slideShow","GET",{})
 
 export{
 	getNotice,
 	getFeedbackMe,
-	feedbackProblem
+	feedbackProblem,
+	getSlideCard
 }

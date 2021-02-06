@@ -166,7 +166,7 @@ export default {
 					console.log(res.data);
 					const data = JSON.parse(res.data)
 					if(data.code === 200){
-						uni.setStorageSync("token",data.data.token)
+						uni.setStorageSync("token",data.data)
 						getApp().globalData.gUserInfo.signedContract = true
 					}
 					uni.navigateBack({

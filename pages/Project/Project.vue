@@ -1,65 +1,68 @@
 <template>
 	<view class="project">
-		<view class="content">
-			<view v-if="!passed" class="mini unpassed-hint">当前项目审核中,仅创建者可预览,附件信息将不被展示.</view>
-			<!-- 头像 & 首作者 & 创建时间 & 收藏 & 阅读-->
-			<view class="head">
-				<view class="left">
-					<view class="h3">项目介绍</view>
-					<view class="date">2020年9月1日</view>
-					<!-- 数据统计 -->
-					<view class="statistics">
-						<!-- 阅读量 -->
-						<view class="read">
-							<text class="iconfont icon-readed"></text>
-							<text class="val">{{ read }}</text>
+		<view class="header">
+			<image 
+				class="left" 
+				:src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" 
+				mode="widthFix">
+			</image>
+			<view class="right">
+				<!-- 项目题目 -->
+				<view class="small item">
+					<view class="title">项目题目</view>
+					<view class="values"><view class="val name">{{ name }}</view></view>
+				</view>
+				<!-- 成员 & 统计量 -->
+				<view class="item">
+					<view class="title">项目成员</view>
+					<view class="flex">
+						<view class="values arr">
+							<navigator 
+								class="val" 
+								hover-class="none"
+								style="text-decoration: underline;"
+								v-for="(member, index) in members" 
+								:key="index" 
+								:url="'../Self/UserHome?userId=' + member.memberUser.userId">
+								{{ member.memberUser.nickname }}
+							</navigator>
 						</view>
-						<!-- 收藏量 -->
-						<view class="collect">
-							<text class="iconfont icon-collection"></text>
-							<text class="val">{{ collect }}</text>
+						<!-- 数据统计 -->
+						<view class="statistics">
+							<!-- 阅读量 -->
+							<view class="read">
+								<text class="iconfont icon-readed"></text>
+								<text class="val">{{ read }}</text>
+							</view>
+							<!-- 收藏量 -->
+							<view class="collect">
+								<text class="iconfont icon-collection"></text>
+								<text class="val">{{ collect }}</text>
+							</view>
 						</view>
 					</view>
 				</view>
-				<view class="right">
-					<image :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" mode="widthFix"></image>
-				</view>
 			</view>
-			<!-- 项目成员 -->
-			<view class="item">
-				<view class="title">项目成员</view>
-				<view class="values">
-					<navigator 
-						class="val arr" 
-						hover-class="none"
-						style="text-decoration: underline;"
-						v-for="(member, index) in members" 
-						:key="index" 
-						:url="'../Self/UserHome?userId=' + member.memberUser.userId">
-						{{ member.memberUser.nickname }}
-					</navigator>
-				</view>
-			</view>
-			<!-- 项目题目 -->
-			<view class="item">
-				<view class="title">项目题目</view>
-				<view class="values"><view class="val name">{{ name }}</view></view>
-			</view>
+		</view>
+		<!-- 项目情况 -->
+		<view class="content">
+			<view v-if="!passed" class="mini unpassed-hint">当前项目审核中,仅创建者可预览,附件信息将不被展示.</view>
+			<view class="head">项目情况</view>
 			<!-- 获奖情况 -->
 			<view v-if="compId" class="item prize">
 				<view class="title">获奖情况</view>
-				<view class="values">
-					<view class="val arr">{{ awardTime }}</view>
-					<view class="val arr">{{ awardLevelMsg }}</view>
-					<view class="val arr">{{ compName }}</view>
+				<view class="values arr">
+					<view v-if="awardTime" class="val">{{ awardTime }}</view>
+					<view v-if="awardLevel" class="val">{{ awardLevelMsg }}</view>
+					<view class="val">{{ compName }}</view>
 				</view>
 			</view>
 			<!-- 标签 -->
 			<view v-if="tags" class="item tags">
 				<view class="title">项目标签</view>
-				<view class="values">
+				<view class="values arr">
 					<view
-						class="val arr"
+						class="val"
 						v-for="(tag,index) in arr_tags"
 						:key="index">
 						{{tag}}
@@ -67,8 +70,8 @@
 				</view>
 			</view>
 		</view>
-		<view id="content2" class="content" style="margin-top: 15px;">
-			<view class="h3" style="color: var(--gray1);">项目详细</view>
+		<view id="content2" class="content">
+			<view class="head">项目详细</view>
 			<!-- 描述 -->
 			<view v-if="intro" class="item intro">
 				<view class="title">项目描述</view>
@@ -79,7 +82,7 @@
 				<view class="title">
 					项目附件
 				</view>
-				<view class="small">非媒体类附件将从外部应用打开,请通过外部应用保存至本地.</view>
+				<!-- <view class="small">非媒体类附件将从外部应用打开,请通过外部应用保存至本地.</view> -->
 				<view class="list">
 					<!-- 已购买 -->
 					<view v-if="arr_purchasedFiles.length > 0">
@@ -433,91 +436,90 @@ export default {
 .project
 	padding 10px 10px 50px
 	min-height 100vh
-	background-color var(--white1)
+	background-color var(--origin3)
+	/* 各类数据共同样式 */
+	.item
+		margin 10px 0
+		/* 引导标题 */
+		.title
+			margin-bottom 5px
+			padding-left 5px
+			position relative
+			color var(--origin1)
+			line-height 1
+			border-left 3px solid var(--origin1)
+			font-weight 700
+			font-size 26rpx
+		.values
+			margin-left 5px
+			&.arr
+				display flex
+				flex-wrap wrap
+				.val
+					margin 0 5px 5px 0
+					font-size 22rpx
+			.val
+				padding 1px 20px
+				border-radius 22px
+				background-color var(--origin4)
+				color var(--gray1)
+				font-weight 24rpx
+				font-size 24rpx
+			/* 描述 */
+			.desc
+				width 100%
+				border-radius 8px
+				padding 2px
+				border 2px solid var(--origin2)
+	.header
+		display flex
+		align-items flex-start
+		.left
+			width 30vw
+			border-radius 8px
+		.right
+			position relative
+			flex 1
+			margin-left 10px
+		.item
+			/* 左右布局成员和统计 */
+			.flex
+				display flex
+				align-items flex-start
+			/* 统计信息 */
+			.statistics
+				.read, .collect
+					margin-bottom 10px
+					display flex
+					align-items center
+					font-size 20rpx
+					color var(--origin1)
+					.iconfont
+						margin-right 2px
+						font-size 20rpx
+			.values
+				flex 1
+				/* 项目名称 */
+				.name
+					background-color #FFFFFF
+					color var(--black)
+					font-weight 700
+					font-size 24rpx
+					text-align center
+			
 	.content
-		padding 20px 30px
-		border-radius 22px
+		margin 10px 0
+		padding 15px 20px
+		border-radius 16px
 		background-color #FFFFFF
 		/* 审核中项目通知 */
 		.unpassed-hint
 			margin-bottom 5px
 			color var(--origin1)
-		/* 头像 & 首作者 & 创建时间 & 收藏 & 阅读 */
 		.head
-			display flex
-			.left
-				padding 0 10px
-				flex 1
-				display flex
-				flex-direction column
-				.h3
-					flex 1
-				.date
-					font-size 22rpx
-					color var(--gray1)
-				.statistics
-					margin-top 5px
-					display flex
-					view
-						margin-right 25px
-						font-size 22rpx
-						line-height 1
-						display flex
-						align-items center
-						
-					.iconfont
-						margin-right 2px
-					.read
-						color var(--origin2)
-					.collect
-						color #e86452
-			.right
-				width 80px
-				height 80px
-				image
-					width 100%
-					height 100%
-					border-radius 8px
-		/* 各类数据共同样式 */
-		.item
-			margin 10px 0
-			/* 引导标题 */
-			.title
-				margin-bottom 5px
-				padding-left 5px
-				position relative
-				color var(--origin1)
-				line-height 1
-				border-left 3px solid var(--origin1)
-				font-weight 700
-				display flex
-				align-items center
-			.values
-				padding 5px 0
-				display flex
-				flex-wrap wrap
-				.val
-					padding 0 20px
-					border-radius 22px
-					background-color var(--origin4)
-					color var(--gray1)
-					font-weight 24rpx
-					font-size 26rpx
-					/* 标题 */
-					&.name
-						min-width 50%
-						font-weight 700
-						text-align center
-						color var(--black)
-					/* 数组格式 */
-					&.arr
-						margin 0 5px 5px 0
-				/* 描述 */
-				.desc
-					width 100%
-					border-radius 8px
-					padding 2px
-					border 2px solid var(--origin2)
+			margin-bottom 10px
+			color var(--gray2)
+			font-weight 700
 		/* 附件 */
 		.files
 			.all-buy
@@ -547,7 +549,6 @@ export default {
 				.file
 					margin-bottom 10px
 					width 100%
-					font-size 26rpx
 					display flex
 					align-items center
 					.name
@@ -561,7 +562,7 @@ export default {
 						white-space nowrap
 						padding 5px
 						border-radius 22px
-						font-size 22rpx
+						font-size 20rpx
 						font-weight 400
 						line-height 1
 						text-align center
@@ -597,6 +598,7 @@ export default {
 							font-size 20rpx
 					.time
 						color var(--gray2)
+						font-size 20rpx
 				.container
 					padding 5px 0
 				.file-control

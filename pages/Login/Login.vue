@@ -52,7 +52,8 @@ export default {
 		};
 	},
 	methods: {
-		loginSuccess(data) {
+		loginSuccess(data) 
+		{
 			getApp().globalData.gUserInfo = data
 			console.log(data);
 			uni.reLaunch({
@@ -61,7 +62,7 @@ export default {
 					this.gToastSuccess('登录成功')
 				},
 				complete: () => {
-					this.gLoading(this, false);
+					this.gLoading(this, false)
 				}
 			})
 		},
@@ -116,13 +117,18 @@ export default {
 	mounted() {
 		/* 检查是否有存储token，验证登录身份 */
 		if (uni.getStorageSync('token')) {
-			this.gLoading(this, true);
+			// this.gLoading(this, true);
+			uni.showLoading({
+				mask: true,
+				title: "登录中..."
+			})
 			this.gGetMeInfo()
 			.then(res => {
+				uni.hideLoading()
 				this.loginSuccess(res)
 			})
 			.catch(err => {
-				this.gLoading(this, false);
+				uni.hideLoading()
 			})
 		}
 	}

@@ -3,10 +3,7 @@
 	<view class="write-remark" @touchmove.stop.prevent>
 		<!-- 提示模块 -->
 		<view v-if="type===0" class="remark-hint">
-			<view class="input" @click="startComment">
-				<text class="iconfont icon-write"></text>
-				<text>写下你的评论...</text>
-			</view>
+			<button class="write" @click="startComment">写评论</button>
 			<text class="icon iconfont icon-xinxi" @click="$emit('scrollComment')"></text>
 			<text v-if="isCollect" class="icon iconfont icon-collection collected" @click="collected"></text>
 			<text v-else class="icon iconfont icon-shoucang" @click="collected"></text>
@@ -136,29 +133,30 @@ export default {
 		bottom 0
 		left 0
 		right 0
-		padding 10px
-		border-top var(--border2)
-		background-color #FFFFFF
+		padding 0 20px 0 15px
+		border-top-left-radius 16px
+		border-top-right-radius 16px
+		background-color var(--origin2)
 		display flex
 		align-items center
 		justify-content space-between
-		.input
+		.write
+			margin 0
 			width 60%
-			padding 5px 10px
-			background-color var(--white1)
-			font-size 24rpx
+			padding 7px
+			line-height 1
+			background-color #FFFFFF
+			color var(--font-dark)
 			border-radius 22px
-			.iconfont
-				margin-right 5px
 		.icon
 			font-size 40rpx
+			color #FFFFFF
 			&.collected
 				color #e86452
 			&.share
 				margin 0
 				padding 0
 				background-color transparent
-				color var(--black)
 	/* 简要写评论 */
 	.brief-write
 		z-index 100

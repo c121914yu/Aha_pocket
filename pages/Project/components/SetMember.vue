@@ -4,8 +4,14 @@
 		<view class="content" @click.stop>
 			<text class="h3">成员信息</text>
 			<image :src="member.avatarUrl"></image>
-            <view>uid: <text class="value">{{member.memberUserId}}</text></view>
-			<view>姓名: <text class="value">{{member.nickname}}</text></view>
+            <view>
+				<text class="small">uid:</text>
+				<text class="value">{{member.memberUserId}}</text>
+			</view>
+			<view>
+				<text class="small">姓名:</text>
+				<text class="value">{{member.nickname}}</text>
+			</view>
 			<!-- 是否允许编辑 -->
 			<view>
 				<SelfRadio
@@ -20,7 +26,7 @@
 			</view>
 			<!-- 负责工作 -->
 			<view class="job">
-				<text>负责工作: </text>
+				<text class="small">负责工作: </text>
 				<input type="text" placeholder="该成员负责的工作" v-model="member.job">
 			</view>
 			<!-- 按键 -->
@@ -87,18 +93,17 @@ export default {
 		view
 			margin 2px 0
 			width 90%
-			font-size 28rpx
+			.small
+				margin-right 5px
 			.value
 				margin-left 5px
 				color var(--origin2)
 				font-weight 700
-			.label
-				margin-left 10px
 			&.job
 				display flex
 				align-items center
 				input
-					margin-left 5px
+					padding 2px 5px
 					flex 1
 					border 1px solid var(--gray2)
 			&.btns

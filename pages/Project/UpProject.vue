@@ -2,7 +2,7 @@
 <template>
 	<view class="up-project">
 		<baseInfo ref="baseInfo" v-if="step === 0" :projectId="projectId"></baseInfo>
-		<fileInfo ref="fileInfo" v-if="step === 1" :projectId="projectId"></fileInfo>
+		<fileInfo ref="fileInfo" v-if="step === 1" :projectId="projectId" :level="awardLevel"></fileInfo>
 		<MemberInfo ref="memberInfo" v-if="step === 2" :projectId="projectId"></MemberInfo>
 		<view class="btn">
 			<!-- step0 只能进行下一步 -->
@@ -28,7 +28,8 @@ export default {
 	data() {
 		return {
 			step: 0,
-			projectId: null
+			projectId: null,
+			awardLevel: null
 		};
 	},
 	onShow() {
@@ -59,10 +60,9 @@ export default {
             desc: 获取资源基本信息，上传头像和证明图片后，调用接口创建一个项目
         */
 		createResource() {
-			this.gLoading(this, true);
 			const base = this.$refs.baseInfo;
 			/* 赛事类型和获奖等级需要转化成数值 */
-			let awardLevel = base.awardLevel ? base.awardLevel.value : null
+			this.awardLevel = base.awardLevel ? base.awardLevel.value : null
 			/* 计算compId */
 			let compId = getApp().globalData.Competitions.find(item => item.name === base.compName)
 			compId = compId ? compId.id : 0
@@ -75,7 +75,7 @@ export default {
 				compId,
 				tags: base.tags,
 				compName: base.compName,
-				awardLevel,
+				awardLevel: this.awardLevel,
 				awardTime: base.awardTime,
 				awardProveUrl: base.awardProveUrl,
 				intro: base.intro,
@@ -84,9 +84,25 @@ export default {
 			/* 空值检验 */
 			if (data.name === '') {
 				this.gToastError('请输入资源标题');
-				this.gLoading(this, false);
 				return false;
 			}
+			else if(!data.compName){
+				this.gToastError('请输入获奖信息');
+				return false;
+			}
+			else if(!data.awardLevel){
+				this.gToastError('请输入获奖等级');
+				return false;
+			}
+			else if(!data.awardTime){
+				this.gToastError('请输入获奖时间');
+				return false;
+			}
+			else if(!data.awardProveUrl){
+				this.gToastError('请选择证明材料');
+				return false;
+			}
+			this.gLoading(this, true)
 			
 			let successNum = 0
 			const postProj = () => {
@@ -139,32 +155,22 @@ export default {
 			}
 			
 			/* 上传证明 */
-			if (data.awardProveUrl) {
-				getPublicSignature(`${Date.now()}.JPG`)
-				.then(signature => {
-					this.gUploadFile(data.awardProveUrl, signature.data)
-						.then(url => {
-							console.log("证明上传成功");
-							data.awardProveUrl = url
-							successNum++
-							postProj()
-						})
-						.catch(err => {
-							this.gToastError('证明上传失败')
-							successNum++
-							postProj()
-						})
-				})
-				.catch(err => {
-					this.gToastError('证明上传失败')
-					successNum++
-					postProj()
-				})
-			}
-			else{
-				successNum++
-				postProj()
-			}
+			getPublicSignature(`${Date.now()}.JPG`)
+			.then(signature => {
+				this.gUploadFile(data.awardProveUrl, signature.data)
+					.then(url => {
+						console.log("证明上传成功");
+						data.awardProveUrl = url
+						successNum++
+						postProj()
+					})
+					.catch(err => {
+						this.gToastError('证明上传失败')
+					})
+			})
+			.catch(err => {
+				this.gToastError('证明上传失败')
+			})
 		},
 		/* 
 			name: 创建资源文件
