@@ -52,5 +52,6 @@
       "desc": "获取您当前的城市信息"
     }
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }
