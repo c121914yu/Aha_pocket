@@ -55,6 +55,7 @@
 				label="获奖日期" 
 				contentWidth="300rpx" 
 				placeholder="2020-8"
+				:endTime="gGetToday()"
 				circle
 				date
 				v-model="awardTime">
@@ -127,7 +128,7 @@ export default {
 		{
 			uni.chooseImage({
 				count: 1, //默认9
-				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+				sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
 				success: img => {
 					this[item] = img.tempFilePaths[0];
 				}
@@ -150,11 +151,13 @@ export default {
 						uni.previewImage({
 							urls: [this[item]]
 						});
-					} else if (res.tapIndex === 1) {
+					} 
 					/* 修改图片 */
+					else if (res.tapIndex === 1) {
 						this.chooseImg(item);
-					} else if (res.tapIndex === 2) {
+					} 
 					/* 删除图片 */
+					else if (res.tapIndex === 2) {
 						this.gShowModal('确认删除该证明图片?', () => {
 							this[item] = '';
 						});

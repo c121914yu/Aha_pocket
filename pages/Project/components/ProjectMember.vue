@@ -42,7 +42,30 @@ export default {
 	props: {
 		projectId: String
 	},
+	created() {
+		if (this.projectId) {
+			this.setNormalMember()
+		}
+	},
 	methods: {
+		/* 创建者默认为负责人 */
+		setNormalMember()
+		{
+			const userInfo = getApp().globalData.gUserInfo.userInfo;
+			const data = {
+				memberUserId: userInfo.userId,
+				nickname: userInfo.nickname,
+				avatarUrl: userInfo.avatarUrl,
+				school: userInfo.school,
+				job: '负责人',
+				editable: true,
+				memberIndex: -1
+			}
+			this.sureMember({
+				type: 2,
+				member: data
+			})
+		},
 		/* 
           name: 搜索队友
           desc: 将输入内容传送给后台查询相关队员
@@ -140,7 +163,7 @@ export default {
 							this.$refs.drawList.tempList = JSON.parse(JSON.stringify(this.members))
 							this.searchText = ''
 							this.memberInfo = null
-							this.gToastSuccess('添加成员成功!')
+							// this.gToastSuccess('添加成员成功!')
 						});
 					})
 					.catch(err => {
@@ -166,25 +189,6 @@ export default {
 					this.gLoading(this, false);
 				});
 			}
-		}
-	},
-	created() {
-		if (this.projectId) {
-			/* 创建者默认为负责人 */
-			const userInfo = getApp().globalData.gUserInfo.userInfo;
-			const data = {
-				memberUserId: userInfo.userId,
-				nickname: userInfo.nickname,
-				avatarUrl: userInfo.avatarUrl,
-				school: userInfo.school,
-				job: '负责人',
-				editable: true,
-				memberIndex: -1
-			};
-			this.sureMember({
-				type: 2,
-				member: data
-			});
 		}
 	},
 	components: {

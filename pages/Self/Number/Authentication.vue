@@ -65,7 +65,6 @@
 </template>
 
 <script>
-const Multipart = require('@/static/js/Multipart.min.js') 
 export default {
 	data() {
 		return {
@@ -159,34 +158,7 @@ export default {
 			// }
 			else{
 				this.gLoading(this,true)
-				/* 上传文件 */
-				let m = new Multipart({
-					files:[], 
-					fields:[],
-					header: {
-						'Authorization': uni.getStorageSync("token")
-					}
-				})
-				m.field({
-				  name: 'trueName',
-				  value: this.trueName
-				})
-				m.file({name:"idCardFront",filePath: this.idCardFront})
-				m.file({name:"idCardBack",filePath: this.idCardBack})
-				if(this.studentCard){
-					m.file({name:"studentCard",filePath: this.studentCard})
-				}
-				m.submit(`${getApp().globalData.baseUrl}/authenticate`,{
-					header:{'Cookie':'name=1'},
-				})
-				.then(res => {
-					console.log(res)
-					this.gLoading(this,false)
-				})
-				.catch(err => {
-					console.log(err)
-					this.gLoading(this,false)
-				})
+				
 			}
 		}
 	}

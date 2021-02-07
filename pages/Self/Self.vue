@@ -161,13 +161,20 @@ export default {
 		SelectInterest
 	},
 	created() {
-		getUnreadCount()
-		.then(res => {
-			this.funtions1[1].val = res.data
-		})
+		if(getApp().globalData.gUserInfo.signedNotice){
+			this.getUnread()
+		}
 		uni.$on("upDateUnread",this.upDateUnread)
 	},
 	methods: {
+		/* 获取未读 */
+		getUnread()
+		{
+			getUnreadCount()
+			.then(res => {
+				this.funtions1[1].val = res.data
+			})
+		},
 		/* 更新未读信息 */
 		upDateUnread(amount)
 		{
@@ -218,15 +225,15 @@ export default {
 								let start = Date.now()
 								/* 获取签名 */
 								getAvatarOssSignature(`${Date.now()}.JPG`)
-								.then(res => {
+								.then(signature => {
 									const url = img.tempFilePaths[0]
-									this.gUploadFile(url, res.data)
-									.then(url => {
+									this.gUploadFile(url, signature.data)
+									.then(res => {
 										putMe({
-											avatarUrl: url
+											avatarUrl: res.header.Location
 										})
 										.then(putRes => {
-											this.userInfo.avatarUrl = url
+											this.userInfo.avatarUrl = res.header.Location
 											getApp().globalData.gUserInfo.userInfo = this.userInfo
 											this.gToastSuccess('修改头像成功!')
 											this.gLoading(this, false)

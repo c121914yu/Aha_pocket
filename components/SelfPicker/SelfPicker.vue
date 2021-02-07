@@ -91,7 +91,7 @@ export default {
 		},
 		startTime: {
 			type: String,
-			default: "1980-1"
+			default: "1990-1"
 		},
 		endTime: {
 			type: String,
@@ -107,7 +107,8 @@ export default {
 		}
 	},
 	methods: {
-		select(e) {
+		select(e) 
+		{
 			this.$emit('input', this.arr_range[e.target.value])
 		}
 	}

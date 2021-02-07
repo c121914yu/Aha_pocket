@@ -1,9 +1,9 @@
 <template>
 	<view class="content">
 		<!-- 附件列表 -->
-		<view class="head">
+		<view class="head" @click="chooseFile">
 			<text class="h3">上传附件:</text>
-			<text class="add iconfont icon-tianjia" @click="chooseFile"></text>
+			<text class="add iconfont icon-tianjia"></text>
 		</view>
 		<view style="color: var(--font-dark);" class="remark">(注: 附件必须小于500M,上传成功后不可删除,请确认后再上传)</view>
 		<view 
@@ -65,7 +65,6 @@
 import { getFilesSignature,postResource,putResource,deleteResource } from "@/static/request/api_project.js"
 import SetFile from "./SetFile"
 const COS = require('@/static/js/COS.js')
-var timer
 export default {
 	props: {
 		projectId: String,
@@ -91,6 +90,26 @@ export default {
 		SetFile
 	},
 	methods: {
+		/* 压缩视频 */
+		compressVideo(src)
+		{
+			console.log(src);
+			uni.compressVideo({
+				src: src,
+				quality: "medium",
+				// bitrate: 500,
+				// fps: 40,
+				// resolution: 1,
+				success: (res) => {
+					console.log(res);
+					return 1
+				},
+				fail: (err) => {
+					console.log(err);
+					return 2
+				}
+			})
+		},
 		/*
 			name: 选择附件
 			description: 选择需要上传的附件
@@ -107,10 +126,6 @@ export default {
 				size = size.toFixed(2)
 				return size + unitArr[index]
 			}
-			// if(this.files.length > 10){
-			// 	this.gToastMsg("文件数量不能大于10")
-			// 	return
-			// }
             this.gLoading(this,true)
 			/* 选择文件API */
 			wx.chooseMessageFile({
@@ -126,11 +141,16 @@ export default {
 					/* 计算价格，取平均值 */
 					const award = getApp().globalData.prizeLevels.find(item => item.value === this.level)
 					const typeId = getApp().globalData.arr_fileClassify[3]
+					const fileType = getApp().globalData.arr_fileTypes.find(item => item.reg.test(file.name)).value
+					if(fileType === 1){
+						console.log(this.compressVideo(file.path));
+					}
 					const data = {
 						name: file.name,
 						url: file.path,
 						size: renderSize(file.size),
 						typeId: typeId.value,
+						fileType,
 						progress: 0,
 						status: 0, // 0 待上传，1 上传中，2上传完成，3上传失败
 						price: (award.max + award.min) * typeId.rate / 2,
@@ -160,11 +180,7 @@ export default {
 				this.setFileIndex = index
 				return
 			}
-			// console.log(file);
 			let itemList = ["修改附件信息", "删除附件"]
-			// if(file.type.value === 1){
-			// 	itemList.unshift("设置预览片段")
-			// }
 			uni.showActionSheet({
 				itemList,
 				success: (res) => {
@@ -220,7 +236,7 @@ export default {
 						deleteResource(this.files[index].id)
 					}
 					this.files.splice(index,1)
-					this.gToastSuccess("删除成功")
+					this.gToastMsg("删除成功")
 				}
 			)
 		},
@@ -253,7 +269,7 @@ export default {
 			/* 提示错误 */
 			const showErr = (err,index) => {
 				console.error(err);
-				this.files[index].status = 2
+				this.files[index].status = 3
 				this.gToastError("上传错误")
 				this.gLoading(this,false)
 				this.uploading = false
@@ -265,7 +281,7 @@ export default {
 					this.uploading = false
 					this.gLoading(this,false)
 				}
-				/* 非上传成功状态 */
+				/* 上传成功状态,上传下一个 */
 				else if(this.files[index].status === 2){
 					nextFile(++index)
 				}
@@ -280,71 +296,35 @@ export default {
 				/* 获取签名 */
 				getFilesSignature(this.projectId,file.name)
 				.then(signature => {
-					signature = signature.data
 					/* 上传文件 */
-					const cos = new COS({
-						getAuthorization: function (options, callback) 
-						{
-							callback({Authorization: signature.authorization})
-						}
+					this.gUploadFile(file.url,signature.data,(progress) => {
+						this.files[index].progress = progress
 					})
-					/* 自定义假进度条 */
-					timer = setInterval(() => {
-						this.files[index].progress++
-						if(this.files[index].progress > 90){
-							clearInterval(timer)
-						}
-					},300)
-					/* 转化成二进制 */
-					wx.getFileSystemManager().readFile({
-						filePath: file.url,
-						success: (res) => {
-							/* 上传文件 */
-							cos.putObject({
-								Bucket: signature.bucketName,
-								Region: signature.region,
-								Key: signature.filename,
-								Body: res.data,
-								// FilePath: file.url,
-								onProgress: (info) => {
-									// console.log(JSON.stringify(info))
-									this.files[index].progress = info.percent*100
-									if(this.files[index].progress > 90){
-										clearInterval(timer)
-									}
-								}
-							}, (err,data) => {
-								if(err){
-									showErr(err,index)
-								}
-								else{
-									this.files[index].status = 2
-									this.files[index].filename = signature.filename
-									/* 更新至数据库 */
-									postResource(this.projectId,{
-										name: file.name,
-										filename: signature.filename,
-										price: file.price,
-										typeId: file.typeId,
-										fileType: getApp().globalData.arr_fileTypes.find(item => item.reg.test(signature.filename)).value,
-										discount: 0
-									})
-									.then(res => {
-										this.files[index].id = res.data.id
-										nextFile(++index)
-									})
-									.catch(err => {
-										showErr(err,index)
-									})
-								}
-							})
-						},
-						fail: (err) => {
+					.then(res => {
+						this.files[index].status = 2
+						this.files[index].filename = signature.data.filename
+						/* 更新至数据库 */
+						postResource(this.projectId,{
+							name: file.name,
+							filename: this.files[index].filename,
+							price: file.price,
+							typeId: file.typeId,
+							fileType: file.fileType,
+							discount: 0
+						})
+						.then(res => {
+							this.files[index].id = res.data
+							nextFile(++index)
+						})
+						.catch(err => {
 							showErr(err,index)
-						}
+						})
+					})
+					.catch(errr => {
+						showErr(err,index)
 					})
 				})
-				.catch(err => {
+				.catch(errr => {
 					showErr(err,index)
 				})
 			}

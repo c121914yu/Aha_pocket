@@ -109,7 +109,7 @@
 						<view class="file" 
 							v-for="(file, index) in arr_unpreviewFiles" 
 							:key="index">
-							<view class="name">{{ file.name }}242424</view>
+							<view class="name">{{ file.name }}</view>
 							<button v-if="!file.isBuy" @click="buyFile(file,'arr_unpreviewFiles',index)">{{file.price}}Aha点购买</button>
 						</view>
 					</view>
@@ -249,25 +249,33 @@ export default {
 		/* 初始化附件 */
 		initFiles()
 		{
-			checkResourcePurchased(this.id)
-			.then(res => {
-				this.resources.forEach(file => {
-					file.isBuy = res.data.indexOf(file.id) > -1 ? true : false
-					if(file.isBuy){
-						this.arr_purchasedFiles.push(file)
-					}
-					else if(file.previewUrl){
-						this.arr_previewFiles.push(file)
-					}
-					else{
-						this.arr_unpreviewFiles.push(file)
-					}
+			/* 判断是否为项目成员,若为项目成员则直接添加到已购项目中 */
+			const member = this.members.find(item => item.memberUser.userId === getApp().globalData.gUserInfo.userInfo.userId)
+			if(member){
+				this.arr_purchasedFiles = this.resources
+				this.gLoading(this,false)
+			}
+			else{
+				checkResourcePurchased(this.id)
+				.then(res => {
+					this.resources.forEach(file => {
+						file.isBuy = res.data.indexOf(file.id) > -1 ? true : false
+						if(file.isBuy){
+							this.arr_purchasedFiles.push(file)
+						}
+						else if(file.previewUrl){
+							this.arr_previewFiles.push(file)
+						}
+						else{
+							this.arr_unpreviewFiles.push(file)
+						}
+					})
+					this.gLoading(this,false)
 				})
-				this.gLoading(this,false)
-			})
-			.catch(err => {
-				this.gLoading(this,false)
-			})
+				.catch(err => {
+					this.gLoading(this,false)
+				})
+			}
 		},
 		/* 获取评论 */
 		getCommentsInfo(init=false)
@@ -334,9 +342,8 @@ export default {
 		*/
 	    readFile(file,index)
 		{
-			const type = getApp().globalData.arr_fileTypes.find(item => item.reg.test(file.filename)).value
 			/* 文档类跳转readFile界面 */
-			if(type === 2){
+			if(file.fileType === 2){
 				uni.navigateTo({
 					url: "ReadFile?id=" + file.id
 				})
@@ -345,11 +352,11 @@ export default {
 				this.gLoading(this,true)
 				if(file.url){
 					/* 图片/视频直接打开 */
-					if(type === 0 || type === 1){
+					if(file.fileType === 0 || file.fileType === 1){
 						wx.previewMedia({
 							sources: [{
 								url: file.url,
-								type: file.type === 0 ? "image" : "video"
+								type: file.fileType === 0 ? "image" : "video"
 							}],
 							showmenu: false,
 							complete: () => {
@@ -357,6 +364,7 @@ export default {
 							}
 						})
 					}
+					/* 其他则复制下载链接 */
 					else{
 						/* 复制到剪切板 */
 						uni.setClipboardData({

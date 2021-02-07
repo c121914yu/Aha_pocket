@@ -22,7 +22,7 @@
 				:key="index"
 				:url="'/pages/Project/Project?id='+project.id">
 				<projectCard
-					margin="10px 0"
+					margin="5px 0"
 					radius="16px"
 					:project="project"
 				></projectCard>

@@ -53,13 +53,10 @@
 		</view>
 		<view class="center mini remark">{{ is_showAll ? "已加载全部" : "" }}</view>
 		<!-- 上传项目 -->
-		<navigator 
-			class="up-project" 
-			hover-class="none" 
-			url="UpProject">
-			<button>上传项目</button>
-			<!-- <text class="iconfont icon-add-fill"></text> -->
-		</navigator>
+		<BottomBtn
+			text="上传项目"
+			linkTo="UpProject">
+		</BottomBtn>
 		<!-- 筛选组件 -->
 		<ProjectFilter
 			v-if="is_showFileter"
@@ -272,22 +269,6 @@ export default {
 			.iconfont
 				padding 0 10px 0 5px
 				font-size 30rpx
-	/* 上传项目按键 */
-	.up-project
-		z-index 5
-		position fixed
-		bottom 0
-		left 0
-		right 0
-		background-color var(--origin2)
-		padding 10px
-		border-top-left-radius 22px
-		border-top-right-radius 22px
-		button
-			margin 0 15%
-			padding 2px
-			background-color #FFFFFF
-			color var(--origin2)
 	.cards
 		width 90%
 		margin auto

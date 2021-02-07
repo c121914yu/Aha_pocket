@@ -8,10 +8,13 @@ const getFeedbackMe = (param) => request("/feedback/me","GET",param)
 const feedbackProblem = (data) => request("/feedback","POST",data)
 /* 获取轮播图 */
 const getSlideCard = () => request("/slideShow","GET",{})
+/* 使用兑换码 */
+const useCDKEY = (code) => request("/activity/code?code="+code,"POST",{})
 
 export{
 	getNotice,
 	getFeedbackMe,
 	feedbackProblem,
-	getSlideCard
+	getSlideCard,
+	useCDKEY
 }

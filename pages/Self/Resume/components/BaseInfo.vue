@@ -1,5 +1,5 @@
 <template>
-	<view class="fixed base-info">
+	<view v-if="loaded" class="fixed base-info">
 		<image class="avatar" :src="avatarUrl"></image>
 		<!-- <view class="set-avatar center small">点击编辑头像</view> -->
 		<resumeInput
@@ -10,6 +10,7 @@
 		<resumeDataPicker
 			label="生日"
 			placeholder="出生日期"
+			endTime="2010-12"
 			v-model="birth">
 		</resumeDataPicker>
 		<resumeMenuPicker
@@ -74,6 +75,7 @@ import resumePickerCity from "./Resume_pickerCity.vue"
 export default {
 	data() {
 		return {
+			loaded: false,
 			avatarUrl: getApp().globalData.gUserInfo.userInfo.avatarUrl,
 			name: '',
 			phone: '',
@@ -98,6 +100,7 @@ export default {
 		for(let key in resume){
 			this[key] = resume[key]
 		}
+		this.loaded = true
 	},
 	beforeDestroy() {
 		this.putData()

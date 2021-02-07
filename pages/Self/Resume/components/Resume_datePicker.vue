@@ -5,7 +5,7 @@
 			:start="startTime"
 			:end="endTime"
 			fields="month"
-			:value="value"
+			:value="startVal"
 			@change="pickered">
 			<view class="data-picker">
 				<view class="label">{{label}}</view>
@@ -51,8 +51,12 @@ export default {
 	},
 	data() {
 		return {
+			startVal: "",
 			searchResult: []
 		};
+	},
+	created() {
+		this.startVal = this.value.replace("/","-")
 	},
 	methods: {
 		/* 选择时间,'-'改成'/' */

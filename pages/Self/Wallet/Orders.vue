@@ -6,40 +6,26 @@
 			<SearchInput placeholder="输入账单相关内容" v-model="searchText"></SearchInput>
 		</view>
 		<!-- 记录 -->
-		<navigator 
+		<view 
 			class="order"
 			v-for="(order,index) in orders"
 			:key="index"
-			:url="'./OrderDetail?id=' + order.id">
-			<view class="title">
-				附件购买-{{order.project.name}}
+			@click="orderDetail(order)">
+			<view class="left">
+				<view class="strong type">{{order.type.label}}</view>
+				<view class="small time">{{order.time}}</view>
 			</view>
-			<view class="content">
-				<view class="left">
-					<!-- 所购附件名 -->
-					<view 
-						class="filename"
-						v-for="(file,index) in order.orderResources"
-						:key="index">
-						<text>{{file.resource.name}}</text>
-					</view>
-					<view class="time">{{order.createTime}}</view>
+			<view class="right">
+				<view class="item">
+					<text class="value">{{order.ahaCreditAmount > 0 ? `+${order.ahaCreditAmount}` : order.ahaCreditAmount}}</text>
+					<text class="label">Aha币</text>
 				</view>
-				<!-- 右侧：花费情况 & 订单状态 -->
-				<view class="right">
-					<view class="amount">
-						{{order.status === 0 ? order.totalCost : `-${order.totalCost}`}}
-					</view>
-					<view 
-						class="status"
-						:style="{
-							color: order.status === 0 ? 'var(--gray1)' : 'var(--origin2)'
-						}">
-						{{order.status === 0 ? "已取消" : "已支付"}}
-					</view>
+				<view class="item">
+					<text class="value">{{order.ahaPointAmount > 0 ? `+${order.ahaPointAmount}` : order.ahaPointAmount}}</text>
+					<text class="label">Aha点</text>
 				</view>
 			</view>
-		</navigator>
+		</view>
 		<p class="center small remark">{{is_showAll ? "已加载全部" : ""}}</p>
 		<Loading ref="loading"></Loading>
 	</view>
@@ -53,16 +39,12 @@ export default {
 			searchText: "",
 			orders: [],
 			pageNum: 1,
-			pageSize: 15,
+			pageSize: 10,
 			is_showAll: false
 		}
 	},
 	onLoad() {
 		this.getOrdersInfo(true,true)
-		getPointOrder()
-		.then(res => {
-			console.log(res);
-		})
 	},
 	onReachBottom(){
 		if(!this.is_showAll){
@@ -77,7 +59,7 @@ export default {
 			if(init){
 				this.pageNum = 1
 			}
-			getOrders({
+			getPointOrder({
 				pageNum: this.pageNum,
 				pageSize: this.pageSize
 			})
@@ -87,12 +69,12 @@ export default {
 				}
 				else{
 					this.pageNum++
+					this.is_showAll = false
 				}
 				res.data.pageData.forEach(item => {
-					item.createTime = this.gformatDate(item.createTime)
-					// if(item.payTime){
-					// 	item.payTime = this.gformatDate(item.payTime)
-					// }
+					// item.createTime = this.gformatDate(item.createTime)
+					item.time = this.gformatDate(item.time)
+					item.type = getApp().globalData.arr_ordersType.find(type => type.type === item.type)
 					this.orders.push(item)
 				})
 				console.log(this.orders)
@@ -101,6 +83,16 @@ export default {
 			.catch(err => {
 				this.gLoading(this,false)
 			})
+		},
+		/* 查看订单详细 */
+		orderDetail(order)
+		{
+			if(order.type.type === 5){
+				uni.navigateTo({
+					url: "OrderDetail?id=" + order.externalId
+				})
+			}
+			console.log(order);
 		}
 	},
 }
@@ -114,57 +106,29 @@ export default {
 		background-color var(--origin2)
 		padding 3px 5%
 	.order
-		margin 10px 5%
+		margin 15px 5%
+		padding 10px
+		line-height 2
 		box-shadow var(--shadow2)
-		border-radius 16px
-		display block
-		overflow hidden
-		.title
-			padding 8px 10px
-			background-color var(--origin3)
-			font-size 24rpx
-			font-weight 700
-			color #FFFFFF
-		.content
-			padding 5px 10px
-			display flex
-			.left
-				flex 1
-				max-width calc(100% - 50px)
-			.filename
-				position relative
-				padding-left 10px
-				font-size 24rpx
-				color var(--gray1)
-				overflow hidden
-				white-space nowrap
-				text-overflow ellipsis
-				&::before
-					content ""
-					position absolute
-					left 0
-					top 50%
-					transform translateY(-50%)
-					width 5px
-					height 5px
-					border-radius 50%
-					background-color var(--origin1)
+		border-radius 8px
+		display flex
+		align-items center
+		.left
+			margin-right 10px
+			flex 1
 			.time
 				color var(--gray2)
-				font-size 22rpx
-			.right
-				padding-left 10px
-				white-space nowrap
+		.right
+			.item
+				text-align end
 				display flex
-				flex-direction column
 				align-items center
-				justify-content center
-				.amount
+				.value
+					color var(--origin2)
 					font-size 30rpx
-					font-weight 700
-					color var(--origin1)
-				.status
-					font-size 22rpx
+				.label
+					font-size 26rpx
+					color var(--gray1)
 	.remark
 		padding-bottom 10px
 		color var(--gray2)

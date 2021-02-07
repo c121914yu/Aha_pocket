@@ -7,9 +7,9 @@ export default  {
 	gEditContent: "", // 编辑内容
 	Competitions: [], // 所有比赛
 	prizeLevels: [
-		{ label: '国际一', value: 53,max: 4000,min: 2000 },
-		{ label: '国际二', value: 52,max: 3000,min: 1500 },
-		{ label: '国际三', value: 51,max: 2000,min: 1000 },
+		{ label: '保研国一', value: 53,max: 4000,min: 2000},
+		{ label: '保研国二', value: 52,max: 3000,min: 1500 },
+		{ label: '保研国三', value: 51,max: 2000,min: 1000 },
 		{ label: '国一', value: 43,max: 3500,min: 1750 },
 		{ label: '国二', value: 42,max: 2500,min: 1250 },
 		{ label: '国三', value: 41,max: 1500,min: 750 },

@@ -16,10 +16,12 @@
 			<!-- 资源名称 -->
 			<view class="head">
 				<text class="name strong">{{ project.name }}</text>
-				<view v-if="awardLevel" class="award" :style="{'backgroundColor': awardLevel.color}">
-					<image v-if="awardLevel.img" :src="`../../../static/icon/${awardLevel.img}.png`"></image>
-					<text>{{awardLevel.label}}</text>
-				</view>
+				<image 
+					v-if="awardImg" 
+					class="award-img"
+					:src="'../../../static/icon/media/' + awardImg"
+					mode="widthFix">
+				</image>
 			</view>
 			<!-- 获奖信息 -->
 			<view v-if="compName">
@@ -110,31 +112,14 @@ export default {
 			}
 			return ""
 		},
-		awardLevel() {
+		awardImg() {
 			if (this.project.awardLevel) {
 				let res = getApp().globalData.prizeLevels.find(item => item.value === this.project.awardLevel)
 				if(res.value > 50){
-					res.img = "medal1"
-					res.color = "#FB6100"
-				}
-				else if(res.value > 40){
-					res.img = "medal2"
-					res.color = "#EE7800"
-				}
-				else if(res.value > 30){
-					res.img = "medal3"
-					res.color = "#F18D00"
-				}
-				else if(res.value > 20){
-					res.img = "medal4"
-					res.color = "#F5A200"
+					return `${res.value-10}.png`
 				}
 				else{
-					res.img = null
-					res.color = "#F8B500"
-				}
-				if (res){
-					return res
+					return `${res.value}.png`
 				}
 			}
 			return null
@@ -193,17 +178,9 @@ export default {
 				overflow hidden
 				text-overflow ellipsis
 				white-space nowrap
-			.award
-				border-radius 22px
-				white-space nowrap
-				display flex
-				align-items center
-				text
-					padding 0 10rpx
-					color #FFFFFF
-				image
-					width 36rpx
-					height 36rpx
+			.award-img
+				width 100rpx
+				transform translateY(-5px)
 		.comp-name
 			padding 1px 12px
 			background-color #F5A200

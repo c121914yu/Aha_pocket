@@ -1,5 +1,5 @@
 <template>
-	<view class="edu-experience">
+	<view v-if="loaded" class="edu-experience">
 		<!-- 学位 -->
 		<resumeMenuPicker
 			label="学位"
@@ -54,6 +54,7 @@ import resumeMenuPicker from "./Resume_menuPicker.vue"
 export default {
 	data() {
 		return {
+			loaded: false,
 			index: null,
 			is_remove: false,
 			degree: "",
@@ -79,6 +80,7 @@ export default {
 				this[key] = resume[key]
 			}
 		}
+		this.loaded = true
 		console.log(getApp().globalData.gResume.eduExperiences);
 	},
 	beforeDestroy() {

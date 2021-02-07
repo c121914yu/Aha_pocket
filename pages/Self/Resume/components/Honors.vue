@@ -1,5 +1,5 @@
 <template>
-	<view class="honors">
+	<view v-if="loaded" class="honors">
 		<resumeInput
 			label="荣誉名称"
 			placeholder="荣誉名称"
@@ -8,6 +8,7 @@
 		<resumeDataPicker
 			label="获奖时间"
 			placeholder="获奖时间"
+			:endTime="gGetToday()"
 			v-model="time">
 		</resumeDataPicker>
 		<resumeTextarea
@@ -30,6 +31,7 @@ import resumeTextarea from "./Resume_textarea.vue"
 export default {
 	data() {
 		return {
+			loaded: false,
 			index: null,
 			is_remove: false,
 			name: "",
@@ -50,6 +52,7 @@ export default {
 				this[key] = resume[key]
 			}
 		}
+		this.loaded = true
 		console.log(getApp().globalData.gResume.honors);
 	},
 	beforeDestroy() {

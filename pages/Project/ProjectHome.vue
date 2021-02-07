@@ -41,7 +41,7 @@
 				<projectCard
 					v-for="(project, index) in arr_projects"
 					:key="index"
-					margin="0 0 5px 0"
+					margin="0 0 10px 0"
 					:radius="index === 0 ? '0 0 16px 16px' : '16px'"
 					:project="project"
 					@click="readProject(project.id)"
@@ -77,7 +77,9 @@ export default {
 		ProjectCard
 	},
 	created() {
-		this.loadProjects(true)
+		if(getApp().globalData.gUserInfo.signedNotice){
+			this.loadProjects(true)
+		}
 	},
 	methods: {
 		/* 

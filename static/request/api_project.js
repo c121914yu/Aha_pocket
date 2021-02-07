@@ -66,6 +66,9 @@ const putMembers = (projectId,data) => request(`/project/members/${projectId}`,"
 /* 删除成员 */
 const deleteMember = (projectId,memberPhone) => request(`/project/member/${projectId}/${memberPhone}`,"DELETE",{})
 
+/* 测试-获取上传文件签名 */
+const test_getSign = (filename) => request(`/cos/sign/upload/test?filename=${filename}`,"GET",{})
+
 export {
 	getPublicSignature,
 	
@@ -95,5 +98,6 @@ export {
 	postMember,
 	putMember,
 	putMembers,
-	deleteMember
+	deleteMember,
+	test_getSign
 }

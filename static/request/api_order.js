@@ -14,7 +14,7 @@ const postOrder = (data) => request("/contribPoint/order","POST",data)
 const putOrder = (orderId,action) => request(`/contribPoint/order/${orderId}?action=${action}`,"PUT",{})
 
 /* 获取贡献点变化 */
-const getPointOrder = () => request("/contribPoint/log/me","GET",{})
+const getPointOrder = (params) => request("/contribPoint/log/me","GET",params)
 
 /* 获取个人订单信息 */
 const getOrders = (params) => request("/contribPoint/order/me","GET",params)

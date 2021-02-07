@@ -1,5 +1,5 @@
 <template>
-	<view class="school-experience">
+	<view v-if="loaded" class="school-experience">
 		<resumeInput
 			label="社团名称"
 			placeholder="社团名称"
@@ -41,6 +41,7 @@ import resumeTextarea from "./Resume_textarea.vue"
 export default {
 	data() {
 		return {
+			loaded: false,
 			index: null,
 			is_remove: false,
 			organization: "",
@@ -63,6 +64,7 @@ export default {
 				this[key] = resume[key]
 			}
 		}
+		this.loaded = true
 		console.log(getApp().globalData.gResume.schoolExperiences);
 	},
 	beforeDestroy() {

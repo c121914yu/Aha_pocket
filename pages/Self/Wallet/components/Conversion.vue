@@ -13,11 +13,27 @@
 </template>
 
 <script>
+import { useCDKEY } from "@/static/request/api_system.js"
 export default {
 	data() {
 		return {
 			code: ""
 		};
+	},
+	methods: {
+		confirm()
+		{
+			if(this.code){
+				useCDKEY(this.code)
+				.then(res => {
+					this.$emit("finish")
+					this.gToastSuccess("兑换成功")
+				})
+				.catch(err => {
+					this.code = ""
+				})
+			}
+		}
 	}
 }
 </script>

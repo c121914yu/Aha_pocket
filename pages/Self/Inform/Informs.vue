@@ -31,9 +31,13 @@
 				</view>
 			</navigator>
 		</view>
-		<view class="remark center">{{ is_showAll ? "已加载全部" : "" }}</view>
+		<view v-if="arr_informs.length===0" class="remark center">无通知</view>
+		<view v-else class="remark center">{{ is_showAll ? "已加载全部" : "" }}</view>
 		<!-- 发送信息 -->
-		<navigator class="send-inform" hover-class="none" url="Inform_send"><text class="iconfont icon-tianjia"></text></navigator>
+		<BottomBtn
+			text="发送私信"
+			linkTo="Inform_send">
+		</BottomBtn>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
@@ -144,6 +148,7 @@ export default {
 	min-height 100vh
 	/* 导航 */
 	.navs
+		margin-bottom 5px
 		display grid
 		grid-template-columns repeat(3,1fr)
 		border-bottom-left-radius 22px
@@ -176,14 +181,6 @@ export default {
 				 .amount
 					background-color #FFFFFF
 					color var(--origin2)
-	/* 未读信息 */
-	.send-inform
-		position fixed
-		right 10px
-		bottom 20px
-		text
-			font-size 60rpx
-			color var(--origin1)
 	/* 通知列表 */
 	.informs
 		.item

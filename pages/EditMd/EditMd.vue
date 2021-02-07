@@ -223,16 +223,16 @@ export default {
 			uni.chooseImage({
 				sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
 				success:  (imgs) => {
-					imgs.tempFilePaths.forEach(img => {
+					imgs.tempFilePaths.forEach(url => {
 						/* 获取签名 */
 						getPublicFileSign(`${Date.now()}.JPG`)
 						.then(signature => {
 							/* 上传文件 */
-							this.gUploadFile(img,signature.data)
-							.then(url => {
+							this.gUploadFile(url,signature.data)
+							.then(res => {
 								/* 插入图片 */
 								this.editorCtx.insertImage({
-									src: url, 
+									src: res.header.Location, 
 									alt: "插图",
 									width: "100%"
 								})

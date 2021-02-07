@@ -6,11 +6,11 @@
 				<view class="small">Aha币</view>
 				<view class="h3">{{ahaCredit}}</view>
 				<view class="function">
-					<view class="ctr" @click="isShowPay=true">
+					<view class="ctr" @click="undo">
 						<text class="iconfont icon-qian"></text>
 						<text>充值</text>
 					</view>
-					<view class="ctr" @click="isShowGive=true">
+					<view class="ctr" @click="undo">
 						<text class="iconfont icon-zengsong"></text>
 						<text>赠送</text>
 					</view>
@@ -41,9 +41,9 @@
 			<text class="right iconfont icon-right"></text>
 		</navigator>
 		
-		<GivePoint v-if="isShowGive" @close="isShowGive=false" @success="upDate"></GivePoint>
 		<PayAha v-if="isShowPay" @close="isShowPay=false"></PayAha>
-		<Conversion v-if="isShowConversion" @close="isShowConversion=false"></Conversion>
+		<GivePoint v-if="isShowGive" @close="isShowGive=false" @finish="upDate"></GivePoint>
+		<Conversion v-if="isShowConversion" @close="isShowConversion=false" @finish="upDate"></Conversion>
 	</view>
 </template>
 
@@ -67,7 +67,6 @@ export default {
 		Conversion
 	},
 	onShow() {
-		// this.gUndesign()
 		this.upDate()
 	},
 	methods: {
@@ -78,9 +77,11 @@ export default {
 			.then(res => {
 				this.ahaCredit = res.ahaCredit
 				this.ahaPoint = res.ahaPoint
-				console.log(res);
+				// console.log(res);
 			})
 			this.isShowGive = false
+			this.isShowPay = false
+			this.isShowConversion = false
 		},
 		/* 提现，判断是否实名认证，若未实名认证则跳转实名认证 */
 		withdrawDeposit()
@@ -91,6 +92,10 @@ export default {
 					this.gToastError("请先实名认证")
 				}
 			})
+		},
+		undo()
+		{
+			this.gToastMsg("功能开发中")
 		}
 	}
 }

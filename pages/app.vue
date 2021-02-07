@@ -99,10 +99,15 @@ export default {
 	onLoad() {
 		/* 隐藏返回主页 */
 		wx.hideHomeButton()
-		this.loadCompetitionInfo()
 		this.loadNav()
 		if(this.signedNotice){
+			this.loadCompetitionInfo()
 			this.getSystemNotice()
+		}
+	},
+	onShow() {
+		if(this.$refs.Self){
+			this.$refs.Self.getUnread()
 		}
 	},
 	onReachBottom(){
@@ -123,8 +128,11 @@ export default {
 		{
 			this.signedNotice = true
 			this.getSystemNotice()
+			this.loadCompetitionInfo()
+			this.$refs.projectHome.loadMore(true)
+			this.$refs.Self.getUnread()
 		},
-		/* 获取系统公共 */
+		/* 获取系统公告 */
 		getSystemNotice()
 		{
 			getNotice()

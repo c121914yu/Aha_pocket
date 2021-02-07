@@ -38,16 +38,11 @@
 <script>
 import { getSlideCard } from "@/static/request/api_system.js"
 var slideTimer,chageTimer
-var slideTime = 3000
+var slideTime = 4000
 export default {
 	data() {
 		return {
-			images: [
-				// {url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/53/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.l5VxpCL0psJU6a072385c43fa7d08b8ec38bf1b760ff.png',name: "反向寻车系统",to: '' },
-				// {url: 'http://blogs.jinlongyuchitang.cn/background.jpg',name: "反向寻车系统", to: '' },
-				// {url: 'http://blogs.jinlongyuchitang.cn/background.jpg',name: "反向寻车系统", to: '' },
-				// {url: 'https://aha-public.oss-cn-hangzhou.aliyuncs.com/resource/55/wxafd522b076e38be0.o6zAJsx62hZlfFMtuuRW5YzShUps.XONdUyq1A2d5d0fdaf1a2189515e12e9ce2779f01da7.JPG',name: "反向寻车系统",to: ''}
-			],
+			images: [],
 			showImg: null, // 添加首尾两张图片，方便循环
 			slideIndex: 0, // 轮播图偏移下标
 			tempIndex: 0,
@@ -81,14 +76,14 @@ export default {
 	created() {
 		getSlideCard()
 		.then(res => {
-			this.images = res.data
 			this.showImg = [
-				this.images[this.images.length-1],
-				...this.images,
-				this.images[0]
+				res.data[res.data.length-1],
+				...res.data,
+				res.data[0]
 			]
+			this.images = res.data
 			this.setTimer()
-			console.log(this.images);
+			console.log(this.showImg);
 		})
 		.catch(err => {
 			this.gToastError("轮播图错误")
@@ -119,7 +114,6 @@ export default {
 		setTimer()
 		{
 			slideTimer = setInterval(() => {
-				this.imgAnimation = true
 				this.slideIndex++
 			},slideTime)
 		},
@@ -140,9 +134,11 @@ export default {
 			const setIndex = (i) => {
 				chageTimer = setTimeout(() => {
 					this.imgAnimation = false
-					this.slideIndex = i
-					setTimeout(() => {
-						this.imgAnimation = true
+					this.$nextTick(() => {
+						this.slideIndex = i
+						this.$nextTick(() => {
+							this.imgAnimation = true
+						})
 					})
 				},this.imgAnimation ? 1000 : 0)
 			}

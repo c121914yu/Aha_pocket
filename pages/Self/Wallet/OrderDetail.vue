@@ -1,7 +1,7 @@
 <template>
 	<view class="order-info">
 		<view class="content">
-			<image :src="user.avatarUrl"></image>
+			<image :src="project.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
 			<view class="item project-name">
 				{{project.name}}
 			</view>
@@ -52,10 +52,8 @@
 				<view class="center" @click="is_showFeedback=!is_showFeedback">对订单有疑问？点击反馈</view>
 				<!-- 反馈内容 -->
 				<view 
-					class="feedback-coontent"
-					:style="{
-						width: is_showFeedback ? '100%' : '0'
-					}">
+					v-if="is_showFeedback"
+					class="feedback-coontent">
 					<textarea 
 						:placeholder="is_showFeedback ? '输入反馈内容...' : ''" 
 						v-model="feedbackContent"/>
@@ -186,16 +184,16 @@ export default {
 		.feedback-coontent
 			margin-top 10px
 			margin-left 50%
+			width 100%
 			transform translateX(-50%)
 			overflow hidden
-			transition var(--speed-hover)
 			textarea
 				width 100%
 				height 120px
 				background-color #FFFFFF
 			button
 				margin-top 10px
-				line-height 1.1
-				width 80px
+				padding 0
+				width 100px
 				border-radius 8px
 </style>

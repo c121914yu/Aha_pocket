@@ -59,7 +59,8 @@ export default {
             name: 创建项目资源
             desc: 获取资源基本信息，上传头像和证明图片后，调用接口创建一个项目
         */
-		createResource() {
+		createResource() 
+		{
 			const base = this.$refs.baseInfo;
 			/* 赛事类型和获奖等级需要转化成数值 */
 			this.awardLevel = base.awardLevel ? base.awardLevel.value : null
@@ -79,8 +80,8 @@ export default {
 				awardTime: base.awardTime,
 				awardProveUrl: base.awardProveUrl,
 				intro: base.intro,
-			};
-			console.log(data);
+			}
+			// console.log(data)
 			/* 空值检验 */
 			if (data.name === '') {
 				this.gToastError('请输入资源标题');
@@ -132,9 +133,9 @@ export default {
 				getPublicSignature(`${Date.now()}.JPG`)
 				.then(signature => {
 					this.gUploadFile(data.avatarUrl, signature.data)
-						.then(url => {
+						.then(res => {
 							console.log("头像上传成功");
-							data.avatarUrl = url
+							data.avatarUrl = res.header.Location
 							successNum++
 							postProj()
 						})
@@ -158,9 +159,9 @@ export default {
 			getPublicSignature(`${Date.now()}.JPG`)
 			.then(signature => {
 				this.gUploadFile(data.awardProveUrl, signature.data)
-					.then(url => {
+					.then(res => {
 						console.log("证明上传成功");
-						data.awardProveUrl = url
+						data.awardProveUrl = res.header.Location
 						successNum++
 						postProj()
 					})

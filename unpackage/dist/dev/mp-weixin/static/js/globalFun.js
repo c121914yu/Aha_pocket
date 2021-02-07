@@ -69,36 +69,33 @@ Vue.prototype.gShowModal = (content,success,cancel) => {
 	@return: fileUrl: String,文件路径
 	time: 2020/12/30
 */
-var COS = require('./COS.js')
-Vue.prototype.gUploadFile = (filePath,signature) => {
+Vue.prototype.gUploadFile = (filePath,signature,updateDom=null) => {
 	return new Promise((resolve,reject) => {
-		const cos = new COS({
-			getAuthorization: function (options, callback) {
-				callback({
-					Authorization: signature.authorization
-				})
-			}
-		})
-		/* 转化成二进制 */
-		wx.getFileSystemManager().readFile({
-			filePath,
+		const uploadTask = uni.uploadFile({
+			url: `https://${signature.bucketName}.cos.${signature.region}.myqcloud.com/`,
+			name: 'file',
+			filePath: filePath,
+			formData: {
+				"key": signature.filename,
+				"policy": signature.policy,
+				"q-sign-algorithm": "sha1",
+				"q-ak": signature.secretId,
+				"q-key-time": signature.keyTime,
+				"q-signature": signature.signature
+			},
 			success: (res) => {
-				cos.putObject({
-					Bucket: signature.bucketName,
-					Region: signature.region,
-					Key: signature.filename,
-					Body: res.data,
-				}, (err,data) => {
-					if(err){
-						reject(err)
-					}
-					else{
-						resolve("https://" + data.Location)
-					}
-				})
+				if(res.statusCode === 204){
+					resolve(res)
+				}
+				reject(res)
 			},
 			fail: (err) => {
 				reject(err)
+			}
+		})
+		uploadTask.onProgressUpdate((res) => {
+			if(updateDom){
+				updateDom(res.progress)
 			}
 		})
 	})
@@ -109,6 +106,7 @@ Vue.prototype.gUploadFile = (filePath,signature) => {
 	@params signature: Object,签名
 	@return filePath: String,文件路径
 */
+var COS = require('./COS.js')
 Vue.prototype.gGetFileUrl = (signature) => {
 	return new Promise((resolve,reject) => {
 		const cos = new COS({
@@ -185,6 +183,14 @@ Vue.prototype.gformatDate = (time,noAddr=false) => {
 		return `${month < 10 ? '0'+month : month}/${day < 10 ? '0'+day : day} ${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
 	}
 	return `${year}/${month < 10 ? '0'+month : month}/${day < 10 ? '0'+day : day} ${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
+}
+/* 
+	获取今天 
+	@return yy-mm-dd
+*/
+Vue.prototype.gGetToday = (symbol="-") => {
+	const date = new Date()
+	return `${date.getFullYear()}${symbol}${date.getMonth()+1}${symbol}${date.getDate()}`
 }
 
 /* 展示/隐藏等待 */

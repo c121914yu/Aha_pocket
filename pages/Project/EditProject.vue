@@ -82,6 +82,7 @@ export default {
 		*/
 		initPageInfo()
 		{
+			console.log(this.project)
 			/* 获取获奖等级名称 */
 			let awardLevel = getApp().globalData.prizeLevels.find(item => item.value === this.project.awardLevel)
 			/* 同步基础信息 */
@@ -119,7 +120,9 @@ export default {
                     editable: item.editable,
                 }
             })
-			console.log(this.project)
+			if(this.project.members.length === 0){
+				this.$refs.memberInfo.setNormalMember()
+			}
             this.gLoading(this,false)
 		},
 		/* 
@@ -207,9 +210,10 @@ export default {
 				getPublicSignature(`${Date.now()}.JPG`)
 				.then(signature => {
 					this.gUploadFile(data.avatarUrl, signature.data)
-						.then(url => {
+						.then(res => {
 							console.log("头像上传成功");
-							data.avatarUrl = url
+							const url = res.header.Location
+							// data.avatarUrl = url
 							this.project.avatarUrl = url
 							base.avatarUrl = url
 							successNum++
@@ -234,9 +238,10 @@ export default {
 				getPublicSignature(`${Date.now()}.JPG`)
 				.then(signature => {
 					this.gUploadFile(data.awardProveUrl, signature.data)
-						.then(url => {
+						.then(res => {
 							console.log("证明上传成功");
-							data.awardProveUrl = url
+							const url = res.header.Location
+							// data.awardProveUrl = url
 							this.project.awardProveUrl = url
 							base.awardProveUrl = url
 							successNum++
