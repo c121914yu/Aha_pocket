@@ -1,7 +1,7 @@
 <!-- 文件设置 -->
 <template>
-	<view class="set-file fix-screen" @touchmove.stop.prevent>
-		<div class="content">
+	<view class="set-file fix-screen" @click="$emit('close')" @touchmove.stop.prevent>
+		<div class="content" @click.stop>
 			<view class="title">文件信息设置</view>
 			<form @submit="sure">
 				<view class="item">
@@ -110,7 +110,6 @@ export default {
 		margin 0
 		width 85%
 		border-radius 8px
-		padding 10px
 		.title
 			margin 5px 0
 			text-align center

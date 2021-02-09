@@ -9,6 +9,7 @@
 	gformatDate - 格式化日期输出
 	gLoading - 显示/隐藏加载动画
 	gMenuPicker - 调用菜单选择框
+	gClipboardData - 复制到剪切板
 */
 import Vue from 'vue'
 /* 普通文本提示*/
@@ -220,9 +221,28 @@ Vue.prototype.gMenuPicker = (list) => {
 				resolve(list[res.tapIndex])
 			},
 			fail: (err) => {
-				reject(err)
+				if(err.errMsg === "showActionSheet:fail cancel"){
+					resolve()
+				}
+				else{
+					reject(err)
+				}
 			}
 		})
+	})
+}
+
+/* 复制到剪切板 */
+Vue.prototype.gClipboardData = (content,msg) => {
+	uni.setClipboardData({
+		data: content,
+		success: () => {
+			Vue.prototype.gToastMsg(msg)
+		},
+		fail: (err) => {
+			console.log(err);
+			Vue.prototype.gToastMsg("复制错误..")
+		}
 	})
 }
 

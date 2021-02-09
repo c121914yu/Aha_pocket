@@ -4,7 +4,7 @@
 		<view class="search">
 			<input 
 				type="number" 
-				placeholder="输入队友的uid" 
+				placeholder="输入队友的ID" 
 				v-model="searchText"/>
 			<text class="iconfont icon-sousuo" @click="search"></text>
 		</view>
@@ -32,6 +32,9 @@ import SetMember from './SetMember.vue';
 import { postMember, putMember, deleteMember } from '@/static/request/api_project.js';
 import { getUser } from '@/static/request/api_userInfo.js';
 export default {
+	props: {
+		projectId: String
+	},
 	data() {
 		return {
 			searchText: '',
@@ -39,13 +42,9 @@ export default {
 			members: []
 		};
 	},
-	props: {
-		projectId: String
-	},
-	created() {
-		if (this.projectId) {
-			this.setNormalMember()
-		}
+	components: {
+		drawList,
+		SetMember
 	},
 	methods: {
 		/* 创建者默认为负责人 */
@@ -75,7 +74,9 @@ export default {
         */
 		search() 
 		{
-			if (this.searchText === '') return;
+			if (this.searchText === ''){
+				return;
+			} 
 			/* 判断是否已经在成员列表中 */
 			const judge = this.members.find(item => item.memberUserId == this.searchText);
 			if (judge) {
@@ -96,7 +97,9 @@ export default {
 							editable: false,
 							memberIndex: -1 // -1代表新成员
 						};
-					} else this.gToastError('用户不存在');
+					} else {
+						this.gToastError('用户不存在');
+					}
 					this.gLoading(this, false);
 				})
 				.catch(err => {
@@ -132,8 +135,11 @@ export default {
 				this.gLoading(this, true);
 				deleteMember(this.projectId, e.member.memberUserId)
 					.then(res => {
-						this.members.splice(e.member.memberIndex, 1);
-						this.$refs.drawList.tempList.splice(e.member.memberIndex, 1);
+						this.members.splice(e.member.memberIndex, 1)
+						this.members.forEach((item,index) => {
+							item.rank = index+1
+						})
+						this.$refs.drawList.tempList = JSON.parse(JSON.stringify(this.members))
 						this.gToastSuccess('删除成功');
 						this.memberInfo = null;
 						this.gLoading(this, false);
@@ -150,25 +156,24 @@ export default {
 					job: e.member.job,
 					rank: this.members.length + 1,
 					editable: e.member.editable
-				};
+				}
 				postMember(this.projectId, data)
-					.then(res => {
-						this.members.push({
-							...data,
-							nickname: e.member.nickname,
-							avatarUrl: e.member.avatarUrl
-						});
-						this.gLoading(this, false)
-						setTimeout(() => {
-							this.$refs.drawList.tempList = JSON.parse(JSON.stringify(this.members))
-							this.searchText = ''
-							this.memberInfo = null
-							// this.gToastSuccess('添加成员成功!')
-						});
+				.then(res => {
+					this.members.push({
+						...data,
+						nickname: e.member.nickname,
+						avatarUrl: e.member.avatarUrl
+					});
+					this.gLoading(this, false)
+					this.$nextTick(() => {
+						this.$refs.drawList.tempList = JSON.parse(JSON.stringify(this.members))
+						this.searchText = ''
+						this.memberInfo = null
 					})
-					.catch(err => {
-						this.gLoading(this, false)
-					})
+				})
+				.catch(err => {
+					this.gLoading(this, false)
+				})
 			} 
 			else {
 				/* 修改成员 */
@@ -190,10 +195,6 @@ export default {
 				});
 			}
 		}
-	},
-	components: {
-		drawList,
-		SetMember
 	}
 };
 </script>

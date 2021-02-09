@@ -275,9 +275,8 @@ export default {
 			this.editorCtx.getContents({
 				success: (res) => {
 					getApp().globalData.gEditContent = res.html
-					uni.navigateBack({
-						delta: 1
-					})
+					this.gClipboardData(res.html)
+					this.gToastMsg("已复制到剪切板")
 				} 
 			})
 		},

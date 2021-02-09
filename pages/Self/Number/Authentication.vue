@@ -87,6 +87,9 @@ export default {
 			}
 		}
 	},
+	onLoad() {
+		this.gUndesign()
+	},
 	methods: {
 		/* 选择图片 */
 		chooseImg(item)

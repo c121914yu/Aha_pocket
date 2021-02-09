@@ -366,16 +366,8 @@ export default {
 					}
 					/* 其他则复制下载链接 */
 					else{
-						/* 复制到剪切板 */
-						uni.setClipboardData({
-						    data: file.url,
-							success: () => {
-								this.gToastMsg("已复制下载链接")
-							},
-							complete: () => {
-								this.gLoading(this,false)
-							}
-						})
+						this.gClipboardData(file.url,"已复制下载链接")
+						this.gLoading(this,false)
 					}
 				}
 				/* 没有缓存下载路径，请求签名路径后再回调该函数 */

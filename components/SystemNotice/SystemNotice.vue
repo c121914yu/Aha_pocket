@@ -1,11 +1,11 @@
 <!-- 系统公告 -->
 <template>
-	<view class="notice fix-screen">
-		<view class="content">
+	<view class="notice fix-screen" @click="$emit('close')" @touchmove.stop.prevent>
+		<view class="content" @click.stop>
 			<text class="iconfont icon-guanbi" @click="$emit('close')"></text>
 			<view class="notice">
 				<view class="center h3">{{notices[currentPage].title}}</view>
-				<view>{{notices[currentPage].content}}</view>
+				<view class="notice-content" v-html="notices[currentPage].content"></view>
 			</view>
 			<text class="page small">{{currentPage+1}} / {{notices.length}}</text>
 			<view class="ctr">
@@ -42,7 +42,6 @@ export default {
 	.content
 		position relative
 		width 92%
-		min-height 30vh
 		box-shadow var(--shadow2)
 		border-radius 8px
 		/* 关闭图标 */
@@ -51,11 +50,16 @@ export default {
 			right 10px
 			top 5px
 			color var(--origin1)
-			font-size 40rpx
+			font-size 45rpx
 		/* 公告内容 */
 		.notice
 			margin-bottom 10px
-			padding 0 30px
+			padding 0 10px
+			.notice-content
+				height 50vh
+				padding 0 10px
+				white-space pre-wrap
+				overflow auto
 		/* 页码 */
 		.page
 			position absolute

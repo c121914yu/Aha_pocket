@@ -22,7 +22,8 @@
 				:disabled="disabled"
 				:value="value"
 				:placeholder="placeholder"
-				@input="inputing"/>
+				@input="inputing"
+				@focus="inputing"/>
 			<!-- 搜索结果 -->
 			<view class="search-result">
 				<view 
@@ -120,9 +121,9 @@ export default {
 					this.searchResult = [];
 				} 
 				/* 值为空 */
-				if (value === ''){
-					this.searchResult = [];
-				} 
+				// if (value === ''){
+				// 	this.searchResult = [];
+				// } 
 			}
 			this.$emit('input', value)
 		},
@@ -168,9 +169,9 @@ export default {
 		.search-result
 			z-index 5
 			position absolute
-			top 50rpx
+			top 55rpx
 			width 100%
-			max-height 350rpx
+			max-height 400rpx
 			background-color #FFFFFF
 			box-shadow 0 0 5px var(--origin2)
 			border-radius 8px
@@ -178,10 +179,9 @@ export default {
 			overflow-x hidden
 			.result
 				text-align center
-				height 60rpx
-				line-height 60rpx
-				font-size 24rpx
-				white-space nowrap
+				padding 7px 3px
+				font-size 22rpx
+				// white-space nowrap
 				&.active
 					background-color rgba(144, 140, 139, 0.5)
 		.remark

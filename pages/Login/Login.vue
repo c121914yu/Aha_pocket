@@ -55,7 +55,6 @@ export default {
 		loginSuccess(data) 
 		{
 			getApp().globalData.gUserInfo = data
-			console.log(data);
 			uni.reLaunch({
 				url: '../app',
 				success: () => {

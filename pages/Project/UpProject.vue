@@ -1,9 +1,9 @@
 <!-- 资源分享 -->
 <template>
 	<view class="up-project">
-		<baseInfo ref="baseInfo" v-if="step === 0" :projectId="projectId"></baseInfo>
-		<fileInfo ref="fileInfo" v-if="step === 1" :projectId="projectId" :level="awardLevel"></fileInfo>
-		<MemberInfo ref="memberInfo" v-if="step === 2" :projectId="projectId"></MemberInfo>
+		<baseInfo ref="baseInfo" v-show="step === 0" :projectId="projectId"></baseInfo>
+		<fileInfo ref="fileInfo" v-show="step === 1" :projectId="projectId" :level="awardLevel"></fileInfo>
+		<MemberInfo ref="memberInfo" v-show="step === 2" :projectId="projectId"></MemberInfo>
 		<view class="btn">
 			<!-- step0 只能进行下一步 -->
 			<button v-if="step === 0" @click="createResource">添加附件</button>
@@ -22,7 +22,7 @@
 import baseInfo from './components/ProjectBase.vue';
 import fileInfo from './components/ProjectFile.vue';
 import MemberInfo from './components/ProjectMember.vue';
-import { getPublicSignature, postProject, postResource, putMembers } from '@/static/request/api_project.js';
+import { getPublicSignature, postProject, postResource,putMembers } from '@/static/request/api_project.js';
 
 export default {
 	data() {
@@ -116,6 +116,21 @@ export default {
 					/* 进入下一步*/
 					this.step = 1
 					this.gLoading(this, false)
+					/* 创建项目默认成员 */
+					this.$nextTick(() => {
+						const me = getApp().globalData.gUserInfo.userInfo
+						this.$refs.memberInfo.sureMember({
+							type: 2,
+							member: {
+								memberUserId: me.userId,
+								nickname: me.nickname,
+								avatarUrl: me.avatarUrl,
+								job: "负责人",
+								editable: true,
+								memberIndex: -1
+							}
+						})
+					})
 				})
 				.catch(err => {
 					this.gLoading(this, false)
@@ -199,7 +214,8 @@ export default {
 			desc: 更新项目的队友信息
 			time: 2020/11/15
 		*/
-		putMembers() {
+		putMembers() 
+		{
 			this.gLoading(this, true);
 			const data = this.$refs.memberInfo.members.map((item, i) => {
 				return {
@@ -210,12 +226,12 @@ export default {
 				};
 			});
 			putMembers(this.projectId, data)
-				.then(res => {
-					this.finish();
-				})
-				.catch(err => {
-					this.gLoading(this, false);
-				});
+			.then(res => {
+				this.finish();
+			})
+			.catch(err => {
+				this.gLoading(this, false);
+			});
 		},
 		/* 
 			name: 完成创建

@@ -12,10 +12,24 @@
 			<!-- 右侧昵称 & 标签 -->
 			<view class="right">
 				<!-- 昵称 -->
-				<input class="name" :value="userInfo.nickname" maxlength="15" @blur="setNickName" />
+				<input 
+					class="name" 
+					:value="userInfo.nickname" 
+					maxlength="15" 
+					@blur="setNickName"/>
 				<!-- 标签 -->
 				<view class="tags" @click="isCheckTags = true">
-					<view class="tag" v-for="(tag, index) in tags" :key="index">{{ tag }}</view>
+					<!-- 等级标签 -->
+					<view v-if="userLevel" class="user-level">
+						<image :src="'../../static/icon/userLevels/'+userLevel.src" mode="widthFix"></image>
+						<text>{{userLevel.label}}</text>
+					</view>
+					<view 
+						class="tag" 
+						v-for="(tag, index) in tags" 
+						:key="index">
+						{{ tag }}
+					</view>
 				</view>
 			</view>
 			<!-- 幕布 -->
@@ -52,7 +66,8 @@
 				v-for="(item, index) in funtions1"
 				:key="index"
 				hover-stay-time="50"
-				:url="item.to">
+				:url="item.to"
+				@click="clickList(item,index)">
 				<text :class="'iconfont ' + item.icon"></text>
 				<text class="name small">{{ item.name }}</text>
 				<text v-if="item.val >= 0" class="small val">{{ item.val }}</text>
@@ -106,13 +121,14 @@
 </template>
 
 <script>
-import { getAvatarOssSignature, putMe, getUnreadCount } from '@/static/request/api_userInfo.js';
+import { getSelfStatistice,getAvatarOssSignature, putMe, getUnreadCount } from '@/static/request/api_userInfo.js';
 import { loginOut } from '@/static/request/api_login.js'
 import SelectInterest from "./components/SelectInterest.vue"
 export default {
 	data() {
 		return {
 			userInfo: getApp().globalData.gUserInfo.userInfo,
+			userLevel: getApp().globalData.arr_userLevel[0],
 			/* 任务列表 */
 			tasks: [
 				{ name: '已购项目', icon: 'icon-shouye', to: "/pages/Project/PurchasedProjects" },
@@ -121,7 +137,7 @@ export default {
 			],
 			/* 功能列表 */
 			funtions1: [
-				{ name: 'userId', icon: 'icon-ID', to: '#', val: getApp().globalData.gUserInfo.userInfo.userId },
+				{ name: 'ID', icon: 'icon-ID', to: '#', val: getApp().globalData.gUserInfo.userInfo.userId },
 				{ name: '消息通知', icon: 'icon-tongzhi1', to: '/pages/Self/Inform/Informs', val: 0 },
 				{ name: '我的钱包', icon: 'icon-ziyuan', to: '/pages/Self/Wallet/Wallet'},
 				{ name: '账号信息', icon: 'icon-zhanghao', to: '/pages/Self/Number/NumberInfo' },
@@ -135,12 +151,11 @@ export default {
 		};
 	},
 	computed: {
-		isAdmin()
-		{
+		isAdmin() {
 			return getApp().globalData.gUserInfo.role.id === 2
 		},
-		tags() 
-		{
+		/* 计算标签 */
+		tags() {
 			const userInfo = getApp().globalData.gUserInfo.userInfo
 			let specialtyTags = []
 			let compTags = []
@@ -163,10 +178,19 @@ export default {
 	created() {
 		if(getApp().globalData.gUserInfo.signedNotice){
 			this.getUnread()
+			this.getSelfData()
 		}
 		uni.$on("upDateUnread",this.upDateUnread)
 	},
 	methods: {
+		/* 点击列表触发功能 */
+		clickList(e,index)
+		{
+			/* 点击ID，复制到剪切板 */
+			if(index === 0){
+				this.gClipboardData(e.val.toString(),"已复制ID")
+			}
+		},
 		/* 获取未读 */
 		getUnread()
 		{
@@ -179,6 +203,16 @@ export default {
 		upDateUnread(amount)
 		{
 			this.funtions1[1].val = amount
+		},
+		/* 获取个人统计数据 */
+		getSelfData()
+		{
+			getSelfStatistice()
+			.then(res => {
+				getApp().globalData.gUserInfo.statistice = res.data
+				this.userLevel =  getApp().globalData.arr_userLevel.find(item => res.data.totalContribPoint < item.totalContribPoint)
+				console.log(getApp().globalData.gUserInfo);
+			})
 		},
 		/* 
 			name: 设置昵称
@@ -333,6 +367,7 @@ bgSetting(size, color)
 			.tags
 				padding 5px 0 5px 12vw
 				display flex
+				align-items center
 				flex-wrap wrap
 				justify-content space-around
 				.tag
@@ -342,6 +377,22 @@ bgSetting(size, color)
 					background-color #FFFFFF
 					color var(--origin2)
 					font-size 22rpx
+				.user-level
+					position relative
+					margin 3px 3px 5px
+					padding 2px 10px 2px 25px
+					color var(--origin1)
+					background-color #FFFFFF
+					font-size 22rpx
+					font-weight 700
+					border-radius 22px
+					display flex
+					align-items center
+					image
+						position absolute
+						left 0
+						top 0
+						width 20px
 		/* 幕布 */
 		.curtain
 			position absolute

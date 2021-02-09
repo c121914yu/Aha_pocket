@@ -133,9 +133,11 @@ export default {
 		{
 			this.signUrl = url
 			this.showSign = false
-			uni.pageScrollTo({
-				duration: 0,
-				scrollTop: 10000
+			this.$nextTick(() => {
+				uni.pageScrollTo({
+					duration: 0,
+					scrollTop: 10000
+				})
 			})
 		},
 		/* 
@@ -163,21 +165,26 @@ export default {
 					name: this.name,
 				},
 				success: (res) => {
-					console.log(res.data);
 					const data = JSON.parse(res.data)
 					if(data.code === 200){
 						uni.setStorageSync("token",data.data)
 						getApp().globalData.gUserInfo.signedContract = true
+						uni.navigateBack({
+							delta: 1,
+							success: () => {
+								this.gToastSuccess(data.msg)
+							}
+						})
 					}
-					uni.navigateBack({
-						delta: 1,
-						success: () => {
-							this.gToastSuccess(data.msg)
-						}
-					})
+					else{
+						this.gToastError("合同上传失败")
+					}
 				},
 				fail: (err) => {
 					console.log(err)
+				},
+				complete: () => {
+					uni.hideLoading()
 				}
 			})
 		}

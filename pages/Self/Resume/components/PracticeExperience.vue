@@ -2,7 +2,7 @@
 	<view v-if="loaded" class="practice-experience">
 		<resumeInput
 			label="企业名称"
-			placeholder="实习企业名次"
+			placeholder="实习企业名称"
 			v-model="company">
 		</resumeInput>
 		<resumeInput

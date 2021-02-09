@@ -7,8 +7,7 @@
 				transform: `translateY(${item.translateY}px) translateZ(${item.translateZ}px)`
 			}"
 			v-for="(item, index) in tempList"
-			:key="index"
-		>
+			:key="index">
 			<view class="info" @click="$emit('click', index)">
 				<image :src="item.avatarUrl"></image>
 				<text>{{ item.trueName || item.nickname }}</text>
@@ -21,13 +20,13 @@
 <script>
 var initY, lastY;
 export default {
+	props: {
+		list: Array
+	},
 	data() {
 		return {
 			tempList: []
 		};
-	},
-	props: {
-		list: Array
 	},
 	created() {
 		this.initSort(this.list);
@@ -69,13 +68,15 @@ export default {
 			lastY = pointY;
 			/* 判断触摸的DOM是否挤占其他DOM */
 			this.tempList.forEach((item, index) => {
-				if (i === index) return;
+				if (i === index) {
+					return
+				}
 				item.class = 'animation';
-				const diff = item.position + item.translateY - position;
+				const diff = item.position + item.translateY - position
 				/* 
 				  direction > 0 向下
 				  direction < 0 向上
-							拖动的4种情况
+				  拖动的4种情况
 				  1. 向下拖拽，触碰下边缘
 					1.1 拖拽DOM原位置在当前模块下方：位移为0
 					1.2 拽DOM原位置在当前模块上方：向上位移，数值为负
@@ -84,10 +85,10 @@ export default {
 					1.2 拽DOM原位置在当前模块上方：位移为0
 				*/
 				if (direction > 0 && diff < 0 && diff > -20){
-					item.translateY = this.tempList[i].position < item.position ? -48 : 0;
+					item.translateY = this.tempList[i].position < item.position ? -48 : 0
 				} 
 				else if (direction < 0 && diff > 0 && diff < 20) {
-					item.translateY = this.tempList[i].position > item.position ? 48 : 0;
+					item.translateY = this.tempList[i].position > item.position ? 48 : 0
 				}
 			});
 		},
@@ -123,6 +124,11 @@ export default {
 	align-items center
 	transition none
 	transform-style preserve-3d
+	&.active
+		z-index 5
+		box-shadow var(--shadow2)
+	&.animation
+		transition 0.3s
 	.info
 		flex 1
 		display flex
@@ -136,9 +142,4 @@ export default {
 		width 30px
 		height 30px
 		border-radius 5px
-	&.active
-		z-index 5
-		box-shadow var(--shadow2)
-	&.animation
-		transition 0.3s
 </style>

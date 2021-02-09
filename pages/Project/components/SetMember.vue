@@ -1,11 +1,11 @@
 <!-- 设置成员信息 -->
 <template>
-	<view class="set-member" @click="$emit('close')">
+	<view class="fix-screen set-member" @click="$emit('close')" @touchmove.stop.prevent>
 		<view class="content" @click.stop>
-			<text class="h3">成员信息</text>
+			<text class="h3 center">成员信息</text>
 			<image :src="member.avatarUrl"></image>
             <view>
-				<text class="small">uid:</text>
+				<text class="small">I D:</text>
 				<text class="value">{{member.memberUserId}}</text>
 			</view>
 			<view>
@@ -68,28 +68,18 @@ export default {
 
 <style lang="stylus" scoped>
 .set-member
-	z-index 5
-	position fixed
-	top 0
-	left 0
-	right 0
-	bottom 0
-	background-color rgba(0,0,0,0.2)
-	display flex
-	align-items center
-	justify-content center
 	.content
-		width 90%
-		padding 10px
-		border-radius 22px
-		background-color #FFFFFF
+		margin 0
+		width 85%
+		border-radius 8px
 		display flex
 		flex-direction column
-		align-items center
 		image
+			margin auto
 			width 60px
 			height 60px
 			border-radius 8px
+			display block
 		view
 			margin 2px 0
 			width 90%

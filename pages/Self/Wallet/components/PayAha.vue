@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { getPrepay_id } from "@/static/request/api_order.js"
 export default {
 	data() {
 		return {
@@ -39,8 +40,7 @@ export default {
 	},
 	methods: {
 		/* 支付 */
-		pay()
-		{
+		pay() {
 			let amount = ""
 			if(this.checkAmount){
 				amount = this.arr_preAmount[this.checkAmount]
@@ -48,20 +48,63 @@ export default {
 			else{
 				amount = this.amount
 			}
-			wx.requestPayment({
-				timeStamp: '',
-				nonceStr: '',
-				package: '',
-				signType: 'MD5',
-				paySign: '',
-				success: (res) => {
-					console.log(res)
-				},
-				fail: (err) => {
-					console.log(err)
+			const randomStr = (len) => {
+				const strs = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678"
+				let str = ""
+				for(let i=0;i<len;i++){
+					str += strs.charAt(Math.floor(Math.random() * strs.length))
 				}
-			})
-			console.log(amount);
+				return str
+			}
+			const formaterTime = (time) => {
+				let date = new Date(time);
+				let YY = date.getFullYear()
+				let MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
+				let DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
+				let hh = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours())
+				let mm = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+				let ss = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
+				return `${YY}-${MM}-${DD}T${hh}:${mm}:${ss}+08:00`
+			}
+			/* 统一下单接口 */
+			const test = {
+				out_trade_no: randomStr(30), //订单号
+				body: "Aha口袋-Aha币充值",
+				detail: `用户"${getApp().globalData.gUserInfo.userInfo.nickname}"充值了${amount}个Aha币,共花费"${amount}元"。`,
+				total_fee: amount,
+				time_start: formaterTime(Date.now()),
+				time_expire: formaterTime(Date.now()+5*60000), //过期时间，5分钟
+				goodsTag: "Aha币"
+			}
+			// getPrepay_id()
+			console.log(test);
+			return
+			
+			const getTime = () => {
+				const date = new Date()
+				return `wx${date.getFullYear()}${date.getMonth()+1}${date.getDate()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}${randomStr(20)}`
+			}
+			const data = {
+				timeStamp: Date.now(),
+				nonceStr: randomStr(30),
+				package: getTime(),
+				signType: 'RSA',
+			}
+			console.log(data);
+			// wx.requestPayment({
+			// 	timeStamp: '',
+			// 	nonceStr: '',
+			// 	package: '',
+			// 	signType: 'MD5',
+			// 	paySign: '',
+			// 	success: (res) => {
+			// 		console.log(res)
+			// 	},
+			// 	fail: (err) => {
+			// 		console.log(err)
+			// 	}
+			// })
+			// console.log(amount);
 			this.$emit("close")
 		}
 	}

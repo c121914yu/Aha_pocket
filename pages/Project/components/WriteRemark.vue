@@ -84,11 +84,12 @@ export default {
 			if (this.isCollect) {
 				cancleCollectProject(this.projectId)
 				this.$emit("collectChange",-1)
-			} else {
-			/* 本事未收藏的收藏 */
+			} 
+			/* 本是未收藏的收藏 */
+			else {
 				collectProject(this.projectId)
 				this.$emit("collectChange",1)
-				uni.vibrateShort() // 短暂震动
+				uni.vibrateLong()
 			}
 			this.isCollect = !this.isCollect
 		},

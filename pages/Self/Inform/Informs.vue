@@ -51,7 +51,7 @@ export default {
 			navs: [
 				{text: "系统通知",value: "system",unread: 0},
 				{text: "用户消息",value: "private",unread: 0},
-				{text: "企业通知",value: "企业通知",unread: 0}
+				// {text: "企业通知",value: "企业通知",unread: 0}
 			],
 			currentNav: 0,
 			pageNum: 1,
@@ -149,12 +149,14 @@ export default {
 	/* 导航 */
 	.navs
 		margin-bottom 5px
-		display grid
-		grid-template-columns repeat(3,1fr)
+		display flex
+		// display grid
+		// grid-template-columns repeat(3,1fr)
 		border-bottom-left-radius 22px
 		border-bottom-right-radius 22px
 		overflow hidden
 		.nav
+			flex 1
 			padding 10px 0
 			background-color var(--origin3)
 			display flex

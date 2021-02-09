@@ -5,7 +5,7 @@
 			<text class="h3">上传附件:</text>
 			<text class="add iconfont icon-tianjia"></text>
 		</view>
-		<view style="color: var(--font-dark);" class="remark">(注: 附件必须小于500M,上传成功后不可删除,请确认后再上传)</view>
+		<view style="color: var(--gray2);" class="mini">(注: 附件必须小于500M,上传成功后附件会进入审核状态,仅项目成员可见,审核通过后附件不可删除,请确认后再上传)</view>
 		<view 
 			class="file"
 			v-for="(file,index) in files"
@@ -90,26 +90,6 @@ export default {
 		SetFile
 	},
 	methods: {
-		/* 压缩视频 */
-		compressVideo(src)
-		{
-			console.log(src);
-			uni.compressVideo({
-				src: src,
-				quality: "medium",
-				// bitrate: 500,
-				// fps: 40,
-				// resolution: 1,
-				success: (res) => {
-					console.log(res);
-					return 1
-				},
-				fail: (err) => {
-					console.log(err);
-					return 2
-				}
-			})
-		},
 		/*
 			name: 选择附件
 			description: 选择需要上传的附件
@@ -126,48 +106,94 @@ export default {
 				size = size.toFixed(2)
 				return size + unitArr[index]
 			}
-            this.gLoading(this,true)
-			/* 选择文件API */
-			wx.chooseMessageFile({
-				count: 1,
-				type: 'all',
-				success: (res) => {
-					/* 限制500M */
-					let file = res.tempFiles[0]
-					if(file.size > 500000000){
-						this.gToastError("文件大于500M")
-						return
+			/* file: name,path,size */
+			const addFile = (file,fileType) => {
+				/* 限制500M */
+				if(file.size > 500000000){
+					this.gToastError("文件大于500M")
+					return
+				}
+				/* 计算价格，取平均值 */
+				const award = getApp().globalData.prizeLevels.find(item => item.value === this.level)
+				const typeId = getApp().globalData.arr_fileClassify[3]
+				const data = {
+					name: file.name,
+					url: file.path,
+					size: renderSize(file.size),
+					typeId: typeId.value,
+					fileType,
+					progress: 0,
+					status: 0, // 0 待上传，1 上传中，2上传完成，3上传失败
+					price: (award.max + award.min) * typeId.rate / 2
+				}
+				this.files.push(data)
+				this.setFileIndex = this.files.length - 1
+				this.gLoading(this,false)
+				console.log(this.files)
+			}
+			const chooseFile = (type,fileType) => {
+				/* 除视频外的文件 */
+				wx.chooseMessageFile({
+					count: 1,
+					type,
+					success: (res) => {
+						addFile(res.tempFiles[0],fileType)
+					},
+					fail: (err) => {
+						if(err.errMsg !== "chooseMessageFile:fail cancel")
+						{
+							this.gLoading(this,false)
+							this.gToastError(err.errMsg)
+						}
 					}
-					/* 计算价格，取平均值 */
-					const award = getApp().globalData.prizeLevels.find(item => item.value === this.level)
-					const typeId = getApp().globalData.arr_fileClassify[3]
-					const fileType = getApp().globalData.arr_fileTypes.find(item => item.reg.test(file.name)).value
-					if(fileType === 1){
-						console.log(this.compressVideo(file.path));
-					}
-					const data = {
-						name: file.name,
-						url: file.path,
-						size: renderSize(file.size),
-						typeId: typeId.value,
-						fileType,
-						progress: 0,
-						status: 0, // 0 待上传，1 上传中，2上传完成，3上传失败
-						price: (award.max + award.min) * typeId.rate / 2,
-					}
-					this.files.push(data)
-					this.setFileIndex = this.files.length - 1
-					console.log(this.files);
-				},
-				fail: err => {
-					console.log(err)
-					if(err.errMsg !== "chooseMessageFile:fail cancel")
-					{
-						this.gToastError(err.errMsg)
-					}
-				},
-				complete: () => {
-					this.gLoading(this,false)
+				})
+			}
+			/* 选择上传的文件类型 */
+			this.gMenuPicker([
+				{label: "图片",value: 0},
+				{label: "视频",value: 1},
+				{label: "文档/PPT",value: 2},
+				{label: "其他",value: 3},
+			])
+			.then(res => {
+				if(!res){
+					return
+				}
+				this.gLoading(this,true)
+				let type = ""
+				if(res.value === 0){
+					chooseFile("image",res.value)
+				}
+				else if(res.value === 2 || res.value === 3){
+					chooseFile("file",res.value)
+				}
+				else if(res.value === 1){
+					/* 选择视频，先压缩再上传 */
+					uni.chooseVideo({
+						sourceType: ['album'],
+						compressed: false,
+					})
+					.then(res => {
+						uni.compressVideo({
+							src: res[1].tempFilePath,
+							quality: "high",
+							success: (video) => {
+								addFile({
+									name: "视频",
+									path: video.tempFilePath,
+									size: video.size * 1000
+								},1)
+							},
+							fail: (err) => {
+								console.log(err);
+								addFile({
+									name: "视频",
+									path: res[1].tempFilePath,
+									size: res[1].size
+								},1)
+							}
+						})
+					})
 				}
 			})
 		},
@@ -180,43 +206,13 @@ export default {
 				this.setFileIndex = index
 				return
 			}
-			let itemList = ["修改附件信息", "删除附件"]
-			uni.showActionSheet({
-				itemList,
-				success: (res) => {
-					if (itemList[res.tapIndex] === "修改附件信息") {
-						this.setFileIndex = index
-					} 
-					else if (itemList[res.tapIndex] === "删除附件") {
-						this.removeFile(index)
-					}
-					/* 设置视频预览片段 */
-					else if (itemList[res.tapIndex] === "设置预览片段") {
-						if(file.status !== 2){
-							this.gToastError("请先上传该视频")
-						}
-						else{
-							wx.openVideoEditor({
-								filePath: file.url,
-								success: (res) => {
-									if(res.size > 20000000){
-										this.gToastError("大于20M")
-									}
-									else{
-										/* 上传预览视频 */
-										wx.previewMedia({
-											sources: [{
-												url: res.tempFilePath,
-												type: "video"
-											}],
-											showmenu: false
-										})
-										console.log(res.tempFilePath);
-									}
-								}
-							})
-						}
-					}
+			this.gMenuPicker(["修改附件信息", "删除附件"])
+			.then(res => {
+				if (res === "修改附件信息") {
+					this.setFileIndex = index
+				}
+				else if (res === "删除附件") {
+					this.removeFile(index)
 				}
 			})
 		},
@@ -294,7 +290,8 @@ export default {
 				const file = this.files[index]
 				this.files[index].status = 1
 				/* 获取签名 */
-				getFilesSignature(this.projectId,file.name)
+				// getFilesSignature(this.projectId,file.name)
+				getFilesSignature(this.projectId,Date.now())
 				.then(signature => {
 					/* 上传文件 */
 					this.gUploadFile(file.url,signature.data,(progress) => {

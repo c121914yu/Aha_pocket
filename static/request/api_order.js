@@ -23,13 +23,16 @@ const getOrder = (orderId) => request(`/contribPoint/order/${orderId}`,"GET",{})
 /* 判断资源是否购买 */
 const checkResourcePurchased = (projectId) => request(`/project/purchased/${projectId}`,"GET",{})
 
+/* 获取统一下单ID */
+const getPrepay_id = (data) => request("/order/unifiedorder","POST",data)
+
 export {
 	postOrder,
 	putOrder,
 	
 	getPointOrder,
-	
 	getOrders,
 	getOrder,
-	checkResourcePurchased
+	checkResourcePurchased,
+	getPrepay_id
 }

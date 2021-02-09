@@ -8,7 +8,7 @@
 			</view>
 			<view class="item">
 				<text class="label">收件人:</text>
-				<input type="text" placeholder="收件人UserId" v-model.number="receiverUserId">
+				<input type="text" placeholder="收件人ID" v-model.number="receiverUserId">
 			</view>
 			<view class="item">
 				<text class="label">发件人:</text>{{sendName}}

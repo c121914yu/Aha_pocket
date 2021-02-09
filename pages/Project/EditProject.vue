@@ -120,9 +120,6 @@ export default {
                     editable: item.editable,
                 }
             })
-			if(this.project.members.length === 0){
-				this.$refs.memberInfo.setNormalMember()
-			}
             this.gLoading(this,false)
 		},
 		/* 
@@ -213,7 +210,7 @@ export default {
 						.then(res => {
 							console.log("头像上传成功");
 							const url = res.header.Location
-							// data.avatarUrl = url
+							data.avatarUrl = url
 							this.project.avatarUrl = url
 							base.avatarUrl = url
 							successNum++
@@ -241,7 +238,7 @@ export default {
 						.then(res => {
 							console.log("证明上传成功");
 							const url = res.header.Location
-							// data.awardProveUrl = url
+							data.awardProveUrl = url
 							this.project.awardProveUrl = url
 							base.awardProveUrl = url
 							successNum++

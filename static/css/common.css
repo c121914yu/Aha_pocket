@@ -85,7 +85,7 @@ navigator {
 }
 .h3 {
   font-size: 32rpx;
-  font-weight: 600;
+  font-weight: 700;
 }
 .fix-screen {
   z-index: 100;
@@ -100,7 +100,7 @@ navigator {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -58%);
   padding: 10px;
   background-color: #fff;
 }

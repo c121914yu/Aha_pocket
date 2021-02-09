@@ -6,7 +6,7 @@
 				<view class="small">Aha币</view>
 				<view class="h3">{{ahaCredit}}</view>
 				<view class="function">
-					<view class="ctr" @click="undo">
+					<view class="ctr" @click="isShowPay=true">
 						<text class="iconfont icon-qian"></text>
 						<text>充值</text>
 					</view>

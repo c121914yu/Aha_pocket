@@ -97,11 +97,7 @@ export default {
 			return this.projects.filter(item => !item.passed).length
 		},
 		collection(){
-			let collection = 0
-			this.projects.forEach(item => {
-				collection += item.collect
-			})
-			return collection
+			return getApp().globalData.gUserInfo.statistice.totalReceivedCollection
 		}
 	},
 	components: {

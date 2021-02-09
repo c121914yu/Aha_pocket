@@ -6,7 +6,7 @@ export default  {
 	gUserInfo: {}, // 用户信息
 	gEditContent: "", // 编辑内容
 	Competitions: [], // 所有比赛
-	prizeLevels: [
+	prizeLevels: [//获奖等级
 		{ label: '保研国一', value: 53,max: 4000,min: 2000},
 		{ label: '保研国二', value: 52,max: 3000,min: 1500 },
 		{ label: '保研国三', value: 51,max: 2000,min: 1000 },
@@ -23,7 +23,7 @@ export default  {
 		{ label: '校二', value: 12,max: 200,min: 100 },
 		{ label: '校三', value: 11,max: 100,min: 50 },
 	],
-	compType: [
+	compType: [ //比赛类型
 		{label: "经济类",value: 1},
 		{label: "管理类",value: 2},
 		{label: "法学类",value: 3},
@@ -37,26 +37,26 @@ export default  {
 		{label: "化工类",value: 11},
 		{label: "科研创业类",value: 12},
 	],
-	feedbackTypes: [
+	feedbackTypes: [ //反馈类型
 		{label: "平台BUG",value: 0},
 		{label: "平台体验修改建议",value: 1},
 		{label: "劣质项目",value: 2},
 		{label: "订单缺失/购买错误",value: 3},
 	],
-	arr_fileClassify: [
+	arr_fileClassify: [ //附件分类
 		{label: "PPT",value: 1,rate: 1},
 		{label: "文档",value: 2,rate: 3},
 		{label: "论文",value: 3,rate: 1},
 		{label: "成果展示",value: 4,rate: 1},
 		{label: "竞赛心得",value: 5,rate: 0.5}
 	],
-	arr_fileTypes: [
+	arr_fileTypes: [ //附件类型
 		{label: "图片",value: 0,reg: /\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$/i}, //图片
 		{label: "视频/音频",value: 1,reg: /\.(avi|wmv|mpg|mpeg|mov|rm|ram|swf|raw|flv|mp4|mp3|wma|avi|rmvb|mkv)$/i}, //视频,音频
 		{label: "文档/PPT",value: 2,reg: /\.(txt|doc|docx|ppt|pptx|csv|xls|xlsx|pdf)$/i}, //文档
 		{label: "其他",value: 3,reg: /./}, //其他
 	],
-	arr_ordersType: [
+	arr_ordersType: [ //订单类型
 		{label: "Aha币充值",type: 1,order: null},
 		{label: "活动赠送",type: 2,order: null},
 		{label: "注册赠送",type: 3,order: null},
@@ -66,5 +66,12 @@ export default  {
 		{label: "邀请好友",type: 7,order: null},
 		{label: "项目上传奖励",type: 8,order: null},
 		{label: "Aha币提现",type: 9,order: null}
+	],
+	arr_userLevel: [ //用户等级类型
+		{label:"Aha萌新",src:"1.png",totalContribPoint: 3000},
+		{label:"Aha进阶",src:"2.png",totalContribPoint: 6000},
+		{label:"Aha小佬",src:"3.png",totalContribPoint: 10000},
+		{label:"Aha大佬",src:"4.png",totalContribPoint: 12000},
+		{label:"Aha巨佬",src:"5.png",totalContribPoint: 1000000000},
 	]
 }

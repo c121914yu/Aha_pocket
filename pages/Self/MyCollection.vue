@@ -42,8 +42,8 @@ export default {
 		return {
 			navs: [
 				{name: "项目",val: "project",amount: 0},
-				{name: "组队",val: "project",amount: 6},
-				{name: "外包",val: "project",amount: 6},
+				{name: "组队",val: "project",amount: 0},
+				{name: "外包",val: "project",amount: 0},
 			],
 			activeNav: 0,
 			list: [],
