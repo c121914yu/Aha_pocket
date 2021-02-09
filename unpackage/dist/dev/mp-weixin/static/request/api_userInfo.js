@@ -60,11 +60,6 @@ const getPurchased = () => request("/project/resource/purchased","GET",{})
 /* 获取公共文件上次接口 */
 const getPublicFileSign = (filename) => request("/cos/sign/upload/public?filename="+filename,"GET",{})
 
-/* 获取个人统计数据 */
-const getSelfStatistice = () => request("/statistics/me","GET",{})
-/* 获取指定用户统计数据 */
-const getUserStatistice = (userId) => request(`/statistics/${userId}`,"GET",{})
-
 export {
 	bindPhone,
 	bindWxchat,
@@ -87,7 +82,5 @@ export {
 	getCollectedProjects,
 	getPurchased,
 	
-	getPublicFileSign,
-	getSelfStatistice,
-	getUserStatistice
+	getPublicFileSign
 }

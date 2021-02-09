@@ -263,15 +263,10 @@ var userAgreement = function userAgreement() {Promise.all(/*! require.ensure | p
   onLoad: function onLoad() {
     /* 隐藏返回主页 */
     wx.hideHomeButton();
+    this.loadCompetitionInfo();
     this.loadNav();
     if (this.signedNotice) {
-      this.loadCompetitionInfo();
       this.getSystemNotice();
-    }
-  },
-  onShow: function onShow() {
-    if (this.$refs.Self) {
-      this.$refs.Self.getUnread();
     }
   },
   onReachBottom: function onReachBottom() {
@@ -292,11 +287,8 @@ var userAgreement = function userAgreement() {Promise.all(/*! require.ensure | p
     {
       this.signedNotice = true;
       this.getSystemNotice();
-      this.loadCompetitionInfo();
-      this.$refs.projectHome.loadMore(true);
-      this.$refs.Self.getUnread();
     },
-    /* 获取系统公告 */
+    /* 获取系统公共 */
     getSystemNotice: function getSystemNotice()
     {var _this = this;
       (0, _api_system.getNotice)().
