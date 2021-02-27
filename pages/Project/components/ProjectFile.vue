@@ -142,9 +142,9 @@ export default {
 					fail: (err) => {
 						if(err.errMsg !== "chooseMessageFile:fail cancel")
 						{
-							this.gLoading(this,false)
 							this.gToastError(err.errMsg)
 						}
+						this.gLoading(this,false)
 					}
 				})
 			}
@@ -193,6 +193,9 @@ export default {
 								},1)
 							}
 						})
+					})
+					.catch(err => {
+						this.gLoading(this,false)
 					})
 				}
 			})
@@ -290,8 +293,8 @@ export default {
 				const file = this.files[index]
 				this.files[index].status = 1
 				/* 获取签名 */
-				// getFilesSignature(this.projectId,file.name)
-				getFilesSignature(this.projectId,Date.now())
+				const filename = `${Date.now()}.${file.name.split('.')[1]}`
+				getFilesSignature(this.projectId,filename)
 				.then(signature => {
 					/* 上传文件 */
 					this.gUploadFile(file.url,signature.data,(progress) => {

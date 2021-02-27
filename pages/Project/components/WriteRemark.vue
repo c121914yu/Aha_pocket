@@ -4,10 +4,11 @@
 		<!-- 提示模块 -->
 		<view v-if="type===0" class="remark-hint">
 			<button class="write" @click="startComment">写评论</button>
-			<text class="icon iconfont icon-xinxi" @click="$emit('scrollComment')"></text>
-			<text v-if="isCollect" class="icon iconfont icon-collection collected" @click="collected"></text>
-			<text v-else class="icon iconfont icon-shoucang" @click="collected"></text>
+			<view class="icon iconfont icon-xinxi" @click="$emit('scrollComment')"></view>
+			<view v-if="isCollect" class="icon iconfont icon-collection collected" @click="collected"></view>
+			<view v-else class="icon iconfont icon-shoucang" @click="collected"></view>
 			<button class="icon iconfont icon-share share" open-type="share"></button>
+			<view class="webRead icon iconfont icon-airplaytouping" @click="webRead"></view>
 		</view>
 		<!-- 简要写评论模块 -->
 		<view v-if="type===1" class="brief-write">
@@ -93,6 +94,14 @@ export default {
 			}
 			this.isCollect = !this.isCollect
 		},
+		/* 浏览器阅读 */
+		webRead()
+		{
+			this.gClipboardData(
+			`http://localhost:8081/project/read/${this.projectId}/${uni.getStorageSync("token")}`,
+			"已复制连接,请用电脑浏览器打开!"
+			)
+		},
 		/* 开始写评论 */
 		startComment()
 		{
@@ -134,30 +143,32 @@ export default {
 		bottom 0
 		left 0
 		right 0
-		padding 0 20px 0 15px
+		padding 10px 20px
 		border-top-left-radius 16px
 		border-top-right-radius 16px
 		background-color var(--origin2)
 		display flex
 		align-items center
-		justify-content space-between
 		.write
 			margin 0
-			width 60%
+			flex 1
 			padding 7px
 			line-height 1
 			background-color #FFFFFF
 			color var(--font-dark)
 			border-radius 22px
 		.icon
+			margin-left 15px
 			font-size 40rpx
 			color #FFFFFF
 			&.collected
 				color #e86452
 			&.share
-				margin 0
 				padding 0
+				line-height 1
 				background-color transparent
+			&.webRead
+				color var(--origin1)
 	/* 简要写评论 */
 	.brief-write
 		z-index 100

@@ -315,7 +315,11 @@ export default {
 			const ahaCredit = getApp().globalData.gUserInfo.ahaCredit
 			const ahaPoint = getApp().globalData.gUserInfo.ahaPoint
 			if(ahaCredit + ahaPoint < file.price){
-				this.gToastError("余额不足")
+				this.gShowModal("余额不足,是否打开钱包?",() => {
+					uni.navigateTo({
+						url: "../Self/Wallet/Wallet"
+					})
+				})
 				return
 			}
 			this.gShowModal(`确认花费${file.price}个Aha点购买该附件？`,() => {

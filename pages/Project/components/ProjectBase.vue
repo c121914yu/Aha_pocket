@@ -54,7 +54,7 @@
 				v-if="compName" 
 				label="获奖日期" 
 				contentWidth="300rpx" 
-				placeholder="2020-8"
+				placeholder="获奖日期"
 				:endTime="gGetToday()"
 				circle
 				date
@@ -111,15 +111,11 @@ export default {
 		prizeLevels() {
 			let Levels = getApp().globalData.prizeLevels
 			const match = getApp().globalData.Competitions.find(item => item.name === this.compName)
-			// console.log(getApp().globalData.Competitions);
 			if(match){
-				Levels = Levels.filter(item => {
-					if(String(item.value).indexOf(String(match.level)) === 0){
-						return true
-					}
-				})
+				const start = (5-match.level)*3
+				return Levels.slice(start,start+3)
 			}
-			return Levels
+			return []
 		}
 	},
 	methods: {
