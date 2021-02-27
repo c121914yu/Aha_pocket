@@ -55,7 +55,7 @@
 		<!-- 上传项目 -->
 		<BottomBtn
 			text="上传项目"
-			linkTo="UpProject">
+			@click="upProject">
 		</BottomBtn>
 		<!-- 筛选组件 -->
 		<ProjectFilter
@@ -169,6 +169,23 @@ export default {
 			this.loadProjects(true)
 			this.is_showFileter = false
 		},
+		/* 上传项目,选择web或者小程序 */
+		upProject()
+		{
+			uni.showActionSheet({
+				itemList: ["小程序上传","电脑上传"],
+				success: (res) => {
+					if(res.tapIndex === 0){
+						uni.navigateTo({
+							url: "UpProject"
+						})
+					}
+					else {
+						this.gToastMsg("已复制连接,请使用电脑浏览器打开!")
+					}
+				}
+			})
+		},
 		/* 
 			name: 项目设置
 			desc: 根据项目id进入项目编辑界面
@@ -177,7 +194,7 @@ export default {
 		projectSetting(project) 
 		{
 			/* 如果项目已经通过，不允许删除 */
-			const itemList = ["阅读项目", "修改项目"]
+			const itemList = ["阅读项目", "小程序修改项目","电脑修改项目"]
 			if(!project.passed){
 				itemList.push("删除项目")
 			}
@@ -196,8 +213,12 @@ export default {
 							url: `EditProject?id=${project.id}`
 						})
 					}
+					/* PC编辑项目，跳转阅读界面 */
+					else if (res.tapIndex === 2){
+						this.gToastMsg("已复制连接,请使用电脑浏览器打开!")
+					}
 					/* 删除项目 */ 
-					else if (res.tapIndex === 2) {
+					else if (res.tapIndex === 3) {
 						this.gShowModal('确认删除该项目?', () => {
 							console.log('删除项目');
 							const index = this.projects.indexOf(project);

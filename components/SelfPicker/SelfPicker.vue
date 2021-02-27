@@ -59,7 +59,7 @@ export default {
 			default: false
 		},
 		/* 绑定值 */
-		value: Object || String || Number,
+		value: Object | String | Number,
 		/* 标签颜色 */
 		labelColor: {
 			type: String,

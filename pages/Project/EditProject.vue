@@ -120,6 +120,7 @@ export default {
                     editable: item.editable,
                 }
             })
+			this.$forceUpdate()
             this.gLoading(this,false)
 		},
 		/* 
