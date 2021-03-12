@@ -65,6 +65,11 @@ const getSelfStatistice = () => request("/statistics/me","GET",{})
 /* 获取指定用户统计数据 */
 const getUserStatistice = (userId) => request(`/statistics/${userId}`,"GET",{})
 
+/* 获取实名认证上传签名 */
+const getAuthenticationSignature = (filename) => request(`/authentication/sign/upload?filename=${filename}`,"GET",{})
+/* 提交实名认证信息 */
+const putAuthentication = (data) => request(`/authentication/updatePersonalAuthentication`,"PUT",data)
+
 export {
 	bindPhone,
 	bindWxchat,
@@ -89,5 +94,7 @@ export {
 	
 	getPublicFileSign,
 	getSelfStatistice,
-	getUserStatistice
+	getUserStatistice,
+	getAuthenticationSignature,
+	putAuthentication
 }

@@ -7,7 +7,10 @@
 				<view class="left">
 					<image class="avatar" :src="avatarUrl"></image>
 					<view class="user-level">
-						<image :src="'../../static/icon/userLevels/'+userLevel.src" mode="widthFix"></image>
+						<image 
+							:src="'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/userLevel/'+userLevel.src" 
+							mode="widthFix">
+						</image>
 						<text>{{userLevel.label}}</text>
 					</view>
 				</view>

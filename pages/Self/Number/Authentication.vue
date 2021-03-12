@@ -12,21 +12,14 @@
 				circle
 				v-model="trueName">
 			</SelfInput>
-		<!-- 	<SelfInput
-				label="手机号"
-				contentWidth="450rpx"
-				type="Number"
-				circle
-				v-model="phone">
-			</SelfInput> -->
 			<!-- 身份 -->
 			<SelfRadio
 				label="当前身份"
 				:radio="[
-					{label:'学生',value:1},
-					{label:'非学生',value:0}
+					{label:'学生',value:0},
+					{label:'非学生',value:1}
 				]"
-				v-model="identify">
+				v-model="type">
 			</SelfRadio>
 			<!-- 图片 -->
 			<view class="proves">
@@ -47,7 +40,7 @@
 					</view>
 				</view>
 				<!-- 学生证 -->
-				<view v-if="identify === 1" class="item identify-front">
+				<view v-if="type === 0" class="item identify-front">
 					<image v-if="studentCard" :src="studentCard" mode="widthFix" @click="showMenu('studentCard')"></image>
 					<view v-else class="remark" @click="chooseImg('studentCard')">
 						<text class="iconfont icon-tianjia"></text>
@@ -65,13 +58,13 @@
 </template>
 
 <script>
+import { getAuthenticationSignature,putAuthentication } from "@/static/request/api_userInfo.js"
 export default {
 	data() {
 		return {
 			state: getApp().globalData.gUserInfo.authenticated, // 0未验证，1验证中，2验证失败，3验证通过
 			trueName: "",
-			// phone: getApp().globalData.gUserInfo.phone,
-			identify: 1,
+			type: 0,
 			idCardFront: "", //身份证正面
 			idCardBack: "", //身份证反面
 			studentCard: "", //学生证
@@ -79,16 +72,13 @@ export default {
 	},
 	computed: {
 		statusObj(){
-			switch(this.state){
+			switch(this.type){
 				case 0: return{msg:"未验证",class:"unauth"};break;
 				case 1: return{msg:"验证中",class:"authing"};break;
 				case 2: return{msg:"验证失败",class:"authErr"};break;
 				case 3: return{msg:"验证通过",class:"authed"};break;
 			}
 		}
-	},
-	onLoad() {
-		this.gUndesign()
 	},
 	methods: {
 		/* 选择图片 */
@@ -138,7 +128,7 @@ export default {
 		{
 			/* 已通过验证提醒 */
 			if(this.state === 3){
-				this.gShowModal("重新提交需重新审核。",() => {
+				this.gShowModal("重新提交实名认证需重新审核，请确认",() => {
 					this.prove()
 				})
 			}
@@ -153,15 +143,55 @@ export default {
 			if(this.trueName === ""){
 				this.gToastError("姓名为空")
 			}
-			// else if(this.idCardFront === "" || this.idCardBack === ""){
-			// 	this.gToastError("身份证明为空")
-			// }
-			// else if(this.identify === 1 && this.studentCard === ""){
-			// 	this.gToastError("学生证明为空")
-			// }
+			else if(this.idCardFront === "" || this.idCardBack === ""){
+				this.gToastError("身份证明为空")
+			}
+			else if(this.identify === 0 && this.studentCard === ""){
+				this.gToastError("学生证明为空")
+			}
 			else{
 				this.gLoading(this,true)
-				
+				const data = {
+					trueName: this.trueName,
+					type: this.type,
+				}
+				const signatures = [
+					{path: this.idCardFront,name: `idCardFront/${Date.now()}.jpg`,key: "idCardFrontFilename"},
+					{path: this.idCardBack,name: `idCardBack/${Date.now()}.jpg`,key: "idCardBackFilename"}
+				]
+				if(this.studentCard){
+					signatures.push({path: this.studentCard,name: `studentCard/${Date.now()}.jpg`,key: "studentCardFilename"})
+				}
+				/* 获取上传签名 */
+				Promise.all(signatures.map(item => getAuthenticationSignature(item.name)))
+				.then(res => {
+					Promise.all(res.map((item,index) => this.gUploadFile(signatures[index].path,item.data)))
+					.then((res) => {
+						res.forEach((item,index) => {
+							data[signatures[index].key] = signatures[index].name
+						})
+						console.log(data)
+						/* 更新实名认证信息 */
+						putAuthentication(data)
+						.then(() => {
+							this.gToastSuccess("实名认证成功")
+						})
+						.catch(() => {
+							this.gToastError("实名认证失败")
+						})
+						this.gLoading(this,false)
+					})
+					.catch(err => {
+						this.gToastError("上传图片失败")
+						this.gLoading(this,false)
+						console.log(err);
+					})
+				})
+				.catch(err => {
+					this.gToastError("获取签名错误")
+					this.gLoading(this,false)
+					console.log(err);
+				})
 			}
 		}
 	}

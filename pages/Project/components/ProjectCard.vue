@@ -217,8 +217,8 @@ export default {
 				color #FFFFFF
 				padding 2px 15px 12px
 				font-size 22rpx
-				transform rotate(-45deg) translate(12px,20px)
-				border-radius 5px
+				transform rotate(-45deg) translate(24rpx,40rpx)
+				// border-radius 5px
 				&.passed
 					background-color #67C23A
 				&.failed

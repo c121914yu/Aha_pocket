@@ -20,7 +20,7 @@
 			</text>
 		</view>
 		<ProjectFilter 
-			v-if="is_showFileter"
+			v-show="is_showFileter"
 			@close="is_showFileter=false"
 			@filterChange="filterChange">
 		</ProjectFilter>
