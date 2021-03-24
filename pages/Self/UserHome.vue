@@ -5,7 +5,7 @@
 		<view class="container">
 			<view class="head">
 				<view class="left">
-					<image class="avatar" :src="avatarUrl"></image>
+					<image class="avatar" :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
 					<view class="user-level">
 						<image 
 							:src="'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/userLevel/'+userLevel.src" 

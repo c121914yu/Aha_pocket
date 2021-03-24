@@ -208,7 +208,7 @@ export default {
 			.then(res => {
 				getApp().globalData.gUserInfo.statistice = res.data
 				this.userLevel =  getApp().globalData.arr_userLevel.find(item => res.data.totalContribPoint < item.totalContribPoint)
-				console.log(getApp().globalData.gUserInfo);
+				// console.log(getApp().globalData.gUserInfo);
 			})
 		},
 		/* 

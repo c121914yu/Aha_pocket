@@ -5,7 +5,7 @@
 			class="header"
 			hover-class="none"
 			url="components/BaseInfo">
-			<image class="avatar" :src="avatarUrl"></image>
+			<image class="avatar" :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
 			<view class="right">
 				<view class="name">
 					{{resume.name || "姓名"}}

@@ -1,7 +1,5 @@
 <template>
 	<view class="app">
-		<!-- 加载动画 -->
-		<Loading></Loading>
 		<!-- 用户须知 -->
 		<userAgreement 
 			v-if="!signedNotice"
@@ -21,24 +19,24 @@
 		<!-- 主页 -->
 		<ProjectHome 
 			ref="projectHome"
-			v-show="currentNav === 0"
-			v-if="navs[currentNav].loaded">
+			v-if="navs[0].loaded"
+			v-show="currentNav === 0">
 		</ProjectHome>
 		<!-- 生活 -->
 		<Competition
-			v-show="currentNav === 1"
-			v-if="navs[currentNav].loaded">
+			v-if="navs[1].loaded"
+			v-show="currentNav === 1">
 		</Competition>
 		<!-- 会员 -->
 		<Epiboly
-			v-show="currentNav === 2"
-			v-if="navs[currentNav].loaded">
+			v-if="navs[2].loaded"
+			v-show="currentNav === 2">
 		</Epiboly>
 		<!-- 个人 -->
 		<Self
-			v-show="currentNav === 3"
-			v-if="navs[currentNav].loaded"
-			ref="Self">
+			ref="Self"
+			v-if="navs[3].loaded"
+			v-show="currentNav === 3">
 		</Self>
 	</view>
 </template>
@@ -100,12 +98,10 @@ export default {
 		/* 隐藏返回主页 */
 		wx.hideHomeButton()
 		this.loadNav()
-		if(this.signedNotice){
-			this.loadCompetitionInfo()
-			this.getSystemNotice()
-		}
+		this.loadNeed()
 	},
 	onShow() {
+		// 每次显示未读信息更新
 		if(this.$refs.Self){
 			this.$refs.Self.getUnread()
 		}
@@ -123,14 +119,22 @@ export default {
 		}
 	},
 	methods: {
+		// 加载需求
+		loadNeed()
+		{
+			if(this.signedNotice){
+				this.getSystemNotice()
+				this.loadCompetitionInfo()
+				this.$nextTick(() => {
+					this.$refs.projectHome.loadProjects(true)
+				})
+			}
+		},
 		/* 完成协议签署 */
 		successSign()
 		{
 			this.signedNotice = true
-			this.getSystemNotice()
-			this.loadCompetitionInfo()
-			this.$refs.projectHome.loadMore(true)
-			this.$refs.Self.getUnread()
+			this.loadNeed()
 		},
 		/* 获取系统公告 */
 		getSystemNotice()

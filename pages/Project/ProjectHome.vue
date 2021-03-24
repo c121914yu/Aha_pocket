@@ -76,11 +76,6 @@ export default {
 		ProjectHead,
 		ProjectCard
 	},
-	created() {
-		if(getApp().globalData.gUserInfo.signedNotice){
-			this.loadProjects(true)
-		}
-	},
 	methods: {
 		/* 
 			name: 获取项目

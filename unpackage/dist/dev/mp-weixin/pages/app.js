@@ -93,9 +93,6 @@ __webpack_require__.r(__webpack_exports__);
 var components
 try {
   components = {
-    Loading: function() {
-      return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 328))
-    },
     SystemNotice: function() {
       return __webpack_require__.e(/*! import() | components/SystemNotice/SystemNotice */ "components/SystemNotice/SystemNotice").then(__webpack_require__.bind(null, /*! @/components/SystemNotice/SystemNotice.vue */ 342))
     },
@@ -206,12 +203,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
 var _api_competition = __webpack_require__(/*! @/static/request/api_competition.js */ 54);
 var _api_system = __webpack_require__(/*! @/static/request/api_system.js */ 55); //
-//
-//
 //
 //
 //
@@ -257,19 +250,19 @@ var _api_system = __webpack_require__(/*! @/static/request/api_system.js */ 55);
 var userAgreement = function userAgreement() {Promise.all(/*! require.ensure | pages/Self/Number/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Number/UserAgreement")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Number/UserAgreement.vue */ 356));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages/Project/ProjectHome */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Project/ProjectHome")]).then((function () {return resolve(__webpack_require__(/*! ./Project/ProjectHome.vue */ 363));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Competition = function Competition() {__webpack_require__.e(/*! require.ensure | pages/Competition/Competition */ "pages/Competition/Competition").then((function () {return resolve(__webpack_require__(/*! ./Competition/Competition */ 370));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Epiboly = function Epiboly() {__webpack_require__.e(/*! require.ensure | pages/Epiboly/Epiboly */ "pages/Epiboly/Epiboly").then((function () {return resolve(__webpack_require__(/*! ./Epiboly/Epiboly */ 375));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 382));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { /* 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 	第一次不直接加载界面，防止加载时间过长
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 	切换到未缓存的界面时再进行加载
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */navs: [{ name: "ProjectHome", loaded: false }, { name: "Competition", loaded: false }, { name: "Epiboly", loaded: false }, { name: "Self", loaded: false }], currentNav: 0, signedNotice: getApp().globalData.gUserInfo.signedNotice, arr_systemNotice: [] };}, watch: { currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "竞赛信息";break;case 2:text = "服务外包";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });if (newNav === 1 || newNav === 2) {uni.showToast({ title: "该模块正在开发!", icon: "none" });}} }, components: { userAgreement: userAgreement, ProjectHome: ProjectHome, Competition: Competition, Epiboly: Epiboly,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */navs: [{ name: "ProjectHome", loaded: false }, { name: "Competition", loaded: false }, { name: "Epiboly", loaded: false }, { name: "Self", loaded: false }], currentNav: 0, signedNotice: getApp().globalData.gUserInfo.signedNotice, arr_systemNotice: [] };}, watch: { currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "竞赛信息";break;case 2:text = "服务外包";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });if (newNav === 1 || newNav === 2) {uni.showToast({ title: "该模块正在开发!", icon: "none" });}} }, components: { userAgreement: userAgreement, ProjectHome: ProjectHome,
+    Competition: Competition,
+    Epiboly: Epiboly,
     Self: Self },
 
   onLoad: function onLoad() {
     /* 隐藏返回主页 */
     wx.hideHomeButton();
     this.loadNav();
-    if (this.signedNotice) {
-      this.loadCompetitionInfo();
-      this.getSystemNotice();
-    }
+    this.loadNeed();
   },
   onShow: function onShow() {
+    // 每次显示未读信息更新
     if (this.$refs.Self) {
       this.$refs.Self.getUnread();
     }
@@ -287,23 +280,31 @@ var userAgreement = function userAgreement() {Promise.all(/*! require.ensure | p
 
   },
   methods: {
+    // 加载需求
+    loadNeed: function loadNeed()
+    {var _this = this;
+      if (this.signedNotice) {
+        this.getSystemNotice();
+        this.loadCompetitionInfo();
+        this.$nextTick(function () {
+          _this.$refs.projectHome.loadProjects(true);
+        });
+      }
+    },
     /* 完成协议签署 */
     successSign: function successSign()
     {
       this.signedNotice = true;
-      this.getSystemNotice();
-      this.loadCompetitionInfo();
-      this.$refs.projectHome.loadMore(true);
-      this.$refs.Self.getUnread();
+      this.loadNeed();
     },
     /* 获取系统公告 */
     getSystemNotice: function getSystemNotice()
-    {var _this = this;
+    {var _this2 = this;
       (0, _api_system.getNotice)().
       then(function (res) {
         res.data.forEach(function (item) {
-          item.createTime = _this.gformatDate(item.createTime, true);
-          _this.arr_systemNotice.push(item);
+          item.createTime = _this2.gformatDate(item.createTime, true);
+          _this2.arr_systemNotice.push(item);
         });
       });
     },

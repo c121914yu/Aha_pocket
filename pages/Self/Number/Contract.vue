@@ -165,6 +165,7 @@ export default {
 					name: this.name,
 				},
 				success: (res) => {
+					console.log(res);
 					const data = JSON.parse(res.data)
 					if(data.code === 200){
 						uni.setStorageSync("token",data.data)
@@ -177,7 +178,7 @@ export default {
 						})
 					}
 					else{
-						this.gToastError("合同上传失败")
+						this.gToastError(data.msg)
 					}
 				},
 				fail: (err) => {
