@@ -97,6 +97,7 @@ export default {
 			return this.projects.filter(item => !item.passed).length
 		},
 		collection(){
+			console.log(getApp().globalData.gUserInfo);
 			return getApp().globalData.gUserInfo.statistice.totalReceivedCollection
 		}
 	},
@@ -181,7 +182,10 @@ export default {
 						})
 					}
 					else {
-						this.gToastMsg("已复制连接,请使用电脑浏览器打开!")
+						this.gClipboardData(
+							"http://localhost:8081/project/up/"+uni.getStorageSync("token"),
+							"已复制连接,请使用电脑浏览器打开!"
+						)
 					}
 				}
 			})
@@ -215,6 +219,11 @@ export default {
 					}
 					/* PC编辑项目，跳转阅读界面 */
 					else if (res.tapIndex === 2){
+						this.gClipboardData(
+							`http://localhost:8081/project/edit/${project.id}/${uni.getStorageSync("token")}`,
+							"已复制连接,请使用电脑浏览器打开!"
+						)
+						
 						this.gToastMsg("已复制连接,请使用电脑浏览器打开!")
 					}
 					/* 删除项目 */ 

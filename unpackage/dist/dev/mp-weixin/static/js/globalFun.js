@@ -144,7 +144,12 @@ Vue.prototype.gGetMeInfo = () => {
 	return new Promise((resolve,reject) => {
 		getMe()
 		.then(res => {
-			getApp().globalData.gUserInfo = res.data
+			/* 统计数据不变 */
+			const statistice = getApp().globalData.gUserInfo.statistice
+			getApp().globalData.gUserInfo = {
+				...res.data,
+				statistice
+			}
 			resolve(res.data)
 		})
 		.catch(err => {

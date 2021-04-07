@@ -1,20 +1,21 @@
 <template>
 	<view class="read-file">
 		<image
+			v-once
+			:id="index"
 			class="file"
 			:style="{
-				height: imgHeight ? `${imgHeight}px` : 'auto'
+				height: `${imgHeight}px`
 			}"
-			v-for="(url,index) in urls"
-			:key="index"
-			:src="url"
+			v-for="(img, index) in images"
+			:key="img.page"
+			:src="img.url"
 			mode="widthFix"
+			@load="loadSuccess($event, img.page)"
 			@longpress="viewImg(index)"
-			@load="loadSuccess($event,index)"
-			@error="tempUrls[index]=0">
-		</image>
+		></image>
 		<view class="page-control">
-			<slider 
+			<slider
 				class="current"
 				min="1"
 				:max="maxPage"
@@ -24,191 +25,199 @@
 				block-color="#956134"
 				block-size="18"
 				show-value
-				@change="changePage"
-				@error="loadCount"/>
+				@change="changePage"/>
 			<text class="hyphen">/</text>
-			<text class="max">{{maxPage}}</text>
+			<text class="max">{{ maxPage }}</text>
 		</view>
 		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
+<!-- 
+	1. 获取签名
+	2. 先预加载一次，获得maxPage ，imgHeight,loadNum
+	3. 第一次加载完成后主动调用一次加载当前页
+	4. page-1对应数组的index，需要加载某一页时先创建对应index的图片，再请求图片
+-->
 <script>
-import { getReadSignature } from '@/static/request/api_project.js'
+import { getReadSignature } from '@/static/request/api_project.js';
 export default {
 	data() {
 		return {
-			id: null,
 			signature: null,
-			currentPage: 1,
-			imgHeight: null, //记录图片高度
-			loadNum: 1, // 每次加载多少张图片
-			maxPage: 1, // 文档最大页数
-			urls: [],
-			tempUrls: [],
-			movinng: false
-		}
+			imgHeight: 50,
+			images: [],
+			loadNum: 1, // 每次加载2loadNum + 1张图片
+			maxPage: 1, // 最大页码数
+			currentPage: 1, // 当前页码数
+			loading: false,
+			is_scrollTo: false //是否滚动到指定页
+		};
 	},
 	onLoad(e) {
-		this.id = Number(e.id)
-		this.getSignature()
+		getReadSignature(e.id).then(res => {
+			this.signature = res.data;
+			/* 第一次加载 */
+			this.loadFirst();
+		});
 	},
 	/* 监听滚动,判断当前页是否加载 */
 	onPageScroll(e) {
-		if(!this.movinng){
-			/* 计算当前页 */
-			this.currentPage = Math.round((e.scrollTop - this.imgHeight*0.3) / this.imgHeight) + 1
-			this.loadCurrentPage()
+		if (!this.loading) {
+			this.currentPage = Math.round(e.scrollTop / this.imgHeight) + 1;
+			this.loadCurrent();
 		}
 	},
 	methods: {
-		/* 
-			获取签名
-			@set this.signature: Object,签名
-			timne: 2021/1/3
-		*/
-		getSignature()
+		/* 第一次加载图片加载成功 */
+		loadSuccess(e, page) 
 		{
-			this.gLoading(this,true)
-			getReadSignature(this.id)
-			.then(res => {
-				this.signature = res.data
-				this.loadPage(1)
-			})
-			.catch(err => {
-				console.error(err)
-				this.gLoading(this,false)
-			})
-		},
-		/* 图片加载成功 */
-		loadSuccess(e,index)
-		{
-			/* 第一次加载 */
-			if(index === 0){
+			if (page === 1) {
 				/* 获取屏幕宽高 */
-				const screenHeight = uni.getSystemInfoSync().screenHeight
-				const screenWidth = uni.getSystemInfoSync().screenWidth
-				/* 计算图片标签的高度，图片宽度/屏幕宽度 * 图片高度 */
-				this.imgHeight = screenWidth / e.detail.width * e.detail.height 
+				const screenHeight = uni.getSystemInfoSync().screenHeight;
+				const screenWidth = uni.getSystemInfoSync().screenWidth;
+				/* 计算图片标签的高度，标签高度（屏幕） = 屏幕宽度/图片宽度 * 图片高度 */
+				this.imgHeight = (screenWidth / e.detail.width) * e.detail.height;
 				/* 获取3屏需要多少张图片 */
-				this.loadNum = Math.round(screenHeight*3 / this.imgHeight)
-				this.loadCurrentPage()
+				this.loadNum = Math.round((screenHeight * 3) / this.imgHeight / 2);
+				this.loadCurrent();
+			}
+			if(this.is_scrollTo){
+				uni.pageScrollTo({
+					duration:0,
+					scrollTop: (this.currentPage-1)*this.imgHeight + this.imgHeight,
+					complete: () => {
+						this.is_scrollTo = false
+						this.gLoading(this,false)
+					}
+				})
 			}
 		},
-		/* 根据currentPage加载周围的图片 */
-		loadCurrentPage()
+		/* 加载图片 */
+		loadCurrent() 
 		{
-			const half = Math.floor(this.loadNum/2)
-			let start = this.currentPage - half
-			if(start < 1){
-				start = 1
+			this.loading = true;
+			/* 获取当前页 */
+			const pages = [];
+			for (let i = this.currentPage - this.loadNum; i <= this.currentPage + this.loadNum; i++) {
+				if (i > 1 && i <= this.maxPage && !this.images[i - 1]) {
+					pages.push(i);
+				}
 			}
-			let end = start + this.loadNum
-			if(end > this.maxPage){
-				end = this.maxPage
+			if (pages.length === 0) {
+				this.loading = false;
+				return;
 			}
-			for(let i=start;i<=end;i++){
-				this.loadPage(i)
-			}
+			Promise.all(pages.map(item => this.loadPage(item)))
+				.then(res => {
+					// console.log(this.images);
+					this.loading = false;
+				})
+				.catch(err => {
+					this.loading = false;
+				});
 		},
-		/* 
-			加载界面
-			@params loadMax: Number,每次加载的最大页码数
-			@set this.urls: Array,图片路径
-			time: 2021/1/3
-		*/
-		loadPage(page)
+		/* 拖动改变page */
+		changePage(e) 
 		{
-			/* 已经加载过，跳过 */
-			if(this.tempUrls[page-1]){
-				return
-			}
-			this.tempUrls[page-1] = 1
+			this.gLoading(this, true)
+			this.is_scrollTo = true
+			this.currentPage = e.detail.value
+			this.loadCurrent()
+		},
+		loadFirst() 
+		{
+			this.gLoading(this, true);
+			this.images.push({ page: 1, url: '' });
 			uni.request({
 				url: `https://${this.signature.bucketName}.cos.${this.signature.region}.myqcloud.com${this.signature.filename}`,
-				method: "GET",
+				method: 'GET',
 				data: {
-					"ci-process": "doc-preview",
-					"page": page
+					'ci-process': 'doc-preview',
+					page: 1
 				},
 				header: {
-					'Authorization': this.signature.authorization
+					Authorization: this.signature.authorization
 				},
-				responseType: "arraybuffer",
-				success: (res) => {
-					if(res.statusCode === 200){
-						console.log("加载第: " + page)
-						/* 第一次请求，从响应头获取最大页码 */
-						if(page === 1) {
-							this.maxPage = Number(res.header["X-Total-Page"])
-						}
+				responseType: 'arraybuffer',
+				success: res => {
+					if (res.statusCode === 200) {
+						console.log('加载第: ' + 1);
+						this.maxPage = Number(res.header['X-Total-Page']);
 						/* 二进制转base64,生成图片 */
-						const url = 'data:image/png;base64,' + uni.arrayBufferToBase64(res.data)
-						this.urls[page-1] = url
-						this.$forceUpdate()
-					}
-					else {
-						this.tempUrls[page-1] = 0
+						this.images[0].url = 'data:image/png;base64,' + uni.arrayBufferToBase64(res.data);
+					} else {
 						console.log(res);
-						this.gToastMsg("请求错误")
+						this.gToastMsg('请求错误');
 					}
 				},
-				fail: (err) => {
-					this.tempUrls[page-1] = 0
-					console.error(err)
-					this.gToastMsg("请求错误")
+				fail: err => {
+					console.error(err);
+					this.gToastMsg('请求错误');
 				},
 				complete: () => {
-					this.gLoading(this,false)
+					this.gLoading(this, false);
 				}
-			})
+			});
 		},
-		/* 拖动选择页码 */
-		changePage(e)
+		loadPage(page) 
 		{
-			this.movinng = true
-			this.gLoading(this,true)
-			this.$nextTick(() => {
-				this.currentPage = e.detail.value
-				if(!this.urls[this.currentPage-1]){
-					this.urls[this.currentPage-1] = null
-				}
-				this.loadCurrentPage()
-				this.$nextTick(() => {
-					uni.pageScrollTo({
-						duration:0,
-						scrollTop: (this.currentPage-1)*this.imgHeight + this.imgHeight*0.5,
-						complete: () => {
-							this.movinng = false
-							this.gLoading(this,false)
+			return new Promise((resolve, reject) => {
+				/* 从后往前搜索，找到第一个比page要小的已加载的页,并插入数据 */
+				this.images[page - 1] = { page, url: '' };
+				uni.request({
+					url: `https://${this.signature.bucketName}.cos.${this.signature.region}.myqcloud.com${this.signature.filename}`,
+					method: 'GET',
+					data: {
+						'ci-process': 'doc-preview',
+						page: page
+					},
+					header: {
+						Authorization: this.signature.authorization
+					},
+					responseType: 'arraybuffer',
+					success: res => {
+						if (res.statusCode === 200) {
+							console.log('加载第: ' + page);
+							/* 二进制转base64,生成图片 */
+							this.images[page - 1].url = 'data:image/png;base64,' + uni.arrayBufferToBase64(res.data);
+							resolve(page);
+						} else {
+							console.log(res);
+							this.gToastMsg('请求错误');
+							reject(false);
 						}
-					})
-				})
+					},
+					fail: err => {
+						console.error(err);
+						this.gToastMsg('请求错误');
+						reject(false);
+					}
+				});
 			})
-			
 		},
-		/* 
-			打开图片阅读器
-			@params index: Number,点击页码
-		*/
-	    viewImg(index)
-	    {
+		viewImg(index)
+		{
 			uni.previewImage({
-				urls: this.urls.filter(url => url),
+				urls: this.images.filter(img => img).map(img => img.url),
 				current: index
 			})
-	    }
+		}
 	}
-}
+};
 </script>
 
 <style lang="stylus" scoped>
 .read-file
+	position relative
 	min-height 100vh
 	overflow-x hidden
+	overflow-y auto
 	padding-top 45px
+	.mask
+		width 100%
 	.file
-		width 100vw
+		width 100%
 	.page-control
 		position fixed
 		top 0

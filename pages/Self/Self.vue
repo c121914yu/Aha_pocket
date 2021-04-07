@@ -21,7 +21,10 @@
 				<view class="tags" @click="isCheckTags = true">
 					<!-- 等级标签 -->
 					<view v-if="userLevel" class="user-level">
-						<image :src="'../../static/icon/userLevels/'+userLevel.src" mode="widthFix"></image>
+						<image 
+							:src="'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/userLevel/'+userLevel.src" 
+							mode="widthFix">
+						</image>
 						<text>{{userLevel.label}}</text>
 					</view>
 					<view 
@@ -180,7 +183,6 @@ export default {
 			this.getUnread()
 			this.getSelfData()
 		}
-		uni.$on("upDateUnread",this.upDateUnread)
 	},
 	methods: {
 		/* 点击列表触发功能 */
@@ -199,11 +201,6 @@ export default {
 				this.funtions1[1].val = res.data
 			})
 		},
-		/* 更新未读信息 */
-		upDateUnread(amount)
-		{
-			this.funtions1[1].val = amount
-		},
 		/* 获取个人统计数据 */
 		getSelfData()
 		{
@@ -211,7 +208,7 @@ export default {
 			.then(res => {
 				getApp().globalData.gUserInfo.statistice = res.data
 				this.userLevel =  getApp().globalData.arr_userLevel.find(item => res.data.totalContribPoint < item.totalContribPoint)
-				console.log(getApp().globalData.gUserInfo);
+				// console.log(getApp().globalData.gUserInfo);
 			})
 		},
 		/* 

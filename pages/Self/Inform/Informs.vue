@@ -146,6 +146,7 @@ export default {
 .inform
 	background-color var(--white1)
 	min-height 100vh
+	padding-bottom 30px
 	/* 导航 */
 	.navs
 		margin-bottom 5px

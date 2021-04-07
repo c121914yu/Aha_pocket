@@ -65,7 +65,8 @@ export default {
 				}
 			})
 		},
-		login() {
+		login() 
+		{
 			if (this.phone === '') this.gToastError('手机号不能为空');
 			else {
 				this.gLoading(this, true);

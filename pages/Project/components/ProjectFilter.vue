@@ -13,7 +13,7 @@
 					<input 
 						type="text" 
 						placeholder="根据项目题目搜索" 
-						@input="searchChange"
+						@input="initData"
 						v-model="searchText"/>	
 				</view>
 				<!-- 赛事 | 获奖 -->
@@ -119,7 +119,7 @@ export default {
 			this.searchText = '';
 		},
 		/* 输入搜索内容,初始筛选条件 */
-		searchChange() 
+		initData() 
 		{
 			this.filterNav = null;
 			this.compType = 0;
@@ -135,6 +135,7 @@ export default {
 		{
 			/* 点击所有项目 */
 			if (All) {
+				this.initData()
 				this.$emit('filterChange', null)
 			} 
 			/* 包含搜索内容 */

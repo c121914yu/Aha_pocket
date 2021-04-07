@@ -1,7 +1,7 @@
 <template>
 	<view class="select-interest">
 		<!-- 蒙层 -->
-		<view class="mask" @touchmove.stop.prevent></view>
+		<view class="mask" @click.self="$emit('close')" @touchmove.stop.prevent></view>
 		<!-- 主体内容 -->
 		<view class="content">
 			<!-- 标题 -->
