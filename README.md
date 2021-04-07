@@ -1,6 +1,4 @@
-# 竞赛资源贡献平台change1
-tony submit
-yjl change
+# 竞赛资源贡献平台
 
 ### 1.2.5
 time: 2021/3/24
