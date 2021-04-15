@@ -9,7 +9,7 @@
 				:key="index"
 				@click="changeNav(index)">
 				<text>{{nav.text}}</text>
-				<view v-if="nav.unread>0" class="amount">{{nav.unread}}</view>
+				<view v-if="nav.unread>0" class="amount">{{nav.unread | unreadFilter}}</view>
 			</view>
 		</view>
 		<!-- 通知列表 -->
@@ -58,6 +58,14 @@ export default {
 			pageSize: 30,
 			arr_informs: [],
 			is_showAll: false
+		}
+	},
+	filters: {
+		unreadFilter(val){
+			if(val > 99){
+				return 99 + "+"
+			}
+			return val
 		}
 	},
 	onShow() {
@@ -146,7 +154,7 @@ export default {
 .inform
 	background-color var(--white1)
 	min-height 100vh
-	padding-bottom 30px
+	padding-bottom 60px
 	/* 导航 */
 	.navs
 		margin-bottom 5px
@@ -169,11 +177,12 @@ export default {
 				font-weight 700
 			.amount
 				margin-left 5px
-				width 16px
-				height 16px
+				width 22px
+				height 22px
 				text-align center
-				line-height 16px
-				font-size 12px
+				line-height 22px
+				font-size 20rpx
+				font-weight 700
 				border-radius 50%
 				background-color var(--origin2)
 				color #FFFFFF

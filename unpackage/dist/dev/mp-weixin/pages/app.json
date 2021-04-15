@@ -6,7 +6,7 @@
     "tab-bar": "/components/TabBar/TabBar",
     "user-agreement": "/pages/Self/Number/UserAgreement",
     "project-home": "/pages/Project/ProjectHome",
-    "competition": "/pages/Competition/Competition",
+    "forum-home": "/pages/Forum/ForumHome",
     "epiboly": "/pages/Epiboly/Epiboly",
     "self": "/pages/Self/Self"
   }

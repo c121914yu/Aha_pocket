@@ -109,7 +109,7 @@ var components
 try {
   components = {
     Loading: function() {
-      return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 328))
+      return __webpack_require__.e(/*! import() | components/Loading/Loading */ "components/Loading/Loading").then(__webpack_require__.bind(null, /*! @/components/Loading/Loading.vue */ 330))
     }
   }
 } catch (e) {
@@ -257,11 +257,7 @@ var _api_login = __webpack_require__(/*! @/static/request/api_login.js */ 23); /
 //
 //
 var _default = { data: function data() {return { phone: '', password: '', isPassword: true // 是否展示密码
-<<<<<<< HEAD
-    };}, methods: { loginSuccess: function loginSuccess(data) {var _this = this;getApp().globalData.gUserInfo = data;console.log(data);uni.reLaunch({ url: '../app', success: function success() {_this.gToastSuccess('登录成功');}, complete: function complete() {_this.gLoading(_this, false);} });}, login: function login() {var _this2 = this;if (this.phone === '') this.gToastError('手机号不能为空');else {this.gLoading(this, true);(0, _api_login.Login)({ phone: this.phone, password: this.password }).then(function (res) {uni.setStorageSync('token', res.data.token);_this2.loginSuccess(res.data.personalUserInfo);}).catch(function (err) {_this2.gLoading(_this2, false);});}}, wxLogin: function wxLogin() {var _this3 = this;this.gLoading(this, true);uni.getUserInfo({ provider: 'weixin',
-=======
     };}, methods: { loginSuccess: function loginSuccess(data) {var _this = this;getApp().globalData.gUserInfo = data;uni.reLaunch({ url: '../app', success: function success() {_this.gToastSuccess('登录成功');}, complete: function complete() {_this.gLoading(_this, false);} });}, login: function login() {var _this2 = this;if (this.phone === '') this.gToastError('手机号不能为空');else {this.gLoading(this, true);(0, _api_login.Login)({ phone: this.phone, password: this.password }).then(function (res) {uni.setStorageSync('token', res.data.token);_this2.loginSuccess(res.data.personalUserInfo);}).catch(function (err) {_this2.gLoading(_this2, false);});}}, wxLogin: function wxLogin() {var _this3 = this;this.gLoading(this, true);uni.getUserInfo({ provider: 'weixin',
->>>>>>> dev_yjl
         withCredentials: true,
         lang: 'zh_CN',
         success: function success(res) {

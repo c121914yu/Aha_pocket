@@ -66,8 +66,12 @@ const putMembers = (projectId,data) => request(`/project/members/${projectId}`,"
 /* 删除成员 */
 const deleteMember = (projectId,memberPhone) => request(`/project/member/${projectId}/${memberPhone}`,"DELETE",{})
 
-/* 测试-获取上传文件签名 */
-const test_getSign = (filename) => request(`/cos/sign/upload/test?filename=${filename}`,"GET",{})
+/* 申请认领资源 */
+exports.postApplyProject = (data) => request("/project/find","POST",data)
+/* 修改申请 */
+exports.putApplyProject = (data) => request(`/project/find/${data.applyingID}`,"PUT",data)
+/* 判断用户是否已经提交认领 */
+exports.getApplyProject = (projectId) => request(`/project/find/judge/${projectId}`,"GET",{})
 
 export {
 	getPublicSignature,
@@ -99,5 +103,5 @@ export {
 	putMember,
 	putMembers,
 	deleteMember,
-	test_getSign
+	
 }

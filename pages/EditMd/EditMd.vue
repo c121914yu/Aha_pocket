@@ -111,11 +111,17 @@ export default {
 			showIns: false,
 			showCenter: false,
 			showRight: false,
-			activeColor: '#f8b62d'
+			activeColor: '#f8b62d',
+			copy: false
 		}
 	},
 	components: {
 		eIcon
+	},
+	onLoad(e) {
+		if(e.copy){
+			this.copy = true
+		}
 	},
 	methods: {
 		/* 加载完成 */
@@ -275,8 +281,15 @@ export default {
 			this.editorCtx.getContents({
 				success: (res) => {
 					getApp().globalData.gEditContent = res.html
-					this.gClipboardData(res.html)
-					this.gToastMsg("已复制到剪切板")
+					if(this.copy){
+						this.gClipboardData(res.html)
+						this.gToastMsg("已复制到剪切板")
+					}
+					else{
+						uni.navigateBack({
+							delta: 1
+						})
+					}
 				} 
 			})
 		},

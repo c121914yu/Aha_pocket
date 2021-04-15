@@ -8,7 +8,7 @@
 					<image class="avatar" :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
 					<view class="user-level">
 						<image 
-							:src="'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/userLevel/'+userLevel.src" 
+							:src="userLevel.src" 
 							mode="widthFix">
 						</image>
 						<text>{{userLevel.label}}</text>
@@ -203,9 +203,11 @@ export default {
 					justify-content space-between
 					.iconfont
 						color var(--origin1)
+						font-size 34rpx
 				.tags
 					min-height 30px
 					display flex
+					align-items center
 					flex-wrap wrap
 					.tag
 						margin 0 5px 5px 0

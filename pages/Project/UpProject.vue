@@ -1,8 +1,8 @@
 <!-- 资源分享 -->
 <template>
 	<view class="up-project">
-		<baseInfo ref="baseInfo" v-show="step === 0" :projectId="projectId"></baseInfo>
-		<fileInfo ref="fileInfo" v-show="step === 1" :projectId="projectId" :level="awardLevel"></fileInfo>
+		<BaseInfo ref="baseInfo" v-show="step === 0" :projectId="projectId" showAnonymous></BaseInfo>
+		<FileInfo ref="fileInfo" v-show="step === 1" :projectId="projectId" :level="awardLevel"></FileInfo>
 		<MemberInfo ref="memberInfo" v-show="step === 2" :projectId="projectId"></MemberInfo>
 		<view class="btn">
 			<!-- step0 只能进行下一步 -->
@@ -19,8 +19,8 @@
 
 <script>
 /* 引入上传3步 */
-import baseInfo from './components/ProjectBase.vue';
-import fileInfo from './components/ProjectFile.vue';
+import BaseInfo from './components/ProjectBase.vue';
+import FileInfo from './components/ProjectFile.vue';
 import MemberInfo from './components/ProjectMember.vue';
 import { getPublicSignature, postProject, postResource,putMembers } from '@/static/request/api_project.js';
 
@@ -50,8 +50,8 @@ export default {
 		}
 	},
 	components: {
-		baseInfo,
-		fileInfo,
+		BaseInfo,
+		FileInfo,
 		MemberInfo
 	},
 	methods: {
@@ -70,7 +70,7 @@ export default {
 			
 			compId = compId ? compId : 0;
 			let data = {
-				is_owner: base.is_owner,
+				isAnonymous: base.isAnonymous,
 				name: base.name,
 				avatarUrl: base.avatarUrl,
 				compId,
@@ -81,7 +81,7 @@ export default {
 				awardProveUrl: base.awardProveUrl,
 				intro: base.intro,
 			}
-			// console.log(data)
+			console.log(data)
 			/* 空值检验 */
 			if (data.name === '') {
 				this.gToastError('请输入资源标题');
@@ -99,17 +99,56 @@ export default {
 				this.gToastError('请输入获奖时间');
 				return false;
 			}
-			else if(!data.awardProveUrl){
+			else if(!data.isAnonymous && !data.awardProveUrl){
 				this.gToastError('请选择证明材料');
 				return false;
 			}
 			this.gLoading(this, true)
-			
-			let successNum = 0
-			const postProj = () => {
-				if(successNum < 2){
-					return
-				}
+			// Promise链式结构
+			let upImg = Promise.resolve()
+			/* 上传头像*/
+			if (data.avatarUrl) {
+				upImg = upImg.then(() => {
+					return getPublicSignature(`${Date.now()}.JPG`)
+							.then(sign => sign)
+							.catch(err => {
+								console.log(err);
+								this.gToastError('头像上传失败')
+							})
+				})
+				upImg = upImg.then((sign) => {
+					return this.gUploadFile(data.avatarUrl, sign.data)
+							.then((res) => {
+								console.log("头像上传成功")
+								data.avatarUrl = res.header.Location
+							})
+							.catch(err => {
+								console.log(err);
+								this.gToastError('头像上传失败')
+							})
+				})
+			}
+			if(data.awardProveUrl){
+				/* 上传证明 */
+				upImg = upImg.then(() => {
+					return getPublicSignature(`${Date.now()}.JPG`)
+							.then(sign => sign)
+							.catch(err => {
+								this.gToastError('证明上传失败')
+							})
+				})
+				upImg = upImg.then((sign) => {
+					return this.gUploadFile(data.awardProveUrl, sign.data)
+							.then(res => {
+								console.log("证明上传成功");
+								data.awardProveUrl = res.header.Location
+							})
+							.catch(err => {
+								this.gToastError('证明上传失败')
+							})
+				})
+			}
+			upImg.then(() => {
 				postProject(data)
 				.then(res => {
 					this.projectId = res.data
@@ -135,57 +174,6 @@ export default {
 				.catch(err => {
 					this.gLoading(this, false)
 				})
-			}
-			
-			/* 判断是否有需要上传图片 */
-			if (!data.avatarUrl && !data.awardProveUrl) {
-				successNum = 2
-				postProj()
-				return
-			}
-			/* 上传头像*/
-			if (data.avatarUrl) {
-				getPublicSignature(`${Date.now()}.JPG`)
-				.then(signature => {
-					this.gUploadFile(data.avatarUrl, signature.data)
-						.then(res => {
-							console.log("头像上传成功");
-							data.avatarUrl = res.header.Location
-							successNum++
-							postProj()
-						})
-						.catch(err => {
-							this.gToastError('头像上传失败')
-							successNum++
-							postProj()
-						})
-				})
-				.catch(err => {
-					this.gToastError('头像上传失败')
-					successNum++
-					postProj()
-				})
-			}
-			else{
-				successNum++
-			}
-			
-			/* 上传证明 */
-			getPublicSignature(`${Date.now()}.JPG`)
-			.then(signature => {
-				this.gUploadFile(data.awardProveUrl, signature.data)
-					.then(res => {
-						console.log("证明上传成功");
-						data.awardProveUrl = res.header.Location
-						successNum++
-						postProj()
-					})
-					.catch(err => {
-						this.gToastError('证明上传失败')
-					})
-			})
-			.catch(err => {
-				this.gToastError('证明上传失败')
 			})
 		},
 		/* 
@@ -193,7 +181,8 @@ export default {
 			desc: 读取上传文件中的文件数据，并根据projectId更新到对应的项目中
 			time: 2020/11/15
 	  */
-		postFiles() {
+		postFiles() 
+		{
 			/* 全部正确标志位 */
 			let correct = true;
 			this.$refs.fileInfo.files.find(file => {
@@ -207,7 +196,13 @@ export default {
 				this.$refs.fileInfo.upload();
 				return;
 			}
-			this.step = 2;
+			// 匿名资源无需添加成员
+			if(this.$refs.baseInfo.isAnonymous){
+				this.finish();
+			}
+			else{
+				this.step = 2
+			}
 		},
 		/* 
 			name: 更新队员信息
@@ -238,7 +233,8 @@ export default {
 			desc: 完成项目创建，跳转个人项目管理界面
 			time: 2020/11/16
 		*/
-		finish() {
+		finish() 
+		{
 			this.gToastSuccess('项目创建成功!', true);
 			setTimeout(() => {
 				uni.navigateBack({

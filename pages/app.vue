@@ -23,10 +23,11 @@
 			v-show="currentNav === 0">
 		</ProjectHome>
 		<!-- 生活 -->
-		<Competition
+		<ForumHome
+			ref="forumHome"
 			v-if="navs[1].loaded"
 			v-show="currentNav === 1">
-		</Competition>
+		</ForumHome>
 		<!-- 会员 -->
 		<Epiboly
 			v-if="navs[2].loaded"
@@ -46,7 +47,7 @@ import { getAllCompetition } from "@/static/request/api_competition.js"
 import { getNotice } from "@/static/request/api_system.js"
 import userAgreement from "./Self/Number/UserAgreement.vue"
 import ProjectHome from "./Project/ProjectHome.vue"
-import Competition from "./Competition/Competition"
+import ForumHome from "./Forum/ForumHome"
 import Epiboly from "./Epiboly/Epiboly"
 import Self from "./Self/Self"
 export default {
@@ -58,7 +59,7 @@ export default {
 			*/
 			navs: [
 				{name: "ProjectHome",loaded: false},
-				{name: "Competition",loaded: false},
+				{name: "ForumHome",loaded: false},
 				{name: "Epiboly",loaded: false},
 				{name: "Self",loaded: false},
 			],
@@ -72,14 +73,14 @@ export default {
 			let text = ""
 			switch(newNav){
 				case 0: text="项目分享";break;
-				case 1: text="竞赛信息";break;
+				case 1: text="社区论坛";break;
 				case 2: text="服务外包";break;
 				case 3: text="个人信息";break;
 			}
 			uni.setNavigationBarTitle({
 				title: text
 			})
-			if(newNav === 1 || newNav === 2){
+			if(newNav === 2){
 				uni.showToast({
 					title: "该模块正在开发!",
 					icon: "none"
@@ -90,7 +91,7 @@ export default {
 	components:{
 		userAgreement,
 		ProjectHome,
-		Competition,
+		ForumHome,
 		Epiboly,
 		Self,
 	},
@@ -109,6 +110,9 @@ export default {
 	onReachBottom(){
 		if(this.currentNav === 0){
 			this.$refs.projectHome.loadMore()
+		}
+		else if(this.currentNav === 1){
+			this.$refs.forumHome.$refs.Talents.loadTalent()
 		}
 	},
 	onShareAppMessage(e){

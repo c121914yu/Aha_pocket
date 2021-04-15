@@ -38,7 +38,7 @@
     "pages/Project/PurchasedProjects",
     "pages/Epiboly/MyEpiboly",
     "pages/Epiboly/EpibolyDetail",
-    "pages/Competition/MyCompetition"
+    "pages/Forum/ForumHome"
   ],
   "subPackages": [],
   "window": {
@@ -53,5 +53,5 @@
     }
   },
   "usingComponents": {},
-  "sitemapLocation": "sitemap0.json"
+  "sitemapLocation": "sitemap1.json"
 }

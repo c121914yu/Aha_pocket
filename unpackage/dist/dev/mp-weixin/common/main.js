@@ -91,11 +91,109 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 var _globalData = _interopRequireDefault(__webpack_require__(/*! ./static/js/globalData.js */ 8));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
 {
   /* 全局变量,getApp().globalData 获取*/
-  globalData: _globalData.default };exports.default = _default;
+  globalData: _globalData.default,
+  onLaunch: function onLaunch() {
+    // 检测是否有新版本
+    var updateManager = uni.getUpdateManager();
+    updateManager.onCheckForUpdate(function (res) {
+      // 监听向微信后台请求检查更新结果事件
+      console.log('是否有新版本：' + res.hasUpdate);
+      if (res.hasUpdate) {
+        //如果有新版本
+        updateManager.onUpdateReady(function () {
+          uni.showModal({
+            title: '更新提示',
+            content: '新版本已经准备好，单击确定重启小程序',
+            showCancel: false,
+            success: function success(res) {
+              if (res.confirm) {
+                // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启小程序
+                updateManager.applyUpdate();
+              }
+            } });
+
+        });
+        // 小程序有新版本，会主动触发下载操作（无需开发者触发）
+        updateManager.onUpdateFailed(function () {
+          uni.showModal({
+            title: '提示',
+            content: '检查到有新版本，但下载失败，请稍后尝试',
+            showCancel: false });
+
+        });
+      }
+    });
+    // 下载比赛等级图
+    var prizeLen = _globalData.default.prizeLevels.length - 1;
+    var prizeLevels = uni.getStorageSync("prizeLevels");
+    if (prizeLevels) {
+      _globalData.default.prizeLevels = JSON.parse(prizeLevels);
+      console.log("已缓存比赛等级图");
+    } else
+    {
+      _globalData.default.prizeLevels.forEach(function (item, index) {
+        uni.downloadFile({
+          url: item.src,
+          success: function success(res) {
+            if (res.statusCode === 200) {
+              uni.saveFile({
+                tempFilePath: res.tempFilePath,
+                success: function success(res) {
+                  _globalData.default.prizeLevels[index].src = res.savedFilePath;
+                  prizeLen--;
+                  if (prizeLen === 0) {
+                    console.log("下载全部比赛等级图片");
+                    uni.setStorage({
+                      key: "prizeLevels",
+                      data: JSON.stringify(_globalData.default.prizeLevels) });
+
+                  }
+                } });
+
+            }
+          } });
+
+      });
+    }
+
+    // 下载用户等级缓存图
+    var userLevelLen = _globalData.default.arr_userLevel.length - 1;
+    var userLevels = uni.getStorageSync("userLevels");
+    if (userLevels) {
+      _globalData.default.arr_userLevel = JSON.parse(userLevels);
+      console.log("已缓存用户等级图");
+    } else
+    {
+      _globalData.default.arr_userLevel.forEach(function (item, index) {
+        uni.downloadFile({
+          url: item.src,
+          success: function success(res) {
+            if (res.statusCode === 200) {
+              uni.saveFile({
+                tempFilePath: res.tempFilePath,
+                success: function success(res) {
+                  _globalData.default.arr_userLevel[index].src = res.savedFilePath;
+                  userLevelLen--;
+                  if (userLevelLen === 0) {
+                    console.log("下载全部用户等级图片");
+                    uni.setStorage({
+                      key: "userLevels",
+                      data: JSON.stringify(_globalData.default.arr_userLevel) });
+
+                  }
+                } });
+
+            }
+          } });
+
+      });
+    }
+  } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 8 */,

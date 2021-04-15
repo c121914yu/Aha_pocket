@@ -19,7 +19,7 @@
 				<image 
 					v-if="awardImg" 
 					class="award-img"
-					:src="'../../../static/icon/media/' + awardImg"
+					:src="awardImg"
 					mode="widthFix">
 				</image>
 			</view>
@@ -52,8 +52,8 @@
 				<view 
 					v-if="is_showStatus"
 					class="status"
-					:class="project.passed ? 'passed' : 'failed'">
-					{{project.passed ? '已通过' : '审核中'}}
+					:class="projectStatus.class"
+					v-html="projectStatus.label">
 				</view>
 			</view>
 		</view>
@@ -115,12 +115,7 @@ export default {
 		awardImg() {
 			if (this.project.awardLevel) {
 				let res = getApp().globalData.prizeLevels.find(item => item.value === this.project.awardLevel)
-				if(res.value > 50){
-					return `${res.value-10}.png`
-				}
-				else{
-					return `${res.value}.png`
-				}
+				return res.src
 			}
 			return null
 		},
@@ -129,6 +124,26 @@ export default {
 				return []
 			}
 			return this.project.tags.split(" ")
+		},
+		projectStatus() {
+			if(this.project.isAnonymous){
+				return {
+					class: "anonymous",
+					label: "匿&emsp;名"
+				}
+			}
+			if(this.project.passed){
+				return {
+					class: "passed",
+					label: "已通过"
+				}
+			}
+			else{
+				return {
+					class: "failed",
+					label: "审核中"
+				}
+			}
 		}
 	}
 }
@@ -215,12 +230,14 @@ export default {
 				font-size 24rpx
 			.status
 				color #FFFFFF
-				padding 2px 15px 12px
+				padding 2px 17px 12px
 				font-size 22rpx
-				transform rotate(-45deg) translate(24rpx,40rpx)
+				transform rotate(-45deg) translate(29rpx,40rpx)
 				// border-radius 5px
 				&.passed
 					background-color #67C23A
 				&.failed
 					background-color var(--gray2)
+				&.anonymous
+					background-color var(--gray1)
 </style>

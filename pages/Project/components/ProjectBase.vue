@@ -1,7 +1,16 @@
 <template>
 	<view class="content">
 		<view class="head">
-			<view class="h3">基本信息</view>
+			<view class="left">
+				<view class="h3">基本信息</view>
+				<!-- 是否为所有者 -->
+				<view v-if="showAnonymous" class="anonymity-switch">
+					是否为匿名资源<switch :checked="isAnonymous" color="#f8b86b" @change="isAnonymous=$event.target.value"/>
+				</view>
+				<view v-if="AnonymousLabel" class="anonymity-switch">
+					该项目为匿名项目
+				</view>
+			</view>
 			<view v-if="avatarUrl" class="avatar">
 				<image :src="avatarUrl" mode="widthFix" @click="showMenu('avatarUrl')"></image>
 			</view>
@@ -9,18 +18,7 @@
 				<text class="add">+</text>
 				<text>添加头像</text>
 			</view>
-		</view>
-		<!-- 是否为所有者 -->
-		<!-- <view class="is_owner">
-			<SelfRadio
-				label="是否为项目所有者"
-				:radio="[
-					{text:'是',value:true},
-					{text:'否',value:false}
-				]"
-				v-model="is_owner">
-			</SelfRadio>
-		</view> -->
+		</view>		
 		<SelfInput 
 			label="题目" 
 			circle 
@@ -60,7 +58,7 @@
 				date
 				v-model="awardTime">
 			</SelfPicker>
-			<view v-if="compName">
+			<view v-if="compName && !isAnonymous">
 				<view class="title">
 					获奖证明:
 				</view>
@@ -81,10 +79,20 @@
 
 <script>
 export default {
+	props: {
+		showAnonymous: {
+			type: Boolean,
+			default: false
+		},
+		AnonymousLabel: {
+			type: Boolean,
+			default: false
+		},
+	},
 	data() {
 		const Matches = getApp().globalData.Competitions.map(item => item.name)
 		return {
-			is_owner: true,
+			isAnonymous: false,
 			name: '', // 项目名称
 			avatarUrl: '', // 团队头像
 			tags: '', // 标签
@@ -182,6 +190,13 @@ export default {
 .head
 	display flex
 	justify-content space-between
+	.left
+		.h3
+			padding 10px 0 5px
+		.anonymity-switch
+			color var(--origin1)
+			switch
+				transform scale(0.75)
 	.avatar,.addAvatar
 		position relative
 		width 60px

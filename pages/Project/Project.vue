@@ -16,7 +16,8 @@
 				<view class="item">
 					<view class="title">项目成员</view>
 					<view class="flex">
-						<view class="values arr">
+						<!-- 项目成员 -->
+						<view v-if="!isAnonymous" class="values arr">
 							<navigator 
 								class="val" 
 								hover-class="none"
@@ -26,6 +27,10 @@
 								:url="'../Self/UserHome?userId=' + member.memberUser.userId">
 								{{ member.memberUser.nickname }}
 							</navigator>
+						</view>
+						<!-- 如果是匿名，认领/修改申请 -->
+						<view v-else class="claim">
+							<button class="small" @click="is_claimProject=true">{{applyingID > 0 ? "修改申请" : "申请认领"}}</button>
 						</view>
 						<!-- 数据统计 -->
 						<view class="statistics">
@@ -80,7 +85,7 @@
 			<!-- 附件 -->
 			<view v-if="resources.length>0" class="item files">
 				<view class="title">
-					项目附件
+					项目附件<text v-if="isAnonymous" class="mini">(匿名项目不可购买)</text>
 				</view>
 				<!-- <view class="small">非媒体类附件将从外部应用打开,请通过外部应用保存至本地.</view> -->
 				<view class="list">
@@ -100,7 +105,12 @@
 							v-for="(file, index) in arr_previewFiles" 
 							:key="index">
 							<view class="name" @click="preview(file)">{{ file.name }}</view>
-							<button v-if="!file.isBuy" @click="buyFile(file,'arr_previewFiles',index)">{{file.price}}Aha点购买</button>
+							<!-- 非匿名资源 / 未购买情况下才显示购买按键 -->
+							<button 
+								v-if="!file.isBuy && !isAnonymous" 
+								@click="buyFile(file,'arr_previewFiles',index)">
+								{{file.price}}Aha点购买
+							</button>
 						</view>
 					</view>
 					<!-- 不可预览 -->
@@ -110,7 +120,12 @@
 							v-for="(file, index) in arr_unpreviewFiles" 
 							:key="index">
 							<view class="name">{{ file.name }}</view>
-							<button v-if="!file.isBuy" @click="buyFile(file,'arr_unpreviewFiles',index)">{{file.price}}Aha点购买</button>
+							<!-- 非匿名资源 / 未购买情况下才显示购买按键 -->
+							<button
+								v-if="!file.isBuy && !isAnonymous" 
+								@click="buyFile(file,'arr_previewFiles',index)">
+								{{file.price}}Aha点购买
+							</button>
 						</view>
 					</view>
 					
@@ -148,6 +163,14 @@
 				</view>
 			</view>
 		</view>
+		<!-- 认领项目 -->
+		<ClaimProject
+			v-if="is_claimProject"
+			:projectId="id"
+			:applyingID="applyingID"
+			@close="is_claimProject=false"
+			@success="judgeApply();is_claimProject=false">
+		</ClaimProject>
 		<!-- 写评论模块 -->
 		<WriteRemark
 			v-if="id"
@@ -163,15 +186,18 @@
 </template>
 
 <script>
-import { getProject, getLoadSignature,getRemarks,deleteRemark } from '@/static/request/api_project.js'
+import { getProject, getLoadSignature,getRemarks,deleteRemark,getApplyProject } from '@/static/request/api_project.js'
 import { postOrder,putOrder,checkResourcePurchased } from "../../static/request/api_order.js"
 import WriteRemark from "./components/WriteRemark.vue"
+import ClaimProject from "./components/ClaimProject.vue"
 export default {
 	data() {
 		return {
 			id: null,
-			name: '',
-			avatarUrl: '',
+			isAnonymous: false,
+			applyingID: 0,
+			name: '项目标题',
+			avatarUrl: 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png',
 			tags: '',
 			intro: '',
 			read: 0,
@@ -190,7 +216,8 @@ export default {
 			/* 分页获取评论信息 */
 			pageNum: 1,
 			pageSize: 5,
-			is_showAllComments: false
+			is_showAllComments: false, // 写评论弹窗
+			is_claimProject: false, //是否显示认证弹窗
 		}
 	},
 	computed: {
@@ -218,6 +245,7 @@ export default {
 			for (let key in res.data){
 				this[key] = res.data[key]
 			}
+			this.judgeApply()
 			if(this.resources.length > 0){
 				this.initFiles()
 			}
@@ -231,6 +259,7 @@ export default {
 		})
 	},
 	components: {
+		ClaimProject,
 		WriteRemark
 	},
 	onShareAppMessage(e){
@@ -246,6 +275,17 @@ export default {
 		}
 	},
 	methods: {
+		/* 判断是否提交过认领 */
+		judgeApply()
+		{
+			// 判断是否提交过申请
+			if(this.isAnonymous){
+				getApplyProject(this.id)
+				.then(res => {
+					this.applyingID = res.data
+				})
+			}
+		},
 		/* 初始化附件 */
 		initFiles()
 		{
@@ -270,11 +310,8 @@ export default {
 							this.arr_unpreviewFiles.push(file)
 						}
 					})
-					this.gLoading(this,false)
 				})
-				.catch(err => {
-					this.gLoading(this,false)
-				})
+				this.gLoading(this,false)
 			}
 		},
 		/* 获取评论 */
@@ -490,6 +527,11 @@ export default {
 			.flex
 				display flex
 				align-items flex-start
+				.claim
+					flex 1
+					button
+						padding 0 10px
+						display inline-block
 			/* 统计信息 */
 			.statistics
 				.read, .collect

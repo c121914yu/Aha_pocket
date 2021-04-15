@@ -22,7 +22,7 @@
 					<!-- 等级标签 -->
 					<view v-if="userLevel" class="user-level">
 						<image 
-							:src="'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/userLevel/'+userLevel.src" 
+							:src="userLevel.src" 
 							mode="widthFix">
 						</image>
 						<text>{{userLevel.label}}</text>
@@ -113,7 +113,7 @@
 		<navigator 
 			v-if="isAdmin" 
 			class="admin-edit" 
-			url="./EditMd/EditMd">
+			url="./EditMd/EditMd?copy=true">
 			管理员MD编辑器
 		</navigator>
 		<!-- 兴趣选择 -->

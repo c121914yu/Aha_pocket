@@ -38,7 +38,6 @@
 		</view>
 		<!-- 项目卡片 -->
 		<view class="cards">
-			<!-- 推荐比赛列表 -->
 			<view>
 				<projectCard
 					v-for="(project, index) in projects"

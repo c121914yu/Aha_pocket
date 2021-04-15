@@ -33,7 +33,72 @@ export default {
 					})
 				})
 			}
-		 })
+		})
+		// 下载比赛等级图
+		let prizeLen = globalData.prizeLevels.length-1
+		const prizeLevels = uni.getStorageSync("prizeLevels")
+		if(prizeLevels){
+			globalData.prizeLevels = JSON.parse(prizeLevels)
+			console.log("已缓存比赛等级图");
+		}
+		else{
+			globalData.prizeLevels.forEach((item,index) => {
+				uni.downloadFile({
+				    url: item.src,
+				    success: (res) => {
+				        if (res.statusCode === 200) {
+							uni.saveFile({
+								tempFilePath: res.tempFilePath,
+								success: function (res) {
+									globalData.prizeLevels[index].src = res.savedFilePath
+									prizeLen--
+									if(prizeLen === 0){
+										console.log("下载全部比赛等级图片");
+										uni.setStorage({
+											key: "prizeLevels",
+											data: JSON.stringify(globalData.prizeLevels)
+										})
+									}
+								}
+							});
+				        }
+				    }
+				})
+			})
+		}
+		
+		// 下载用户等级缓存图
+		let userLevelLen = globalData.arr_userLevel.length-1
+		const userLevels = uni.getStorageSync("userLevels")
+		if(userLevels){
+			globalData.arr_userLevel = JSON.parse(userLevels)
+			console.log("已缓存用户等级图");
+		}
+		else{
+			globalData.arr_userLevel.forEach((item,index) => {
+				uni.downloadFile({
+				    url: item.src,
+				    success: (res) => {
+				        if (res.statusCode === 200) {
+							uni.saveFile({
+								tempFilePath: res.tempFilePath,
+								success: function (res) {
+									globalData.arr_userLevel[index].src = res.savedFilePath
+									userLevelLen--
+									if(userLevelLen === 0){
+										console.log("下载全部用户等级图片");
+										uni.setStorage({
+											key: "userLevels",
+											data: JSON.stringify(globalData.arr_userLevel)
+										})
+									}
+								}
+							});
+				        }
+				    }
+				})
+			})
+		}
 	}
 };
 </script>

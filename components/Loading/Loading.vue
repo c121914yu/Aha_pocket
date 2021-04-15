@@ -13,7 +13,7 @@ export default {
 		return {
 			show: false
 		}
-	}
+	},
 }
 </script>
 

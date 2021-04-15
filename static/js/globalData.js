@@ -7,21 +7,21 @@ export default  {
 	gEditContent: "", // 编辑内容
 	Competitions: [], // 所有比赛
 	prizeLevels: [//获奖等级
-		{ label: '保研国一', value: 53,max: 4000,min: 2000},
-		{ label: '保研国二', value: 52,max: 3000,min: 1500 },
-		{ label: '保研国三', value: 51,max: 2000,min: 1000 },
-		{ label: '国一', value: 43,max: 3500,min: 1750 },
-		{ label: '国二', value: 42,max: 2500,min: 1250 },
-		{ label: '国三', value: 41,max: 1500,min: 750 },
-		{ label: '省一', value: 33,max: 2000,min: 1000 },
-		{ label: '省二', value: 32,max: 1400,min: 700 },
-		{ label: '省三', value: 31,max: 800,min: 400 },
-		{ label: '市一', value: 23,max: 1200,min: 600 },
-		{ label: '市二', value: 22,max: 600,min: 300 },
-		{ label: '市三', value: 21,max: 400,min: 200 },
-		{ label: '校一', value: 13,max: 300,min: 150 },
-		{ label: '校二', value: 12,max: 200,min: 100 },
-		{ label: '校三', value: 11,max: 100,min: 50 },
+		{ label: '保研国一', value: 53,max: 4000,min: 2000,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/43.png"},
+		{ label: '保研国二', value: 52,max: 3000,min: 1500,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/42.png" },
+		{ label: '保研国三', value: 51,max: 2000,min: 1000,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/41.png" },
+		{ label: '国一', value: 43,max: 3500,min: 1750,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/43.png"},
+		{ label: '国二', value: 42,max: 2500,min: 1250,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/42.png" },
+		{ label: '国三', value: 41,max: 1500,min: 750,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/41.png" },
+		{ label: '省一', value: 33,max: 2000,min: 1000,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/33.png" },
+		{ label: '省二', value: 32,max: 1400,min: 700,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/32.png" },
+		{ label: '省三', value: 31,max: 800,min: 400,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/31.png" },
+		{ label: '市一', value: 23,max: 1200,min: 600,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/23.png" },
+		{ label: '市二', value: 22,max: 600,min: 300,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/22.png" },
+		{ label: '市三', value: 21,max: 400,min: 200,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/21.png" },
+		{ label: '校一', value: 13,max: 300,min: 150,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/13.png" },
+		{ label: '校二', value: 12,max: 200,min: 100,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/12.png" },
+		{ label: '校三', value: 11,max: 100,min: 50,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/11.png" },
 	],
 	compType: [ //比赛类型
 		{label: "经济类",value: 1},
@@ -68,10 +68,10 @@ export default  {
 		{label: "Aha币提现",type: 9,order: null}
 	],
 	arr_userLevel: [ //用户等级类型
-		{label:"Aha萌新",src:"1.png",totalContribPoint: 3000},
-		{label:"Aha进阶",src:"2.png",totalContribPoint: 6000},
-		{label:"Aha小佬",src:"3.png",totalContribPoint: 10000},
-		{label:"Aha大佬",src:"4.png",totalContribPoint: 12000},
-		{label:"Aha巨佬",src:"5.png",totalContribPoint: 1000000000},
+		{label:"Aha萌新",src:"https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/userLevel/1.png",totalContribPoint: 3000},
+		{label:"Aha进阶",src:"https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/userLevel/2.png",totalContribPoint: 6000},
+		{label:"Aha小佬",src:"https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/userLevel/3.png",totalContribPoint: 10000},
+		{label:"Aha大佬",src:"https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/userLevel/4.png",totalContribPoint: 12000},
+		{label:"Aha巨佬",src:"https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/userLevel/5.png",totalContribPoint: 1000000000},
 	]
 }

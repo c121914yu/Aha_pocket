@@ -22,14 +22,16 @@
   width: 80rpx;
   height: 80rpx;
   border: 1px solid var(--black);
-  border-radius: 10px;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
   font-size: 40rpx;
   text-align: center;
   line-height: 80rpx;
 }
 .code .inputs .item.focus.data-v-3c6cb780 {
   border-color: var(--origin2);
-  box-shadow: 0 0 5px var(--origin2);
+  -webkit-box-shadow: 0 0 5px var(--origin2);
+          box-shadow: 0 0 5px var(--origin2);
 }
 .code .sendCode.data-v-3c6cb780 {
   text-align: end;

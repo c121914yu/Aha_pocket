@@ -29,8 +29,10 @@
   width: 100%;
   padding-bottom: 10px;
   background-color: var(--white1);
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
+  -webkit-border-top-left-radius: 30px;
+          border-top-left-radius: 30px;
+  -webkit-border-top-right-radius: 30px;
+          border-top-right-radius: 30px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -51,16 +53,20 @@
   width: 80%;
   padding: 5%;
   background-color: var(--white2);
-  border-radius: 22px;
-  box-shadow: var(--shadow1);
+  -webkit-border-radius: 22px;
+          border-radius: 22px;
+  -webkit-box-shadow: var(--shadow1);
+          box-shadow: var(--shadow1);
 }
 .login .bottom .card .input.data-v-3a2da0cc {
   position: relative;
   margin: 30px 0 10px;
   width: 100%;
   padding: 5px;
-  border-radius: 40px;
-  box-shadow: var(--shadow-beside);
+  -webkit-border-radius: 40px;
+          border-radius: 40px;
+  -webkit-box-shadow: var(--shadow-beside);
+          box-shadow: var(--shadow-beside);
   font-size: 30rpx;
   display: -webkit-box;
   display: -webkit-flex;
@@ -128,7 +134,8 @@
   width: 22%;
   height: 1px;
   background-color: var(--gray2);
-  border-radius: 10px;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
 }
 .login .bottom .other .strong.data-v-3a2da0cc::after {
   content: '';
@@ -137,7 +144,8 @@
   width: 22%;
   height: 1px;
   background-color: var(--gray2);
-  border-radius: 10px;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
 }
 .login .bottom .other .weixin.data-v-3a2da0cc {
   line-height: 1;

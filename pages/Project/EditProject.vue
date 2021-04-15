@@ -19,7 +19,8 @@
 		</view>
 		<baseInfo 
 			ref="baseInfo"
-			v-show="pageIndex === 0">
+			v-show="pageIndex === 0"
+			:AnonymousLabel="project.isAnonymous">
 		</baseInfo>
 		<fileInfo 
 			ref="fileInfo" 
@@ -87,6 +88,7 @@ export default {
 			let awardLevel = getApp().globalData.prizeLevels.find(item => item.value === this.project.awardLevel)
 			/* 同步基础信息 */
 			const domBaseInfo = this.$refs.baseInfo
+			domBaseInfo.isAnonymous = this.project.isAnonymous
 			domBaseInfo.name = this.project.name
 			domBaseInfo.avatarUrl = this.project.avatarUrl
 			domBaseInfo.tags = this.project.tags
@@ -146,7 +148,7 @@ export default {
 			compId = compId ? compId.id : 0
 			
 			let data = {
-				is_owner: base.is_owner,
+				isAnonymous: base.isAnonymous,
 				name: base.name,
 				avatarUrl: base.avatarUrl,
 				compId,
@@ -174,18 +176,55 @@ export default {
 				this.gToastError('请输入获奖时间')
 				return false
 			}
-			else if(!data.awardProveUrl){
+			else if(!data.isAnonymous && !data.awardProveUrl){
 				this.gToastError('请选择证明材料');
 				return false;
 			}
 			this.gLoading(this,true)
-			
-			/* 触发更新项目 */
-			let successNum = 0
-			const postProj = () => {
-				if(successNum < 2){
-					return
-				}
+			let upImg = Promise.resolve()
+			/* 上传头像,先判断是否是新的 */
+			if (data.avatarUrl && data.avatarUrl !== this.project.avatarUrl) {
+				upImg = upImg.then(() => {
+					return getPublicSignature(`${Date.now()}.JPG`)
+							.then(sign => sign)
+							.catch(err => {
+								console.log(err);
+								this.gToastError('头像上传失败')
+							})
+				})
+				upImg = upImg.then((sign) => {
+					return this.gUploadFile(data.avatarUrl, sign.data)
+							.then((res) => {
+								console.log("头像上传成功")
+								data.avatarUrl = res.header.Location
+							})
+							.catch(err => {
+								console.log(err);
+								this.gToastError('头像上传失败')
+							})
+				})
+			}
+			/* 上传证明 */
+			if (data.awardProveUrl !== this.project.awardProveUrl) {
+				upImg = upImg.then(() => {
+					return getPublicSignature(`${Date.now()}.JPG`)
+							.then(sign => sign)
+							.catch(err => {
+								this.gToastError('证明上传失败')
+							})
+				})
+				upImg = upImg.then((sign) => {
+					return this.gUploadFile(data.awardProveUrl, sign.data)
+							.then(res => {
+								console.log("证明上传成功");
+								data.awardProveUrl = res.header.Location
+							})
+							.catch(err => {
+								this.gToastError('证明上传失败')
+							})
+				})
+			}
+			upImg.then(() => {
 				putProject(this.project.id,data)
 				.then(res => {
 					this.gToastSuccess("更新成功")
@@ -193,72 +232,8 @@ export default {
 				})
 				.catch(err => {
 					this.gLoading(this, false);
-				});
-			};
-			
-			/* 判断是否有需要上传图片 */
-			if (!data.avatarUrl && !data.awardProveUrl) {
-				successNum = 2
-				postProj()
-				return
-			}
-			
-			/* 上传头像,先判断是否是新 */
-			if (data.avatarUrl && data.avatarUrl !== this.project.avatarUrl) {
-				getPublicSignature(`${Date.now()}.JPG`)
-				.then(signature => {
-					this.gUploadFile(data.avatarUrl, signature.data)
-						.then(res => {
-							console.log("头像上传成功");
-							const url = res.header.Location
-							data.avatarUrl = url
-							this.project.avatarUrl = url
-							base.avatarUrl = url
-							successNum++
-							postProj()
-						})
-						.catch(err => {
-							this.gToastError('头像上传失败')
-							this.gLoading(this, false);
-						})
 				})
-				.catch(err => {
-					this.gToastError('头像上传失败')
-					this.gLoading(this, false);
-				})
-			}
-			else{
-				successNum++
-			}
-			
-			/* 上传证明 */
-			if (data.awardProveUrl !== this.project.awardProveUrl) {
-				getPublicSignature(`${Date.now()}.JPG`)
-				.then(signature => {
-					this.gUploadFile(data.awardProveUrl, signature.data)
-						.then(res => {
-							console.log("证明上传成功");
-							const url = res.header.Location
-							data.awardProveUrl = url
-							this.project.awardProveUrl = url
-							base.awardProveUrl = url
-							successNum++
-							postProj()
-						})
-						.catch(err => {
-							this.gToastError('证明上传失败')
-							this.gLoading(this, false);
-						})
-				})
-				.catch(err => {
-					this.gToastError('证明上传失败')
-					this.gLoading(this, false);
-				})
-			}
-			else {
-				successNum++
-				postProj()
-			}
+			})
 		},
 		/* 更新附件 */
 		updateFiles()

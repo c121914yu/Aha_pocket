@@ -217,13 +217,16 @@
 			}
 		},
 		
-		/* 比赛 */
+		/* 论坛区 */
 		{
-			"path": "pages/Competition/MyCompetition",
-			"style": {
-				"navigationBarTitleText": "我的比赛"
-			}
-		}
+            "path" : "pages/Forum/ForumHome",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "社区论坛",
+				"onReachBottomDistance": 150
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
