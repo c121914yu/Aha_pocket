@@ -8581,21 +8581,6 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 405:
-/*!************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_forum.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getTalents = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/* 获取用户列表 */
-var getTalents = function getTalents() {return (0, _request.default)("/talentMarket", "GET", {});};exports.getTalents = getTalents;
-
-/***/ }),
-
 /***/ 54:
 /*!******************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_competition.js ***!
@@ -8911,6 +8896,21 @@ exports.postApplyProject = function (data) {return (0, _request.default)("/proje
 exports.putApplyProject = function (data) {return (0, _request.default)("/project/find/".concat(data.applyingID), "PUT", data);};
 /* 判断用户是否已经提交认领 */
 exports.getApplyProject = function (projectId) {return (0, _request.default)("/project/find/judge/".concat(projectId), "GET", {});};
+
+/***/ }),
+
+/***/ 711:
+/*!************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_forum.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getTalents = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 获取用户列表 */
+var getTalents = function getTalents() {return (0, _request.default)("/talentMarket", "GET", {});};exports.getTalents = getTalents;
 
 /***/ }),
 
