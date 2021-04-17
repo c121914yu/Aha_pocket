@@ -44,6 +44,7 @@
 					margin="0 0 10px 0"
 					:radius="index === 0 ? '0 0 16px 16px' : '16px'"
 					:project="project"
+					isShowAnonymous
 					@click="readProject(project.id)"
 				></projectCard>
 			</view>

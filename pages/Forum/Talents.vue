@@ -42,14 +42,14 @@
 				<image class="left" :src="user.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
 				<view class="right">
 					<text class="name strong">{{user.nickname}}</text>
-					<view class="level">
-						<image
-							class="level-img"
-							:src="user.levelSrc" 
-							mode="widthFix">
-						</image>
-						<text class="label">{{user.levelLabel}}</text>
-					</view>
+					<UserLevel
+						class="level"
+						:point="user.totalContribPoint"
+						small
+						backgroundColor="#f8d99f"
+						color="#ffffff"
+						margin="0 3px 3px 0">
+					</UserLevel>
 					<view class="tags">
 						<view 
 							class="tag"
@@ -113,15 +113,16 @@ export default {
 				this.users[i].projectIndex = index < user.projectNames.length-1 ? index+1 : 0
 			})
 		},3000)
+		this.gLoading(this, true)
 		this.getTalentsList()
 	},
 	methods: {
 		getTalentsList()
 		{
-			// this.gLoading(this, true)
 			getTalents()
 			.then(res => {
 				data = res.data
+				console.log(data);
 				this.loadTalent(true)
 			})
 			.catch(err => {
@@ -141,16 +142,6 @@ export default {
 						return
 					}
 					const item = {...data[i]}
-					item.levelSrc = userLevels[0].src
-					item.levelLabel = userLevels[0].label
-					// 判断用户等级
-					for(let i=userLevels.length-1;i>=0;i--){
-						if(item.totalContribPoint > userLevels[i].totalContribPoint){
-							item.levelSrc = userLevels[i].src
-							item.levelLabel = userLevels[i].label
-							break
-						}
-					}
 					// 用户标签
 					if(!item.specialtyTags){
 						item.specialtyTags = [""]
@@ -237,20 +228,6 @@ export default {
 					position absolute
 					right 0
 					top 0
-					color var(--origin1)
-					background-color var(--origin4)
-					border-radius 22px
-					padding 0 5px 0 20px
-					display flex
-					align-items center
-					.level-img
-						position absolute
-						top 0
-						left 0
-						width 16px
-						height 22px
-					text
-						font-size 22rpx
 				.tags
 					padding 15px 0
 					display flex

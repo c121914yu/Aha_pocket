@@ -53,14 +53,18 @@ export default {
 		ProjectFilter
 	},
 	methods: {
-		/* 
+		/*
 			name: 确定排序模式
-			time: 2020/12/26
+			@params sort: Object 排序参数
+			@params index: Number 对应的下标
+			desc：点击排序，先判断是否重复点击，若非则切换排序
 		*/
 		checkSort(sort, index) 
 		{
-			this.sortActive = index;
-			this.$emit('sortChange', sort)
+			if(index !== this.sortActive){
+				this.sortActive = index;
+				this.$emit('sortChange', sort)
+			}
 		},
 		filterChange(e)
 		{

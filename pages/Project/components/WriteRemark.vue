@@ -3,12 +3,12 @@
 	<view class="write-remark" @touchmove.stop.prevent>
 		<!-- 提示模块 -->
 		<view v-if="type===0" class="remark-hint">
-			<button class="write" @click="startComment">写评论</button>
+			<button class="write" @click="type=1">写评论</button>
 			<view class="icon iconfont icon-xinxi" @click="$emit('scrollComment')"></view>
 			<view v-if="isCollect" class="icon iconfont icon-collection collected" @click="collected"></view>
 			<view v-else class="icon iconfont icon-shoucang" @click="collected"></view>
 			<button class="icon iconfont icon-share share" open-type="share"></button>
-			<view class="webRead icon iconfont icon-airplaytouping" @click="webRead"></view>
+			<!-- <view class="webRead icon iconfont icon-airplaytouping" @click="webRead"></view> -->
 		</view>
 		<!-- 简要写评论模块 -->
 		<view v-if="type===1" class="brief-write">
@@ -101,13 +101,6 @@ export default {
 			`http://localhost:8081/project/read/${this.projectId}/${uni.getStorageSync("token")}`,
 			"已复制连接,请用电脑浏览器打开!"
 			)
-		},
-		/* 开始写评论 */
-		startComment()
-		{
-			this.checkedFile = null
-			this.commentContent = ""
-			this.type = 1
 		},
 		/* 发表评论 */
 		publish()

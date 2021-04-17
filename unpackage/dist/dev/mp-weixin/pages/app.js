@@ -522,13 +522,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
+
 {
   data: function data() {
     return {
       navs: [// 顶部导航
-      { label: "群英", amount: 0, value: 0 },
-      { label: "组队", amount: 0, value: 1 },
-      { label: "交流", amount: 0, value: 2 }],
+      { label: "人才市场", amount: 0, value: 0 },
+      { label: "竞赛组队", amount: 0, value: 1 },
+      { label: "项目交流", amount: 0, value: 2 }],
 
       currentNav: 0 };
 

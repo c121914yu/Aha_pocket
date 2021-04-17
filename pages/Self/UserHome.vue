@@ -1,102 +1,123 @@
 <!-- 用户信息主页 -->
 <template>
 	<view class="user-home">
-		<view class="blank"></view>
-		<view class="container">
-			<view class="head">
+		<view class="header">
+			<view class="first">
 				<view class="left">
-					<image class="avatar" :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
-					<view class="user-level">
-						<image 
-							:src="userLevel.src" 
-							mode="widthFix">
-						</image>
-						<text>{{userLevel.label}}</text>
-					</view>
+					<view class="avatar"><image :src="avatarUrl" mode="widthFix"></image></view>
+					<UserLevel v-if="userPoint !== null" :point="userPoint"></UserLevel>
 				</view>
-				<view class="right">
-					<view class="name">
-						<text class="h3">{{nickname}}</text>
-						<!-- 私信按键 -->
-						<navigator :url="'Inform/Inform_send?id=' + userId">
-							<text class="iconfont icon-sixin"></text>
-						</navigator>
-					</view>
-					<!-- 标签 -->
-					<view class="tags">
-						<view 
-							class="tag"
-							v-for="tag in tags"
-							:key="tag">
-							{{tag}}
+			  	<view class="right">
+			  		<view class="nickname">{{nickname}}</view>
+			  		<view class="honor">全国大学生服务外包大赛: 国一</view>
+			  		<view class="tags">
+			  			<view 
+			  				class="tag"
+			  				v-for="(tag,index) in tags"
+			  				:key="index">
+			  				{{tag}}
+			  			</view>
+			  		</view>
+					<view v-if="userRelation !== 1" class="user-relation">
+						<view class="attention" @click="attentionUser">
+							<text class="iconfont icon-xiazai"></text>
+							{{userRelation === 2 ? "取消关注" : "关注"}}
 						</view>
-					</view>
-					<!-- 个人介绍 -->
-					<view class="intro">
-						<view class="title">个人介绍</view>
-						<view class="content">{{intro ? intro : "这个人还没填写简历" }}</view>
-					</view>
-				</view>
-			</view>
-			<view style="transform: translateY(-10vw);">
-				<view class="activity">
-					<view class="title" @click="showProject=!showProject">
-						<text class="name">历史参与项目</text>
-						<view class="amount">{{statistice.totalProject}}</view>
-						<text 
-							:style="{
-								transform: `rotate(${showProject ? 0 : 180}deg)`
-							}"
-							class="iconfont icon-xiala">
-						</text>
-					</view>
-					<view 
-						:style="{
-							height: `${showProject ? projects.length*35 : 0}px`
-						}"
-						class="list">
-						<navigator 
-							class="item"
-							v-for="(item,index) in projects"
-							:key="index"
-							:url="'../Project/Project?id=' + item.id">
-							<text class="name">{{item.name}}</text>
-							<text class="iconfont icon-arrow-right"></text>
+						<navigator class="consult" :url="'./Inform/Inform_send?id=' + userId">
+							<text class="iconfont icon-xiazai"></text>咨询
 						</navigator>
+						<button class="share" open-type="share">
+							<text class="iconfont icon-xiazai"></text>分享
+						</button>
 					</view>
+			  	</view>
+			</view>
+			<view class="second">
+				<view class="statistics center">
+					<view class="strong">{{userPoint | filter_point}}Aha币</view>
+					<view class="small">竞赛成果</view>
+				</view>
+				<view class="statistics center">
+					<view class="strong">0Aha币</view>
+					<view class="small">服务成果</view>
+				</view>
+				<view class="statistics center">
+					<view class="strong">0Aha币</view>
+					<view class="small">外包成果</view>
 				</view>
 			</view>
 		</view>
-		
+		<!-- 导航 -->
+		<TopNavs 
+			:navs="navs"
+			color="var(--black)"
+			backgroundColor="#ffffff"
+			@navChange="currentNav=$event">
+		</TopNavs>
+		<!-- 足迹内容 -->
+		<view class="card tracks">
+			<view 
+				class="track"
+				v-for="(track,index) in userTracks"
+				:key="index">
+				<!-- 辅助点 -->
+				<view class="dot"></view>
+				<!-- 时间 -->
+				<view class="time">{{track.time}}</view>
+				<!-- 项目名 -->
+				<view class="track-name">{{track.trackName}}</view>
+				<!-- 描述 -->
+				<view class="result">{{track.result}}</view>
+			</view>
+			<view v-if="userTracks.length===0" class="remark">暂无用户轨迹</view>
+		</view>
+		<!-- 简历 -->
+		<view class="card resume">
+			<view class="h3 center">个人介绍</view>
+			<view 
+				:class="intro ? 'intro' : 'remark'">
+				{{intro ? intro : "暂无数据"}}
+			</view>
+		</view>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { getUser,getUserStatistice } from '@/static/request/api_userInfo.js';
-import { getProjects } from '@/static/request/api_project.js';
+import { getUser,getUserStatistice,getUserTracks,getResume,followUser,unfollowUser,getUserRelation } from '@/static/request/api_userInfo.js';
 export default {
 	data() {
 		return {
 			userId: '',
-			avatarUrl: '',
-			userLevel: getApp().globalData.arr_userLevel[0],
-			nickname: '',
+			userRelation: 0,//0-无关系 1-自己 2-已关注 3-被关注 4-互关
+			avatarUrl: 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png',
+			nickname: 'Aha会员',
 			tags: [],
-			intro: '',
-			statistice: {
-				totalProject: 0,
-				totalReceivedCollection: 0
-			},
-			
-			/* 项目 */
-			showProject: false,
-			projects: [],
-			/* 外包 */
-			showEpibolies: false,
-			epibolies: [{ name: '***小程序', id: 0 }, { name: '***网页', id: 0 }, { name: '***算法', id: 0 }]
+			userPoint: null, //用户累计Aha点
+			intro: "",
+			navs: [
+				{label: "平台轨迹",val: 0},
+				{label: "竞赛",val: 1},
+				{label: "服务",val: 2},
+				{label: "外包",val: 3},
+				{label: "案例",val: 4}
+			],
+			currentNav: 0,
+			userTracks: [
+				// {time: "2020/3/2",trackName: "视觉AI",result: "服务外包大赛国二"},
+				// {time: "2020/2/2",trackName: "视觉AI智慧酒店阿斯蒂芬刚收到",result: "服务外包大赛国二飞飞飞"},
+				// {time: "2020/1/2",trackName: "视觉",result: "服务外包大赛国方法二"},
+				// {time: "2020/1/2",trackName: "视觉",result: "服务外包大赛国方法二"},
+				// {time: "2020/1/2",trackName: "视觉",result: "服务外包大赛国方法二"},
+				// {time: "2020/1/2",trackName: "视觉",result: "服务外包大赛国方法二"},
+			]
 		};
+	},
+	filters: {
+		filter_point(val){
+			return Math.floor(val)
+		}
 	},
 	onLoad(e) {
 		if (!e.userId) {
@@ -104,11 +125,11 @@ export default {
 			uni.navigateBack({
 				delta: 1
 			})
-		} 
+		}
 		else {
 			this.gLoading(this, true);
 			this.userId = e.userId;
-			/* 获取用户userId，请求数据 */
+			/* 根据用户userId，请求数据 */
 			getUser(this.userId)
 			.then(res => {
 				/* 格式化比赛标签和特征标签 */
@@ -120,33 +141,38 @@ export default {
 				}
 				this.avatarUrl = res.data.avatarUrl
 				this.nickname = res.data.nickname
-				this.intro = res.data.intro
 			})
-			/* 获取用户等级 */
-			getUserStatistice(this.userId)
+			/* 获取用户关系,用户等级,介绍 */
+			Promise.all([getUserRelation(this.userId),getUserStatistice(this.userId),getResume(this.userId)])
 			.then(res => {
-				this.userLevel =  getApp().globalData.arr_userLevel.find(item => res.data.totalContribPoint < item.totalContribPoint)
-				this.statistice.totalProject = res.data.totalProject
+				this.userRelation = res[0].data
+				this.userPoint = res[1].data.totalContribPoint
+				this.intro = res[2].data.intro
 			})
-			/* 获取5条收藏量最多的项目项目 */
-			getProjects({
-				userId: this.userId,
-				pageNum: 1,
-				pageSize: 10,
-				sortBy: 'collect'
-			})
-			.then(res => {
-				this.projects = res.data.pageData
-				this.showProject = true
-				this.gLoading(this, false)
-			})
-			.catch(err => {
-				this.gLoading(this, false)
-			})
+			
+			/* 获取 */
+			/* 获取用户轨迹 */
+			// getUserTracks()
+			// .then(res => {
+			// 	console.log(res);
+			// })
+			this.gLoading(this, false);
 		}
 	},
 	methods: {
-		
+		/* 关注/取消关注 */
+		attentionUser()
+		{
+			if(this.userRelation === 2){
+				unfollowUser(this.userId)
+				this.userRelation = 0
+			}
+			else{
+				followUser(this.userId)
+				this.userRelation = 2
+			}
+			uni.vibrateLong()
+		}
 	}
 };
 </script>
@@ -154,124 +180,145 @@ export default {
 <style lang="stylus" scoped>
 .user-home
 	min-height 100vh
-	background-color var(--origin3)
-	.blank
-		width 100%
-		height 10vh
-	.container
-		width 100%
-		min-height 90vh
+	background-color var(--white1)
+	.header
 		background-color var(--origin4)
-		border-radius 22px 22px 0 0
-		padding 0 5%
-		.head
-			transform translateY(-13vw)
+		.first
+			padding 15px 0 10px 10%
 			display flex
-			align-items center
+			align-items flex-start
 			.left
-				display flex
-				flex-direction column
-				align-items center
 				.avatar
-					width 30vw
-					height 30vw
-					border-radius 50%
-					border 8px solid #FFFFFF
-				.user-level
-					position relative
-					margin-top 10px
-					padding 2px 20px 2px 40px
-					color var(--origin1)
-					background-color #FFFFFF
-					font-size 24rpx
-					font-weight 700
-					border-radius 22px
+					margin-bottom 10px
+					flex-shrink 0
+					width 80px
+					height 80px
+					border-radius 8px
+					background-color var(--origin3)
 					display flex
 					align-items center
+					overflow hidden
 					image
-						position absolute
-						left 0
-						top 0
-						width 25px
+						width 100%
 			.right
-				margin-left 10px
+				position relative
+				padding-right 40px
+				margin-left 5%
 				flex 1
-				.name
+				.nickname
+					color var(--black)
+					font-weight 700
+					font-size 30rpx
+				.honor
+					margin-top 15px
+					padding 0 10px
+					border-radius 22px
+					font-size 20rpx
 					color #FFFFFF
-					letter-spacing 1px
-					display flex
-					justify-content space-between
-					.iconfont
-						color var(--origin1)
-						font-size 34rpx
+					background-color var(--nav-color)
+					display inline-block
 				.tags
-					min-height 30px
+					margin-top 5px
 					display flex
-					align-items center
 					flex-wrap wrap
 					.tag
 						margin 0 5px 5px 0
-						padding 0 10px
 						color #FFFFFF
-						background-color var(--origin1)
-						border-radius 30px
+						padding 0 10px
+						border-radius 22px
 						font-size 18rpx
-				.intro
-					height 70px
-					padding 2px 5px
-					border-radius 8px
-					background-color #FFFFFF
-					line-height 1.4
-					overflow hidden
-					.title
-						color var(--origin2)
-						font-size 22rpx
-						font-weight 700
-					.content
-						font-size 20rpx
-						color var(--gray2)
-		.activity
-			margin 10px 0
-			border-radius 16px
-			overflow hidden
-			.title
-				padding 5px 10px
-				background-color var(--origin3)
-				display flex
-				align-items center
-				.name
-					flex 1
-					font-size 26rpx
-					color #FFFFFF
-					font-weight 700
-					
-				.amount
-					margin-right 5px
-					width 20px
-					height 20px
-					text-align center
-					line-height 20px
+						background-color var(--origin2)
+				.attention, .consult, .share
+					position absolute
+					right 0
+					padding 0 5px
+					border-top-left-radius 22px
+					border-bottom-left-radius 22px
 					font-size 24rpx
-					color var(--origin2)
-					background-color #FFFFFF
-					border-radius 50%
-				.iconfont
-					color var(--origin1)
-					transition var(--speed-hover)
-			.list 
-				overflow hidden
-				transition var(--speed-hover)
-				.item
-					background-color #FFFFFF
-					height 35px
-					padding-left 20px
-					padding-right 10px
-					border-bottom var(--border2)
+					background-color var(--nav-color)
+					color #FFFFFF
 					display flex
 					align-items center
-					.name
-						flex 1
-						font-size 24rpx
 					.iconfont
-						color var(--origin2)
+						margin-right 2px
+				.attention
+					top 0
+				.consult
+					top 35px
+				.share
+					top 70px
+					line-height 1.5
+					border-bottom-right-radius 0
+					border-top-right-radius 0
+		.second
+			padding 10px 0
+			color var(--gray1)
+			display flex
+			justify-content space-around
+	.card
+		margin 15px auto
+		width 90%
+		padding 10px
+		border-radius 22px
+		background-color #FFFFFF
+		.h3
+			color #333333
+		.reamrk
+			text-align center
+			font-size 22rpx
+			color var(--gray2)
+	.tracks
+		max-height 160px
+		overflow-y auto
+		padding 26px 15px 0 20px
+		// 隐藏滚动条
+		&::-webkit-scrollbar
+			display: none
+		.track
+			height 42px
+			font-size 22rpx
+			display flex
+			align-items flex-start
+			.time
+				margin 0 5px
+				font-size 20rpx
+				color var(--gray1)
+			.dot
+				position relative
+				width 10px
+				height 10px
+				border-radius 50%
+				background-color var(--origin2)
+				filter brightness(110%)
+				&::after
+					content ''
+					position absolute
+					left 50%
+					top 16px
+					transform translateX(-50%)
+					border-left 1px dashed var(--gray2)
+					height 20px
+			.track-name
+				flex auto
+				color var(--origin2)
+				font-weight 700
+			.result
+				margin-left 5px
+				flex 0 0 90px
+			// 第一个track的上方加虚线
+			&:first-of-type .dot::before
+				content ''
+				position absolute
+				left 50%
+				top -23px
+				transform translateX(-50%)
+				border-left 1px dashed var(--gray2)
+				height 20px
+	.remark
+		text-align center
+		color var(--gray2)
+	.resume
+		min-height 100px
+		.intro
+			font-size 24rpx
 </style>

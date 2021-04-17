@@ -24,10 +24,7 @@
 				</image>
 			</view>
 			<!-- 获奖信息 -->
-			<view v-if="compName">
-				<text class="comp-name strong">{{ compName }}</text>
-			</view>
-			<view v-else class="blank"></view>
+			<view><text class="comp-name strong">{{ compName }}</text></view>
 			<!-- 标签 -->
 			<view class="tags">
 				<view 
@@ -40,17 +37,21 @@
 			<view class="blank"></view>
 			<!-- 时间 & 数据统计 & 状态-->
 			<view class="footer">
-				<view class="time"><text v-if="compName && project.awardTime">{{ project.awardTime }}</text></view>
-				<view class="read" :class="is_showStatus ? 'tranform' : ''">
+				<view class="time">{{ project.awardTime }}</view>
+				<view 
+					class="read" 
+					:class="(isShowAnonymous || isShowStatus) && projectStatus.class ? 'tranform' : ''">
 					<text class="iconfont icon-readed"></text>
 					<text>{{ project.read }}</text>
 				</view>
-				<view class="collect" :class="is_showStatus ? 'tranform' : ''">
+				<view 
+					class="collect" 
+					:class="(isShowAnonymous || isShowStatus) && projectStatus.class ? 'tranform' : ''">
 					<text class="iconfont icon-collection"></text>
 					<text>{{ project.collect }}</text>
 				</view>
 				<view 
-					v-if="is_showStatus"
+					v-if="(isShowAnonymous || isShowStatus) && projectStatus.class"
 					class="status"
 					:class="projectStatus.class"
 					v-html="projectStatus.label">
@@ -89,7 +90,12 @@ export default {
 			default: '0'
 		},
 		/* 是否显示状态 */
-		is_showStatus: {
+		isShowStatus: {
+			type: Boolean,
+			default: false
+		},
+		/* 是否显示匿名 */
+		isShowAnonymous: {
 			type: Boolean,
 			default: false
 		}
@@ -130,6 +136,12 @@ export default {
 				return {
 					class: "anonymous",
 					label: "匿&emsp;名"
+				}
+			}
+			if(!this.isShowStatus){
+				return{
+					class: "",
+					label: ""
 				}
 			}
 			if(this.project.passed){
@@ -197,12 +209,16 @@ export default {
 				width 100rpx
 				transform translateY(-5px)
 		.comp-name
-			padding 1px 12px
+			padding 0 10px
+			line-height 1.7
 			background-color #F5A200
 			color #FFFFFF
 			border-radius 22px
+			display inline-block
 		.tags
+			min-height 30px
 			display flex
+			align-items flex-start
 			flex-wrap wrap
 			.tag
 				margin 4px 4px 0 0
@@ -212,6 +228,7 @@ export default {
 				border-radius 22px
 		/* 统计量 */
 		.footer
+			margin-top 5px
 			color var(--origin2)
 			display flex
 			align-items flex-end
@@ -224,7 +241,7 @@ export default {
 				display flex
 				align-items center
 				&.tranform
-					transform translateX(25px)
+					transform translateX(30px)
 			.iconfont
 				margin-right 3px
 				font-size 24rpx

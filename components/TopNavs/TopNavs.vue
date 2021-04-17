@@ -1,12 +1,23 @@
 <template>
-	<view class="top-nav">
+	<view 
+		class="top-nav"
+		:class="padding ? 'padding' : ''">
 		<view 
 			class="nav"
 			:class="index === currentNav ? 'active' : ''"
+			:style="{
+				'background-color': backgroundColor
+			}"
 			v-for="(nav,index) in navs"
 			:key="index"
 			@click="navChange(nav,index)">
-			<text class="label">{{nav.label}}</text>
+			<text 
+				class="label"
+				:style="{
+					'color': color
+				}">
+				{{nav.label}}
+			</text>
 			<text v-if="nav.amount > 0" class="amount center">{{nav.amount | amountFilter}}</text>
 		</view>
 	</view>
@@ -19,6 +30,18 @@ export default {
 		navs: {
 			type: Array,
 			default: () => []
+		},
+		padding: {
+			type: Boolean,
+			default: false
+		},
+		color: {
+			type: String,
+			default: "var(--origin1)"
+		},
+		backgroundColor: {
+			type: String,
+			default: "var(--origin4)"
 		}
 	},
 	data() {
@@ -49,25 +72,20 @@ export default {
 .top-nav
 	width 100%
 	background-color #FFFFFF
-	padding 5px 0
 	border-bottom-left-radius 22px
 	border-bottom-right-radius 22px
 	display flex
 	.nav
-		margin-left 5px
 		flex 1
 		padding 10px 0
-		background-color var(--origin4)
 		text-align center
-		font-weight 600
 		&:first-of-type
 			border-bottom-left-radius 22px
 		&:last-of-type
 			border-bottom-right-radius 22px
-			margin-right 5px
 		.label
+			letter-spacing 1px
 			font-size 24rpx
-			color var(--origin1)
 		.amount
 			margin-left 5px
 			font-size 18rpx
@@ -80,10 +98,14 @@ export default {
 			display inline-block
 			text-align center
 		&.active
-			background-color var(--origin2)
+			background-color var(--origin2) !important
 			.label
-				color #FFFFFF
+				color #FFFFFF !important
 			.amount
 				background-color var(--white2)
 				color var(--origin2)
+.padding
+	padding 5px 2px
+	.nav
+		margin 0 2px
 </style>

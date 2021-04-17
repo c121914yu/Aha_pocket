@@ -4,7 +4,8 @@
 			<image 
 				class="left" 
 				:src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" 
-				mode="widthFix">
+				mode="widthFix"
+				@click="gReadImage([avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'])">
 			</image>
 			<view class="right">
 				<!-- 项目题目 -->
@@ -30,7 +31,7 @@
 						</view>
 						<!-- 如果是匿名，认领/修改申请 -->
 						<view v-else class="claim">
-							<button class="small" @click="is_claimProject=true">{{applyingID > 0 ? "修改申请" : "申请认领"}}</button>
+							<button class="small" @click="is_claimProject=true">{{applyingID > 0 ? "修改申请匿名项目材料" : "申请认领该匿名项目"}}</button>
 						</view>
 						<!-- 数据统计 -->
 						<view class="statistics">
@@ -78,7 +79,7 @@
 		<view id="content2" class="content">
 			<view class="head">项目详细</view>
 			<!-- 描述 -->
-			<view v-if="intro" class="item intro">
+			<view v-if="intro" class="item intro" @click="gReadImage(arr_introImg)">
 				<view class="title">项目描述</view>
 				<view class="values"><view class="desc" v-html="intro"></view></view>
 			</view>
@@ -200,6 +201,7 @@ export default {
 			avatarUrl: 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png',
 			tags: '',
 			intro: '',
+			arr_introImg: [],
 			read: 0,
 			collect: 0,
 			compId: 0,
@@ -245,13 +247,14 @@ export default {
 			for (let key in res.data){
 				this[key] = res.data[key]
 			}
-			this.judgeApply()
+			if(this.isAnonymous){
+				this.judgeApply() //判断匿名认领情况
+			}
 			if(this.resources.length > 0){
 				this.initFiles()
 			}
-			else{
-				this.gLoading(this,false,500)
-			}
+			this.gLoading(this,false)
+			this.getIntroImage()
 			console.log(res.data);
 		})
 		.catch(err => {
@@ -275,6 +278,12 @@ export default {
 		}
 	},
 	methods: {
+		/* 获取intro里的图片 */
+		getIntroImage()
+		{
+			const reg = /(?<=src\=\").*?(?=\")/g
+			this.arr_introImg = this.intro.match(reg) || []
+		},
 		/* 判断是否提交过认领 */
 		judgeApply()
 		{
@@ -293,7 +302,6 @@ export default {
 			const member = this.members.find(item => item.memberUser.userId === getApp().globalData.gUserInfo.userInfo.userId)
 			if(member){
 				this.arr_purchasedFiles = this.resources
-				this.gLoading(this,false)
 			}
 			else{
 				checkResourcePurchased(this.id)
@@ -311,7 +319,6 @@ export default {
 						}
 					})
 				})
-				this.gLoading(this,false)
 			}
 		},
 		/* 获取评论 */
@@ -371,6 +378,8 @@ export default {
 					.then(res => {
 						this[arr].splice(index,1)
 						this.arr_purchasedFiles.push(file)
+						this.arr_previewFiles = this.arr_previewFiles.filter(item => item.id !== file.id)
+						this.arr_unpreviewFiles = this.arr_unpreviewFiles.filter(item => item.id !== file.id)
 						this.gToastSuccess("购买成功")
 					})
 				})
@@ -530,7 +539,8 @@ export default {
 				.claim
 					flex 1
 					button
-						padding 0 10px
+						padding 0 15px
+						line-height 2
 						display inline-block
 			/* 统计信息 */
 			.statistics

@@ -20,13 +20,14 @@
 				<!-- 标签 -->
 				<view class="tags" @click="isCheckTags = true">
 					<!-- 等级标签 -->
-					<view v-if="userLevel" class="user-level">
-						<image 
-							:src="userLevel.src" 
-							mode="widthFix">
-						</image>
-						<text>{{userLevel.label}}</text>
-					</view>
+					<UserLevel 
+						v-if="userPoint !== null" 
+						:point="userPoint"
+						small
+						backgroundColor="#ffffff"
+						color="#f8b86b"
+						margin="0 3px 3px 0">
+					</UserLevel>
 					<view 
 						class="tag" 
 						v-for="(tag, index) in tags" 
@@ -131,7 +132,7 @@ export default {
 	data() {
 		return {
 			userInfo: getApp().globalData.gUserInfo.userInfo,
-			userLevel: getApp().globalData.arr_userLevel[0],
+			userPoint: null,
 			/* 任务列表 */
 			tasks: [
 				{ name: '已购项目', icon: 'icon-shouye', to: "/pages/Project/PurchasedProjects" },
@@ -207,8 +208,8 @@ export default {
 			getSelfStatistice()
 			.then(res => {
 				getApp().globalData.gUserInfo.statistice = res.data
-				this.userLevel =  getApp().globalData.arr_userLevel.find(item => res.data.totalContribPoint < item.totalContribPoint)
-				// console.log(getApp().globalData.gUserInfo);
+				console.log(getApp().globalData.gUserInfo);
+				this.userPoint = res.data.totalContribPoint
 			})
 		},
 		/* 
@@ -374,22 +375,6 @@ bgSetting(size, color)
 					background-color #FFFFFF
 					color var(--origin2)
 					font-size 22rpx
-				.user-level
-					position relative
-					margin 3px 3px 5px
-					padding 2px 10px 2px 25px
-					color var(--origin1)
-					background-color #FFFFFF
-					font-size 22rpx
-					font-weight 700
-					border-radius 22px
-					display flex
-					align-items center
-					image
-						position absolute
-						left 0
-						top 0
-						width 20px
 		/* 幕布 */
 		.curtain
 			position absolute

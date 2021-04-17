@@ -24,7 +24,7 @@
 					:class="index === sortActive ? 'active' : ''"
 					v-for="(sort,index) in sortList"
 					:key="index"
-					@click="checkSort(sort, index)">
+					@click="onclickSort(sort, index)">
 					{{sort.text}}
 				</view>
 				<view 
@@ -44,7 +44,7 @@
 					:key="index"
 					margin="10px 0"
 					radius="16px"
-					is_showStatus
+					isShowStatus
 					:project="project"
 					@click="projectSetting(project)"
 				></projectCard>
@@ -58,7 +58,7 @@
 		</BottomBtn>
 		<!-- 筛选组件 -->
 		<ProjectFilter
-			v-if="is_showFileter"
+			v-show="is_showFileter"
 			@close="is_showFileter=false"
 			@filterChange="filterChange">
 		</ProjectFilter>
@@ -155,13 +155,17 @@ export default {
 		},
 		/*
 			name: 确定排序模式
-			time: 2020/12/26
+			@params sort: Object 排序参数
+			@params index: Number 对应的下标
+			desc：点击排序，先判断是否重复点击，若非则切换排序
 		*/
-		checkSort(sort, index) 
+		onclickSort(sort, index) 
 		{
-			this.sortActive = index
-			this.sortBy = sort.val
-			this.loadProjects(true)
+			if(this.sortActive !== index){
+				this.sortActive = index
+				this.sortBy = sort.val
+				this.loadProjects(true)
+			}
 		},
 		filterChange(e)
 		{

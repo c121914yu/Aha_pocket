@@ -3,7 +3,6 @@
 		<textarea 
 			placeholder="个人总结"
 			maxlength="1000"
-			@input="inputing"
 			v-model="intro"/>
 		<view class="count">
 			{{intro.length || 0}} / 1000

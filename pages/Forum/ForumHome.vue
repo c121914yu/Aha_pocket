@@ -2,6 +2,7 @@
 	<view class="forum-home">
 		<TopNavs 
 			:navs="navs"
+			padding
 			@navChange="currentNav=$event">
 		</TopNavs>
 		<Talents ref="Talents"  v-if="currentNav===0"></Talents>
@@ -16,9 +17,9 @@ export default {
 	data() {
 		return {
 			navs: [ // 顶部导航
-				{label: "群英",amount: 0,value: 0},
-				{label: "组队",amount: 0,value: 1},
-				{label: "交流",amount: 0,value: 2},
+				{label: "人才市场",amount: 0,value: 0},
+				{label: "竞赛组队",amount: 0,value: 1},
+				{label: "项目交流",amount: 0,value: 2},
 			],
 			currentNav: 0
 		};

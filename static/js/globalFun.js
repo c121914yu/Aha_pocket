@@ -10,6 +10,7 @@
 	gLoading - 显示/隐藏加载动画
 	gMenuPicker - 调用菜单选择框
 	gClipboardData - 复制到剪切板
+	gReadImage - 预览图片
 */
 import Vue from 'vue'
 /* 普通文本提示*/
@@ -263,5 +264,12 @@ Vue.prototype.gUndesign = (back=true) => {
 				delta: 1
 			})
 		}
+	})
+}
+
+/* 预览图片 */
+Vue.prototype.gReadImage = (urls) => {
+	uni.previewImage({
+		urls
 	})
 }
