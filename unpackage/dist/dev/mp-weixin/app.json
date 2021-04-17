@@ -1,0 +1,56 @@
+{
+  "pages": [
+    "pages/Login/Login",
+    "pages/Login/Register",
+    "pages/Login/FindPassword",
+    "pages/OutLink",
+    "pages/app",
+    "pages/Self/UserHome",
+    "pages/Self/Inform/Informs",
+    "pages/Self/Inform/Inform",
+    "pages/Self/Inform/Inform_send",
+    "pages/Self/Wallet/Wallet",
+    "pages/Self/Wallet/Orders",
+    "pages/Self/Wallet/OrderDetail",
+    "pages/Self/Number/NumberInfo",
+    "pages/Self/Number/Contract",
+    "pages/Self/Number/Authentication",
+    "pages/Self/Resume/Resume",
+    "pages/Self/Resume/components/BaseInfo",
+    "pages/Self/Resume/components/EduExperience",
+    "pages/Self/Resume/components/SchoolExperience",
+    "pages/Self/Resume/components/ProjectExperience",
+    "pages/Self/Resume/components/PracticeExperience",
+    "pages/Self/Resume/components/Skill",
+    "pages/Self/Resume/components/Honors",
+    "pages/Self/Resume/components/SelfIntro",
+    "pages/Self/Resume/ResumePreview",
+    "pages/Self/MyCollection",
+    "pages/Self/Feedback/Feedback",
+    "pages/Self/Feedback/FeedBack_self",
+    "pages/EditMd/EditMd",
+    "pages/Project/UpProject",
+    "pages/Project/EditProject",
+    "pages/Project/Projects",
+    "pages/Project/Project",
+    "pages/Project/ReadFile",
+    "pages/Project/PreviewFile",
+    "pages/Project/PurchasedProjects",
+    "pages/Epiboly/MyEpiboly",
+    "pages/Epiboly/EpibolyDetail",
+    "pages/Forum/ForumHome"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#f5c789",
+    "backgroundColor": "#FFFFFF"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取您当前的城市信息"
+    }
+  },
+  "usingComponents": {}
+}
