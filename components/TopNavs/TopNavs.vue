@@ -62,7 +62,7 @@ export default {
 		navChange(nav,index)
 		{
 			this.currentNav = index
-			this.$emit("navChange",nav.value)
+			this.$emit("navChange",nav,index)
 		}
 	}
 }

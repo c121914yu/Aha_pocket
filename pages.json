@@ -185,7 +185,7 @@
 			"path": "pages/Project/Project",
 			"style": {
 				"navigationBarTitleText": "项目详情",
-				"onReachBottomDistance": 100
+				"onReachBottomDistance": 200
 			}
 		}, {
 			"path": "pages/Project/ReadFile",

@@ -4,7 +4,7 @@
 		<view class="header">
 			<view class="first">
 				<view class="left">
-					<view class="avatar"><image :src="avatarUrl" mode="widthFix"></image></view>
+					<Avatar :src="avatarUrl"></Avatar>
 					<UserLevel v-if="userPoint !== null" :point="userPoint"></UserLevel>
 				</view>
 			  	<view class="right">
@@ -72,11 +72,59 @@
 			<view v-if="userTracks.length===0" class="remark">暂无用户轨迹</view>
 		</view>
 		<!-- 简历 -->
-		<view class="card resume">
-			<view class="h3 center">个人介绍</view>
-			<view 
-				:class="intro ? 'intro' : 'remark'">
-				{{intro ? intro : "暂无数据"}}
+		<view v-if="resume && resume.name" class="card resume">
+			<view class="h3">简历</view>
+			<view class="base-info">
+				<Avatar :src="avatarUrl"></Avatar>
+				<view class="right">
+					<view class="name">{{resume.name}}</view>
+					<view class="intro small">{{resume.intro || ""}}</view>
+				</view>
+			</view>
+			<!-- 校园经历 -->
+			<view v-if="resume.schoolExperiences.length > 0" class="experience">
+				<view class="h3">校园经历</view>
+				<view 
+					class="item"
+					v-for="(exp,index) in resume.schoolExperiences"
+					:key="index">
+					{{exp.organization}} {{exp.post}}
+				</view>
+			</view>
+			<!-- 项目经历 -->
+			<view v-if="resume.projectExperiences.length > 0" class="experience">
+				<view class="h3">项目经历</view>
+				<view 
+					class="item"
+					v-for="(exp,index) in resume.projectExperiences"
+					:key="index">
+					{{exp.name}} {{exp.content}}
+				</view>
+			</view>
+			<!-- 实习经历 -->
+			<view v-if="resume.practiceExperiences.length > 0" class="experience">
+				<view class="h3">实习经历</view>
+				<view 
+					class="item"
+					v-for="(exp,index) in resume.practiceExperiences"
+					:key="index">
+					{{exp.company}} {{exp.post}}
+				</view>
+			</view>
+			<!-- 荣誉 -->
+			<view  v-if="resume.honors.length > 0"class="experience">
+				<view class="h3">荣誉</view>
+				<view 
+					class="item"
+					v-for="(honor,index) in resume.honors"
+					:key="index">
+					{{honor.name}} {{honor.description}}
+				</view>
+			</view>
+			<!-- 个人技能 -->
+			<view v-if="resume.projectSkill" class="experience">
+				<view class="h3">个人技能</view>
+				<view class="skill small">{{resume.projectSkill}}</view>
 			</view>
 		</view>
 		<!-- 加载动画 -->
@@ -91,26 +139,20 @@ export default {
 		return {
 			userId: '',
 			userRelation: 0,//0-无关系 1-自己 2-已关注 3-被关注 4-互关
-			avatarUrl: 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png',
+			avatarUrl: '',
 			nickname: 'Aha会员',
 			tags: [],
 			userPoint: null, //用户累计Aha点
-			intro: "",
+			resume: null,
 			navs: [
 				{label: "平台轨迹",val: 0},
 				{label: "竞赛",val: 1},
 				{label: "服务",val: 2},
-				{label: "外包",val: 3},
-				{label: "案例",val: 4}
+				{label: "外包",val: 3}
 			],
 			currentNav: 0,
 			userTracks: [
-				// {time: "2020/3/2",trackName: "视觉AI",result: "服务外包大赛国二"},
-				// {time: "2020/2/2",trackName: "视觉AI智慧酒店阿斯蒂芬刚收到",result: "服务外包大赛国二飞飞飞"},
-				// {time: "2020/1/2",trackName: "视觉",result: "服务外包大赛国方法二"},
-				// {time: "2020/1/2",trackName: "视觉",result: "服务外包大赛国方法二"},
-				// {time: "2020/1/2",trackName: "视觉",result: "服务外包大赛国方法二"},
-				// {time: "2020/1/2",trackName: "视觉",result: "服务外包大赛国方法二"},
+				{time: "2020/3/2",trackName: "加入Aha口袋",result: "welcome"},
 			]
 		};
 	},
@@ -147,7 +189,8 @@ export default {
 			.then(res => {
 				this.userRelation = res[0].data
 				this.userPoint = res[1].data.totalContribPoint
-				this.intro = res[2].data.intro
+				this.resume = res[2].data
+				console.log(this.resume);
 			})
 			
 			/* 获取 */
@@ -180,6 +223,7 @@ export default {
 <style lang="stylus" scoped>
 .user-home
 	min-height 100vh
+	padding-bottom 10px
 	background-color var(--white1)
 	.header
 		background-color var(--origin4)
@@ -187,19 +231,6 @@ export default {
 			padding 15px 0 10px 10%
 			display flex
 			align-items flex-start
-			.left
-				.avatar
-					margin-bottom 10px
-					flex-shrink 0
-					width 80px
-					height 80px
-					border-radius 8px
-					background-color var(--origin3)
-					display flex
-					align-items center
-					overflow hidden
-					image
-						width 100%
 			.right
 				position relative
 				padding-right 40px
@@ -310,7 +341,7 @@ export default {
 				content ''
 				position absolute
 				left 50%
-				top -23px
+				top -25px
 				transform translateX(-50%)
 				border-left 1px dashed var(--gray2)
 				height 20px
@@ -319,6 +350,36 @@ export default {
 		color var(--gray2)
 	.resume
 		min-height 100px
-		.intro
-			font-size 24rpx
+		.base-info
+			margin-top 5px
+			display flex
+			.right
+				margin-left 15px
+				.name
+					font-size 34rpx
+					color #333333
+					font-weight 800
+				.intro
+					font-size 22rpx
+					color var(--gray1)
+					line-height 1.3
+					white-space pre-wrap
+					display -webkit-box
+					-webkit-box-orient vertical
+					-webkit-line-clamp 5
+					overflow hidden
+		.experience
+			margin-bottom 5px
+			border-bottom 2px solid var(--white1)
+			padding-bottom 2px
+			.item
+				padding-left 5px
+				color var(--gray2)
+			&:last-of-type
+				border none
+		.skill
+			font-size 22rpx
+			color var(--gray1)
+			white-space pre-wrap
+			padding-left 5px
 </style>

@@ -10,7 +10,7 @@
 		<!-- 排名图标 -->
 		<text v-if="ranking !== 0" :class="'ranking iconfont ' + rankingIcon"></text>
 		<!-- 头像 -->
-		<view class="logo"><image :src="project.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" mode="widthFix"></image></view>
+		<Avatar :src="project.avatarUrl" size="57"></Avatar>
 		<!-- 资源信息 -->
 		<view class="info" :class="border ? 'border' : ''">
 			<!-- 资源名称 -->
@@ -171,21 +171,9 @@ export default {
 	.ranking
 		color var(--origin2)
 		font-size 34rpx
-	.logo
-		margin 0 10px 0 5px
-		width 57px
-		height 57px
-		background-color var(--origin3)
-		border-radius 8px
-		overflow hidden
-		display flex
-		align-items center
-		justify-content center
-		image
-			width 100%
-			height 100%
 	/* 资源信息 */
 	.info
+		margin-left 10px
 		position relative
 		flex 1
 		min-height 57px
@@ -196,18 +184,19 @@ export default {
 		&.border
 			border-bottom 1px solid var(--origin2)
 		.head
+			position relative
 			height 18px
-			display flex
-			align-items flex-start
+			// padding-right 110rpx
 			.name
-				flex 1
 				font-size 20rpx
 				overflow hidden
 				text-overflow ellipsis
 				white-space nowrap
 			.award-img
+				position absolute
+				right 0
+				top -5px
 				width 100rpx
-				transform translateY(-5px)
 		.comp-name
 			padding 0 10px
 			line-height 1.7

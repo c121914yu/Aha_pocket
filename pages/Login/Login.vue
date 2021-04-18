@@ -18,7 +18,7 @@
 				</view>
 				<view class="forget-password small"><navigator url="./FindPassword" hover-class="none">忘记密码?</navigator></view>
 				<button type="default" @click="login">登录</button>
-				<view class="center small register"><navigator url="./Register" hover-class="none">立即注册</navigator></view>
+				<!-- <view class="center small register"><navigator url="./Register" hover-class="none">立即注册</navigator></view> -->
 			</view>
 			<!-- 第三方登录内容 -->
 			<view class="small other">

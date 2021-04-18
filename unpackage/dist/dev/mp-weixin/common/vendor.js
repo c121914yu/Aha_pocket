@@ -1798,6 +1798,44 @@ uni$1;exports.default = _default;
 
 /***/ }),
 
+/***/ 109:
+/*!************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_order.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getPrepay_id = exports.checkResourcePurchased = exports.getOrder = exports.getOrders = exports.getPointOrder = exports.putOrder = exports.postOrder = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 
+                                                                                                                                                                                                                                                                                                                                                                                                             	购买附件-创建订单
+                                                                                                                                                                                                                                                                                                                                                                                                             	@params data.projectId:Int 项目ID
+                                                                                                                                                                                                                                                                                                                                                                                                             	@params data.resourceId:Array 购买的附件id
+                                                                                                                                                                                                                                                                                                                                                                                                             */
+var postOrder = function postOrder(data) {return (0, _request.default)("/contribPoint/order", "POST", data);};
+/* 
+                                                                                                               	付款/取消付款
+                                                                                                               	@params ordetrId:Int 订单ID
+                                                                                                               	@params action:String,取值pay/cancel
+                                                                                                               */exports.postOrder = postOrder;
+var putOrder = function putOrder(orderId, action) {return (0, _request.default)("/contribPoint/order/".concat(orderId, "?action=").concat(action), "PUT", {});};
+
+/* 获取贡献点变化 */exports.putOrder = putOrder;
+var getPointOrder = function getPointOrder(params) {return (0, _request.default)("/contribPoint/log/me", "GET", params);};
+
+/* 获取个人订单信息 */exports.getPointOrder = getPointOrder;
+var getOrders = function getOrders(params) {return (0, _request.default)("/contribPoint/order/me", "GET", params);};
+/* 获取订单详细 */exports.getOrders = getOrders;
+var getOrder = function getOrder(orderId) {return (0, _request.default)("/contribPoint/order/".concat(orderId), "GET", {});};
+/* 判断资源是否购买 */exports.getOrder = getOrder;
+var checkResourcePurchased = function checkResourcePurchased(projectId) {return (0, _request.default)("/project/purchased/".concat(projectId), "GET", {});};
+
+/* 获取统一下单ID */exports.checkResourcePurchased = checkResourcePurchased;
+var getPrepay_id = function getPrepay_id(data) {return (0, _request.default)("/order/unifiedorder", "POST", data);};exports.getPrepay_id = getPrepay_id;
+
+/***/ }),
+
 /***/ 11:
 /*!**********************************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
@@ -1927,44 +1965,6 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 110:
-/*!************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_order.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getPrepay_id = exports.checkResourcePurchased = exports.getOrder = exports.getOrders = exports.getPointOrder = exports.putOrder = exports.postOrder = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/* 
-                                                                                                                                                                                                                                                                                                                                                                                                             	购买附件-创建订单
-                                                                                                                                                                                                                                                                                                                                                                                                             	@params data.projectId:Int 项目ID
-                                                                                                                                                                                                                                                                                                                                                                                                             	@params data.resourceId:Array 购买的附件id
-                                                                                                                                                                                                                                                                                                                                                                                                             */
-var postOrder = function postOrder(data) {return (0, _request.default)("/contribPoint/order", "POST", data);};
-/* 
-                                                                                                               	付款/取消付款
-                                                                                                               	@params ordetrId:Int 订单ID
-                                                                                                               	@params action:String,取值pay/cancel
-                                                                                                               */exports.postOrder = postOrder;
-var putOrder = function putOrder(orderId, action) {return (0, _request.default)("/contribPoint/order/".concat(orderId, "?action=").concat(action), "PUT", {});};
-
-/* 获取贡献点变化 */exports.putOrder = putOrder;
-var getPointOrder = function getPointOrder(params) {return (0, _request.default)("/contribPoint/log/me", "GET", params);};
-
-/* 获取个人订单信息 */exports.getPointOrder = getPointOrder;
-var getOrders = function getOrders(params) {return (0, _request.default)("/contribPoint/order/me", "GET", params);};
-/* 获取订单详细 */exports.getOrders = getOrders;
-var getOrder = function getOrder(orderId) {return (0, _request.default)("/contribPoint/order/".concat(orderId), "GET", {});};
-/* 判断资源是否购买 */exports.getOrder = getOrder;
-var checkResourcePurchased = function checkResourcePurchased(projectId) {return (0, _request.default)("/project/purchased/".concat(projectId), "GET", {});};
-
-/* 获取统一下单ID */exports.checkResourcePurchased = checkResourcePurchased;
-var getPrepay_id = function getPrepay_id(data) {return (0, _request.default)("/order/unifiedorder", "POST", data);};exports.getPrepay_id = getPrepay_id;
-
-/***/ }),
-
 /***/ 12:
 /*!*********************************************!*\
   !*** D:/服务外包/竞赛统计/static/icon/iconfont.css ***!
@@ -1987,6 +1987,7 @@ var getPrepay_id = function getPrepay_id(data) {return (0, _request.default)("/o
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {
+
 
 
 
@@ -2253,6 +2254,13 @@ _vue.default.prototype.gUndesign = function () {var back = arguments.length > 0 
     } });
 
 };
+
+/* 预览图片 */
+_vue.default.prototype.gReadImage = function (urls) {
+  uni.previewImage({
+    urls: urls });
+
+};
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
@@ -2265,77 +2273,86 @@ _vue.default.prototype.gUndesign = function () {var back = arguments.length > 0 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.putAuthentication = exports.getAuthenticationSignature = exports.getUserStatistice = exports.getSelfStatistice = exports.getPublicFileSign = exports.getPurchased = exports.getCollectedProjects = exports.deleteMessage = exports.postMessage = exports.getMessage = exports.getMessages = exports.getUnreadCount = exports.putResume = exports.getResume = exports.getUser = exports.getAvatarOssSignature = exports.signNotice = exports.putMe = exports.getMe = exports.bindWxchat = exports.bindPhone = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 
 /* 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	name: 绑定手机号
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	@params phone: String
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	@params code: String
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    */
-var bindPhone = function bindPhone(data) {return (0, _request.default)("/bind/phone", "POST", data);};
-/* 绑定微信号 */exports.bindPhone = bindPhone;
-var bindWxchat = function bindWxchat(data) {return (0, _request.default)("/bind/wechat?code=" + data.code, "POST", data);};
+                                                                                                                                                                          	name: 绑定手机号
+                                                                                                                                                                          	@params phone: String
+                                                                                                                                                                          	@params code: String
+                                                                                                                                                                          */
+exports.bindPhone = function (data) {return (0, _request.default)("/bind/phone", "POST", data);};
+/* 绑定微信号 */
+exports.bindWxchat = function (data) {return (0, _request.default)("/bind/wechat?code=" + data.code, "POST", data);};
 
-/* 获取个人信息 */exports.bindWxchat = bindWxchat;
-var getMe = function getMe() {return (0, _request.default)("/userInfo/me", "GET", {});};
-/* 修改个人基本资料 */exports.getMe = getMe;
-var putMe = function putMe(data) {return (0, _request.default)("/userInfo/me", "PUT", data);};
-/* 签署须知协议 */exports.putMe = putMe;
-var signNotice = function signNotice() {return (0, _request.default)("/sign/notice", "POST", {});};
-/* 获取头像上传签名 */exports.signNotice = signNotice;
-var getAvatarOssSignature = function getAvatarOssSignature(filename) {return (0, _request.default)("/userInfo/avatar/sign/upload?filename=" + filename, "GET", {});};
-/* 根据userId获取用户详细信息 */exports.getAvatarOssSignature = getAvatarOssSignature;
-var getUser = function getUser(userId) {return (0, _request.default)("/userInfo/" + userId, "GET", {});};
-
-/* 
-                                                                                                          	desc: 获取简历信息
-                                                                                                          	@param userId: String,用户标识码
-                                                                                                          */exports.getUser = getUser;
-var getResume = function getResume(userId) {return (0, _request.default)("/resume/".concat(userId), "GET", {});};
+/* 获取个人信息 */
+exports.getMe = function () {return (0, _request.default)("/userInfo/me", "GET", {});};
+/* 修改个人基本资料 */
+exports.putMe = function (data) {return (0, _request.default)("/userInfo/me", "PUT", data);};
+/* 签署须知协议 */
+exports.signNotice = function () {return (0, _request.default)("/sign/notice", "POST", {});};
+/* 获取头像上传签名 */
+exports.getAvatarOssSignature = function (filename) {return (0, _request.default)("/userInfo/avatar/sign/upload?filename=" + filename, "GET", {});};
+/* 根据userId获取用户详细信息 */
+exports.getUser = function (userId) {return (0, _request.default)("/userInfo/" + userId, "GET", {});};
 
 /* 
-                                                                                                                  	desc: 更新简历信息
-                                                                                                                  	@params resume: Object,简历的所有字段
-                                                                                                                  */exports.getResume = getResume;
-var putResume = function putResume(data) {return (0, _request.default)("/resume", "PUT", data);};
+                                                                                                       	desc: 获取简历信息
+                                                                                                       	@param userId: String,用户标识码
+                                                                                                       */
+exports.getResume = function (userId) {return (0, _request.default)("/resume/".concat(userId), "GET", {});};
 
-/* 获取未读通知数量 */exports.putResume = putResume;
-var getUnreadCount = function getUnreadCount() {return (0, _request.default)("/message/count/notRead", "GET", {});};
-/* 获取消息通知列表 */exports.getUnreadCount = getUnreadCount;
-var getMessages = function getMessages(param) {return (0, _request.default)("/message", "GET", param);};
 /* 
-                                                                                                         	获取消息通知内容
-                                                                                                         	@param: messageId: Number
-                                                                                                         */exports.getMessages = getMessages;
-var getMessage = function getMessage(messageId) {return (0, _request.default)("/message/".concat(messageId), "GET", {});};
+                                                                                                             	desc: 更新简历信息
+                                                                                                             	@params resume: Object,简历的所有字段
+                                                                                                             */
+exports.putResume = function (data) {return (0, _request.default)("/resume", "PUT", data);};
+
+/* 获取未读通知数量 */
+exports.getUnreadCount = function () {return (0, _request.default)("/message/count/notRead", "GET", {});};
+/* 获取消息通知列表 */
+exports.getMessages = function (param) {return (0, _request.default)("/message", "GET", param);};
 /* 
-                                                                                                                               发送通知
-                                                                                                                               @params: receiverUserId: Number,收件人用户id
-                                                                                                                               @params: title: String, 信件标题
-                                                                                                                               @params: content:String, 信件内容
-                                                                                                                           */exports.getMessage = getMessage;
-var postMessage = function postMessage(data) {return (0, _request.default)("/message", "POST", data);};
-/*  删除消息 */exports.postMessage = postMessage;
-var deleteMessage = function deleteMessage(messageId) {return (0, _request.default)("/message/".concat(messageId), "DELETE", {});};
+                                                                                                  	获取消息通知内容
+                                                                                                  	@param: messageId: Number
+                                                                                                  */
+exports.getMessage = function (messageId) {return (0, _request.default)("/message/".concat(messageId), "GET", {});};
+/* 
+                                                                                                                         发送通知
+                                                                                                                         @params: receiverUserId: Number,收件人用户id
+                                                                                                                         @params: title: String, 信件标题
+                                                                                                                         @params: content:String, 信件内容
+                                                                                                                     */
+exports.postMessage = function (data) {return (0, _request.default)("/message", "POST", data);};
+/*  删除消息 */
+exports.deleteMessage = function (messageId) {return (0, _request.default)("/message/".concat(messageId), "DELETE", {});};
 
-/* 获取个人收藏项目 */exports.deleteMessage = deleteMessage;
-var getCollectedProjects = function getCollectedProjects() {return (0, _request.default)("/project/collection", "GET", {});};
-/* 获取个人购买的项目附件 */exports.getCollectedProjects = getCollectedProjects;
-var getPurchased = function getPurchased() {return (0, _request.default)("/project/resource/purchased", "GET", {});};
+/* 获取个人收藏项目 */
+exports.getCollectedProjects = function () {return (0, _request.default)("/project/collection", "GET", {});};
+/* 获取个人购买的项目附件 */
+exports.getPurchased = function () {return (0, _request.default)("/project/resource/purchased", "GET", {});};
 
-/* 获取公共文件上次接口 */exports.getPurchased = getPurchased;
-var getPublicFileSign = function getPublicFileSign(filename) {return (0, _request.default)("/cos/sign/upload/public?filename=" + filename, "GET", {});};
+/* 获取公共文件上次接口 */
+exports.getPublicFileSign = function (filename) {return (0, _request.default)("/cos/sign/upload/public?filename=" + filename, "GET", {});};
 
-/* 获取个人统计数据 */exports.getPublicFileSign = getPublicFileSign;
-var getSelfStatistice = function getSelfStatistice() {return (0, _request.default)("/statistics/me", "GET", {});};
-/* 获取指定用户统计数据 */exports.getSelfStatistice = getSelfStatistice;
-var getUserStatistice = function getUserStatistice(userId) {return (0, _request.default)("/statistics/".concat(userId), "GET", {});};
+/* 获取个人统计数据 */
+exports.getSelfStatistice = function () {return (0, _request.default)("/statistics/me", "GET", {});};
+/* 获取指定用户统计数据 */
+exports.getUserStatistice = function (userId) {return (0, _request.default)("/statistics/".concat(userId), "GET", {});};
+/* 获取用户轨迹 */
+exports.getUserTracks = function () {return (0, _request.default)("/user/track", "GET", {});};
 
-/* 获取实名认证上传签名 */exports.getUserStatistice = getUserStatistice;
-var getAuthenticationSignature = function getAuthenticationSignature(filename) {return (0, _request.default)("/authentication/sign/upload?filename=".concat(filename), "GET", {});};
-/* 提交实名认证信息 */exports.getAuthenticationSignature = getAuthenticationSignature;
-var putAuthentication = function putAuthentication(data) {return (0, _request.default)("/authentication/updatePersonalAuthentication", "PUT", data);};exports.putAuthentication = putAuthentication;
+/* 获取实名认证上传签名 */
+exports.getAuthenticationSignature = function (filename) {return (0, _request.default)("/authentication/sign/upload?filename=".concat(filename), "GET", {});};
+/* 提交实名认证信息 */
+exports.putAuthentication = function (data) {return (0, _request.default)("/authentication/updatePersonalAuthentication", "PUT", data);};
+
+/* 判断用户关系 */
+exports.getUserRelation = function (userId) {return (0, _request.default)("/user/relation/".concat(userId), "GET", {});};
+/* 关注用户 */
+exports.followUser = function (userId) {return (0, _request.default)("/user/follow/".concat(userId), "POST", {});};
+/* 取消关注 */
+exports.unfollowUser = function (userId) {return (0, _request.default)("/user/unfollow/".concat(userId), "POST", {});};
 
 /***/ }),
 
@@ -2367,10 +2384,10 @@ function myRequest(url, method, data) {
       timeout: 10000,
       success: function success(result)
       {
+        // console.log(result.header);
         /* 请求成功 */
         if (result.data.code === 200)
         {
-          // console.log(result.header)
           resolve(result.data);
         }
         /* 请求错误 */else
@@ -2378,16 +2395,28 @@ function myRequest(url, method, data) {
           {
             console.log("请求错误");
             console.log(result.data);
-            _vue.default.prototype.gToastError(result.data.msg);
             /* 如果是token过期，关闭所有界面回到登录页 */
             if (result.data.code === 103) {
-              uni.clearStorageSync("token");
-              uni.reLaunch({
-                url: "/pages/Login/Login",
-                success: function success() {
-                  _vue.default.prototype.gToastError(result.data.msg);
-                } });
+              // 如果token跟缓存的相同，说明没有被重置过，是真正的过期
+              if (token === uni.getStorageSync("token")) {
+                uni.clearStorageSync("token");
+                uni.reLaunch({
+                  url: "/pages/Login/Login",
+                  success: function success() {
+                    _vue.default.prototype.gToastError(result.data.msg);
+                  } });
 
+              }
+              // 如果token跟缓存不同，说明token是被重置过的，不是真正过期
+              else {
+                  resolve(myRequest(url, method, data));
+                }
+            } else
+            if (result.data.msg) {
+              _vue.default.prototype.gToastError(result.data.msg);
+            } else
+            {
+              _vue.default.prototype.gToastError("服务器异常");
             }
             reject(result.data);
           }
@@ -2402,7 +2431,7 @@ function myRequest(url, method, data) {
       complete: function complete(result) {
         /* 判断是否有新token,有则替换旧的token */
         if (result.header.Authorization) {
-          console.log(result.header);
+          console.log(result.header.Authorization);
           uni.setStorageSync("token", result.header.Authorization);
         }
       } });
@@ -8539,6 +8568,97 @@ var loginOut = function loginOut() {return (0, _request.default)("/logout ", "GE
 
 /***/ }),
 
+/***/ 262:
+/*!**************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 获取上传头像/证明材料签名 */
+exports.getPublicSignature = function (filename) {return (0, _request.default)("/project/sign/upload/public?filename=" + filename, "GET", {});};
+
+/* 创建项目数据，保存至数据库 */
+exports.postProject = function (data) {return (0, _request.default)("/project", "POST", data);};
+/* 获取所有项目粗略信息表
+                                                                                                 	@params pageNum:Number 第几页
+                                                                                                 	@params	pageSize:Number 每页的条数
+                                                                                                     @params userId:Number 用户userId
+                                                                                                     @params compId:Number 竞赛Id
+                                                                                                     @params awardLevel:Number 获奖等级
+                                                                                                     @params sortBy:String 排序字段
+                                                                                                     @params orderBy:String 排序方式
+                                                                                                 */
+exports.getProjects = function (params) {return (0, _request.default)("/project", "GET", params);};
+/* 获取个人项目列表 */
+exports.getMeProjects = function (params) {return (0, _request.default)("/project/me", "GET", params);};
+/* 获取项目详细信息 */
+exports.getProject = function (projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
+/* 更新项目详细信息 */
+exports.putProject = function (projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
+/* 删除项目 */
+exports.deleteProject = function (projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
+/* 获取评论
+                                                                                                                           	@prams	pageNum: Number,页码
+                                                                                                                           	@prams	pageSize: Number,分页大小
+                                                                                                                           	@prams	projectId: Number,项目ID
+                                                                                                                           	@prams	resourceId: Number,资源ID（可选)
+                                                                                                                           */
+exports.getRemarks = function (params) {return (0, _request.default)("/project/resource/score", "GET", params);};
+/* 评价 */
+exports.postRemark = function (projectResourceId, data) {return (0, _request.default)("/project/resource/score/".concat(projectResourceId), "POST", data);};
+/* 删除评价 */
+exports.deleteRemark = function (commentId) {return (0, _request.default)("/project/resource/score/".concat(commentId), "DELETE", {});};
+/* 获取公开评论 */
+exports.getPublicComments = function (params) {return (0, _request.default)("/project/discuss/".concat(params.projectId), "GET", params);};
+/* 新建公开评论 */
+exports.postPublicComment = function (data) {return (0, _request.default)("/project/discuss", "POST", data);};
+/* 删除公开评论 */
+exports.deletePublicComment = function (commentId) {return (0, _request.default)("/project/discuss/".concat(commentId), "DELETE", {});};
+
+/* 判断是否收藏 */
+exports.isCollected = function (projectId) {return (0, _request.default)("/project/collection/check/".concat(projectId), "GET", {});};
+/* 收藏项目 */
+exports.collectProject = function (projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "POST", {});};
+/* 取消收藏 */
+exports.cancleCollectProject = function (projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "DELETE", {});};
+
+/* 获取项目所有资源信息 */
+exports.getResources = function (params) {return (0, _request.default)("/project/".concat(params.projectId, "/resources"), "GET", params);};
+/* 获取上传文件签名 */
+exports.getFilesSignature = function (projectId, filename) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private?filename=").concat(filename), "GET", {});};
+/* 创建项目的资源信息 */
+exports.postResource = function (projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
+/* 删除资源 */
+exports.deleteResource = function (projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "DELETE", {});};
+/* 修改资源信息 */
+exports.putResource = function (projectResourceId, data) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "PUT", data);};
+/* 获取下载签名 */
+exports.getLoadSignature = function (projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download"), "GET", {});};
+/* 获取阅读签名 */
+exports.getReadSignature = function (projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/read"), "GET", {});};
+
+/* 创建成员 */
+exports.postMember = function (projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};
+/* 更新成员 */
+exports.putMember = function (projectId, memberUserId, data) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "PUT", data);};
+/* 批量更新成员 */
+exports.putMembers = function (projectId, data) {return (0, _request.default)("/project/members/".concat(projectId), "PUT", data);};
+/* 删除成员 */
+exports.deleteMember = function (projectId, memberPhone) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberPhone), "DELETE", {});};
+
+/* 申请认领资源 */
+exports.postApplyProject = function (data) {return (0, _request.default)("/project/find", "POST", data);};
+/* 修改申请 */
+exports.putApplyProject = function (data) {return (0, _request.default)("/project/find/".concat(data.applyingID), "PUT", data);};
+/* 判断用户是否已经提交认领 */
+exports.getApplyProject = function (projectId) {return (0, _request.default)("/project/find/judge/".concat(projectId), "GET", {});};
+
+/***/ }),
+
 /***/ 3:
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -8581,6 +8701,21 @@ module.exports = g;
 
 /***/ }),
 
+/***/ 405:
+/*!************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_forum.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getTalents = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/* 获取用户列表 */
+var getTalents = function getTalents() {return (0, _request.default)("/talentMarket", "GET", {});};exports.getTalents = getTalents;
+
+/***/ }),
+
 /***/ 54:
 /*!******************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_competition.js ***!
@@ -8619,7 +8754,7 @@ var useCDKEY = function useCDKEY(code) {return (0, _request.default)("/activity/
 
 /***/ }),
 
-/***/ 609:
+/***/ 616:
 /*!***************************************************!*\
   !*** D:/服务外包/竞赛统计/components/SelectCity/citys.js ***!
   \***************************************************/
@@ -8811,106 +8946,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 citys;exports.default = _default;
-
-/***/ }),
-
-/***/ 69:
-/*!**************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.deleteMember = exports.putMembers = exports.putMember = exports.postMember = exports.deleteProject = exports.putProject = exports.postProject = exports.cancleCollectProject = exports.collectProject = exports.isCollected = exports.deleteRemark = exports.postRemark = exports.getRemarks = exports.getLoadSignature = exports.getReadSignature = exports.putResource = exports.deleteResource = exports.postResource = exports.getFilesSignature = exports.getResources = exports.getProject = exports.getMeProjects = exports.getProjects = exports.getPublicSignature = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/* 获取上传头像/证明材料签名 */
-var getPublicSignature = function getPublicSignature(filename) {return (0, _request.default)("/project/sign/upload/public?filename=" + filename, "GET", {});};
-
-/* 创建项目数据，保存至数据库 */exports.getPublicSignature = getPublicSignature;
-var postProject = function postProject(data) {return (0, _request.default)("/project", "POST", data);};
-/* 获取所有项目粗略信息表
-                                                                                                        	@params pageNum:Number 第几页
-                                                                                                        	@params	pageSize:Number 每页的条数
-                                                                                                            @params userId:Number 用户userId
-                                                                                                            @params compId:Number 竞赛Id
-                                                                                                            @params awardLevel:Number 获奖等级
-                                                                                                            @params sortBy:String 排序字段
-                                                                                                            @params orderBy:String 排序方式
-                                                                                                        */exports.postProject = postProject;
-var getProjects = function getProjects(params) {return (0, _request.default)("/project", "GET", params);};
-/* 获取个人项目列表 */exports.getProjects = getProjects;
-var getMeProjects = function getMeProjects(params) {return (0, _request.default)("/project/me", "GET", params);};
-/* 获取项目详细信息 */exports.getMeProjects = getMeProjects;
-var getProject = function getProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
-/* 更新项目详细信息 */exports.getProject = getProject;
-var putProject = function putProject(projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
-/* 删除项目 */exports.putProject = putProject;
-var deleteProject = function deleteProject(projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
-/* 获取评论
-                                                                                                                                    	@prams	pageNum: Number,页码
-                                                                                                                                    	@prams	pageSize: Number,分页大小
-                                                                                                                                    	@prams	projectId: Number,项目ID
-                                                                                                                                    	@prams	resourceId: Number,资源ID（可选)
-                                                                                                                                    */exports.deleteProject = deleteProject;
-var getRemarks = function getRemarks(params) {return (0, _request.default)("/project/resource/score", "GET", params);};
-/* 评价 */exports.getRemarks = getRemarks;
-var postRemark = function postRemark(projectResourceId, data) {return (0, _request.default)("/project/resource/score/".concat(projectResourceId), "POST", data);};
-/* 删除评价 */exports.postRemark = postRemark;
-var deleteRemark = function deleteRemark(commentId) {return (0, _request.default)("/project/resource/score/".concat(commentId), "DELETE", {});};
-
-/* 判断是否收藏 */exports.deleteRemark = deleteRemark;
-var isCollected = function isCollected(projectId) {return (0, _request.default)("/project/collection/check/".concat(projectId), "GET", {});};
-/* 收藏项目 */exports.isCollected = isCollected;
-var collectProject = function collectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "POST", {});};
-/* 取消收藏 */exports.collectProject = collectProject;
-var cancleCollectProject = function cancleCollectProject(projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "DELETE", {});};
-
-/* 获取项目所有资源信息 */exports.cancleCollectProject = cancleCollectProject;
-var getResources = function getResources(params) {return (0, _request.default)("/project/".concat(params.projectId, "/resources"), "GET", params);};
-/* 获取上传文件签名 */exports.getResources = getResources;
-var getFilesSignature = function getFilesSignature(projectId, filename) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private?filename=").concat(filename), "GET", {});};
-/* 创建项目的资源信息 */exports.getFilesSignature = getFilesSignature;
-var postResource = function postResource(projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
-/* 删除资源 */exports.postResource = postResource;
-var deleteResource = function deleteResource(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "DELETE", {});};
-/* 修改资源信息 */exports.deleteResource = deleteResource;
-var putResource = function putResource(projectResourceId, data) {return (0, _request.default)("/project/resource/".concat(projectResourceId), "PUT", data);};
-/* 获取下载签名 */exports.putResource = putResource;
-var getLoadSignature = function getLoadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/download"), "GET", {});};
-/* 获取阅读签名 */exports.getLoadSignature = getLoadSignature;
-var getReadSignature = function getReadSignature(projectResourceId) {return (0, _request.default)("/project/resource/".concat(projectResourceId, "/sign/read"), "GET", {});};
-
-/* 创建成员 */exports.getReadSignature = getReadSignature;
-var postMember = function postMember(projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};
-/* 更新成员 */exports.postMember = postMember;
-var putMember = function putMember(projectId, memberUserId, data) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "PUT", data);};
-/* 批量更新成员 */exports.putMember = putMember;
-var putMembers = function putMembers(projectId, data) {return (0, _request.default)("/project/members/".concat(projectId), "PUT", data);};
-/* 删除成员 */exports.putMembers = putMembers;
-var deleteMember = function deleteMember(projectId, memberPhone) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberPhone), "DELETE", {});};
-
-/* 申请认领资源 */exports.deleteMember = deleteMember;
-exports.postApplyProject = function (data) {return (0, _request.default)("/project/find", "POST", data);};
-/* 修改申请 */
-exports.putApplyProject = function (data) {return (0, _request.default)("/project/find/".concat(data.applyingID), "PUT", data);};
-/* 判断用户是否已经提交认领 */
-exports.getApplyProject = function (projectId) {return (0, _request.default)("/project/find/judge/".concat(projectId), "GET", {});};
-
-/***/ }),
-
-/***/ 711:
-/*!************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_forum.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getTalents = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/* 获取用户列表 */
-var getTalents = function getTalents() {return (0, _request.default)("/talentMarket", "GET", {});};exports.getTalents = getTalents;
 
 /***/ }),
 

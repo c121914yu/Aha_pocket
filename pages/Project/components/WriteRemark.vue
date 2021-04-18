@@ -3,7 +3,7 @@
 	<view class="write-remark" @touchmove.stop.prevent>
 		<!-- 提示模块 -->
 		<view v-if="type===0" class="remark-hint">
-			<button class="write" @click="type=1">写评论</button>
+			<button class="write" @click="type=1">发表评论</button>
 			<view class="icon iconfont icon-xinxi" @click="$emit('scrollComment')"></view>
 			<view v-if="isCollect" class="icon iconfont icon-collection collected" @click="collected"></view>
 			<view v-else class="icon iconfont icon-shoucang" @click="collected"></view>
@@ -17,10 +17,10 @@
 				<view class="header">
 					<view class="blank"></view>
 					<SelfPicker2
-						:arr_range="fileRange"
-						:startIndex="checkedFile ? fileRange.indexOf(checkedFile) : 0"
+						:arr_range="commentsRange"
+						:startIndex="commentsRange.findIndex(item => item.value === checkCommentType.value)"
 						placeholder="选择评论的附件"
-						v-model="checkedFile">
+						v-model="checkCommentType">
 					</SelfPicker2>
 				</view>
 				<textarea 
@@ -33,8 +33,9 @@
 					fixed/>
 				<!-- 评分 -->
 				<view class="footer">
-					<CommentStar v-model="score"></CommentStar>
-					<text class="publish" @click="publish">发表</text>
+					<CommentStar v-if="checkCommentType.value!=='public'" v-model="score"></CommentStar>
+					<view v-else></view>
+					<button class="publish" @click="publish">发表</button>
 				</view>
 			</view>
 		</view>
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-import { isCollected, collectProject, cancleCollectProject,postRemark } from '@/static/request/api_project.js';
+import { isCollected, collectProject, cancleCollectProject,postRemark,postPublicComment } from '@/static/request/api_project.js';
 export default {
 	props: {
 		projectId: Number,
@@ -53,18 +54,25 @@ export default {
 			type: 0,
 			isCollect: false,
 			commentContent: "",
-			checkedFile: null,
+			checkCommentType: {
+				label: "公开讨论",
+				value: "public"
+			},
 			score: 5
 		}
 	},
 	computed: {
-		fileRange(){
-			return this.files.map(file => {
+		commentsRange(){
+			const publicComment = [{
+				label: "公开讨论",
+				value: "public"
+			}]
+			return publicComment.concat(this.files.map(file => {
 				return {
 					label: file.name,
 					value: file.id
 				}
-			})
+			}))
 		}
 	},
 	created() {
@@ -109,18 +117,28 @@ export default {
 				this.gToastError("内容不能为空")
 				return
 			}
-			if(!this.checkedFile){
-				this.gToastError("选择评论附件")
-				return
+			let postFn
+			if(this.checkCommentType.value === "public"){
+				postFn = postPublicComment({
+					projectId: this.projectId,
+					comment: this.commentContent,
+				})
 			}
-			const data = {
-				comment: this.commentContent,
-				score: this.score
+			else{
+				postFn = postRemark(this.checkCommentType.value,{
+					comment: this.commentContent,
+					score: this.score
+				})
 			}
-			postRemark(this.checkedFile.value,data)
-			.then(res => {
+			postFn.then(res => {
 				this.gToastSuccess("评论成功")
 				this.type = 0
+				this.commentContent = ""
+				this.checkCommentType = {
+					label: "公开讨论",
+					value: "public"
+				}
+				this.score = 5
 				this.$emit("success")
 			})
 		}
@@ -136,7 +154,7 @@ export default {
 		bottom 0
 		left 0
 		right 0
-		padding 10px 20px
+		padding 12px 20px
 		border-top-left-radius 16px
 		border-top-right-radius 16px
 		background-color var(--origin2)
@@ -152,7 +170,7 @@ export default {
 			border-radius 22px
 		.icon
 			margin-left 15px
-			font-size 40rpx
+			font-size 44rpx
 			color #FFFFFF
 			&.collected
 				color #e86452
@@ -198,6 +216,7 @@ export default {
 				justify-content space-between
 				.publish
 					margin-right 10px
-					color var(--origin1)
-					font-size 28rpx
+					line-height 2
+					padding 0 20px
+					font-size 24rpx
 </style>

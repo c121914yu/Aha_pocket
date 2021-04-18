@@ -2,7 +2,12 @@
 <template>
 	<view class="my-collection">
 		<!-- 导航 -->
-		<view class="navs">
+		<TopNavs
+			:navs="navs"
+			padding
+			@navChange="changeType">
+		</TopNavs>
+		<!-- <view class="navs">
 			<view 
 				class="nav"
 				:class="index === activeNav ? 'active' : ''"
@@ -12,7 +17,7 @@
 				<view>{{nav.name}}</view>
 				<view class="amount">{{nav.amount}}</view>
 			</view>
-		</view>
+		</view> -->
 		<!-- 列表 -->
 		<view class="list" v-if="activeNav === 0">
 			<navigator 
@@ -41,9 +46,9 @@ export default {
 	data() {
 		return {
 			navs: [
-				{name: "项目",val: "project",amount: 0},
-				{name: "组队",val: "project",amount: 0},
-				{name: "外包",val: "project",amount: 0},
+				{label: "项目",value: "project",amount: 0},
+				{label: "组队",value: "teams",amount: 0},
+				// {label: "外包",val: "project",amount: 0},
 			],
 			activeNav: 0,
 			list: [],

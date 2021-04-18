@@ -1,12 +1,7 @@
 <template>
 	<view class="project">
 		<view class="header">
-			<image 
-				class="left" 
-				:src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" 
-				mode="widthFix"
-				@click="gReadImage([avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'])">
-			</image>
+			<Avatar :src="avatarUrl" size="100" readed="readed"></Avatar>
 			<view class="right">
 				<!-- 项目题目 -->
 				<view class="small item">
@@ -147,9 +142,17 @@
 						<image :src="comment.user.avatarUrl"></image>
 					</navigator>
 					<view class="right">
-						<view class="head">
-							<view class="name">{{comment.user.nickname}}</view>
-							<view class="score"><text class="iconfont icon-start"></text>{{comment.score}}</view>
+						<view class="user-info">
+							<navigator 
+								hover-class="none"
+								:url="'../Self/UserHome?userId=' + comment.user.userId"
+								class="name">
+								{{comment.user.nickname}}
+							</navigator>
+							<view v-if="comment.score" class="score">
+								<text class="iconfont icon-start"></text>
+								{{comment.score}}
+							</view>
 							<view class="blank"></view>
 							<view class="time">{{comment.time}}</view>
 						</view>
@@ -176,7 +179,7 @@
 		<WriteRemark
 			v-if="id"
 			:projectId="id"
-			:files="resources"
+			:files="arr_purchasedFiles"
 			@scrollComment="scrollComment"
 			@collectChange="collect+=$event"
 			@success="getCommentsInfo(true)">
@@ -187,7 +190,7 @@
 </template>
 
 <script>
-import { getProject, getLoadSignature,getRemarks,deleteRemark,getApplyProject } from '@/static/request/api_project.js'
+import { getProject, getLoadSignature,getRemarks,deleteRemark,getApplyProject,getPublicComments,deletePublicComment } from '@/static/request/api_project.js'
 import { postOrder,putOrder,checkResourcePurchased } from "../../static/request/api_order.js"
 import WriteRemark from "./components/WriteRemark.vue"
 import ClaimProject from "./components/ClaimProject.vue"
@@ -324,17 +327,23 @@ export default {
 		/* 获取评论 */
 		getCommentsInfo(init=false)
 		{
+			if(this.is_showAllComments){
+				return
+			}
 			if(init){
 				this.pageNum = 1
 			}
 			const userId = getApp().globalData.gUserInfo.userInfo.userId
-			getRemarks({
+			const params = {
 				pageNum: this.pageNum,
 				pageSize: this.pageSize,
 				projectId: this.id
-			})
+			}
+			Promise.all([getRemarks(params),getPublicComments(params)])
 			.then(res => {
-				if(res.data.pageData.length < this.pageSize){
+				const fileComments = res[0].data
+				const publicComments = res[1].data
+				if(fileComments.dataPageSize < this.pageSize && publicComments.dataPageSize < this.pageSize){
 					this.is_showAllComments = true
 				}
 				else{
@@ -343,12 +352,14 @@ export default {
 				if(init){
 					this.comments = []
 				}
-				res.data.pageData.forEach(remark => {
-					const file = this.resources.find(item => item.id === remark.resourceId)
-					remark.filename = file.name
-					remark.isMe = userId === remark.user.userId
-					remark.time = this.gformatDate(remark.time)
-					this.comments.push(remark)
+				publicComments.pageData.concat(fileComments.pageData).forEach(comment => {
+					if(comment.resourceId){
+						const file = this.resources.find(item => item.id === comment.resourceId)
+						comment.filename = file.name
+					}
+					comment.isMe = userId === comment.user.userId
+					comment.time = this.gformatDate(comment.time)
+					this.comments.push(comment)
 				})
 				console.log(this.comments);
 			})
@@ -473,7 +484,14 @@ export default {
 		removeComment(comment,index)
 		{
 			this.gShowModal("您确定删除该评价?",() => {
-				deleteRemark(comment.resourceId)
+				/* 评价附件 */
+				if(comment.resourceId){
+					deleteRemark(comment.resourceId)
+				}
+				/* 公开评论 */
+				else {
+					deletePublicComment(comment.id)
+				}
 				this.comments.splice(index,1)
 				this.gToastSuccess("删除成功")
 			})
@@ -524,9 +542,6 @@ export default {
 	.header
 		display flex
 		align-items flex-start
-		.left
-			width 30vw
-			border-radius 8px
 		.right
 			position relative
 			flex 1
@@ -636,7 +651,7 @@ export default {
 				flex 1
 				margin-left 10px
 				font-size 22rpx
-				.head
+				.user-info
 					display flex
 					align-items center
 					.name

@@ -96,6 +96,7 @@ export default {
 		Self,
 	},
 	onLoad() {
+		console.log(getApp().globalData.gUserInfo);
 		/* 隐藏返回主页 */
 		wx.hideHomeButton()
 		this.loadNav()

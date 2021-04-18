@@ -2,12 +2,6 @@
 	<view class="talents">
 		<view class="filters">
 			<view class="sort">
-				<view 
-					class="mark"
-					:style="{
-						transform: `translateX(${activeIndex*65}px)`
-					}">
-				</view>
 				<view
 					:class="activeIndex === 0 ? 'active' : ''" 
 					class="item" 
@@ -27,15 +21,13 @@
 					筛选<text class="iconfont icon-shaixuan"></text>
 				</view>
 			</view>
-			<view class="search">
-				<text class="iconfont icon-sousuo"></text>
-				<input type="text" placeholder="搜索用户" />
-			</view>
+			<SearchInput placeholder="搜索用户"></SearchInput>
 		</view>
 		<!-- 用户卡片 -->
 		<view class="user-cards">
 			<navigator 
 				class="card"
+				:class="activeIndex === 0 ? 'first' : ''"
 				v-for="(user,i) in users"
 				:key="i"
 				:url="'../../Self/UserHome?userId=' + user.userId">
@@ -105,7 +97,6 @@ export default {
 		}
 	},
 	created() {
-		// console.log(getApp().globalData);
 		/* 定时滚动卡片中项目情况 */
 		setInterval(() => {
 			this.users.forEach((user,i) => {
@@ -113,16 +104,16 @@ export default {
 				this.users[i].projectIndex = index < user.projectNames.length-1 ? index+1 : 0
 			})
 		},3000)
-		this.gLoading(this, true)
-		this.getTalentsList()
+		this.getTalentsList(true)
 	},
 	methods: {
 		getTalentsList()
 		{
+			this.gLoading(this, true)
 			getTalents()
 			.then(res => {
 				data = res.data
-				console.log(data);
+				// console.log(data);
 				this.loadTalent(true)
 			})
 			.catch(err => {
@@ -154,8 +145,9 @@ export default {
 					this.users.push(item)
 				}
 				this.page++
-				this.gLoading(this,false)
 			}
+			this.gLoading(this,false)
+			console.log(this.users);
 			// console.log(this.users);
 		}
 	}
@@ -166,7 +158,7 @@ export default {
 .talents
 	padding 10px 0 80px
 	.filters
-		padding 5px 10px
+		padding 0 10px
 		display flex
 		align-items flex-end
 		.sort
@@ -174,45 +166,27 @@ export default {
 			display flex
 			align-items flex-end
 			justify-content space-between
-			.mark
-				position absolute
-				height 100%
-				width 33%
-				background-color rgba(255,188,110,0.3)
-				border-radius 8px
-				transition .3s
 			.item
-				width 65px
+				width 60px
 				padding 5px 0
 				text-align center
-				border 2px solid transparent
+				border-top-left-radius 16px
+				border-top-right-radius 16px
 				.iconfont
 					font-size 22rpx
 				&.active
-					color var(--black)
-		.search
-			flex 1
-			margin-left 5px
-			position relative
-			display flex
-			align-items center
-			.iconfont
-				position absolute
-				margin-left 5px
-				color var(--origin2)
-			input
-				width 120px
-				border-radius 22px
-				padding-left 30px
-				background-color #FFFFFF
+					color var(--origin2)
+					background-color #FFFFFF
 	.user-cards
-		padding 5px 10px
+		padding 0 10px
 		.card
-			margin 10px 0
+			margin-bottom 10px
 			background-color #FFFFFF
 			padding 10px
 			border-radius 8px
 			display flex
+			&.first:first-of-type
+				border-top-left-radius 0
 			.left
 				flex-shrink 0
 				width 50px

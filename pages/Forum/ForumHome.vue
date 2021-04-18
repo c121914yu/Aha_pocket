@@ -3,7 +3,7 @@
 		<TopNavs 
 			:navs="navs"
 			padding
-			@navChange="currentNav=$event">
+			@navChange="currentNav=$event.value">
 		</TopNavs>
 		<Talents ref="Talents"  v-if="currentNav===0"></Talents>
 		<Teams v-if="currentNav===1"></Teams>

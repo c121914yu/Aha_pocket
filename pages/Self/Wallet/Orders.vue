@@ -119,8 +119,10 @@ export default {
 			.time
 				color var(--gray2)
 		.right
+			display flex
+			flex-direction column
+			align-items flex-end
 			.item
-				text-align end
 				display flex
 				align-items center
 				.value

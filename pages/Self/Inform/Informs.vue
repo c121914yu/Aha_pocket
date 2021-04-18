@@ -1,17 +1,11 @@
 <!-- 通知 -->
 <template>
 	<view class="inform">
-		<view class="navs">
-			<view 
-				class="nav"
-				:class="index === currentNav ? 'active' : ''"
-				v-for="(nav,index) in navs"
-				:key="index"
-				@click="changeNav(index)">
-				<text>{{nav.text}}</text>
-				<view v-if="nav.unread>0" class="amount">{{nav.unread | unreadFilter}}</view>
-			</view>
-		</view>
+		<TopNavs
+			:navs="navs"
+			padding
+			@navChange="changeNav">
+		</TopNavs>
 		<!-- 通知列表 -->
 		<view class="informs">
 			<navigator 
@@ -49,23 +43,15 @@ export default {
 	data() {
 		return {
 			navs: [
-				{text: "系统通知",value: "system",unread: 0},
-				{text: "用户消息",value: "private",unread: 0},
-				// {text: "企业通知",value: "企业通知",unread: 0}
+				{label: "系统通知",value: "system",amount: 0},
+				{label: "用户消息",value: "private",amount: 0},
+				// {text: "企业通知",value: "企业通知",amount: 0}
 			],
 			currentNav: 0,
 			pageNum: 1,
-			pageSize: 30,
+			pageSize: 10,
 			arr_informs: [],
 			is_showAll: false
-		}
-	},
-	filters: {
-		unreadFilter(val){
-			if(val > 99){
-				return 99 + "+"
-			}
-			return val
 		}
 	},
 	onShow() {
@@ -80,6 +66,14 @@ export default {
 		}
 	},
 	methods: {
+		/* 消息类型切换 */
+		changeNav(nav,index)
+		{
+			if(index !== this.currentNav){
+				this.currentNav = index
+				this.getMsg(true)
+			}
+		},
 		/* 获取消息列表 */
 		getMsg(init=false,count=false,loading=true) 
 		{
@@ -97,7 +91,7 @@ export default {
 			/* 清空统计 */
 			else{
 				this.navs.forEach(item => {
-					item.unread = 0
+					item.amount = 0
 				})
 			}
 			getMessages(params)
@@ -109,7 +103,6 @@ export default {
 				else{
 					this.pageNum++
 				}
-				
 				if(init){
 					this.arr_informs = []
 				}
@@ -117,7 +110,7 @@ export default {
 					if(count){
 						/* 统计未读 */
 						if(item.status === 0){
-							this.navs[item.type].unread++
+							this.navs[item.type].amount++
 						}
 						/* 只筛选当前类型 */
 						if(item.type === this.currentNav){
@@ -139,13 +132,7 @@ export default {
 				uni.stopPullDownRefresh()
 			})
 		},
-		changeNav(index)
-		{
-			if(index !== this.currentNav){
-				this.currentNav = index
-				this.getMsg(true)
-			}
-		}
+		
 	}
 }
 </script>
@@ -155,44 +142,6 @@ export default {
 	background-color var(--white1)
 	min-height 100vh
 	padding-bottom 60px
-	/* 导航 */
-	.navs
-		margin-bottom 5px
-		display flex
-		// display grid
-		// grid-template-columns repeat(3,1fr)
-		border-bottom-left-radius 22px
-		border-bottom-right-radius 22px
-		overflow hidden
-		.nav
-			flex 1
-			padding 10px 0
-			background-color var(--origin3)
-			display flex
-			align-items center
-			justify-content center
-			text
-				color var(--origin1)
-				font-size 26rpx
-				font-weight 700
-			.amount
-				margin-left 5px
-				width 22px
-				height 22px
-				text-align center
-				line-height 22px
-				font-size 20rpx
-				font-weight 700
-				border-radius 50%
-				background-color var(--origin2)
-				color #FFFFFF
-			&.active
-				 background-color var(--origin2)
-				 text
-					color #FFFFFF
-				 .amount
-					background-color #FFFFFF
-					color var(--origin2)
 	/* 通知列表 */
 	.informs
 		.item
