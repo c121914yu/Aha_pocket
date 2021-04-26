@@ -117,7 +117,7 @@ export default {
 		},
 		/* 根据比赛名称计算获奖等级 */
 		prizeLevels() {
-			let Levels = getApp().globalData.prizeLevels
+			let Levels = getApp().globalData.garr_prizeLevels
 			const match = getApp().globalData.Competitions.find(item => item.name === this.compName)
 			if(match){
 				const start = (5-match.level)*3

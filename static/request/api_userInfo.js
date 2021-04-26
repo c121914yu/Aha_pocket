@@ -65,7 +65,7 @@ exports.getSelfStatistice = () => request("/statistics/me","GET",{})
 /* 获取指定用户统计数据 */
 exports.getUserStatistice = (userId) => request(`/statistics/${userId}`,"GET",{})
 /* 获取用户轨迹 */
-exports.getUserTracks = () => request("/user/track","GET",{})
+exports.getUserTracks = (userId,type) => request(`/user/track/${userId}?type=${type}`,"GET",{})
 
 /* 获取实名认证上传签名 */
 exports.getAuthenticationSignature = (filename) => request(`/authentication/sign/upload?filename=${filename}`,"GET",{})

@@ -78,7 +78,7 @@ export default {
 			filterNav: null,
 			arr_compType: getApp().globalData.compType,
 			compType: 0,
-			arr_level: getApp().globalData.prizeLevels,
+			arr_level: getApp().globalData.garr_prizeLevels,
 			level: 0,
 			compId: null
 		};

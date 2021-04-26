@@ -21,7 +21,7 @@
 					筛选<text class="iconfont icon-shaixuan"></text>
 				</view>
 			</view>
-			<SearchInput placeholder="搜索用户"></SearchInput>
+			<SearchInput style="margin-bottom: 5px;" placeholder="搜索用户"></SearchInput>
 		</view>
 		<!-- 用户卡片 -->
 		<view class="user-cards">
@@ -31,7 +31,7 @@
 				v-for="(user,i) in users"
 				:key="i"
 				:url="'../../Self/UserHome?userId=' + user.userId">
-				<image class="left" :src="user.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
+				<Avatar :src="user.avatarUrl" size="50"></Avatar>
 				<view class="right">
 					<text class="name strong">{{user.nickname}}</text>
 					<UserLevel
@@ -42,26 +42,19 @@
 						color="#ffffff"
 						margin="0 3px 3px 0">
 					</UserLevel>
-					<view class="tags">
-						<view 
-							class="tag"
-							v-for="(tag,index) in user.specialtyTags"
-							:key="index">
-							{{tag}}
-						</view>
-					</view>
+					<UserTags class="tags" :tags="user.specialtyTags"></UserTags>
 					<view class="footer">
 						<view class="experience">
 							<view 
 								:style="{
-									transform: `translateY(-${user.projectIndex*20}px)`
+									transform: `translateY(-${user.projectIndex*23}px)`
 								}" 
 								class="item"
-								v-for="(project,index) in user.projectNames"
+								v-for="(project,index) in user.projectInfo"
 								:key="index">
-								{{project}}
+								{{project.name}} - {{project.awardLabel}}
 							</view>
-							<view class="item" v-if="user.projectNames.length === 0">无参与项目</view>
+							<view class="item" v-if="user.projectInfo.length === 0">无参与项目</view>
 						</view>
 						<view class="love">
 							<text class="iconfont icon-collection"></text>
@@ -101,10 +94,10 @@ export default {
 		setInterval(() => {
 			this.users.forEach((user,i) => {
 				let index = user.projectIndex
-				this.users[i].projectIndex = index < user.projectNames.length-1 ? index+1 : 0
+				this.users[i].projectIndex = index < user.projectInfo.length-1 ? index+1 : 0
 			})
 		},3000)
-		this.getTalentsList(true)
+		this.getTalentsList()
 	},
 	methods: {
 		getTalentsList()
@@ -142,13 +135,16 @@ export default {
 					}
 					// 项目标签
 					item.projectIndex = 0
+					// 项目情况
+					for(let j=0;j<item.projectInfo.length;j++){
+						item.projectInfo[j].awardLabel = getApp().globalData.garr_prizeLevels.find(prize => prize.value === item.projectInfo[j].awardLevel).label
+					}
 					this.users.push(item)
 				}
 				this.page++
 			}
 			this.gLoading(this,false)
 			console.log(this.users);
-			// console.log(this.users);
 		}
 	}
 }
@@ -187,11 +183,6 @@ export default {
 			display flex
 			&.first:first-of-type
 				border-top-left-radius 0
-			.left
-				flex-shrink 0
-				width 50px
-				height 50px
-				border-radius 8px
 			.right
 				flex auto
 				position relative
@@ -203,33 +194,31 @@ export default {
 					right 0
 					top 0
 				.tags
-					padding 15px 0
+					padding 5px 0
 					display flex
-					align-items center
+					flex-wrap nowrap
 					overflow-x auto
-					.tag
-						flex-shrink 0
-						margin-right 5px
-						padding 0 8px
-						border-radius 22px
-						background-color var(--origin1)
-						color #FFFFFF
-						font-size 18rpx
 					&::-webkit-scrollbar
 						display: none
 				.footer
 					display flex
 					.experience
 						flex auto
-						height 20px
-						background-color var(--origin3)
-						border-radius 22px
-						padding 0 5px
+						height 18px
 						overflow hidden
+						display flex
+						flex-direction column
+						align-items flex-start
 						.item
-							height 20px
-							font-size 22rpx
-							line-height 20px
+							flex-shrink 0
+							margin-bottom 5px
+							height 18px
+							line-height 18px
+							font-size 20rpx
+							padding 0 10px
+							border-radius 22px
+							background-color var(--nav-color)
+							color #FFFFFF
 							text-overflow ellipsis
 							overflow hidden
 							transition .5s ease-in-out

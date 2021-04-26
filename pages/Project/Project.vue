@@ -228,7 +228,7 @@ export default {
 	computed: {
 		awardLevelMsg() {
 			if (this.compId) {
-				let res = getApp().globalData.prizeLevels.find(item => item.value === this.awardLevel);
+				let res = getApp().globalData.garr_prizeLevels.find(item => item.value === this.awardLevel);
 				if (res){
 					return res.label;
 				} 
@@ -257,7 +257,7 @@ export default {
 				this.initFiles()
 			}
 			this.gLoading(this,false)
-			this.getIntroImage()
+			// this.getIntroImage()
 			console.log(res.data);
 		})
 		.catch(err => {
@@ -284,7 +284,7 @@ export default {
 		/* 获取intro里的图片 */
 		getIntroImage()
 		{
-			const reg = /(?<=src\=\").*?(?=\")/g
+			// const reg = /(?<=src\=\").*?(?=\")/g
 			this.arr_introImg = this.intro.match(reg) || []
 		},
 		/* 判断是否提交过认领 */

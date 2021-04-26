@@ -85,7 +85,7 @@ export default {
 		{
 			console.log(this.project)
 			/* 获取获奖等级名称 */
-			let awardLevel = getApp().globalData.prizeLevels.find(item => item.value === this.project.awardLevel)
+			let awardLevel = getApp().globalData.garr_prizeLevels.find(item => item.value === this.project.awardLevel)
 			/* 同步基础信息 */
 			const domBaseInfo = this.$refs.baseInfo
 			domBaseInfo.isAnonymous = this.project.isAnonymous

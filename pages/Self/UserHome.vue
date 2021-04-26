@@ -5,19 +5,12 @@
 			<view class="first">
 				<view class="left">
 					<Avatar :src="avatarUrl"></Avatar>
-					<UserLevel v-if="userPoint !== null" :point="userPoint"></UserLevel>
+					<UserLevel :point="userPoint"></UserLevel>
 				</view>
 			  	<view class="right">
 			  		<view class="nickname">{{nickname}}</view>
 			  		<view class="honor">全国大学生服务外包大赛: 国一</view>
-			  		<view class="tags">
-			  			<view 
-			  				class="tag"
-			  				v-for="(tag,index) in tags"
-			  				:key="index">
-			  				{{tag}}
-			  			</view>
-			  		</view>
+			  		<UserTags :tags="tags"></UserTags>
 					<view v-if="userRelation !== 1" class="user-relation">
 						<view class="attention" @click="attentionUser">
 							<text class="iconfont icon-xiazai"></text>
@@ -52,7 +45,7 @@
 			:navs="navs"
 			color="var(--black)"
 			backgroundColor="#ffffff"
-			@navChange="currentNav=$event">
+			@navChange="trackType=$event.val">
 		</TopNavs>
 		<!-- 足迹内容 -->
 		<view class="card tracks">
@@ -63,7 +56,7 @@
 				<!-- 辅助点 -->
 				<view class="dot"></view>
 				<!-- 时间 -->
-				<view class="time">{{track.time}}</view>
+				<view class="time">{{track.date}}</view>
 				<!-- 项目名 -->
 				<view class="track-name">{{track.trackName}}</view>
 				<!-- 描述 -->
@@ -138,22 +131,20 @@ export default {
 	data() {
 		return {
 			userId: '',
-			userRelation: 0,//0-无关系 1-自己 2-已关注 3-被关注 4-互关
+			userRelation: 1,//0-无关系 1-自己 2-已关注 3-被关注 4-互关
 			avatarUrl: '',
 			nickname: 'Aha会员',
 			tags: [],
-			userPoint: null, //用户累计Aha点
+			userPoint: 0, //用户累计Aha点
 			resume: null,
 			navs: [
-				{label: "平台轨迹",val: 0},
-				{label: "竞赛",val: 1},
-				{label: "服务",val: 2},
-				{label: "外包",val: 3}
+				{label: "平台轨迹",val: ""},
+				{label: "竞赛",val: "project"},
+				{label: "服务",val: ""},
+				{label: "外包",val: ""}
 			],
-			currentNav: 0,
-			userTracks: [
-				{time: "2020/3/2",trackName: "加入Aha口袋",result: "welcome"},
-			]
+			trackType: "",
+			userTracks: []
 		};
 	},
 	filters: {
@@ -192,13 +183,8 @@ export default {
 				this.resume = res[2].data
 				console.log(this.resume);
 			})
-			
-			/* 获取 */
 			/* 获取用户轨迹 */
-			// getUserTracks()
-			// .then(res => {
-			// 	console.log(res);
-			// })
+			this.getUserTrack()
 			this.gLoading(this, false);
 		}
 	},
@@ -215,6 +201,19 @@ export default {
 				this.userRelation = 2
 			}
 			uni.vibrateLong()
+		},
+		/* 获取用户轨迹信息 */
+		getUserTrack()
+		{
+			getUserTracks(this.userId,this.trackType)
+			.then(res => {
+				res.data.forEach(track => {
+					const date = new Date(track.date)
+					track.date = `${date.getFullYear()}.${date.getMonth()+1}.${date.getDate()}`
+					this.userTracks.push(track)
+				})
+				console.log(res);
+			})
 		}
 	}
 };
@@ -241,24 +240,13 @@ export default {
 					font-weight 700
 					font-size 30rpx
 				.honor
-					margin-top 15px
+					margin 15px 0 5px 0
 					padding 0 10px
 					border-radius 22px
 					font-size 20rpx
 					color #FFFFFF
 					background-color var(--nav-color)
 					display inline-block
-				.tags
-					margin-top 5px
-					display flex
-					flex-wrap wrap
-					.tag
-						margin 0 5px 5px 0
-						color #FFFFFF
-						padding 0 10px
-						border-radius 22px
-						font-size 18rpx
-						background-color var(--origin2)
 				.attention, .consult, .share
 					position absolute
 					right 0
@@ -288,7 +276,7 @@ export default {
 			justify-content space-around
 	.card
 		margin 15px auto
-		width 90%
+		width 95%
 		padding 10px
 		border-radius 22px
 		background-color #FFFFFF
@@ -299,9 +287,9 @@ export default {
 			font-size 22rpx
 			color var(--gray2)
 	.tracks
-		max-height 160px
-		overflow-y auto
-		padding 26px 15px 0 20px
+		max-height 220px
+		overflow auto
+		padding 26px 15px 0 15px
 		// 隐藏滚动条
 		&::-webkit-scrollbar
 			display: none
@@ -312,9 +300,11 @@ export default {
 			align-items flex-start
 			.time
 				margin 0 5px
+				flex 0 0 46px
 				font-size 20rpx
 				color var(--gray1)
 			.dot
+				flex-shrink 0
 				position relative
 				width 10px
 				height 10px
@@ -330,12 +320,13 @@ export default {
 					border-left 1px dashed var(--gray2)
 					height 20px
 			.track-name
-				flex auto
+				flex 0 0 50%
 				color var(--origin2)
 				font-weight 700
 			.result
-				margin-left 5px
-				flex 0 0 90px
+				padding-right 5px
+				flex 0 0 auto
+				white-space nowrap
 			// 第一个track的上方加虚线
 			&:first-of-type .dot::before
 				content ''

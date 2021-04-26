@@ -6,10 +6,10 @@ App.mpType = 'app'
 // 字体图标
 import "./static/icon/iconfont.css"
 
-const app = new Vue({
+const app = new Vue( {
 	...App
-})
+} )
 app.$mount()
 
 /* 注册全局方法 */
-require("./static/js/globalFun.js")
+require( "./static/js/globalFun.js" )

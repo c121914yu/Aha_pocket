@@ -35,14 +35,14 @@ export default {
 			}
 		})
 		// 下载比赛等级图
-		let prizeLen = globalData.prizeLevels.length-1
+		let prizeLen = globalData.garr_prizeLevels.length-1
 		const prizeLevels = uni.getStorageSync("prizeLevels")
 		if(prizeLevels){
 			globalData.prizeLevels = JSON.parse(prizeLevels)
 			console.log("已缓存比赛等级图");
 		}
 		else{
-			globalData.prizeLevels.forEach((item,index) => {
+			globalData.garr_prizeLevels.forEach((item,index) => {
 				uni.downloadFile({
 				    url: item.src,
 				    success: (res) => {
@@ -50,13 +50,13 @@ export default {
 							uni.saveFile({
 								tempFilePath: res.tempFilePath,
 								success: function (res) {
-									globalData.prizeLevels[index].src = res.savedFilePath
+									globalData.garr_prizeLevels[index].src = res.savedFilePath
 									prizeLen--
 									if(prizeLen === 0){
 										console.log("下载全部比赛等级图片");
 										uni.setStorage({
 											key: "prizeLevels",
-											data: JSON.stringify(globalData.prizeLevels)
+											data: JSON.stringify(globalData.garr_prizeLevels)
 										})
 									}
 								}

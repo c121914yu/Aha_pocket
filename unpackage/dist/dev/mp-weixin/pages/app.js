@@ -94,10 +94,10 @@ var components
 try {
   components = {
     SystemNotice: function() {
-      return __webpack_require__.e(/*! import() | components/SystemNotice/SystemNotice */ "components/SystemNotice/SystemNotice").then(__webpack_require__.bind(null, /*! @/components/SystemNotice/SystemNotice.vue */ 344))
+      return __webpack_require__.e(/*! import() | components/SystemNotice/SystemNotice */ "components/SystemNotice/SystemNotice").then(__webpack_require__.bind(null, /*! @/components/SystemNotice/SystemNotice.vue */ 286))
     },
     TabBar: function() {
-      return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 351))
+      return __webpack_require__.e(/*! import() | components/TabBar/TabBar */ "components/TabBar/TabBar").then(__webpack_require__.bind(null, /*! @/components/TabBar/TabBar.vue */ 293))
     }
   }
 } catch (e) {
@@ -252,16 +252,16 @@ var _ForumHome = _interopRequireDefault(__webpack_require__(/*! ./Forum/ForumHom
 //
 //
 //
-var userAgreement = function userAgreement() {Promise.all(/*! require.ensure | pages/Self/Number/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Number/UserAgreement")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Number/UserAgreement.vue */ 358));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages/Project/ProjectHome */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Project/ProjectHome")]).then((function () {return resolve(__webpack_require__(/*! ./Project/ProjectHome.vue */ 365));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Epiboly = function Epiboly() {__webpack_require__.e(/*! require.ensure | pages/Epiboly/Epiboly */ "pages/Epiboly/Epiboly").then((function () {return resolve(__webpack_require__(/*! ./Epiboly/Epiboly */ 372));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 379));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { /* 
+var userAgreement = function userAgreement() {Promise.all(/*! require.ensure | pages/Self/Number/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Number/UserAgreement")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Number/UserAgreement.vue */ 300));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages/Project/ProjectHome */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Project/ProjectHome")]).then((function () {return resolve(__webpack_require__(/*! ./Project/ProjectHome.vue */ 307));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Epiboly = function Epiboly() {__webpack_require__.e(/*! require.ensure | pages/Epiboly/Epiboly */ "pages/Epiboly/Epiboly").then((function () {return resolve(__webpack_require__(/*! ./Epiboly/Epiboly */ 314));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 321));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { /* 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	第一次不直接加载界面，防止加载时间过长
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	切换到未缓存的界面时再进行加载
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           */navs: [{ name: "ProjectHome", loaded: false }, { name: "ForumHome", loaded: false }, { name: "Epiboly", loaded: false }, { name: "Self", loaded: false }], currentNav: 0, signedNotice: getApp().globalData.gUserInfo.signedNotice, arr_systemNotice: [] };}, watch: { currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "社区论坛";break;case 2:text = "服务外包";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });if (newNav === 2) {uni.showToast({ title: "该模块正在开发!", icon: "none" });}} }, components: { userAgreement: userAgreement, ProjectHome: ProjectHome, ForumHome: _ForumHome.default, Epiboly: Epiboly, Self: Self },
-  onLoad: function onLoad() {
-    console.log(getApp().globalData.gUserInfo);
-    /* 隐藏返回主页 */
-    wx.hideHomeButton();
-    this.loadNav();
-    this.loadNeed();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           */navs: [{ name: "ProjectHome", loaded: false }, { name: "ForumHome", loaded: false }, { name: "Epiboly", loaded: false }, { name: "Self", loaded: false }], currentNav: 2, signedNotice: getApp().globalData.gUserInfo.signedNotice, arr_systemNotice: [] };}, watch: { currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "社区论坛";break;case 2:text = "服务外包";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text }); // if(newNav === 2){
+      // 	uni.showToast({
+      // 		title: "该模块正在开发!",
+      // 		icon: "none"
+      // 	})
+      // }
+    } }, components: { userAgreement: userAgreement, ProjectHome: ProjectHome, ForumHome: _ForumHome.default, Epiboly: Epiboly, Self: Self }, onLoad: function onLoad() {console.log(getApp().globalData.gUserInfo); /* 隐藏返回主页 */wx.hideHomeButton();this.loadNav();this.loadNeed();
   },
   onShow: function onShow() {
     // 每次显示未读信息更新
@@ -447,7 +447,7 @@ var components
 try {
   components = {
     TopNavs: function() {
-      return __webpack_require__.e(/*! import() | components/TopNavs/TopNavs */ "components/TopNavs/TopNavs").then(__webpack_require__.bind(null, /*! @/components/TopNavs/TopNavs.vue */ 386))
+      return __webpack_require__.e(/*! import() | components/TopNavs/TopNavs */ "components/TopNavs/TopNavs").then(__webpack_require__.bind(null, /*! @/components/TopNavs/TopNavs.vue */ 328))
     }
   }
 } catch (e) {
@@ -509,7 +509,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Teams = function Teams() {__webpack_require__.e(/*! require.ensure | pages/Forum/Teams */ "pages/Forum/Teams").then((function () {return resolve(__webpack_require__(/*! ./Teams.vue */ 393));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Talents = function Talents() {Promise.all(/*! require.ensure | pages/Forum/Talents */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Forum/Talents")]).then((function () {return resolve(__webpack_require__(/*! ./Talents.vue */ 400));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var Teams = function Teams() {__webpack_require__.e(/*! require.ensure | pages/Forum/Teams */ "pages/Forum/Teams").then((function () {return resolve(__webpack_require__(/*! ./Teams.vue */ 335));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Talents = function Talents() {Promise.all(/*! require.ensure | pages/Forum/Talents */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Forum/Talents")]).then((function () {return resolve(__webpack_require__(/*! ./Talents.vue */ 342));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 

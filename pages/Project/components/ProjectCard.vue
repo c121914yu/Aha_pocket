@@ -26,14 +26,7 @@
 			<!-- 获奖信息 -->
 			<view><text class="comp-name strong">{{ compName }}</text></view>
 			<!-- 标签 -->
-			<view class="tags">
-				<view 
-					class="tag"
-					v-for="(tag,index) in tags"
-					:key="index">
-					{{ tag }}
-				</view>
-			</view>
+			<UserTags class="tags" :tags="tags"></UserTags>
 			<view class="blank"></view>
 			<!-- 时间 & 数据统计 & 状态-->
 			<view class="footer">
@@ -120,7 +113,7 @@ export default {
 		},
 		awardImg() {
 			if (this.project.awardLevel) {
-				let res = getApp().globalData.prizeLevels.find(item => item.value === this.project.awardLevel)
+				let res = getApp().globalData.garr_prizeLevels.find(item => item.value === this.project.awardLevel)
 				return res.src
 			}
 			return null
@@ -186,7 +179,6 @@ export default {
 		.head
 			position relative
 			height 18px
-			// padding-right 110rpx
 			.name
 				font-size 20rpx
 				overflow hidden
@@ -205,16 +197,8 @@ export default {
 			border-radius 22px
 			display inline-block
 		.tags
+			margin 5px
 			min-height 30px
-			display flex
-			align-items flex-start
-			flex-wrap wrap
-			.tag
-				margin 4px 4px 0 0
-				padding 1px 10px
-				background-color #F8B500
-				color #FFFFFF
-				border-radius 22px
 		/* 统计量 */
 		.footer
 			margin-top 5px

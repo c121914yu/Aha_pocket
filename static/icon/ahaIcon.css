@@ -1,0 +1,57 @@
+@font-face {
+  font-family: 'iconfont';  /* project id 2497748 */
+  src: url('//at.alicdn.com/t/font_2497748_668ww5pg8zl.eot');
+  src: url('//at.alicdn.com/t/font_2497748_668ww5pg8zl.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2497748_668ww5pg8zl.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2497748_668ww5pg8zl.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2497748_668ww5pg8zl.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2497748_668ww5pg8zl.svg#iconfont') format('svg');
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-1_huaban1:before {
+  content: "\e605";
+}
+
+.icon-2_huaban1:before {
+  content: "\e606";
+}
+
+.icon-3_huaban1:before {
+  content: "\e607";
+}
+
+.icon-4_huaban1:before {
+  content: "\e608";
+}
+
+.icon-6_huaban1:before {
+  content: "\e609";
+}
+
+.icon-7_huaban1:before {
+  content: "\e60a";
+}
+
+.icon-5_huaban1:before {
+  content: "\e60b";
+}
+
+.icon-9_huaban1:before {
+  content: "\e60c";
+}
+
+.icon-8_huaban1:before {
+  content: "\e60d";
+}
+
+.icon-10_huaban1:before {
+  content: "\e60e";
+}
+

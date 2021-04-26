@@ -46,8 +46,7 @@
 			"style": {
 				"navigationBarTitleText": "通知管理",
 				"enablePullDownRefresh": true,
-				"backgroundTextStyle": "dark",
-				"onReachBottomDistance": 100
+				"onReachBottomDistance": 150
 			}
 		}, {
 			"path": "pages/Self/Inform/Inform",
@@ -96,46 +95,6 @@
 				"navigationBarTitleText": "个人简历"
 			}
 		}, {
-			"path": "pages/Self/Resume/components/BaseInfo",
-			"style": {
-				"navigationBarTitleText": "基本信息"
-			}
-		}, {
-			"path": "pages/Self/Resume/components/EduExperience",
-			"style": {
-				"navigationBarTitleText": "教育经历"
-			}
-		}, {
-			"path": "pages/Self/Resume/components/SchoolExperience",
-			"style": {
-				"navigationBarTitleText": "校园经历"
-			}
-		}, {
-			"path": "pages/Self/Resume/components/ProjectExperience",
-			"style": {
-				"navigationBarTitleText": "项目经历"
-			}
-		}, {
-			"path": "pages/Self/Resume/components/PracticeExperience",
-			"style": {
-				"navigationBarTitleText": "实习经历"
-			}
-		}, {
-			"path": "pages/Self/Resume/components/Skill",
-			"style": {
-				"navigationBarTitleText": "个人技能"
-			}
-		}, {
-			"path": "pages/Self/Resume/components/Honors",
-			"style": {
-				"navigationBarTitleText": "荣誉信息"
-			}
-		}, {
-			"path": "pages/Self/Resume/components/SelfIntro",
-			"style": {
-				"navigationBarTitleText": "个人总结"
-			}
-		}, {
 			"path": "pages/Self/Resume/ResumePreview",
 			"style": {
 				"navigationBarTitleText": "简历预览"
@@ -154,7 +113,7 @@
 			"path": "pages/Self/Feedback/FeedBack_self",
 			"style": {
 				"navigationBarTitleText": "我的反馈",
-				"onReachBottomDistance": 100
+				"onReachBottomDistance": 150
 			}
 		}, {
 			"path": "pages/EditMd/EditMd",
@@ -211,12 +170,16 @@
 				"navigationBarTitleText": "外包管理"
 			}
 		}, {
-			"path": "pages/Epiboly/EpibolyDetail",
+			"path": "pages/Epiboly/ServerDetail",
 			"style": {
-				"navigationBarTitleText": "外包信息"
+				"navigationBarTitleText": "服务详情"
 			}
-		},
-		
+		},  {
+			"path": "pages/Epiboly/NeedDetail",
+			"style": {
+				"navigationBarTitleText": "需求详情"
+			}
+		}, 
 		/* 论坛区 */
 		{
             "path" : "pages/Forum/ForumHome",
@@ -236,18 +199,6 @@
 	},
 	"condition": {
 		"current": 0, //当前激活的模式（list 的索引项）
-		"list": [{
-			"name": "找回密码",
-			"path": "pages/Login/FindPassword"
-		}, {
-			"name": "主页",
-			"path": "pages/app"
-		}, {
-			"name": "我的项目",
-			"path": "pages/Project/MyProject"
-		}, {
-			"name": "发送通知",
-			"path": "pages/Self/Inform_send"
-		}]
+		"list": []
 	}
 }

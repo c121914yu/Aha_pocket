@@ -114,7 +114,7 @@ export default {
 					return
 				}
 				/* 计算价格，取平均值 */
-				const award = getApp().globalData.prizeLevels.find(item => item.value === this.level)
+				const award = getApp().globalData.garr_prizeLevels.find(item => item.value === this.level)
 				const typeId = getApp().globalData.arr_fileClassify[3]
 				const data = {
 					name: file.name,

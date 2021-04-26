@@ -17,13 +17,13 @@
 			class="card"
 			v-for="(item,index) in Epibolies"
 			:key="index">
-			<EpibolyCard :epiboly="item" @click="showMenu(item)"></EpibolyCard>
+			<ServerCard :epiboly="item" @click="showMenu(item)"></ServerCard>
 		</view>
 	</view>
 </template>
 
 <script>
-import EpibolyCard from "./components/EpibolyCard.vue"
+import ServerCard from "./components/ServerCard.vue"
 export default {
 	data() {
 		return {
@@ -44,7 +44,7 @@ export default {
 		}
 	},
 	components: {
-		EpibolyCard
+		ServerCard
 	},
 	onLoad() {
 		this.gUndesign()
@@ -57,11 +57,6 @@ export default {
 				case 0: this.menu1(item);break;
 				case 1: this.menu2(item);break;
 				case 2: this.menu3(item);break;
-				case 3: 
-						uni.navigateTo({
-							url: "./EpibolyDetail"
-						});
-						break;
 			}
 		},
 		/* 我接的单。菜单内容：查看详细内容，私信发起人 */
@@ -71,9 +66,9 @@ export default {
 				itemList: ["查看详细","私信发起人"],
 				success: (res) => {
 					if (res.tapIndex === 0) {
-						uni.navigateTo({
-							url: "./EpibolyDetail"
-						})
+						// uni.navigateTo({
+						// 	url: "./EpibolyDetail"
+						// })
 					}
 					else if(res.tapIndex === 1){
 						uni.navigateTo({
@@ -90,9 +85,9 @@ export default {
 				itemList: ["查看详细","取消外包"],
 				success: (res) => {
 					if (res.tapIndex === 0) {
-						uni.navigateTo({
-							url: "./EpibolyDetail"
-						})
+						// uni.navigateTo({
+						// 	url: "./EpibolyDetail"
+						// })
 					}
 					else if(res.tapIndex === 1){
 						this.gToastSuccess("删除外包")
@@ -107,9 +102,9 @@ export default {
 				itemList: ["查看详细","私信接单人","申请取消"],
 				success: (res) => {
 					if (res.tapIndex === 0) {
-						uni.navigateTo({
-							url: "./EpibolyDetail"
-						})
+						// uni.navigateTo({
+						// 	url: "./EpibolyDetail"
+						// })
 					}
 					else if(res.tapIndex === 1){
 						uni.navigateTo({

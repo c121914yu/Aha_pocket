@@ -47,7 +47,7 @@ export default {
 	},
 	computed: {
 		priceRange() {
-			const award = getApp().globalData.prizeLevels.find(item => item.value === this.level)
+			const award = getApp().globalData.garr_prizeLevels.find(item => item.value === this.level)
 			if(!this.type){
 				return [0,0]
 			}

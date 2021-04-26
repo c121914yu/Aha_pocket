@@ -3,6 +3,7 @@
 		<text class="iconfont icon-sousuo"></text>
 		<input 
 			:type="type" 
+			:value="value"
 			:placeholder="placeholder" 
 			v-model="searchText"
 			@input="$emit('input')"/>

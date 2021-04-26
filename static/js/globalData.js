@@ -6,7 +6,7 @@ export default  {
 	gUserInfo: {}, // 用户信息
 	gEditContent: "", // 编辑内容
 	Competitions: [], // 所有比赛
-	prizeLevels: [//获奖等级
+	garr_prizeLevels: [//获奖等级
 		{ label: '保研国一', value: 53,max: 4000,min: 2000,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/43.png"},
 		{ label: '保研国二', value: 52,max: 3000,min: 1500,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/42.png" },
 		{ label: '保研国三', value: 51,max: 2000,min: 1000,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/41.png" },

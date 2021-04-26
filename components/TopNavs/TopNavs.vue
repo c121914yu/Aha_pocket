@@ -27,7 +27,7 @@
 export default {
 	name:"TopNavs",
 	props: {
-		navs: {
+		navs: { // ｛label:  ｝
 			type: Array,
 			default: () => []
 		},
