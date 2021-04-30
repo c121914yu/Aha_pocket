@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import TeamCard from "./components/TeamCard.vue"
+import TeamCard from "./Team/TeamCard.vue"
 export default {
 	data() {
 		return {

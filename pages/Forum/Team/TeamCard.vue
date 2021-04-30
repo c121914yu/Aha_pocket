@@ -1,15 +1,18 @@
 <template>
-	<view class="team-card">
+	<navigator class="team-card" url="./TeamDetail">
 		<!-- header部分左右布局 -->
 		<view class="header">
 			<!-- 左侧头像 -->
-			<image class="avatar" :src="team.avatar"></image>
+			<Avatar :src="team.avatar" size="60"></Avatar>
 			<!-- 右侧两行 -->
 			<view class="right">
-				<!-- 队伍名 时间 -->
-				<view class="title">
-					<view class="name">{{team.name}}</view>
-					<view class="time">{{team.time}}</view>
+				<!-- 时间 -->
+				<view class="time center" v-html="team.time"></view>
+				<!-- 队伍名 -->
+				<view class="name">{{team.name}}</view>
+				<!-- 如果是竞赛招募队友，要显示参与什么竞赛 -->
+				<view class="competition">
+					全国大学生服务外包大赛
 				</view>
 				<!-- 项目成员 -->
 				<view class="members">
@@ -18,6 +21,7 @@
 						class="member"
 						v-for="item in 5"
 						:key="item">
+						<image :src="team.avatar"></image>
 					</view>
 				</view>
 			</view>
@@ -33,7 +37,7 @@
 				进行中
 			</view>
 		</view>
-	</view>
+	</navigator>
 </template>
 
 <script>
@@ -54,50 +58,51 @@ export default {
 
 <style lang="stylus" scoped>
 .team-card
-	margin-bottom 5px
+	margin-bottom 10px
 	padding 10px
 	border-radius 8px
 	background-color #FFFFFF
 	overflow hidden
 	.header
 		display flex
-		.avatar
-			width 50px
-			height 50px
-			border-radius 50%
-			background-color var(--origin2)
 		.right
+			margin-left 10px
+			position relative
 			flex 1
-			margin-left 5px
-		.title
-			display flex
-			justify-content space-between
-			.name
-				padding 0 10px
-				color #333333
-				font-weight 600
-				border-radius 22px
-				background-color var(--origin4)
 			.time
+				float right
 				font-size 18rpx
 				color var(--gray2)
-		.members
-			margin 10px 0
-			display flex
-			align-items center
-			.label
-				margin-right 5px
+				white-space pre-wrap
+			.name
+				font-weight 700
+			.competition
+				margin 5px 0
 				padding 0 10px
 				border-radius 22px
-				background-color var(--origin2)
-				color #FFFFFF
-				line-height 1.7
-			.member
-				margin-left 2px
-				width 15px
-				height 15px
-				border-radius 50%
-				border 1.5px solid var(--origin1)
+				font-size 22rpx
+				background-color var(--origin3)
+				display inline-block
+			.members
+				display flex
+				align-items center
+				.label
+					margin-right 5px
+					padding 0 10px
+					border-radius 22px
+					background-color var(--origin2)
+					color #FFFFFF
+					line-height 1.7
+				.member
+					margin-left 2px
+					width 20px
+					height 20px
+					border-radius 50%
+					border 1px solid var(--origin1)
+					image
+						width 100%
+						height 100%
+						border-radius 50%
 	.container
 		display flex
 		align-items flex-end

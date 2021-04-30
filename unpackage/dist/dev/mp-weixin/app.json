@@ -4,6 +4,7 @@
     "pages/Login/Register",
     "pages/Login/FindPassword",
     "pages/OutLink",
+    "pages/Comment/CommentDetail",
     "pages/app",
     "pages/Self/UserHome",
     "pages/Self/Inform/Informs",
@@ -31,7 +32,11 @@
     "pages/Epiboly/MyEpiboly",
     "pages/Epiboly/ServerDetail",
     "pages/Epiboly/NeedDetail",
-    "pages/Forum/ForumHome"
+    "pages/Forum/ForumHome",
+    "pages/Forum/Team/MyTeam",
+    "pages/Forum/Team/CreateTeam",
+    "pages/Forum/Team/EditTeam",
+    "pages/Forum/Team/TeamDetail"
   ],
   "subPackages": [],
   "window": {
@@ -45,5 +50,6 @@
       "desc": "获取您当前的城市信息"
     }
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap68.json"
 }

@@ -34,6 +34,15 @@ export default {
 				})
 			}
 		})
+		
+		/* 判断是开发版还是线上版,开发版使用test接口 */
+		const {miniProgram} = wx.getAccountInfoSync()
+		switch(miniProgram.envVersion){
+			case "develop": globalData.env=0;break;
+			case "trial": globalData.env=1;globalData.baseUrl = "https://ahapocket.cn/aha_test";break;
+			case "release": globalData.env=2;globalData.baseUrl = "https://ahapocket.cn/aha_test";break;
+		}
+		
 		// 下载比赛等级图
 		let prizeLen = globalData.garr_prizeLevels.length-1
 		const prizeLevels = uni.getStorageSync("prizeLevels")

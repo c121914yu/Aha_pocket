@@ -268,8 +268,9 @@ Vue.prototype.gUndesign = (back=true) => {
 }
 
 /* 预览图片 */
-Vue.prototype.gReadImage = (urls) => {
+Vue.prototype.gReadImage = (urls,current=0) => {
 	uni.previewImage({
+		current,
 		urls
 	})
 }

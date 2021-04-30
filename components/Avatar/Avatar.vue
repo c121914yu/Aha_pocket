@@ -2,8 +2,9 @@
 	<view 
 		class="avatar"
 		:style="{
-			width: `${size}px`,
-			height: `${size}px`,
+			'width': `${size}px`,
+			'height': `${size}px`,
+			'background-color': bgColor
 		}"
 		@click="readImg">
 		<image :src="src" mode="widthFix"></image>
@@ -21,6 +22,10 @@ export default {
 		size: {
 			type: Number,
 			default: 80
+		},
+		bgColor: {
+			type: String,
+			default: "var(--origin3)"
 		},
 		readed: {
 			type: Boolean,
@@ -45,7 +50,6 @@ export default {
 	width 80px
 	height 80px
 	border-radius 8px
-	background-color var(--origin3)
 	overflow hidden
 	display flex
 	align-items center

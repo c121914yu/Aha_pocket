@@ -11,6 +11,7 @@
 				'padding': padding
 			}"
 			@click="clickBtn">
+			<slot></slot>
 			{{text}}
 		</button>
 	</view>

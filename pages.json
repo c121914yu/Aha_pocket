@@ -24,6 +24,13 @@
 				"navigationBarTitleText": "Aha口袋"
 			}
 		},
+		/* 评论详细 */
+		{
+			"path": "pages/Comment/CommentDetail",
+			"style": {
+				"navigationBarTitleText": "评论信息"
+			}
+		},
 		/* 
 			主页
 			4个副页全部放在app.vue中
@@ -189,7 +196,38 @@
 				"onReachBottomDistance": 150
             }
             
-        }
+        },
+		/* 团队相关 */
+		{
+		    "path" : "pages/Forum/Team/MyTeam",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "我的团队",
+				"onReachBottomDistance": 150
+		    }
+		    
+		},
+		{
+		    "path" : "pages/Forum/Team/CreateTeam",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "创建团队"
+		    }
+		},
+		{
+		    "path" : "pages/Forum/Team/EditTeam",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "编辑团队"
+		    }
+		},
+		{
+		    "path" : "pages/Forum/Team/TeamDetail",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "团队详细"
+		    }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

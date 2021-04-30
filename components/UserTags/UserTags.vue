@@ -5,7 +5,8 @@
 			:style="{
 				'background-color': bgColor,
 				'color': Color,
-				'padding': padding
+				'padding': padding,
+				'border': border
 			}"
 			class="tag"
 			v-for="(tag,index) in tags"
@@ -34,6 +35,10 @@ export default {
 		padding: {
 			type: String,
 			default: "0 10px"
+		},
+		border: {
+			type: String,
+			default: "none"
 		}
 	}
 }

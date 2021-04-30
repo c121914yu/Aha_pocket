@@ -63,7 +63,7 @@ export default {
 				{name: "Epiboly",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 2,
+			currentNav: 3,
 			signedNotice: getApp().globalData.gUserInfo.signedNotice,
 			arr_systemNotice: []
 		}
@@ -80,12 +80,12 @@ export default {
 			uni.setNavigationBarTitle({
 				title: text
 			})
-			// if(newNav === 2){
-			// 	uni.showToast({
-			// 		title: "该模块正在开发!",
-			// 		icon: "none"
-			// 	})
-			// }
+			if(getApp().globalData.env === 2 && newNav === 2){
+				uni.showToast({
+					title: "该模块正在开发!",
+					icon: "none"
+				})
+			}
 		}
 	},
 	components:{

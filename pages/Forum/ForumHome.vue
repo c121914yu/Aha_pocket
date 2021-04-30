@@ -1,5 +1,5 @@
 <template>
-	<view class="forum-home">
+	<view v-if="env!==2" class="forum-home">
 		<TopNavs 
 			:navs="navs"
 			padding
@@ -16,6 +16,7 @@ import Talents from "./Talents.vue"
 export default {
 	data() {
 		return {
+			env: getApp().globalData.env,
 			navs: [ // 顶部导航
 				{label: "人才市场",amount: 0,value: 0},
 				{label: "竞赛组队",amount: 0,value: 1},
@@ -27,6 +28,14 @@ export default {
 	components: {
 		Teams,
 		Talents
+	},
+	onLoad() {
+		if(this.env === 2){
+			uni.showToast({
+				title: "该模块正在开发!",
+				icon: "none"
+			})
+		}
 	}
 }
 </script>
