@@ -20,7 +20,7 @@ export default {
 			navs: [ // 顶部导航
 				{label: "人才市场",amount: 0,value: 0},
 				{label: "竞赛组队",amount: 0,value: 1},
-				{label: "项目交流",amount: 0,value: 2},
+				{label: "竞赛交流",amount: 0,value: 2},
 			],
 			currentNav: 0
 		};

@@ -6,7 +6,7 @@
 				<Avatar :src="avatar"></Avatar>
 				<view class="right">
 					<view class="name strong">{{name}}</view>
-					<UserTags class="tags" :tags="tags"></UserTags>
+					<Tags class="tags" :tags="tags"></Tags>
 					<view class="time mini">{{time}}</view>
 				</view>
 			</view>
@@ -36,7 +36,7 @@
 					<view class="name">
 						<text class="strong">{{server.nickname}}</text><UserLevel point="50" small></UserLevel>
 					</view>
-					<UserTags :tags="userTags"></UserTags>
+					<Tags :tags="userTags"></Tags>
 				</view>
 			</navigator>
 		</view>

@@ -23,16 +23,16 @@
 			v-show="currentNav === 0">
 		</ProjectHome>
 		<!-- 生活 -->
-		<ForumHome
+		<InterflowHome
 			ref="forumHome"
 			v-if="navs[1].loaded"
 			v-show="currentNav === 1">
-		</ForumHome>
+		</InterflowHome>
 		<!-- 会员 -->
-		<Epiboly
+		<PracticeHome
 			v-if="navs[2].loaded"
 			v-show="currentNav === 2">
-		</Epiboly>
+		</PracticeHome>
 		<!-- 个人 -->
 		<Self
 			ref="Self"
@@ -47,8 +47,8 @@ import { getAllCompetition } from "@/static/request/api_competition.js"
 import { getNotice } from "@/static/request/api_system.js"
 import userAgreement from "./Self/Number/UserAgreement.vue"
 import ProjectHome from "./Project/ProjectHome.vue"
-import ForumHome from "./Forum/ForumHome"
-import Epiboly from "./Epiboly/Epiboly"
+import InterflowHome from "./Interflow/InterflowHome"
+import PracticeHome from "./Practice/PracticeHome"
 import Self from "./Self/Self"
 export default {
 	data() {
@@ -59,8 +59,8 @@ export default {
 			*/
 			navs: [
 				{name: "ProjectHome",loaded: false},
-				{name: "ForumHome",loaded: false},
-				{name: "Epiboly",loaded: false},
+				{name: "Interflow",loaded: false},
+				{name: "Practice",loaded: false},
 				{name: "Self",loaded: false},
 			],
 			currentNav: 3,
@@ -91,8 +91,8 @@ export default {
 	components:{
 		userAgreement,
 		ProjectHome,
-		ForumHome,
-		Epiboly,
+		InterflowHome,
+		PracticeHome,
 		Self,
 	},
 	onLoad() {

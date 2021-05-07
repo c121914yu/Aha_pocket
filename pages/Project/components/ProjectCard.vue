@@ -26,7 +26,7 @@
 			<!-- 获奖信息 -->
 			<view><text class="comp-name strong">{{ compName }}</text></view>
 			<!-- 标签 -->
-			<UserTags class="tags" :tags="tags"></UserTags>
+			<Tags class="tags" :tags="tags"></Tags>
 			<view class="blank"></view>
 			<!-- 时间 & 数据统计 & 状态-->
 			<view class="footer">

@@ -1,0 +1,157 @@
+<template>
+	<view class="create-team">
+		<view class="card">
+			<view style="margin-bottom: 50px;" class="h3">团队基本信息</view>
+			<!-- 头像 -->
+			<view class="avatar">
+				<view v-if="avatar">
+					<Avatar :src="avatar" size="50"></Avatar>
+				</view>
+				<view v-else class="addAvatar" @click="chooseImg">
+					<text class="add">+</text>
+					<text>添加头像</text>
+				</view>
+			</view>
+			<!-- 队伍名称 -->
+			<SelfInput label="团队名称" placeholder="取一个响亮的名称" v-model="name.val"></SelfInput>
+			<!-- 归属学校 -->
+			<SelfInput
+				label="归属学校" 
+				search
+				:arr_search="arr_school"
+				v-model="school">
+			</SelfInput>
+			<!-- 标签 -->
+			<SelfInput 
+				label="团队标签"
+				placeholder="让其他人更好的了解你的团队" 
+				v-model="tag">
+			</SelfInput>
+			<Tags 
+				:tags="tagsList"
+				Color="var(--black)"
+				bgColor="transparent"
+				border="var(--border2)">
+			</Tags>
+			<!-- 团队介绍 -->
+			<view class="title strong">团队介绍</view>
+			<view class="intro" v-if="intro" v-html="intro"></view>
+			<button class="intro-btn" @click="startEdit">编辑</button>
+		</view>
+		<BottomBtn @click="create">创建团队</BottomBtn>
+	</view>
+</template>
+
+<script>
+import { postTeam } from "@/static/request/api_team.js"
+export default {
+	data() {
+		return {
+			avatar: "",
+			name: {
+				val: "",
+				errMsg: "队伍名不能为空"
+			},
+			school: "",
+			tag: "",
+			intro: "",
+			arr_school: ["浙江大学","浙江工业大学","杭州电子科技大学","浙江理工大学","浙江农林大学","浙江科技学院","浙江外国语学院","中国计量大学","浙江财经大学"]
+		};
+	},
+	computed: {
+		tagsList() {
+			return this.tag.split(' ').filter(tag => tag !== '');
+		}
+	},
+	onShow() {
+		this.intro = getApp().globalData.gEditContent
+		getApp().globalData.gEditContent = ""
+	},
+	methods: {
+		/* 选择图片 */
+		chooseImg(item) 
+		{
+			uni.chooseImage({
+				count: 1, //默认9
+				sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
+				success: img => {
+					this.avatar = img.tempFilePaths[0];
+				}
+			})
+		},
+		startEdit()
+		{
+			getApp().globalData.gEditContent = this.intro
+			uni.navigateTo({
+				url: "../../EditMd/EditMd"
+			})
+		},
+		create()
+		{
+			if(!this.gIsNull([this.name])){
+				const data = {
+					avatar : this.avatar || "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png",
+					name: this.name.val,
+					school: this.school,
+					tag: this.tag,
+					intro: this.intro,
+					recruitState: 0
+				}
+				postTeam(data)
+				.then(res => {
+					uni.redirectTo({
+						url: `./EditTeam?id=${res.data}`,
+						success: () => {
+							this.gToastSuccess("创建成功")
+						}
+					})
+				})
+			}
+		}
+	}
+}
+</script>
+
+<style lang="stylus" scoped>
+.create-team
+	min-height 100vh
+	padding 10px 10px 60px 10px
+	background-color var(--origin4)
+	.card
+		position relative
+		padding 10px 20px
+		border-radius 8px
+		background-color #FFFFFF
+		.h3
+			color var(--origin1)
+		.avatar
+			position absolute
+			right 20px
+			top 10px
+			.addAvatar
+				width 60px
+				height 60px
+				line-height 1.2
+				color var(--origin2)
+				font-size 20rpx
+				border 2px solid var(--origin1)
+				border-radius 8px
+				display flex
+				flex-direction column
+				align-items center
+				justify-content center
+				.add
+					font-size 50rpx
+		.info-input
+			margin 10px 0
+		.intro
+			*
+				white-space pre-wrap
+				word-wrap break-word
+			padding 2px
+			border 2px solid var(--origin2)
+			border-radius 8px
+		.intro-btn
+			margin-top 10px
+			padding 0
+</style>

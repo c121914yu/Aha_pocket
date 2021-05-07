@@ -1,13 +1,29 @@
 <template>
-	<view class="search-input">
+	<view 
+		class="search-input"
+		:style="{
+			'border-radius': `${radius}px`,
+			'border': border,
+			'background': textBgColor
+		}">
 		<text class="iconfont icon-sousuo"></text>
 		<input 
+			:style="{
+				'border-radius': `${radius}px`
+			}"
 			:type="type" 
 			:value="value"
 			:placeholder="placeholder" 
 			v-model="searchText"
-			@input="$emit('input')"/>
-		<text class="small search-text" @click="$emit('search')">搜索</text>
+			@input="$emit('input',$event.detail.value)"/>
+		<text 
+			:style="{
+				'color': textColor
+			}"
+			class="small search-text" 
+			@click="$emit('search')">
+			搜索
+		</text>
 	</view>
 </template>
 
@@ -22,6 +38,22 @@ export default {
 		placeholder: {
 			type: String,
 			default: ""
+		},
+		radius: {
+			type: Number,
+			default: 22
+		},
+		border: {
+			type: String,
+			default: "none"
+		},
+		textColor: {
+			type: String,
+			default: "#ffffff"
+		},
+		textBgColor: {
+			type: String,
+			default: "var(--origin3)"
 		}
 	}
 }
@@ -29,9 +61,8 @@ export default {
 
 <style lang="stylus" scoped>
 .search-input
+	width 100%
 	position relative
-	background-color var(--origin3)
-	border-radius 22px
 	display flex
 	align-items center
 	overflow hidden
@@ -44,9 +75,7 @@ export default {
 		padding 5px 0 5px 30px
 		background-color #FFFFFF
 		font-size 24rpx
-		border-radius 22px
 	.search-text
 		padding 0 10px 0 8px
-		color #FFFFFF
 		font-weight 700
 </style>

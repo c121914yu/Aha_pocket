@@ -11,6 +11,7 @@
 	gMenuPicker - 调用菜单选择框
 	gClipboardData - 复制到剪切板
 	gReadImage - 预览图片
+	gIsNull - 判断输入是否为空
 */
 import Vue from 'vue'
 /* 普通文本提示*/
@@ -273,4 +274,15 @@ Vue.prototype.gReadImage = (urls,current=0) => {
 		current,
 		urls
 	})
+}
+
+/* 判断数据是否为空 */
+Vue.prototype.gIsNull = (list) => {
+	for(let i=0;i<list.length;i++){
+		if(!list[i].val){
+			Vue.prototype.gToastError(list[i].errMsg)
+			return true
+		}
+	}
+	return false
 }

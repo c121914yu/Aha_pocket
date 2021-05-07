@@ -29,14 +29,13 @@
     "pages/Project/ReadFile",
     "pages/Project/PreviewFile",
     "pages/Project/PurchasedProjects",
-    "pages/Epiboly/MyEpiboly",
-    "pages/Epiboly/ServerDetail",
-    "pages/Epiboly/NeedDetail",
-    "pages/Forum/ForumHome",
-    "pages/Forum/Team/MyTeam",
-    "pages/Forum/Team/CreateTeam",
-    "pages/Forum/Team/EditTeam",
-    "pages/Forum/Team/TeamDetail"
+    "pages/Practice/MyEpiboly",
+    "pages/Practice/ServerDetail",
+    "pages/Practice/NeedDetail",
+    "pages/Interflow/Team/MyTeam",
+    "pages/Interflow/Team/CreateTeam",
+    "pages/Interflow/Team/EditTeam",
+    "pages/Interflow/Team/TeamDetail"
   ],
   "subPackages": [],
   "window": {
@@ -51,5 +50,5 @@
     }
   },
   "usingComponents": {},
-  "sitemapLocation": "sitemap68.json"
+  "sitemapLocation": "sitemap3.json"
 }

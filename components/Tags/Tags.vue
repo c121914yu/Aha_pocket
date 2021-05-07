@@ -18,7 +18,7 @@
 
 <script>
 export default {
-	name:"UserTags",
+	name:"Tags",
 	props: {
 		tags: {
 			type: Array,
@@ -49,7 +49,7 @@ export default {
 	display flex
 	flex-wrap wrap
 	.tag
-		margin 0 4px 3px
-		font-size 18rpx
+		margin 0 4px 3px 0
+		font-size 20rpx
 		border-radius 22px
 </style>

@@ -45,8 +45,8 @@
 		<!-- 我的项目 & 外包管理 & 招募队友 -->
 		<view class="navs">
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/Projects">我的项目</navigator>
-			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Forum/Team/MyTeam">我的团队</navigator>
-			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Epiboly/MyEpiboly">外包需求</navigator>
+			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Interflow/Team/MyTeam">我的团队</navigator>
+			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Practice/MyEpiboly">外包需求</navigator>
 		</view>
 		<!-- 任务 进行中 & 已完成 & 贡献详情 -->
 		<view class="tasks">

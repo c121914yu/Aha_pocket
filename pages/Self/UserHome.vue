@@ -10,7 +10,7 @@
 			  	<view class="right">
 			  		<view class="nickname">{{nickname}}</view>
 			  		<view class="honor">全国大学生服务外包大赛: 国一</view>
-			  		<UserTags :tags="tags"></UserTags>
+			  		<Tags :tags="tags"></Tags>
 					<view v-if="userRelation !== 1" class="user-relation">
 						<view class="attention" @click="attentionUser">
 							<text class="iconfont icon-xiazai"></text>

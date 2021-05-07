@@ -27,9 +27,9 @@ export default {
 		return {
 			navs: [
 				{icon: "icon-xiangmu",text: "项目分享",name: "ProjectHome"},
-				{icon: "icon-canjiaxiaowaijingsai",text: "社区论坛",name: "ForumHome"},
-				{icon: "icon-waibao",text: "服务外包",name: "Epiboly"},
-				{icon: "icon-user",text: "我的",name: "Self"},
+				{icon: "icon-canjiaxiaowaijingsai",text: "竞赛交流",name: "Interflow"},
+				{icon: "icon-waibao",text: "技能实践",name: "Practice"},
+				{icon: "icon-user",text: "我的Aha",name: "Self"},
 			]
 		}
 	},
