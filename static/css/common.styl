@@ -11,12 +11,12 @@ page
 	--white2 #ffffff
 	--bg-linear linear-gradient(#f8b86b, #956134)
 	--shadow-beside 0 5px 2px #efefef
-	--shadow1 1px 1px 15px rgba(144,140,139,0.65)
-	--shadow2 1px 1px 2px rgba(144,140,139,0.65)
+	--shadow1 1px 1px 15px rgba(144, 140, 139, 0.65)
+	--shadow2 1px 1px 2px rgba(144, 140, 139, 0.65)
 	--font-dark #595757
 	--border1 1px solid #808080
 	--border2 1px solid #DCDFE6
-	--speed-slide .8s ease-in-out
+	--speed-slide 0.8s ease-in-out
 	--speed-hover 0.5s
 body
 	margin 0
@@ -25,9 +25,9 @@ body
 	line-height 1.5
 	font-weight 400
 	color var(--font-dark)
-body,view,textarea
+body, view, textarea
 	box-sizing border-box
-input,textarea
+input, textarea
 	font-size 26rpx
 	padding 5px
 	border-radius 8px
@@ -48,9 +48,8 @@ button
 	color #FFFFFF
 navigator
 	display inline-block
-
 /* 默认placeholder样式 */
-.input-placeholder,.textarea-placeholder
+.input-placeholder, .textarea-placeholder
 	font-size 22rpx
 	color var(--gray2)
 	letter-spacing 0
@@ -75,13 +74,22 @@ navigator
 	left 0
 	right 0
 	bottom 0
-	background-color rgba(0,0,0,0.2)
+	background-color rgba(0, 0, 0, 0.2)
 	.content
 		position absolute
 		top 50%
 		left 50%
-		transform translate(-50%,-58%)
+		transform translate(-50%, -58%)
 		padding 10px
 		background-color #FFFFFF
 .blank
 	flex 1
+.rich-text *
+	white-space pre-wrap
+	word-wrap break-word
+/* 上下旋转强调动画 */
+@keyframes shake
+	0%
+		transform rotate(10deg)
+	100%
+		transform rotate(-10deg)

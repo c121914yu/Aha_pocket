@@ -9,29 +9,35 @@
 			<view class="card">
 				<view class="input">
 					<text class="iconfont icon-user"></text>
-					<input type="number" placeholder="手机号" placeholder-class="placeholderStyle" v-model="phone" />
+					<input type="number" placeholder="手机号" v-model="phone.val" />
 				</view>
 				<view class="input">
 					<text class="iconfont icon-password"></text>
-					<input style="padding-right:40px" type="text" :password="isPassword" placeholder="密码" placeholder-class="placeholderStyle" v-model="password" />
-					<text class="iconfont icon-readed readed" @click="isPassword = !isPassword"></text>
+					<input 
+						style="padding-right:40px" 
+						type="text" 
+						:password="is_showPassword" 
+						placeholder="密码" 
+						v-model="password.val" />
+					<text class="iconfont icon-readed readed" @click="is_showPassword = !is_showPassword"></text>
 				</view>
 				<view class="forget-password small"><navigator url="./FindPassword" hover-class="none">忘记密码?</navigator></view>
-				<button type="default" @click="login">登录</button>
+				<button type="default" @click="onclickLogin">登录</button>
+				<!-- 暂时只给微信登录 -->
 				<!-- <view class="center small register"><navigator url="./Register" hover-class="none">立即注册</navigator></view> -->
 			</view>
 			<!-- 第三方登录内容 -->
 			<view class="small other">
-				<view class="strong">第三方登录</view>
+				<view class="outher-login strong">第三方登录</view>
 				<button 
 					class="iconfont icon-weixin weixin" 
 					open-type="getUserInfo" 
 					@getuserinfo="wxLogin">
 				</button>
-				<view style="color: var(--gray2);">微信登录</view>
-				<view style="margin-top:10rpx;color:var(--gray2);">
+				<view style="color: var(--gray2)">微信登录</view>
+				<view style="margin-top:10rpxcolor:var(--gray2)">
 					登录后需要同意
-					<text style="color: var(--origin2);">Aha口袋用户使用协议</text>
+					<text style="color: var(--origin2)">Aha口袋用户使用协议</text>
 					才可使用
 				</view>
 			</view>
@@ -46,12 +52,36 @@ import { Login, WXLogin } from '@/static/request/api_login.js'
 export default {
 	data() {
 		return {
-			phone: '',
-			password: '',
-			isPassword: true // 是否展示密码
-		};
+			phone: { 
+				val: "",
+				errMsg: "手机号不能为空"
+			},
+			password: {
+				val: "",
+				errMsg: "密码不能为空"
+			},
+			is_showPassword: true // 是否展示密码
+		}
+	},
+	onLoad() {
+		/* 检查是否有存储token，验证登录身份 */
+		if (uni.getStorageSync('token')) {
+			uni.showLoading({
+				mask: true,
+				title: '登录中...'
+			})
+			this.gGetMeInfo()
+			.then(res => {
+				this.loginSuccess(res)
+			})
+			.finally(() => uni.hideLoading())
+		}
 	},
 	methods: {
+		/**
+		 * 成功登录，跳转主页面
+		 * @param {Object} data
+		 */
 		loginSuccess(data) 
 		{
 			getApp().globalData.gUserInfo = data
@@ -59,77 +89,59 @@ export default {
 				url: '../app',
 				success: () => {
 					this.gToastSuccess('登录成功')
-				},
-				complete: () => {
-					this.gLoading(this, false)
 				}
 			})
 		},
-		login() 
+		/**
+		 * 点击登录
+		 */
+		onclickLogin() 
 		{
-			if (this.phone === '') this.gToastError('手机号不能为空');
-			else {
-				this.gLoading(this, true);
+			if (!this.gIsNull([this.phone,this.password])) {
+				this.gLoading(this, true)
 				Login({
-					phone: this.phone,
-					password: this.password
+					phone: this.phone.val,
+					password: this.password.val
 				})
 				.then(res => {
 					uni.setStorageSync('token', res.data.token)
 					this.loginSuccess(res.data.personalUserInfo)
 				})
-				.catch(err => {
-					this.gLoading(this, false)
-				})
-			}
+				.finally(() => this.gLoading(this, false))
+			} 
 		},
-		wxLogin() {
-			this.gLoading(this, true);
-			uni.getUserInfo({
-				provider: 'weixin',
-				withCredentials: true,
-				lang: 'zh_CN',
-				success: (res) => {
-					// 获取code，请求openid
-					uni.login({
-						provider: 'weixin',
-						success: (loginRes) => {
-							console.log(loginRes);
-							// 调用wx登录接口，获取token
-							WXLogin({
-								code: loginRes.code,
-								avatarUrl: res.userInfo.avatarUrl,
-								nickname: res.userInfo.nickName
-							})
-							.then(res => {
-								uni.setStorageSync('token', res.data.token);
-								this.loginSuccess(res.data.personalUserInfo);
-							})
-							.catch(err => {
-								this.gLoading(this, false);
-							});
-						}
-					});
-				}
-			});
-		}
-	},
-	mounted() {
-		/* 检查是否有存储token，验证登录身份 */
-		if (uni.getStorageSync('token')) {
-			// this.gLoading(this, true);
-			uni.showLoading({
-				mask: true,
-				title: "登录中..."
-			})
-			this.gGetMeInfo()
-			.then(res => {
-				uni.hideLoading()
-				this.loginSuccess(res)
-			})
-			.catch(err => {
-				uni.hideLoading()
-			})
+		/**
+		 * 微信登录，调用微信登录接口
+		 */
+		async wxLogin() 
+		{
+			this.gLoading(this, true)
+			try{
+				/* 获取用户信息 */
+				let res = await uni.getUserInfo({
+					provider: 'weixin',
+					withCredentials: true,
+					lang: 'zh_CN'
+				})
+				res = res[1]
+				/* 获取登录凭证，openid */
+				let loginRes = await uni.login({
+									provider: 'weixin'
+								})
+				loginRes = loginRes[1]
+				/* 调用wx登录接口，获取token */
+				const userInfo = await WXLogin({
+									code: loginRes.code,
+									avatarUrl: res.userInfo.avatarUrl,
+									nickname: res.userInfo.nickName
+								})
+				uni.setStorageSync('token', userInfo.data.token)
+				this.loginSuccess(userInfo.data.personalUserInfo)
+				this.gLoading(this, false)
+			}catch(e){
+				this.gLoading(this, false)
+				this.gToastError("请求错误")
+			}
 		}
 	}
 }
@@ -210,7 +222,7 @@ export default {
 			flex-direction column
 			align-items center
 			justify-content space-between
-			.strong
+			.outher-login
 				display flex
 				align-items center
 				justify-content center
@@ -218,7 +230,7 @@ export default {
 				&::before
 					content ''
 					position absolute
-					margin-left -100px
+					margin-left -44%
 					width 22%
 					height 1px
 					background-color var(--gray2)
@@ -226,7 +238,7 @@ export default {
 				&::after
 					content ''
 					position absolute
-					margin-left 100px
+					margin-left 44%
 					width 22%
 					height 1px
 					background-color var(--gray2)

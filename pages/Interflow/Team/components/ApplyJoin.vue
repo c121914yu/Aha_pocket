@@ -1,0 +1,60 @@
+<!-- 申请加入弹窗 -->
+<template>
+	<view class="apply-join fix-screen">
+		<view class="content">
+			<view class="h3 center">申请加入团队</view>
+			<textarea placeholder="简单描述下自己" v-model="applyIntro"/>
+			<view class="btns">
+				<button @click="onclickSure">确认</button>
+				<button style="background-color: #5d7092;" @click="$emit('update:isApplying',false)">取消</button>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+import { applyJoinTeam } from "@/static/request/api_team.js"
+export default {
+	props: {
+		teamId: {
+			type: Number,
+			default: 0
+		}
+	},
+	data() {
+		return {
+			applyIntro: ""
+		};
+	},
+	methods: {
+		onclickSure()
+		{
+			this.gShowModal("您的简历将发送给对方,确认申请加入?",() => {
+				applyJoinTeam({
+					teamId: this.teamId,
+					intro: this.applyIntro
+				})
+				this.gToastSuccess("提交申请成功")
+				this.$emit('update:isApplying',false)
+			})
+		}
+	}
+}
+</script>
+
+<style lang="stylus" scoped>
+.apply-join .content
+	width 90%
+	border-radius 8px
+	textarea
+		margin 10px 0
+		width 100%
+		height 150px
+		border var(--border2)
+		border-radius 4px
+	.btns
+		display flex
+		button
+			width 35%
+		
+</style>

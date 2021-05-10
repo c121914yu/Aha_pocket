@@ -1,8 +1,10 @@
 <template>
-	<view v-if="show" class="loading">
-		<view class="load">
-			<text class="iconfont icon-start loader-star"></text>
-			<view class="loader-circles"></view>
+	<view v-if="show" class="loading" @touchmove.stop.prevent>
+		<view class="content">
+			<view class="load">
+				<text class="iconfont icon-start loader-star"></text>
+				<view class="loader-circles"></view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -19,16 +21,24 @@ export default {
 
 <style lang="stylus" scoped>
 .loading
-	z-index 100
+	z-index 9999
 	position fixed
 	top 0
-	left 0
 	right 0
 	bottom 0
-	background-color rgba(8, 9, 21, 0.5)
-	display flex
-	align-items center
-	justify-content center
+	left 0
+	.content
+		position absolute
+		top 50%
+		left 50%
+		transform translate(-50%,-50%)
+		width 150px
+		height 150px
+		border-radius 8px
+		background-color rgba(8, 9, 21, 0.7)
+		display flex
+		align-items center
+		justify-content center
 	.load
 		position relative
 		width 100px

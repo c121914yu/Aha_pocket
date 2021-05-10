@@ -23,7 +23,6 @@ import BaseInfo from './components/ProjectBase.vue';
 import FileInfo from './components/ProjectFile.vue';
 import MemberInfo from './components/ProjectMember.vue';
 import { getPublicSignature, postProject, postResource,putMembers } from '@/static/request/api_project.js';
-
 export default {
 	data() {
 		return {

@@ -1,3 +1,4 @@
+<!-- 团队卡片 -->
 <template>
 	<view class="team-card" @click="$emit('click')">
 		<!-- header部分左右布局 -->
@@ -5,7 +6,7 @@
 			<!-- 左侧头像 -->
 			<Avatar :src="team.avatar || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="60"></Avatar>
 			<!-- 如果是竞赛招募队友，要显示参与什么竞赛 -->
-			<view class="recruit">
+			<view v-if="recruitState>0" class="recruit">
 				招募中
 			</view>
 			<!-- 右侧两行 -->
@@ -30,7 +31,7 @@
 			<!-- 简要介绍 -->
 			<view class="intro small" v-html="teamIntro"></view>
 			<!--咨询按键 -->
-			<button class="contact">咨询</button>
+			<button v-if="isShowContact" class="contact">咨询</button>
 		</view>
 	</view>
 </template>
@@ -41,6 +42,10 @@ export default {
 		team: {
 			type: Object,
 			default: () => {}
+		},
+		isShowContact: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
@@ -53,6 +58,7 @@ export default {
 			return this.team.members.find(member => this.team.captainId).memberRoughInfo.nickname
 		},
 		teamIntro() {
+			console.log(this.team.recruitState);
 			if(this.team.recruitState > 0){
 				return this.team.recruitContent || "无团队介绍"
 			}
@@ -89,6 +95,9 @@ export default {
 			position absolute
 			right 0
 			top 0
+			font-weight 700
+			color var(--origin1)
+			animation shake .5s ease-in-out	 infinite alternate
 		.right
 			position relative
 			margin-left 10px

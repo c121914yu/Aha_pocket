@@ -24,7 +24,7 @@
 		</ProjectHome>
 		<!-- 生活 -->
 		<InterflowHome
-			ref="forumHome"
+			ref="interflowHome"
 			v-if="navs[1].loaded"
 			v-show="currentNav === 1">
 		</InterflowHome>
@@ -63,7 +63,7 @@ export default {
 				{name: "Practice",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 3,
+			currentNav: 1,
 			signedNotice: getApp().globalData.gUserInfo.signedNotice,
 			arr_systemNotice: []
 		}
@@ -113,7 +113,9 @@ export default {
 			this.$refs.projectHome.loadMore()
 		}
 		else if(this.currentNav === 1){
-			this.$refs.forumHome.$refs.Talents.loadTalent()
+			switch(this.$refs.interflowHome.currentNav){
+				case 0: this.$refs.interflowHome.$refs.Talents.loadTalent();break
+			}
 		}
 	},
 	onShareAppMessage(e){

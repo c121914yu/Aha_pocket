@@ -7,7 +7,7 @@ exports.getTeam = (teamId) => request("/team/" + teamId,"GET",{})
 /* 创建团队 */
 exports.postTeam = (data) => request("/team","POST",data)
 /* 更新团队信息 */
-exports.putTeam = (data) => request(`/team/${data.id}`,"PUT",data)
+exports.putTeam = (teamId,data) => request(`/team/${teamId}`,"PUT",data)
 /* 解散团队 */
 exports.deleteTeam = (teamId) => request("/team/" + teamId,"DELETE",{})
 /* 邀请成员 */
@@ -29,4 +29,4 @@ exports.getApply = (teamId) => request(`/team/apply/${teamId}`,"GET",{})
 /* 撤销申请 */
 exports.withdrowApply = (teamId) => request(`/team/apply/${teamId}`,"DELETE",{})
 /* 审核申请表 */
-exports.checkApply = ({teamId,memberId,state}) => request(`/team/apply/check/${teamId}/${memberId}`,"POST",{state})
+exports.checkApply = ({teamId,memberId,state}) => request(`/team/apply/check/${teamId}/${memberId}?state=${state}`,"POST",{})

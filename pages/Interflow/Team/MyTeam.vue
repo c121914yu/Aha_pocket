@@ -8,6 +8,7 @@
 				v-for="(team,index) in teams"
 				:key="team"
 				:team="team"
+				:isShowContact="false"
 				@click="clickTeam(team)">
 			</team-card>
 		</view>
@@ -19,25 +20,13 @@
 
 <script>
 import { getTeams } from "@/static/request/api_team.js"
-import TeamCard from "./TeamCard.vue"
-import TeamHead from "./TeamsHead.vue"
+import TeamCard from "./components/TeamCard.vue"
+import TeamHead from "./components/TeamsHead.vue"
 export default {
 	data() {
 		return {
 			env: getApp().globalData.env,
-			teams: [
-				{
-					name: "僵尸企业画像",
-					time: "2020.9.9\n11:14:19",
-					caption: "余金隆",
-					recruit: {
-						amount: 5,
-						competition: "服务外包大赛",
-					},
-					intro: "撒大声地",
-					avatar: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png",
-				}
-			]
+			teams: []
 		};
 	},
 	components: {

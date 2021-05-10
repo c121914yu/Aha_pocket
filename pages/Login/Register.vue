@@ -51,9 +51,9 @@ export default {
 			name: getCode
 			description: 发送验证码，跳转验证码输入界面，需要检查手机格式和密码
 			input: 
-						this.phone: String,手机号
-						this.password: String,密码
-						this.password2: String,确认密码
+				this.phone: String,手机号
+				this.password: String,密码
+				this.password2: String,确认密码
 			return: null
 		*/
 		getCode() {
@@ -92,10 +92,10 @@ export default {
 			name: register
 			description: 注册账号
 			input: 
-						this.phone: String,手机号
-						this.password: String,密码
-						this.password2: String,第二次密码
-						this.code: String,验证码
+				this.phone: String,手机号
+				this.password: String,密码
+				this.password2: String,第二次密码
+				this.code: String,验证码
 			return: null
 		*/
 		register(code) {
@@ -129,11 +129,11 @@ export default {
 			name: codeText
 			description: 获取验证码文本内容
 			input: 
-						this.time: Number,倒计时
+				this.time: Number,倒计时
 			return: 
-						获取验证码
-						0ns后获取
-						ns后获取
+				获取验证码
+				0ns后获取
+				ns后获取
 		*/
 		codeText() {
 			if (this.time === 0) return '获取验证码';

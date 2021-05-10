@@ -4,7 +4,7 @@
 			<view style="margin-bottom: 50px;" class="h3">团队基本信息</view>
 			<!-- 头像 -->
 			<view class="avatar">
-				<view v-if="avatar">
+				<view v-if="avatar" @click="onclickAvatar">
 					<Avatar :src="avatar" size="50"></Avatar>
 				</view>
 				<view v-else class="addAvatar" @click="chooseImg">
@@ -34,16 +34,19 @@
 				border="var(--border2)">
 			</Tags>
 			<!-- 团队介绍 -->
-			<view class="title strong">团队介绍</view>
+			<view style="margin: 5px 0;" class="title strong">团队介绍</view>
 			<view class="intro" v-if="intro" v-html="intro"></view>
 			<button class="intro-btn" @click="startEdit">编辑</button>
 		</view>
-		<BottomBtn @click="create">创建团队</BottomBtn>
+		<BottomBtn @click="onclickCreate">创建团队</BottomBtn>
+		<!-- 加载动画 -->
+		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
 import { postTeam } from "@/static/request/api_team.js"
+import { getPublicSignature } from '@/static/request/api_system.js';
 export default {
 	data() {
 		return {
@@ -79,6 +82,20 @@ export default {
 				}
 			})
 		},
+		/* 点击头像，menu弹窗提示查看头像/修改头像 */
+		onclickAvatar()
+		{
+			this.gMenuPicker(["查看头像","修改头像"])
+			.then(res => {
+				if(res === "查看头像"){
+					this.gReadImage([this.avatar])
+				}
+				else if(res === "修改头像"){
+					this.chooseImg()
+				}
+			})
+		},
+		/* 开始富文本编辑 */
 		startEdit()
 		{
 			getApp().globalData.gEditContent = this.intro
@@ -86,9 +103,21 @@ export default {
 				url: "../../EditMd/EditMd"
 			})
 		},
-		create()
+		/* 点击创建团队 */
+		async onclickCreate()
 		{
 			if(!this.gIsNull([this.name])){
+				this.gLoading(this,true)
+				if(this.avatar){
+					/* 获取上传签名 */
+					try{
+						const sign = await getPublicSignature(`${Date.now()}.JPG`)
+						const url = await this.gUploadFile(this.avatar, sign.data)
+						this.avatar = url.header.Location
+					} catch(err) {
+						this.gLoading(this,false)
+					}
+				}
 				const data = {
 					avatar : this.avatar || "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png",
 					name: this.name.val,
@@ -106,6 +135,7 @@ export default {
 						}
 					})
 				})
+				.finally(() => this.gLoading(this,false))
 			}
 		}
 	}

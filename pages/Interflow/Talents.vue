@@ -6,27 +6,25 @@
 					:class="activeIndex === 0 ? 'active' : ''" 
 					class="item" 
 					@click="activeIndex=0">
-					综合
+					个人
 				</view>
 				<view 
 					:class="activeIndex === 1 ? 'active' : ''" 
 					class="item" 
 					@click="activeIndex=1">
-					等级
+					团队
 				</view>
 				<view 
-					:class="activeIndex === 2 ? 'active' : ''" 
-					class="item" 
-					@click="activeIndex=2">
+					class="item">
 					筛选<text class="iconfont icon-shaixuan"></text>
 				</view>
 			</view>
 			<SearchInput style="margin-bottom: 5px;" placeholder="搜索用户"></SearchInput>
 		</view>
 		<!-- 用户卡片 -->
-		<view class="user-cards">
+		<view v-if="activeIndex===0" class="cards">
 			<navigator 
-				class="card"
+				class="user-card"
 				:class="activeIndex === 0 ? 'first' : ''"
 				v-for="(user,i) in users"
 				:key="i"
@@ -38,8 +36,6 @@
 						class="level"
 						:point="user.totalContribPoint"
 						small
-						backgroundColor="#f8d99f"
-						color="#ffffff"
 						margin="0 3px 3px 0">
 					</UserLevel>
 					<Tags class="tags" :tags="user.specialtyTags"></Tags>
@@ -64,6 +60,10 @@
 				</view>
 			</navigator>
 		</view>
+		<!-- 团队卡片 -->
+		<view class="team">
+			
+		</view>
 		<view style="color: var(--gray2);" class="center small">{{ is_showAll ? "已加载全部" : "" }}</view>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
@@ -72,6 +72,7 @@
 
 <script>
 import { getTalents } from "@/static/request/api_forum.js"
+import { getTeams } from "@/static/request/api_team.js"
 var userLevels = getApp().globalData.arr_userLevel
 var data = []
 export default {
@@ -85,9 +86,7 @@ export default {
 		};
 	},
 	watch: {
-		activeIndex: function(val){
-			this.getTalentsList()
-		}
+		activeIndex: "getList"
 	},
 	created() {
 		/* 定时滚动卡片中项目情况 */
@@ -97,21 +96,26 @@ export default {
 				this.users[i].projectIndex = index < user.projectInfo.length-1 ? index+1 : 0
 			})
 		},3000)
-		this.getTalentsList()
+		this.getList()
 	},
 	methods: {
-		getTalentsList()
+		getList()
 		{
 			this.gLoading(this, true)
-			getTalents()
-			.then(res => {
+			let p
+			if(this.activeIndex === 0){
+				p = getTalents()
+						
+			}
+			else if(this.activeIndex === 1){
+				p = getTeams()
+			}
+			p.then(res => {
 				data = res.data
-				// console.log(data);
+				console.log(data);
 				this.loadTalent(true)
 			})
-			.catch(err => {
-				this.gLoading(this,false)
-			})
+			.finally(() => this.gLoading(this, false))
 		},
 		loadTalent(init=false)
 		{
@@ -144,7 +148,7 @@ export default {
 				this.page++
 			}
 			this.gLoading(this,false)
-			console.log(this.users);
+			// console.log(this.users);
 		}
 	}
 }
@@ -173,9 +177,9 @@ export default {
 				&.active
 					color var(--origin2)
 					background-color #FFFFFF
-	.user-cards
+	.cards
 		padding 0 10px
-		.card
+		.user-card
 			margin-bottom 10px
 			background-color #FFFFFF
 			padding 10px
@@ -217,8 +221,7 @@ export default {
 							font-size 20rpx
 							padding 0 10px
 							border-radius 22px
-							background-color var(--nav-color)
-							color #FFFFFF
+							background-color var(--origin4)
 							text-overflow ellipsis
 							overflow hidden
 							transition .5s ease-in-out

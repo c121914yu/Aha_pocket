@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Teams from "./Teams.vue"
+import Teams from "./Team/Teams.vue"
 import Talents from "./Talents.vue"
 export default {
 	data() {
@@ -20,9 +20,9 @@ export default {
 			navs: [ // 顶部导航
 				{label: "人才市场",amount: 0,value: 0},
 				{label: "竞赛组队",amount: 0,value: 1},
-				{label: "竞赛交流",amount: 0,value: 2},
+				{label: "竞赛论坛",amount: 0,value: 2},
 			],
-			currentNav: 0
+			currentNav: 1
 		};
 	},
 	components: {

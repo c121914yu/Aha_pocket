@@ -1,3 +1,4 @@
+<!-- 设置团队成员组件 -->
 <template>
 	<view class="fix-screen set-member">
 		<view class="content">
@@ -15,7 +16,7 @@
 			</view>
 			<view class="btns">
 				<button @click="onclickSure">确认</button>
-				<button style="background-color: #5d7092;" @click="$emit('close')">取消</button>
+				<button style="background-color: #5d7092;" @click="$emit('update:member',null)">取消</button>
 			</view>
 		</view>
 	</view>
@@ -37,7 +38,6 @@ export default {
 		};
 	},
 	created() {
-		console.log(this.member);
 		if(!this.member.isNewMember){
 			this.role = this.member.role
 			this.memberIntro = this.member.memberIntro
@@ -47,16 +47,16 @@ export default {
 		/* 判断该是否已经加入队伍，若不是则添加，若是则修改 */
 		onclickSure()
 		{
+			const obj = {
+				...this.member,
+				role: this.role,
+				memberIntro: this.memberIntro
+			}
 			if(this.member.isNewMember){
 				inviteMember(this.member.tid,this.member.uid)
 				.then(res => {
-					this.$emit("addMember",{
-						role: this.role,
-						memberIntro: this.memberIntro,
-						...this.member
-					})
+					this.$emit("addMember",obj)
 				})
-				
 			}
 			else{
 				putMemberInfo({
@@ -64,14 +64,7 @@ export default {
 					role: this.role,
 					memberIntro: this.memberIntro
 				})
-				.then(res => {
-					console.log(res)
-				})
-				this.$emit("updateMember",{
-					...this.member,
-					role: this.role,
-					memberIntro: this.memberIntro
-				})
+				this.$emit("putMember",obj)
 			}
 		}
 	}

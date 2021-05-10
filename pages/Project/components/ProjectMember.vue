@@ -17,9 +17,8 @@
 		</drawList>
 		<SetMember 
 			v-if="memberInfo" 
-			:memberInfo="memberInfo" 
-			@sure="sureMember" 
-			@close="memberInfo = null">
+			:memberInfo.sync="memberInfo" 
+			@sure="sureMember">
 		</SetMember>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>

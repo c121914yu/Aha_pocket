@@ -1,6 +1,6 @@
 <!-- 设置成员信息 -->
 <template>
-	<view class="fix-screen set-member" @click="$emit('close')" @touchmove.stop.prevent>
+	<view class="fix-screen set-member" @click="$emit('update:memberInfo',null)" @touchmove.stop.prevent>
 		<view class="content" @click.stop>
 			<text class="h3 center">成员信息</text>
 			<image :src="member.avatarUrl"></image>

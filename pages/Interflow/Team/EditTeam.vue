@@ -3,7 +3,7 @@
 		<TopNavs 
 			backgroundColor="var(--origin3)"
 			:navs="navs"
-			@navChange="navChange">
+			@navChange="currentNav=$event.value">
 		</TopNavs>
 		<!-- 基本信息卡片 -->
 		<view v-if="currentNav===0" class="card">
@@ -11,7 +11,7 @@
 			<view style="margin-bottom: 40px;color: var(--gray2);" class="mini time">{{createTime}}成立</view>
 			<!-- 头像 -->
 			<view class="avatar">
-				<view v-if="avatar">
+				<view v-if="avatar" @click="onclickAvatar">
 					<Avatar :src="avatar" size="50"></Avatar>
 				</view>
 				<view v-else class="addAvatar" @click="chooseImg">
@@ -48,33 +48,24 @@
 		<!-- 成员卡片 -->
 		<view v-if="currentNav===1" class="card member-info">
 			<!-- 查看申请加入的成员 -->
-			<button v-if="applyMembers.length>0" class="apply-list">查看申请列表</button>
+			<button v-if="applyMembers.length>0" class="apply-list-btn" @click="isShowApplyList=true">查看申请列表</button>
 			<view style="margin-bottom: 5px;" class="h3">团队成员信息</view>
 			<SearchInput 
 				placeholder="邀请成员ID" 
 				border="1px solid var(--origin2)"
 				radius=8
 				textBgColor="var(--origin2)"
-				v-model="searchId"
+				v-model.number="searchId"
 				@search="onclickSearchMember">
 			</SearchInput>
 			<view class="members">
-				<view 
-					class="member"
-					v-for="member in members"
-					:key="member.uid"
-					@click="onclickMember(member)">
-					<view class="left">
-						<Avatar :src="member.memberRoughInfo.avatarUrl" size="50"></Avatar>
-						<view class="identify">{{member | memberIdentify(captainId)}}</view>
-					</view>
-					<view class="right">
-						<view class="name">{{member.memberRoughInfo.nickname}}</view>
-						<view class="member-intro">
-							{{member.memberIntro || "这个人还没填写介绍"}}
-						</view>
-					</view>
-				</view>
+				<team-member
+					v-if="members.length>0" 
+					ref="setMember"
+					:captainId="captainId" 
+					:members="members"
+					@click="onclickMember">
+				</team-member>
 			</view>
 		</view>
 		<!-- 设置 -->
@@ -92,19 +83,25 @@
 			<!-- 招募文字 -->
 			<view v-if="recruitState>0" style="color: var(--origin1);" class="strong">
 				招募描述
-				<text style="margin-left: 10px;color: var(--black);" class="small" @click="startEdit('recruitText')">点击编辑</text>
+				<text style="margin-left: 10px;color: var(--black);" class="small" @click="startEdit('recruitContent')">点击编辑</text>
 			</view>
-			<view v-if="recruitState>0" class="recruitText" v-html="recruitText || '无招募内容'"></view>
+			<view v-if="recruitState>0" class="recruitContent" v-html="recruitContent || '无招募内容'"></view>
 			<!-- 解散队伍 -->
-			<button v-if="myRole===2" class="dissolve-team" @click="dissolveTeam">解散队伍</button>
+			<view v-if="myRole===2" class="dissolve-team" @click="dissolveTeam">解散队伍</view>
 		</view>
+		<!-- 设置成员信息 -->
 		<set-member 
 			v-if="obj_setMember" 
-			:member="obj_setMember" 
-			@close="obj_setMember=null"
-			@updateMember="updateMember"
+			:member.sync="obj_setMember" 
+			@putMember="putMember"
 			@addMember="addMember">
 		</set-member>
+		<!-- 申请列表 -->
+		<apply-list 
+			v-if="isShowApplyList" 
+			:applyMembers="applyMembers"
+			@close="isShowApplyList=false">
+		</apply-list>
 		<BottomBtn 
 			v-if="myRole > 0 && currentNav===0 || currentNav===2"
 			@click="onclickSave">
@@ -118,14 +115,22 @@
 <script>
 import { getTeam,putTeam,deleteMember,putMemberIdentity,handoverTeam,deleteTeam,getApply } from "@/static/request/api_team.js"
 import { getUser } from "@/static/request/api_userInfo.js"
-import SetMember from "./SetMember.vue"
+import { getPublicSignature } from '@/static/request/api_system.js';
+import TeamMember from "./components/TeamMember.vue"
+import SetMember from "./components/SetMember.vue"
+import ApplyList from "./components/ApplyList.vue"
 export default {
+	components: {
+		"team-member": TeamMember,
+		"set-member": SetMember,
+		"apply-list": ApplyList
+	},
 	data() {
 		return {
 			navs: [
-				{label: "基本信息"},
-				{label: "成员信息"},
-				{label: "团队设置"},
+				{label: "基本信息",value: 0},
+				{label: "成员信息",value: 1},
+				{label: "团队设置",value: 2},
 			],
 			currentNav: 0,
 			arr_school: ["浙江大学","浙江工业大学","杭州电子科技大学","浙江理工大学","浙江农林大学","浙江科技学院","浙江外国语学院","中国计量大学","浙江财经大学"],
@@ -133,21 +138,22 @@ export default {
 			id: "",
 			createTime: "",
 			avatar: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png",
+			is_uploadAvatar: false,
 			captainId: "",
 			name: "",
 			school: "",
 			tag: "",
 			intro: "",
-			recruitState: "",
 			/* 成员 */
 			searchId: "",
 			members: [],
 			obj_setMember: null,
 			/* 团队设置 */
 			recruitState: 0,
-			recruitText: "",
+			recruitContent: "",
 			/* 申请加入列表 */
-			applyMembers: []
+			applyMembers: [],
+			isShowApplyList: false,
 		};
 	},
 	computed: {
@@ -169,14 +175,19 @@ export default {
 			return "队员"
 		}
 	},
-	components: {
-		"set-member": SetMember
-	},
 	onLoad(e) {
 		this.gLoading(this,true)
 		getTeam(Number(e.id))
 		.then(res => {
-			console.log(e);
+			console.log(res.data);
+			if(!res.data){
+				uni.navigateBack({
+					delta: 1,
+					complete: () => {
+						this.gToastMsg("团队不存在")
+					}
+				})
+			}
 			for(const key in res.data){
 				this[key] = res.data[key]
 			}
@@ -200,39 +211,49 @@ export default {
 		.finally(() => {
 			this.gLoading(this,false)
 		})
-		this.getMemberApply()
+		this.getMemberApply(Number(e.id))
 	},
 	onShow() {
 		if(this.currentNav === 0){
 			this.intro = getApp().globalData.gEditContent
 		}
 		else if(this.currentNav === 2){
-			this.recruitText = getApp().globalData.gEditContent
+			this.recruitContent = getApp().globalData.gEditContent
 		}
 		getApp().globalData.gEditContent = ""
 	},
 	methods: {
 		/* 获取申请列表 */
-		getMemberApply()
+		getMemberApply(id)
 		{
-			getApply(Number(e.id))
+			getApply(id)
 			.then(res => {
-				this.applyMembers = res.data
+				this.applyMembers = res.data.filter(item => item.state===0)
+				console.log(res.data);
 			})
 		},
-		/* 路由修改 */
-		navChange(nav,index)
-		{
-			this.currentNav = index
-		},
 		/* 选择图片 */
-		chooseImg(item) 
+		chooseImg() 
 		{
 			uni.chooseImage({
 				count: 1, //默认9
 				sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
 				success: img => {
 					this.avatar = img.tempFilePaths[0];
+					this.is_uploadAvatar = true
+				}
+			})
+		},
+		/* 点击头像，menu弹窗提示查看头像/修改头像 */
+		onclickAvatar()
+		{
+			this.gMenuPicker(["查看头像","修改头像"])
+			.then(res => {
+				if(res === "查看头像"){
+					this.gReadImage([this.avatar])
+				}
+				else if(res === "修改头像"){
+					this.chooseImg()
 				}
 			})
 		},
@@ -248,11 +269,16 @@ export default {
 		onclickSearchMember()
 		{
 			if(this.searchId){
+				/* 判断ID是否已存在队伍中 */
+				const teamMember = this.members.find(item => item.uid === Number(this.searchId))
+				if(teamMember){
+					this.gToastMsg("成员已存在!")
+					return
+				}
 				this.gLoading(this,true)
 				getUser(this.searchId)
 				.then(res => {
 					if(res.data){
-						console.log(res.data);
 						this.obj_setMember = {
 							isAdmin: false,
 							isNewMember: true,
@@ -275,6 +301,8 @@ export default {
 		addMember(member)
 		{
 			this.members.push(member)
+			/* 触发组件添加事件 */
+			this.$refs["setMember"].updateMember(this.members)
 			this.obj_setMember = null
 			this.gToastMsg("添加成功")
 		},
@@ -285,14 +313,15 @@ export default {
 		*/
 		onclickMember(member)
 		{
-			if(this.myRole === 0){
-				uni.navigateTo({
-					url: `../../Self/UserHome?id=${member.uid}`
-				})
+			let ctrList = ["查看成员主页"]
+			/* 点击自己 */
+			if(getApp().globalData.gUserInfo.userInfo.userId === member.uid){
+				ctrList.push("编辑成员信息")
 			}
-			else{
-				let ctrList = ["查看成员主页","编辑成员信息"]
-				/* 是否队长 */
+			/* 管理员 */
+			else if(this.myRole > 0){
+				ctrList.push("编辑成员信息")
+				/* 队长且不是点击自己头像 */
 				if(this.myRole === 2 && getApp().globalData.gUserInfo.userInfo.userId !== member.uid){
 					if(member.isAdmin){
 						ctrList.push("取消管理员")
@@ -300,100 +329,115 @@ export default {
 					else{
 						ctrList.push("设置管理员")
 					}
-					ctrList.push("移交队长权限")
-					ctrList.push("踢出成员")
+					ctrList.push("移交队长权限","踢出成员")
 				}
-				this.gMenuPicker(ctrList)
-				.then(res => {
-					if(res === "查看成员主页"){
-						uni.navigateTo({
-							url: `../../Self/UserHome?userId=${member.uid}`
-						})
-					}
-					else if(res === "编辑成员信息"){
-						this.obj_setMember = {
-							...member,
-							isNewMember: false
-						}
-					}
-					else if(res === "设置管理员"){
-						this.gShowModal("确认设置其为管理员?",() => {
-							putMemberIdentity({
-								teamId: member.tid,
-								userId: member.uid,
-								isAdmin: true
-							})
-							const index = this.members.findIndex(item => item.uid === member.uid)
-							this.members[index].isAdmin = true
-							this.gToastMsg("设置管理员成功")
-						})
-					}
-					else if(res === "取消管理员"){
-						this.gShowModal("确认取消管理员身份?",() => {
-							putMemberIdentity({
-								teamId: member.tid,
-								userId: member.uid,
-								isAdmin: false
-							})
-							const index = this.members.findIndex(item => item.uid === member.uid)
-							this.members[index].isAdmin = false
-							this.gToastMsg("取消管理员成功")
-						})
-					}
-					else if(res === "移交队长权限"){
-						this.gShowModal("确认移交队长权限?该操作不可逆,请谨慎!",() => {
-							handoverTeam(member.tid,member.uid)
-							this.captainId = member.uid
-							this.myRole = 1
-							this.gToastMsg("已移交")
-						})
-					}
-					else if(res === "踢出成员"){
-						this.gShowModal("确认删除该成员?",() => {
-							deleteMember(member.tid,member.uid)
-							const index = this.members.findIndex(item => item.uid === member.uid)
-							this.members.splice(index,1)
-							this.gToastMsg("删除成功")
-						})
-					}
-				})
 			}
+			/* 非管理员且不是点击自己 */
+			else{
+				uni.navigateTo({
+					url: `../../Self/UserHome?userId=${member.uid}`
+				})
+				return
+			}
+			this.gMenuPicker(ctrList)
+			.then(res => {
+				if(res === "查看成员主页"){
+					uni.navigateTo({
+						url: `../../Self/UserHome?userId=${member.uid}`
+					})
+				}
+				else if(res === "编辑成员信息"){
+					this.obj_setMember = {
+						...member,
+						isNewMember: false
+					}
+				}
+				else if(res === "设置管理员"){
+					this.gShowModal("确认设置其为管理员?",() => {
+						putMemberIdentity({
+							teamId: member.tid,
+							userId: member.uid,
+							isAdmin: true
+						})
+						const index = this.members.findIndex(item => item.uid === member.uid)
+						this.members[index].isAdmin = true
+						this.$refs["setMember"].updateMember(this.members)
+						this.gToastMsg("设置管理员成功")
+					})
+				}
+				else if(res === "取消管理员"){
+					this.gShowModal("确认取消管理员身份?",() => {
+						putMemberIdentity({
+							teamId: member.tid,
+							userId: member.uid,
+							isAdmin: false
+						})
+						const index = this.members.findIndex(item => item.uid === member.uid)
+						this.members[index].isAdmin = false
+						this.$refs["setMember"].updateMember(this.members)
+						this.gToastMsg("取消管理员成功")
+					})
+				}
+				else if(res === "移交队长权限"){
+					this.gShowModal("确认移交队长权限?该操作不可逆,请谨慎!",() => {
+						handoverTeam(member.tid,member.uid)
+						this.captainId = member.uid
+						this.myRole = 1
+						this.$refs["setMember"].updateMember(this.members)
+						this.gToastMsg("已移交")
+					})
+				}
+				else if(res === "踢出成员"){
+					this.gShowModal("确认删除该成员?",() => {
+						deleteMember(member.tid,member.uid)
+						const index = this.members.findIndex(item => item.uid === member.uid)
+						this.members.splice(index,1)
+						this.$refs["setMember"].updateMember(this.members)
+						this.gToastMsg("删除成功")
+					})
+				}
+			})
 		},
 		/* 成功修改成员信息 */
-		updateMember(member)
+		putMember(member)
 		{
 			const index = this.members.findIndex(item => item.uid === member.uid)
 			this.members[index].role = member.role
 			this.members[index].memberIntro = member.memberIntro
+			/* 触发组件更新事件 */
+			this.$refs["setMember"].updateMember(this.members)
 			this.obj_setMember = null
 			this.gToastMsg("修改成功")
-			console.log(member);
 		},
-		onclickSave()
+		/* 点击保存，修改队伍信息 */
+		async onclickSave()
 		{
-			switch(this.currentNav){
-				case 0: this.saveBaseInfo();break;
-				case 1: this.saveBaseInfo();break;
-				case 2: this.saveBaseInfo();break;
-			}
-		},
-		/* 保存基本信息 */
-		saveBaseInfo()
-		{
-			this.gLoading(this,true)
 			if(!this.gIsNull([this.name])){
+				/* 上传头像 */
+				this.gLoading(this,true)
+				if(this.avatar && this.is_uploadAvatar){
+					/* 获取上传签名 */
+					try{
+						const sign = await getPublicSignature(`${Date.now()}.JPG`)
+						const url = await this.gUploadFile(this.avatar, sign.data)
+						this.avatar = url.header.Location
+						this.is_uploadAvatar = true
+					} catch(err) {
+						this.gLoading(this,false)
+					}
+				}
 				const data = {
-					id: this.id,
 					avatar : this.avatar || "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png",
 					name: this.name.val,
 					school: this.school,
 					tag: this.tag,
 					intro: this.intro,
+					recruitState: this.recruitState,
+					recruitContent: this.recruitContent
 				}
-				console.log(data);
-				putTeam(data)
+				putTeam(this.id,data)
 				.then(res => {
-					this.gToastSuccess("修改信息成功")
+					this.gToastSuccess("保存成功")
 				})
 				.finally(() => this.gLoading(this,false))
 			}
@@ -462,22 +506,22 @@ export default {
 		.intro-btn
 			margin-top 10px
 			padding 0
-		.recruitText
+		.recruitContent
 			padding 5px
 			border 1px solid var(--origin2)
 			border-radius 4px
 			font-size 24rpx
 		.dissolve-team
 			margin-top 10px
-			padding 0
-			border-radius 22px
-			background-color #e86452
+			text-align end
+			color #e86452
+			font-size 24rpx
 	/* 成员信息 */
 	.member-info
 		position relative
 		.h3
 			margin-bottom 5px
-		.apply-list
+		.apply-list-btn
 			position absolute
 			right 5px
 			top 5px
@@ -485,34 +529,12 @@ export default {
 			padding 0 10px
 			border-radius 22px
 			background-color var(--origin1)
-			animation btnScale .4s infinite
-		@keyframes btnScale
-			from
-				transform scale(1)
-			to
-				transform scale(1.05)
-		.member
-			margin 10px auto
-			padding 5px 10px
-			border var(--border2)
-			border-radius 8px
-			display flex
-			.left
-				.identify
-					font-size 22rpx
-					border-radius 4px
-					padding 0 5px
-					text-align center
-					background-color var(--origin2)
-					color #FFFFFF
-			.right
-				margin-left 10px
-				flex 1
-				.member-intro
-					margin 5px 0
-					height 60px
-					padding 5px
-					border-radius 4px
-					border 1px solid var(--origin2)
-					font-size 22rpx
+			animation btnScale .4s ease-in-out infinite alternate
+		.members
+			margin-top 10px
+@keyframes btnScale
+	from
+		transform scale(1)
+	to
+		transform scale(1.05)	
 </style>
