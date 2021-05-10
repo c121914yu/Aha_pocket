@@ -1,6 +1,9 @@
 <template>
 	<view class="login">
-		<image class="logo" src="https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png" mode="widthFix" />
+		<image 
+			class="logo" 
+			src="https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png" 
+			mode="widthFix" />
 		<!-- 上次渐变背景 -->
 		<view class="top"></view>
 		<!-- 底部主体 -->
@@ -21,18 +24,20 @@
 						v-model="password.val" />
 					<text class="iconfont icon-readed readed" @click="is_showPassword = !is_showPassword"></text>
 				</view>
-				<view class="forget-password small"><navigator url="./FindPassword" hover-class="none">忘记密码?</navigator></view>
+				<view class="forget-password small">
+					<navigator url="./FindPassword" hover-class="none">忘记密码?</navigator>
+				</view>
 				<button type="default" @click="onclickLogin">登录</button>
 				<!-- 暂时只给微信登录 -->
 				<!-- <view class="center small register"><navigator url="./Register" hover-class="none">立即注册</navigator></view> -->
 			</view>
-			<!-- 第三方登录内容 -->
+			<!-- 第三方登录 -->
 			<view class="small other">
 				<view class="outher-login strong">第三方登录</view>
 				<button 
 					class="iconfont icon-weixin weixin" 
 					open-type="getUserInfo" 
-					@getuserinfo="wxLogin">
+					@getuserinfo="onclickWxLogin">
 				</button>
 				<view style="color: var(--gray2)">微信登录</view>
 				<view style="margin-top:10rpxcolor:var(--gray2)">
@@ -113,7 +118,7 @@ export default {
 		/**
 		 * 微信登录，调用微信登录接口
 		 */
-		async wxLogin() 
+		async onclickWxLogin() 
 		{
 			this.gLoading(this, true)
 			try{
@@ -218,6 +223,7 @@ export default {
 			.register
 				color var(--gray2)
 		.other
+			transform translateY(-2vh)
 			display flex
 			flex-direction column
 			align-items center
@@ -230,7 +236,7 @@ export default {
 				&::before
 					content ''
 					position absolute
-					margin-left -44%
+					margin-left -55%
 					width 22%
 					height 1px
 					background-color var(--gray2)
@@ -238,7 +244,7 @@ export default {
 				&::after
 					content ''
 					position absolute
-					margin-left 44%
+					margin-left 55%
 					width 22%
 					height 1px
 					background-color var(--gray2)
