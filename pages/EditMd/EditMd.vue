@@ -233,12 +233,13 @@ export default {
 					title: "上传图片中...",
 					mask: true
 				})
-				/* 生成图片名 */
+				/* 批量生成图片名 */
 				const names = urls.map((item,i) => `${Date.now()}${i}.JPG`)
 				/* 批量获取签名 */
-				const signs = await Promise.all(names.map((name,i) => getPublicSignature(name)))
+				const signs = await Promise.all(names.map(name => getPublicSignature(name)))
 				/* 批量上传 */
 				const imgs = await Promise.all(signs.map((sign,i) => this.gUploadFile(urls[i],sign.data)))
+				/* 批量插入图片 */
 				imgs.forEach(img => {
 					this.editorCtx.insertImage({
 						src: img.header.Location, 
