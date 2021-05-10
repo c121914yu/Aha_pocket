@@ -18,7 +18,6 @@ function myRequest(url,method,data){
 			timeout: 10000,
 			success(result) 
 			{
-				// console.log(result.header);
 				/* 请求成功 */
 				if(result.data.code === 200)
 				{

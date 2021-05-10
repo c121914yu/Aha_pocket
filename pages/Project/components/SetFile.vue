@@ -61,7 +61,7 @@ export default {
 		if(this.fileInfo){
 			this.name = this.fileInfo.name
 			this.price = this.fileInfo.price
-			this.type = getApp().globalData.arr_fileClassify.find(item => item.value === this.fileInfo.typeId)
+			this.type = getApp().globalData.garr_fileClassify.find(item => item.value === this.fileInfo.typeId)
 		}
 	},
 	methods: {
@@ -72,7 +72,7 @@ export default {
 		*/
 	    setFileType()
 		{
-			this.gMenuPicker(getApp().globalData.arr_fileClassify)
+			this.gMenuPicker(getApp().globalData.garr_fileClassify)
 			.then(res => {
 				this.type = res
 				this.price = (this.priceRange[0] + this.priceRange[1]) / 2

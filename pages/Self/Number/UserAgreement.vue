@@ -241,7 +241,7 @@ IOS手机：设置—>隐私—>权限—>应用；　　
 </template>
 
 <script>
-import { signNotice } from '@/static/request/api_userInfo.js';
+import { signNotice } from '@/static/request/api_system.js';
 export default {
 	data() {
 		return {

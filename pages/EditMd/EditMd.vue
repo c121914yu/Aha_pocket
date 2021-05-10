@@ -9,7 +9,6 @@
 			:show-img-toolbar="true"
 			:show-img-resize="true"
 			@ready="onEditorReady"
-			@input="editing"
 		></editor>   
 		<!-- 操作工具 -->
 		<view class="tools" > 
@@ -99,8 +98,11 @@
 
 <script>
 import eIcon from './icon'
-import { getPublicFileSign } from "@/static/request/api_userInfo.js"
+import { getPublicSignature } from "@/static/request/api_system.js"
 export default {
+	components: {
+		eIcon
+	},
 	data() {
 		return {
 			showH1: false,
@@ -115,16 +117,15 @@ export default {
 			copy: false
 		}
 	},
-	components: {
-		eIcon
-	},
 	onLoad(e) {
 		if(e.copy){
 			this.copy = true
 		}
 	},
 	methods: {
-		/* 加载完成 */
+		/**
+		 * 加载完成，初始化富文本内容
+		 */
 		onEditorReady() 
 		{
 			uni.createSelectorQuery()
@@ -141,19 +142,10 @@ export default {
 				})
 				.exec()
 		},
-		/* 监听输入内容，实时触发input方法 */
-		editing(e)
-		{
-			let insert = e.target.delta.ops
-			insert = insert[insert.length-1]
-			/* 如果为换行，则清空h1,h2样式 */
-			if(!insert.attributes && (insert.insert.charAt(insert.length-2) == "\n" || insert.insert[0] == "\n")){
-				this.showH1 = false
-				this.showH2 = false
-			}
-			this.$emit("input",JSON.stringify(e.target.delta))
-		},
-		/* 设置标题 */
+		/**
+		 * 设置标题
+		 * @param {String} val 根据val不同设置不同标题
+		 */
 		setHeader(val) 
 		{
 			if(val === "H1")
@@ -169,7 +161,10 @@ export default {
 				this.editorCtx.format('header', this.showH2 ? val : false)
 			}
 		},
-		/* 设置上下标 */
+		/**
+		 * 设置上下标
+		 * @param {String} val 根据val设置上下标
+		 */
 		setScript(val)
 		{
 			if(val === "sub")
@@ -185,19 +180,26 @@ export default {
 				this.editorCtx.format('script', this.showSuper ? val : false)
 			}
 		},
-		/* 设置粗体 */
+		/**
+		 * 设置粗体
+		 */
 		setBold() 
 		{
 			this.showBold = !this.showBold;
 			this.editorCtx.format('bold');
 		},
-		/* 下划线 */
+		/**
+		 * 添加下划线
+		 */
 		setIns() 
 		{
 			this.showIns = !this.showIns;
 			this.editorCtx.format('ins');
 		},
-		/* 对齐方向 */
+		/**
+		 * 对齐方向
+		 * @param {String} val 根据val设置上下标
+		 */
 		setAlign(val)
 		{
 			if(val === "center")
@@ -213,69 +215,53 @@ export default {
 				this.editorCtx.format('align', this.showRight ? val : false)
 			}
 		},
-		/* 插入分割线 */
+		/**
+		 * 插入分割线
+		 */
 		insertDivider() 
 		{
 			this.editorCtx.insertDivider();
 		},
-		/* 插入图片 */
-		insertImage() 
+		/**
+		 * 插入图片
+		 */
+		async insertImage() 
 		{
-			uni.showLoading({
-				title: "上传图片中...",
-				mask: true
-			})
-			let success = 0
-			uni.chooseImage({
-				sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
-				success:  (imgs) => {
-					imgs.tempFilePaths.forEach(url => {
-						/* 获取签名 */
-						getPublicFileSign(`${Date.now()}.JPG`)
-						.then(signature => {
-							/* 上传文件 */
-							this.gUploadFile(url,signature.data)
-							.then(res => {
-								/* 插入图片 */
-								this.editorCtx.insertImage({
-									src: res.header.Location, 
-									alt: "插图",
-									width: "100%"
-								})
-								/* 判断上传进度，全部上传了则关闭等待 */
-								success++
-								if(success === imgs.tempFilePaths.length){
-									this.gToastSuccess("上传图片成功")
-									uni.hideLoading()
-								}
-							})
-							.catch((err) => {
-								this.gToastError("上传图片失败")
-								success++
-								if(success === imgs.tempFilePaths.length){
-									uni.hideLoading()
-								}
-							})
-						})
-						.catch(() => {
-							this.gToastError("上传图片失败")
-							success++
-							if(success === imgs.tempFilePaths.length){
-								uni.hideLoading()
-							}
-						})
+			try{
+				const urls = await this.gChooseImage(9,true)
+				uni.showLoading({
+					title: "上传图片中...",
+					mask: true
+				})
+				/* 生成图片名 */
+				const names = urls.map((item,i) => `${Date.now()}${i}.JPG`)
+				/* 批量获取签名 */
+				const signs = await Promise.all(names.map((name,i) => getPublicSignature(name)))
+				/* 批量上传 */
+				const imgs = await Promise.all(signs.map((sign,i) => this.gUploadFile(urls[i],sign.data)))
+				imgs.forEach(img => {
+					this.editorCtx.insertImage({
+						src: img.header.Location, 
+						alt: "插图",
+						width: "100%"
 					})
-				},
-				fail() {
-					uni.hideLoading()
-				}
-			})
+				})
+				this.gToastSuccess("上传图片成功")
+			} catch(err) {
+				console.log(err)
+				this.gToastMsg("上传图片错误")
+			}
 		},
-		/* 撤回 */
+		/**
+		 * 撤回
+		 */
 		undo() 
 		{
 			this.editorCtx.undo();
 		},
+		/**
+		 * 完成
+		 */
 		finish() 
 		{
 			this.editorCtx.getContents({
@@ -283,7 +269,6 @@ export default {
 					getApp().globalData.gEditContent = res.html
 					if(this.copy){
 						this.gClipboardData(res.html)
-						this.gToastMsg("已复制到剪切板")
 					}
 					else{
 						uni.navigateBack({
@@ -292,7 +277,7 @@ export default {
 					}
 				} 
 			})
-		},
+		}
 	}
 }
 </script>

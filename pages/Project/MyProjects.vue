@@ -81,7 +81,6 @@ export default {
 				{ text: '获奖等级', val: 'awardLevel' },
 			],
 			sortActive: 0,
-			
 			projects: [],
 			pageNum: 1,
 			pageSize: 15,
@@ -201,47 +200,38 @@ export default {
 		projectSetting(project) 
 		{
 			/* 如果项目已经通过，不允许删除 */
-			const itemList = ["阅读项目", "小程序修改项目","电脑修改项目"]
+			const itemList = ["阅读项目", "修改项目"]
 			if(!project.passed){
 				itemList.push("删除项目")
 			}
-			uni.showActionSheet({
-				itemList,
-				success: (res) => {
-					/* 阅读项目，跳转阅读界面 */
-					if (res.tapIndex === 0){
+			this.gMenuPicker(itemList)
+			.then(res => {
+				switch(res) {
+					case "阅读项目": 
 						uni.navigateTo({
 							url: `Project?id=${project.id}`
 						})
-					}
-					/* 编辑项目，跳转阅读界面 */ 
-					else if (res.tapIndex === 1){
+						break
+					case "修改项目":
 						uni.navigateTo({
 							url: `EditProject?id=${project.id}`
 						})
-					}
-					/* PC编辑项目，跳转阅读界面 */
-					else if (res.tapIndex === 2){
-						this.gClipboardData(
-							`http://localhost:8081/project/edit/${project.id}/${uni.getStorageSync("token")}`,
-							"已复制连接,请使用电脑浏览器打开!"
-						)
-						
-						this.gToastMsg("已复制连接,请使用电脑浏览器打开!")
-					}
-					/* 删除项目 */ 
-					else if (res.tapIndex === 3) {
+						break
+					case "删除项目":
 						this.gShowModal('确认删除该项目?', () => {
-							console.log('删除项目');
-							const index = this.projects.indexOf(project);
-							deleteProject(project.id).then(res => {
-								this.gToastSuccess('删除成功');
-								this.projects.splice(index, 1);
-							})
+							const index = this.projects.findIndex(item => item.id === project.id)
+							deleteProject(project.id)
+							this.projects.splice(index, 1)
+							this.gToastMsg('删除成功')
 						})
-					}
+						break
 				}
 			})
+			/* PC编辑项目，跳转阅读界面 */
+			// this.gClipboardData(
+			// 	`http://localhost:8081/project/edit/${project.id}/${uni.getStorageSync("token")}`,
+			// 	"已复制连接,请使用电脑浏览器打开!"
+			// )
 		}
 	},
 }

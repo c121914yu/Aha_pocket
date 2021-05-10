@@ -5,16 +5,23 @@
 	gShowModal - 确认提示
 	gUploadFile - 上传文件
 	gGetFileUrl - 获取文件路径
-	gGetMeInfo - 更新个人信息
+	gGetMeInfo - 获取个人信息
 	gformatDate - 格式化日期输出
 	gLoading - 显示/隐藏加载动画
 	gMenuPicker - 调用菜单选择框
 	gClipboardData - 复制到剪切板
+	gChooseImage - 选择图片
 	gReadImage - 预览图片
 	gIsNull - 判断输入是否为空
 */
 import Vue from 'vue'
-/* 普通文本提示*/
+
+/**
+ * 普通文本提示，无图标
+ * @param {String}  title 内容
+ * @param {Boolean}  mask 是否展示蒙层
+ * @param {Number}  duration
+ */
 Vue.prototype.gToastMsg = (title,mask=false,duration=1500) => {
 	uni.showToast({
 		title,
@@ -23,7 +30,13 @@ Vue.prototype.gToastMsg = (title,mask=false,duration=1500) => {
 		icon: "none"
 	})
 }
-/* 成功文本提示 */
+
+/**
+ * 成功文本提示，打钩图标
+ * @param {String}  title 内容
+ * @param {Boolean}  mask 是否展示蒙层
+ * @param {Number}  duration
+ */
 Vue.prototype.gToastSuccess = (title,mask=false,duration=1500) => {
 	uni.showToast({
 		title,
@@ -31,7 +44,13 @@ Vue.prototype.gToastSuccess = (title,mask=false,duration=1500) => {
 		duration
 	})
 }
-/*  展示错误提示 */
+
+/**
+ * 展示错误提示，错误图标
+ * @param {String}  title 内容
+ * @param {Boolean}  mask 是否展示蒙层
+ * @param {Number}  duration
+ */
 Vue.prototype.gToastError = (title,mask=false,duration=1500) => {
 	uni.showToast({
 		title,
@@ -40,12 +59,13 @@ Vue.prototype.gToastError = (title,mask=false,duration=1500) => {
 		duration
 	})
 }
-/* 
-	提示确认操作
-	@params content: String,提示文字
-	@params success: Function,点击确认后的操作
-	@params cancel: Function,点击取消后的操作
-*/
+
+/**
+ * 提示确认操作
+ * @param {String}  content 提示文字
+ * @param {Function}  success 确认后操作
+ * @param {Function}  cancel 取消后操作
+ */
 Vue.prototype.gShowModal = (content,success,cancel) => {
 	uni.showModal({
 		title: "提示",
@@ -64,14 +84,13 @@ Vue.prototype.gShowModal = (content,success,cancel) => {
 	})
 }
 
-/* 
-	name: uploadFile
-	description: 上传文件至OSS存储空间
-	@params filePath: String,待上传的临时路径
-	@params signature: Object,签名
-	@return: fileUrl: String,文件路径
-	time: 2020/12/30
-*/
+/**
+ * 上传文件
+ * @param {String}  filePath
+ * @param {Object}  signature 签名
+ * @param {Function}  上传期间回调函数，用于监听进度，参数为上传进度
+ * @return {Object} 上传完成回调，可以从header获取到上传地址
+ */
 Vue.prototype.gUploadFile = (filePath,signature,updateDom=null) => {
 	return new Promise((resolve,reject) => {
 		const uploadTask = uni.uploadFile({
@@ -104,11 +123,11 @@ Vue.prototype.gUploadFile = (filePath,signature,updateDom=null) => {
 	})
 }
 
-/* 
-	获取文件路径
-	@params signature: Object,签名
-	@return filePath: String,文件路径
-*/
+/**
+ * 获取文件路径
+ * @param {Object}  signature 签名
+ * @return {String} 文件路径
+ */
 var COS = require('./COS.js')
 Vue.prototype.gGetFileUrl = (signature) => {
 	return new Promise((resolve,reject) => {
@@ -135,11 +154,10 @@ Vue.prototype.gGetFileUrl = (signature) => {
 	})
 }
 
-/* 
-	更新个人信息，重新请求getMe
-	@set getApp().globalData.gUserInfo: Object,全局个人信息变量
-	@return gUserInfo: Object,个人信息变量
-*/
+/**
+ * 获取最新个人信息，并更新全局变量
+ * @return {Object} 个人信息
+ */
 import { getMe } from "@/static/request/api_userInfo.js"
 Vue.prototype.gGetMeInfo = () => {
 	return new Promise((resolve,reject) => {
@@ -161,13 +179,12 @@ Vue.prototype.gGetMeInfo = () => {
 	
 }
 
-/* 
-	格式化日期输出，默认简写模式（当天仅显示时间，当年不显示年份)
-	@params time: Date,日期
-	@params noAddr: Boolean,是否简写
-	@return: String,日期字符串
-	time: 2021/1/3
-*/
+/**
+ * 格式化日期输出，默认简写模式（当天仅显示时间，当年不显示年份)
+ * @param {Date}  time 时间
+ * @param {Boolean}  noAddr true-年月日时的格式，false-简写
+ * @return {String} 时间字符串
+ */
 Vue.prototype.gformatDate = (time,noAddr=false) => {
 	const date = new Date(time)
 	const year = date.getFullYear()
@@ -192,16 +209,23 @@ Vue.prototype.gformatDate = (time,noAddr=false) => {
 	}
 	return `${year}/${month < 10 ? '0'+month : month}/${day < 10 ? '0'+day : day} ${hour < 10 ? '0'+hour : hour}:${minutes < 10 ? '0'+minutes : minutes}`
 }
-/* 
-	获取今天 
-	@return yy-mm-dd
-*/
+
+/**
+ * 获取当前年月日
+ * @param {String}  symbol分隔符,用于分割年月日
+ * @return {String}
+ */
 Vue.prototype.gGetToday = (symbol="-") => {
 	const date = new Date()
 	return `${date.getFullYear()}${symbol}${date.getMonth()+1}${symbol}${date.getDate()}`
 }
 
-/* 展示/隐藏等待 */
+/**
+ * 展示/隐藏等待动画
+ * @param {Object}  that 当前页面的this
+ * @param {Boolean}  type 展示/隐藏
+ * @param {Number}  delay 延迟显示时间
+ */
 Vue.prototype.gLoading  = (that,type,delay=0) => {
 	/* 获取DOM */
 	const dom = that.$refs.loading
@@ -214,12 +238,11 @@ Vue.prototype.gLoading  = (that,type,delay=0) => {
 	}
 }
 
-/* 
-	调用menu弹窗进行单选,将选择的结果返回
-	@params list: Array,选择列表，每个元素为一个对象，对象必须包含label属性,或者每个元素为字符串
-	@return 选择的元素
-	time: 2020/12/31
-*/
+/**
+ * 调用menu弹窗进行单选,将选择的结果返回
+ * @param {Array}  list 可以为一维简单数组，也可以为对象数组，对象必须包含label
+ * @return {any}  选中的元素
+ */
 Vue.prototype.gMenuPicker = (list) => {
 	return new Promise((resolve,reject) => {
 		uni.showActionSheet({
@@ -239,7 +262,11 @@ Vue.prototype.gMenuPicker = (list) => {
 	})
 }
 
-/* 复制到剪切板 */
+/**
+ * 复制到剪切板，并提示文字
+ * @param {String}  content 复制内容
+ * @param {String}  msg 提示文字
+ */
 Vue.prototype.gClipboardData = (content,msg) => {
 	uni.setClipboardData({
 		data: content,
@@ -253,7 +280,9 @@ Vue.prototype.gClipboardData = (content,msg) => {
 	})
 }
 
-/* 未设计界面提示 */
+/**
+ * 未设计界面提示
+ */
 Vue.prototype.gUndesign = (back=true) => {
 	uni.showModal({
 		title: "提示",
@@ -268,7 +297,30 @@ Vue.prototype.gUndesign = (back=true) => {
 	})
 }
 
-/* 预览图片 */
+/**
+ * 选择图片
+ * @param {Number}  count 图片数量
+ * @param {Boolean}  original 是否可选原图
+ * @return {String} 图片地址
+ */
+Vue.prototype.gChooseImage = (count=1,original=false) => {
+	return new Promise((resolve,reject) => {
+		uni.chooseImage({
+			count, //默认9
+			sizeType: original ? ["original","compressed"] :  ["compressed"]
+		})
+		.then(img => {
+			resolve(img[1].tempFilePaths)
+		})
+		.catch(err => reject(err))
+	})
+}
+
+/**
+ * 预览图片
+ * @param {Array}  urls 图片列表
+ * @param {Number}  current 开始下标
+ */
 Vue.prototype.gReadImage = (urls,current=0) => {
 	uni.previewImage({
 		current,
@@ -276,7 +328,11 @@ Vue.prototype.gReadImage = (urls,current=0) => {
 	})
 }
 
-/* 判断数据是否为空 */
+/**
+ * 判断数据是否为空
+ * @param {Array}  list 数组对象，必须包含val和errMsg值，检测val为空时提示errMsg
+ * @return {Boolean}
+ */
 Vue.prototype.gIsNull = (list) => {
 	for(let i=0;i<list.length;i++){
 		if(!list[i].val){

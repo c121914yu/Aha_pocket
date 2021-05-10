@@ -1,38 +1,43 @@
 import request from "./request.js"
 
-/* 
-	购买附件-创建订单
-	@params data.projectId:Int 项目ID
-	@params data.resourceId:Array 购买的附件id
-*/
-const postOrder = (data) => request("/contribPoint/order","POST",data)
-/* 
-	付款/取消付款
-	@params ordetrId:Int 订单ID
-	@params action:String,取值pay/cancel
-*/
-const putOrder = (orderId,action) => request(`/contribPoint/order/${orderId}?action=${action}`,"PUT",{})
+/**
+ * 创建订单
+ * @param {Number}  prohjectId 项目ID
+ * @param {Array}   resourceId 购买的附件id
+ */
+exports.postOrder = (data) => request("/contribPoint/order","POST",data)
 
-/* 获取贡献点变化 */
-const getPointOrder = (params) => request("/contribPoint/log/me","GET",params)
+/**
+ * 付款/取消付款
+ * @param {Number}  orderId 订单ID
+ * @param {String} action 取值pay，cancel 
+ */
+exports.putOrder = (orderId,action) => request(`/contribPoint/order/${orderId}?action=${action}`,"PUT",{})
 
-/* 获取个人订单信息 */
-const getOrders = (params) => request("/contribPoint/order/me","GET",params)
-/* 获取订单详细 */
-const getOrder = (orderId) => request(`/contribPoint/order/${orderId}`,"GET",{})
-/* 判断资源是否购买 */
-const checkResourcePurchased = (projectId) => request(`/project/purchased/${projectId}`,"GET",{})
+/**
+ * 获取个人贡献点变化日志
+ * @param {Number}  pageNum
+ * @param {Number}  pageSize
+ * @param {String}  sortBy 排序参考，取值time,type,contribPoint,ahaPoint,ahaCredit
+ * @param {String}  orderBy 排序方式，取值desc,asc默认desc
+ */
+exports.getPointOrder = (params) => request("/contribPoint/log/me","GET",params)
 
-/* 获取统一下单ID */
-const getPrepay_id = (data) => request("/order/unifiedorder","POST",data)
+/**
+ * 获取个人全部订单
+ * @param {Number}  pageNum
+ * @param {Number}  pageSize
+ */
+exports.getOrders = (params) => request("/contribPoint/order/me","GET",params)
 
-export {
-	postOrder,
-	putOrder,
-	
-	getPointOrder,
-	getOrders,
-	getOrder,
-	checkResourcePurchased,
-	getPrepay_id
-}
+/**
+ * 获取订单详细
+ * @param {Number}  orderId 订单ID
+ */
+exports.getOrder = (orderId) => request(`/contribPoint/order/${orderId}`,"GET",{})
+
+/**
+ * 获取已购买的附件数组
+ * @param {Number}  projectId
+ */
+exports.checkResourcePurchased = (projectId) => request(`/project/purchased/${projectId}`,"GET",{})

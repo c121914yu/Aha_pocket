@@ -1,9 +1,13 @@
+<!-- 
+	我的Aha界面
+	author: yjl
+ -->
 <template>
 	<view class="self">
 		<!-- 头部 -->
 		<view class="head">
 			<!-- 头像 -->
-			<view class="avatar" @click="clickAvatar">
+			<view class="avatar" @click="onclickAvatar">
 				<view class="bg bg3"></view>
 				<view class="bg bg2"></view>
 				<view class="bg bg1"></view>
@@ -16,12 +20,11 @@
 					class="name" 
 					:value="userInfo.nickname" 
 					maxlength="15" 
-					@blur="setNickName"/>
+					@blur="onblurUpdateNickname"/>
 				<!-- 标签 -->
-				<view class="tags" @click="isCheckTags = true">
+				<view class="tags" @click="is_checkTags=true">
 					<!-- 等级标签 -->
 					<UserLevel 
-						v-if="userPoint !== null" 
 						:point="userPoint"
 						small
 						backgroundColor="#ffffff"
@@ -44,7 +47,7 @@
 		</view>
 		<!-- 我的项目 & 外包管理 & 招募队友 -->
 		<view class="navs">
-			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/Projects">我的项目</navigator>
+			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/MyProjects">我的项目</navigator>
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Interflow/Team/MyTeam">我的团队</navigator>
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Practice/MyEpiboly">外包需求</navigator>
 		</view>
@@ -71,7 +74,7 @@
 				:key="index"
 				hover-stay-time="50"
 				:url="item.to"
-				@click="clickList(item,index)">
+				@click="onclickFunction(item,index)">
 				<text :class="'iconfont ' + item.icon"></text>
 				<text class="name small">{{ item.name }}</text>
 				<text v-if="item.val >= 0" class="small val">{{ item.val }}</text>
@@ -79,7 +82,7 @@
 			</navigator>
 			<button
 				class="item" 
-				style="animation-delay: 0.4s;text-align: start;"
+				style="animation-delay: 0.4stext-align: start"
 				open-type="share">
 				<text class="iconfont icon-iconfontzhizuobiaozhun49"></text>
 				<text class="name small">邀请好友</text>
@@ -89,7 +92,7 @@
 			<navigator
 				class="item"
 				:style="{
-					animationDelay: (index+funtions1.length) * 0.1 + 's'
+					animationDelay: (index + funtions1.length) * 0.1 + 's'
 				}"
 				v-for="(item, index) in funtions2"
 				:key="index"
@@ -101,7 +104,7 @@
 			</navigator>
 			<button 
 				class="item" 
-				style="animation-delay: 0.7s;text-align: start;"
+				style="animation-delay: 0.7stext-align: start"
 				open-type="contact">
 				<text class="iconfont icon-lianxikefu"></text>
 				<text class="name small">联系客服</text>
@@ -109,30 +112,38 @@
 			</button>
 		</view>
 		<!-- 登出 -->
-		<button style="width: 90%;margin: auto;background-color: #e86452;" @click="out">退出登录</button>
+		<button 
+			class="btn-logout"
+			@click="onclickLogout">
+			退出登录
+		</button>
 		<!-- 管理员按键 -->
 		<navigator 
-			v-if="isAdmin" 
-			class="admin-edit" 
+			v-if="is_admin" 
+			class="btn-admin-edit" 
 			url="./EditMd/EditMd?copy=true">
 			管理员MD编辑器
 		</navigator>
 		<!-- 兴趣选择 -->
-		<SelectInterest v-if="isCheckTags" @close="isCheckTags=false;tags"></SelectInterest>
+		<select-interest v-if="is_checkTags" @close="is_checkTags=falsetags"></select-interest>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { getSelfStatistice,getAvatarOssSignature, putMe, getUnreadCount } from '@/static/request/api_userInfo.js';
+import { getSelfStatistice, putMe, getUnreadCount } from '@/static/request/api_userInfo.js'
+import { getPublicSignature } from "@/static/request/api_system.js"
 import { loginOut } from '@/static/request/api_login.js'
 import SelectInterest from "./components/SelectInterest.vue"
 export default {
+	components: {
+		"select-interest": SelectInterest
+	},
 	data() {
 		return {
 			userInfo: getApp().globalData.gUserInfo.userInfo,
-			userPoint: null,
+			userPoint: 0,
 			/* 任务列表 */
 			tasks: [
 				{ name: '已购项目', icon: 'icon-shouye', to: "/pages/Project/PurchasedProjects" },
@@ -151,14 +162,19 @@ export default {
 				{ name: '个人简历', icon: 'icon-jianli', to: '/pages/Self/Resume/Resume'},
 				{ name: '意见反馈', icon: 'icon-feedback', to: '/pages/Self/Feedback/Feedback'},
 			],
-			isCheckTags: false, // 是否进入选择标签
-		};
+			is_checkTags: false, // 是否进入选择标签
+		}
 	},
 	computed: {
-		isAdmin() {
+		/**
+		 * 判断是否为管理员
+		 */
+		is_admin() {
 			return getApp().globalData.gUserInfo.role.id === 2
 		},
-		/* 计算标签 */
+		/**
+		 * 计算用户标签
+		 */
 		tags() {
 			const userInfo = getApp().globalData.gUserInfo.userInfo
 			let specialtyTags = []
@@ -176,25 +192,14 @@ export default {
 			return res
 		}
 	},
-	components: {
-		SelectInterest
-	},
 	created() {
-		if(getApp().globalData.gUserInfo.signedNotice){
-			this.getUnread()
-			this.getSelfData()
-		}
+		this.getUnread()
+		this.getSelfData()
 	},
 	methods: {
-		/* 点击列表触发功能 */
-		clickList(e,index)
-		{
-			/* 点击ID，复制到剪切板 */
-			if(index === 0){
-				this.gClipboardData(e.val.toString(),"已复制ID")
-			}
-		},
-		/* 获取未读 */
+		/**
+		 * 获取未读消息
+		 */
 		getUnread()
 		{
 			getUnreadCount()
@@ -202,111 +207,114 @@ export default {
 				this.funtions1[1].val = res.data
 			})
 		},
-		/* 获取个人统计数据 */
+		/**
+		 * 获取个人统计数据
+		 */
 		getSelfData()
 		{
 			getSelfStatistice()
 			.then(res => {
 				getApp().globalData.gUserInfo.statistice = res.data
-				console.log(getApp().globalData.gUserInfo);
 				this.userPoint = res.data.totalContribPoint
 			})
 		},
-		/* 
-			name: 设置昵称
-			description: 失去焦点时修改账号的昵称，需要预先判断是否有修改，即对比原数据与新输入的内容是否相等
-		*/
-		setNickName(e) 
+		/**
+		 * 点击function列表执行不同方法
+		 * @param {Object} e 方法对象
+		 * @param {Object} index 对应下标
+		 */
+		onclickFunction(e,index)
+		{
+			/* 点击ID，复制到剪切板 */
+			switch(index) {
+				case 0: this.gClipboardData(e.val.toString(),"已复制ID");break;
+			}
+		},
+		/**
+		 * 设置昵称，失去焦点触发比较最新值跟旧值是否相同，不相同则调用接口更新
+		 * @param {Object} e input组件参数
+		 */
+		onblurUpdateNickname(e) 
 		{
 			const value = e.detail.value
-			/* 判断value与原本的nickName是否相同，相同则无需请求，不同则请求服务器修改nickName */
 			if (value !== this.userInfo.nickname) {
 				putMe({
 					nickname: value
-				}).then(res => {
+				})
+				.then(res => {
 					this.userInfo.nickname = value
 					getApp().globalData.gUserInfo.userInfo = this.userInfo
-					this.gToastSuccess('修改昵称成功!')
+					this.gToastMsg('修改昵称成功!')
 				})
 			}
 		},
-		/*
-			name: 点击头像
-			description: 点击头像打开操作菜单，可选择预览或者修改头像点击预览，触发预览效果点击修改头像，进入选择头像模式，选择完成后上传头像至oss，然后将链接存储到数据库中。
-            time: 2020/11/15
-		*/
-		clickAvatar() 
+		/**
+		 * 点击头像，调用menu弹窗，可以预览头像，修改头像，进入个人主页
+		 */
+		onclickAvatar() 
 		{
 			/* 进入操作菜单 */
-			uni.showActionSheet({
-				itemList: ['预览头像', '修改头像', '查看个人信息'],
-				success: (res) => {
-					/* 预览头像 */
-					if (res.tapIndex === 0) {
-						uni.previewImage({
-							urls: [this.userInfo.avatarUrl]
-						});
-					} 
-					else if (res.tapIndex === 1) {
-						/* 修改头像 */
-						uni.chooseImage({
-							count: 1, //默认9
-							sizeType: ['compressed'],
-							success: (img) => {
-								this.gLoading(this,true)
-								let start = Date.now()
-								/* 获取签名 */
-								getAvatarOssSignature(`${Date.now()}.JPG`)
-								.then(signature => {
-									const url = img.tempFilePaths[0]
-									this.gUploadFile(url, signature.data)
-									.then(res => {
-										putMe({
-											avatarUrl: res.header.Location
-										})
-										.then(putRes => {
-											this.userInfo.avatarUrl = res.header.Location
-											getApp().globalData.gUserInfo.userInfo = this.userInfo
-											this.gToastSuccess('修改头像成功!')
-											this.gLoading(this, false)
-										})
-										.catch(err => {
-											this.gLoading(this, false)
-										})
-									})
-									.catch(err => {
-										console.log(err)
-										this.gToastError("上传头像错误")
-										this.gLoading(this,false)
-									})
-								})
-							}
-						})
-					} 
-					else if (res.tapIndex === 2) {
+			this.gMenuPicker(['预览头像', '修改头像', '查看个人主页'])
+			.then(res => {
+				switch(res) {
+					case "预览头像": 
+						this.gReadImage([this.userInfo.avatarUrl])
+						break
+					case "修改头像": 
+						this.changeAvatar()
+						break
+					case "查看个人主页": 
 						uni.navigateTo({
-							url: 'Self/UserHome?userId=' + this.userInfo.userId
+							url: `Self/UserHome?userId=${this.userInfo.userId}`
 						})
-					}
+										
 				}
-			});
+			})
 		},
-		/* 退出登录，调用modal确认*/
-		out() 
+		/**
+		 * 修改头像
+		 */
+		async changeAvatar()
+		{
+			try{
+				/* 选择图片 */
+				let url = await this.gChooseImage()
+				this.gLoading(this,true)
+				/* 获取签名 */
+				let sign = await getPublicSignature(`${Date.now()}.JPG`)
+				/* 上传图片 */
+				const upImg = await this.gUploadFile(url[0], sign.data)
+				/* 更新用户信息 */
+				putMe({
+					avatarUrl: upImg.header.Location
+				})
+				/* 更新页面内容 */
+				this.userInfo.avatarUrl = upImg.header.Location
+				getApp().globalData.gUserInfo.userInfo = this.userInfo
+				this.gToastMsg('修改头像成功!')
+				this.gLoading(this,false)
+			} catch(err){
+				console.error(err)
+			}
+		},
+		/**
+		 * 点击退出登录，调用modal提示。清除本地缓存
+		 */
+		onclickLogout() 
 		{
 			this.gShowModal('确认退出登录?', () => {
-				loginOut();
-				uni.clearStorageSync('token');
+				loginOut()
+				uni.clearStorageSync('token')
 				uni.reLaunch({
 					url: 'Login/Login',
 					success: () => {
-						this.gToastSuccess('已退出登录');
+						this.gToastMsg('已退出登录')
 					}
-				});
-			});
+				})
+			})
 		}
-	},
-};
+	}
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -469,15 +477,19 @@ bgSetting(size, color)
 				color var(--gray1)
 			.val
 				color var(--origin2)
+	.btn-logout
+		margin auto
+		width 90%
+		background-color #e86452
 	/* 管理员编辑 */
-	.admin-edit
+	.btn-admin-edit
 		margin 10px auto
 		width 85%
 		padding 10px
-		background-color var(--origin2)
-		color #FFFFFF
 		text-align center
 		border-radius 22px
+		background-color var(--origin2)
+		color #FFFFFF
 		display block
 /* 动画 */
 @keyframes curtain1

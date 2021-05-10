@@ -140,7 +140,7 @@
 				"navigationBarTitleText": "项目编辑"
 			}
 		}, {
-			"path": "pages/Project/Projects",
+			"path": "pages/Project/MyProjects",
 			"style": {
 				"navigationBarTitleText": "我的项目",
 				"enablePullDownRefresh": true, 

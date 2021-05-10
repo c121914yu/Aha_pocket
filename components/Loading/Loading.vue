@@ -31,7 +31,7 @@ export default {
 		position absolute
 		top 50%
 		left 50%
-		transform translate(-50%,-50%)
+		transform translate(-50%,-60%)
 		width 150px
 		height 150px
 		border-radius 8px

@@ -24,7 +24,7 @@
     "pages/EditMd/EditMd",
     "pages/Project/UpProject",
     "pages/Project/EditProject",
-    "pages/Project/Projects",
+    "pages/Project/MyProjects",
     "pages/Project/Project",
     "pages/Project/ReadFile",
     "pages/Project/PreviewFile",
@@ -49,6 +49,5 @@
       "desc": "获取您当前的城市信息"
     }
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

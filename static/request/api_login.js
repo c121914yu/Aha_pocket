@@ -1,64 +1,46 @@
 import request from "./request.js"
+/**
+ * 发送验证码
+ * @param {String}  phone
+ * @param {String}  type 取值register、changePassword、bindPhone,对应不同方案
+ */
+exports.sendCode = (data) => request(`/sms/code`,"POST",data)
 
-/* 
-	description: 发送验证码
-	input: 
-			phone: String,手机号
-			type: String,取值register、changePassword、bindPhone
-	return: null
-*/
-const sendCode = (data) => request(`/sms/code`,"POST",data)
+/**
+ * 用户注册
+ * @param {String}  phone
+ * @param {String}  password
+ * @param {String} code 验证码
+ * @return {String} token 用户凭证
+ * @return {Object} userInfo
+ */
+exports.Register = (data) => request("/register/phone","POST",data)
 
-/* 
-	description: 用户注册
-	input: 
-				phone: String,手机号
-				password: String,密码
-				code: String,验证码
-	return: 
-				token: String
-				userInfo: Object,用户信息
-*/
-const Register = (data) => request("/register/phone","POST",data)
+/**
+ * 修改密码
+ * @param {String}  newPassword
+ * @param {String}  code
+ */
+exports.ChangePassword = (data) => request(`/changePassword/phone/${data.phone} `,"POST",data)
 
-/* 
-	description: 修改密码
-	input: 
-				newPassword: String,新密码
-				code: String,验证码
-	return: null
-*/
-const ChangePassword = (data) => request(`/changePassword/phone/${data.phone} `,"POST",data)
+/**
+ * 用户手机登录
+ * @param {String}  phone
+ * @param {String}  password
+ * @return {String} token 用户凭证
+ * @return {Object} userInfo
+ */
+exports.Login = (data) => request("/login/phone","POST",data)
 
-/* 
-	description: 用户手机登录
-	input: 
-				phone: String,手机号
-				password: String,密码
-	return: 
-				token: String
-				userInfo: Object,用户信息
-*/
-const Login = (data) => request("/login/phone","POST",data)
+/**
+ * 微信登录
+ * @param {String}  code 用户code值，通过微信api获取
+ * @return {String} token 用户凭证
+ * @return {Object} userInfo
+ */
+exports.WXLogin = (data) => request("/login/wechat","POST",data)
 
-/* 
-	description: 微信登录
-	input: 
-				code: String,微信用户表示码
-	return: 
-				token: String
-				userInfo: Object,用户信息
-*/
-const WXLogin = (data) => request("/login/wechat","POST",data)
-
-/* 退出登录 */
-const loginOut = () => request("/logout ","GET",{})
-
-export {
-	sendCode,
-	Register,
-	ChangePassword,
-	Login,
-	WXLogin,
-  loginOut
-}
+/**
+ * 退出登录
+ */
+exports.loginOut = () => request("/logout ","GET",{})

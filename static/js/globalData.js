@@ -43,7 +43,7 @@ export default  {
 		{label: "劣质项目",value: 2},
 		{label: "订单缺失/购买错误",value: 3},
 	],
-	arr_fileClassify: [ //附件分类
+	garr_fileClassify: [ //附件分类
 		{label: "PPT",value: 1,rate: 1},
 		{label: "文档",value: 2,rate: 3},
 		{label: "论文",value: 3,rate: 1},

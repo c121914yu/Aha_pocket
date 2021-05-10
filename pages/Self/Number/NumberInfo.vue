@@ -142,9 +142,7 @@ export default {
 						uni.login({
 							provider: 'weixin',
 							success: (loginRes) => {
-								bindWxchat({
-									code: loginRes.code
-								})
+								bindWxchat(loginRes.code)
 								.then(res => {
 									console.log(res.data)
 									this.gToastSuccess("绑定成功")

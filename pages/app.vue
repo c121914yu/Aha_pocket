@@ -1,10 +1,14 @@
+<!-- 
+	自定义首页
+	author: yjl
+ -->
 <template>
 	<view class="app">
 		<!-- 用户须知 -->
-		<userAgreement 
-			v-if="!signedNotice"
+		<user-aggrement 
+			v-if="!is_signedNotice"
 			@readed="successSign">
-		</userAgreement>
+		</user-aggrement>
 		<!-- 系统公告 -->
 		<SystemNotice 
 			v-if="arr_systemNotice.length>0" 
@@ -14,31 +18,31 @@
 		<!-- 导航 -->
 		<TabBar 
 			:currentNav="currentNav"
-			@navigate="navigate">
+			@navigate="onclickTabBar">
 		</TabBar>
-		<!-- 主页 -->
-		<ProjectHome 
+		<!-- 项目主页 -->
+		<project-hone 
 			ref="projectHome"
 			v-if="navs[0].loaded"
 			v-show="currentNav === 0">
-		</ProjectHome>
-		<!-- 生活 -->
-		<InterflowHome
+		</project-hone>
+		<!-- 竞赛交流主页 -->
+		<interflow-home
 			ref="interflowHome"
 			v-if="navs[1].loaded"
 			v-show="currentNav === 1">
-		</InterflowHome>
-		<!-- 会员 -->
-		<PracticeHome
+		</interflow-home>
+		<!-- 实践主页 -->
+		<practice-home
 			v-if="navs[2].loaded"
 			v-show="currentNav === 2">
-		</PracticeHome>
+		</practice-home>
 		<!-- 个人 -->
-		<Self
+		<self
 			ref="Self"
 			v-if="navs[3].loaded"
 			v-show="currentNav === 3">
-		</Self>
+		</self>
 	</view>
 </template>
 
@@ -51,25 +55,32 @@ import InterflowHome from "./Interflow/InterflowHome"
 import PracticeHome from "./Practice/PracticeHome"
 import Self from "./Self/Self"
 export default {
+	components:{
+		"user-aggrement": userAgreement, // 用户协议弹窗
+		"project-hone": ProjectHome, //项目主页
+		"interflow-home": InterflowHome,// 竞赛交流主页
+		"practice-home": PracticeHome, // 实践主页
+		"self": Self, // 个人主页
+	},
 	data() {
 		return {
-			/* 
-				第一次不直接加载界面，防止加载时间过长
-				切换到未缓存的界面时再进行加载
-			*/
-			navs: [
-				{name: "ProjectHome",loaded: false},
+			navs: [ // 利用loaded实现类似keep-alive效果
+				{name: "ProjectHome",loaded: true},
 				{name: "Interflow",loaded: false},
 				{name: "Practice",loaded: false},
 				{name: "Self",loaded: false},
 			],
-			currentNav: 1,
-			signedNotice: getApp().globalData.gUserInfo.signedNotice,
+			currentNav: 0,
+			is_signedNotice: getApp().globalData.gUserInfo.signedNotice, // 是否已经签署用户协议
 			arr_systemNotice: []
 		}
 	},
-	watch:{
-		currentNav: (newNav) => {
+	watch: {
+		/**
+		 * 路由切换，修改对应的头部文字
+		 * @param {Number} newNav
+		 */
+		currentNav: function(newNav){
 			let text = ""
 			switch(newNav){
 				case 0: text="项目分享";break;
@@ -88,32 +99,28 @@ export default {
 			}
 		}
 	},
-	components:{
-		userAgreement,
-		ProjectHome,
-		InterflowHome,
-		PracticeHome,
-		Self,
-	},
 	onLoad() {
 		console.log(getApp().globalData.gUserInfo);
 		/* 隐藏返回主页 */
 		wx.hideHomeButton()
-		this.loadNav()
-		this.loadNeed()
+		if(this.is_signedNotice){
+			this.loadNeed()
+		}
 	},
 	onShow() {
-		// 每次显示未读信息更新
+		/* 更新个人页未读 */
 		if(this.$refs.Self){
 			this.$refs.Self.getUnread()
 		}
 	},
 	onReachBottom(){
+		/* 加载更多项目 */
 		if(this.currentNav === 0){
 			this.$refs.projectHome.loadMore()
 		}
 		else if(this.currentNav === 1){
 			switch(this.$refs.interflowHome.currentNav){
+				/* 加载更多人才 */
 				case 0: this.$refs.interflowHome.$refs.Talents.loadTalent();break
 			}
 		}
@@ -126,74 +133,21 @@ export default {
 		}
 	},
 	methods: {
-		// 加载需求
-		loadNeed()
-		{
-			if(this.signedNotice){
-				this.getSystemNotice()
-				this.loadCompetitionInfo()
-				this.$nextTick(() => {
-					this.$refs.projectHome.loadProjects(true)
-				})
-			}
-		},
-		/* 完成协议签署 */
-		successSign()
-		{
-			this.signedNotice = true
-			this.loadNeed()
-		},
-		/* 获取系统公告 */
-		getSystemNotice()
-		{
-			getNotice()
-			.then(res => {
-				res.data.forEach(item => {
-					item.createTime = this.gformatDate(item.createTime,true)
-					this.arr_systemNotice.push(item)
-				})
-			})
-		},
-		/* 加载比赛信息 */
-		loadCompetitionInfo()
-		{
-			if(this.signedNotice){
-                getAllCompetition()
-                .then(res => {
-                    getApp().globalData.Competitions = res.data
-					// console.log(getApp().globalData.Competitions)
-                })
-            }
-		},
-		/* 
-			name: 路由加载
-			description: 加载指定下标的路由
-			input:
-						this.currentNav: Number,当前路由下标
-			change:
-						this.navs[].loaded: Boolean,路由是否加载标识符
-			return: null
-		*/
-		loadNav()
-		{
-			this.navs[this.currentNav].loaded = true
-		},
-		/*
-			name: 路由跳转
-			description: 跳转指定下标的路由
-			input: this.currentNav: Number,需要跳转的路由下标
-			change: null
-			return: null
-		*/
-		navigate(name)
+		/**
+		 * 点击tabbar，切换路由
+		 * @param {String} name 路由名
+		 */
+		onclickTabBar(name)
 		{
 			const index = this.navs.findIndex(item => item.name === name)
+			/* 如果不是点击当前路由，则回到顶部 */
 			if(index !== this.currentNav){
 				uni.pageScrollTo({
 					duration: 0,
 					scrollTop: 0 
 				})
 			}
+			/* 位于项目页，且点击当前路由，刷新项目 */
 			else if(index === 0 && index === this.currentNav){
 				uni.pageScrollTo({
 					duration: 0,
@@ -202,7 +156,36 @@ export default {
 				this.$refs.projectHome.loadProjects(true)
 			}
 			this.currentNav = index
-			this.loadNav()
+			this.navs[this.currentNav].loaded = true
+		},
+		/**
+		 * 加载所有依赖
+		 */
+		loadNeed()
+		{
+			/* 加载系统公告 */
+			getNotice()
+			.then(res => {
+				res.data.forEach(item => {
+					item.createTime = this.gformatDate(item.createTime,true)
+					this.arr_systemNotice.push(item)
+				})
+			})
+			/* 加载比赛信息 */
+			getAllCompetition()
+			.then(res => {
+			    getApp().globalData.Competitions = res.data
+			})
+			/* 加载项目列表 */
+			this.$refs.projectHome.loadProjects(true)
+		},
+		/**
+		 * 完成协议签署,重新加载依赖
+		 */
+		successSign()
+		{
+			this.is_signedNotice = true
+			this.loadNeed()
 		},
 	}
 }

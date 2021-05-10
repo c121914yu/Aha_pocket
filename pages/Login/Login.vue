@@ -1,3 +1,7 @@
+<!-- 
+	登录页
+	author: yjl
+ -->
 <template>
 	<view class="login">
 		<image 

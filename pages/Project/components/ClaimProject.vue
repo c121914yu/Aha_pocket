@@ -1,17 +1,35 @@
+<!-- 
+	认领匿名资源弹窗
+	author yjl
+ -->
 <template>
-	<view class="claim-project fix-screen"  @touchmove.stop.prevent @click="$emit('close')">
+	<view 
+		class="claim-project fix-screen"  
+		@touchmove.stop.prevent 
+		@click="$emit('close')">
 		<view class="content" @click.stop>
 			<view class="h3 center">{{applyingID > 0 ? "修改申请材料" : "申请认领项目"}}</view>
 			<!-- 选择文件 -->
 			<view class="prove">
 				<text class="label">证明材料：</text>
-				<button v-if="!awardProveUrl" @click="chooseImg">选择证明<text class="iconfont icon-tianjia"></text></button>
-				<image v-else :src="awardProveUrl" mode="widthFix" @click="showMenu"></image>
+				<button 
+					v-if="!awardProveUrl.val" 
+					@click="chooseImage">
+					选择证明<text class="iconfont icon-tianjia"></text>
+				</button>
+				<image 
+					v-else 
+					:src="awardProveUrl.val" 
+					mode="widthFix" 
+					@click="onclickImg">
+				</image>
 			</view>
 			<!-- 描述文字 -->
 			<textarea placeholder="一些描述文字..."  v-model="intro"/>
 			<!-- 确认 -->
-			<button class="apply" @click="apply">{{applyingID > 0 ? "修改申请" : "申请认领"}}</button>
+			<button class="apply" @click="onclickSure">
+				{{applyingID > 0 ? "修改申请" : "申请认领"}}
+			</button>
 		</view>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
@@ -19,7 +37,8 @@
 </template>
 
 <script>
-import { getPublicSignature,postApplyProject,putApplyProject } from "@/static/request/api_project.js"
+import { postApplyProject,putApplyProject } from "@/static/request/api_project.js"
+import { getPublicSignature } from "@/static/request/api_system.js"
 export default {
 	props: {
 		projectId: Number,
@@ -27,110 +46,87 @@ export default {
 	},
 	data() {
 		return {
-			awardProveUrl: null,
+			awardProveUrl: {
+				val: "",
+				errMsg: "请选择证明材料"
+			},
 			intro: ""
 		};
 	},
 	methods: {
-		/* 选择图片 */
-		chooseImg() 
+		/**
+		 * 选择图片
+		 */
+		async chooseImage() 
 		{
-			uni.chooseImage({
-				count: 1, //默认9
-				success: img => {
-					this.awardProveUrl = img.tempFilePaths[0];
-				}
-			});
+			const img = await this.gChooseImage()
+			this.awardProveUrl.val = img[0]
 		},
-		/* 
-			name: 进入操作菜单
-			desc: 点击图片进入操作菜单，提示修改图片或者预览图片
-			input: 输入一个变量的字段
-			time: 2020/11/12
-		*/
-		showMenu() 
+	    /**
+		 * 点击图片，打开menu操作菜单
+		 */
+		onclickImg() 
 		{
 			/* 进入操作菜单 */
-			uni.showActionSheet({
-				itemList: ['预览图片', '修改图片', '删除图片'],
-				success: res => {
-					/* 预览图片 */
-					if (res.tapIndex === 0) {
-						uni.previewImage({
-							urls: [this.awardProveUrl]
-						});
-					} 
-					/* 修改图片 */
-					else if (res.tapIndex === 1) {
-						this.chooseImg();
-					} 
-					/* 删除图片 */
-					else if (res.tapIndex === 2) {
+			this.gMenuPicker(['预览图片', '修改图片', '删除图片'])
+			.then(res => {
+				switch(res) {
+					case "预览图片":
+						this.gReadImage([this.awardProveUrl.val])
+						break
+					case "修改图片":
+						this.chooseImage()
+						break
+					case "删除图片":
 						this.gShowModal('确认删除该证明图片?', () => {
-							this.awardProveUrl = null;
-						});
-					}
+							this.awardProveUrl.val = ""
+						})
+						break
 				}
-			});
+			})
 		},
-		apply()
+		/**
+		 * 点击确认，判断是修改申请还是创建新的申请
+		 */
+		async onclickSure()
 		{
-			if(!this.awardProveUrl){
-				this.gToastError("请选择证明材料")
-			}
-			else{
-				this.gLoading(this, true)
-				let upImg = Promise.resolve()
-				this.gShowModal(this.applyingID > 0 ? "确认修改认领材料？" : "确认认领该项目？",() => {
-					upImg = upImg.then(() => {
-						return getPublicSignature(`${Date.now()}.JPG`)
-								.then(sign => sign)
-								.catch(err => {
-									console.log(err);
-									this.gToastError('证明上传失败')
-								})
-					})
-					upImg = upImg.then((sign) => {
-						return this.gUploadFile(this.awardProveUrl, sign.data)
-								.then(res => {
-									this.awardProveUrl = res.header.Location
-									console.log("证明上传成功");
-								})
-								.catch(err => {
-									this.gToastError('证明上传失败')
-								})
-					})
-					upImg.then(() => {
-						let p
+			if(!this.gIsNull([this.awardProveUrl])) {
+				this.gShowModal(this.applyingID > 0 ? "确认修改认领材料？" : "确认认领该项目？",async () => {
+					try{
+						this.gLoading(this, true)
+						/* 获取上传签名 */
+						let sign = await getPublicSignature(`${Date.now()}.JPG`)
+						/* 上传图片 */
+						const upImg = await this.gUploadFile(this.awardProveUrl.val, sign.data)
+						this.awardProveUrl.val = upImg.header.Location
+						/* 更新申请表 */
 						if(this.applyingID > 0){
-							p = putApplyProject({
+							await putApplyProject({
 								applyingID: this.applyingID,
 								projectId: this.projectId,
 								intro: this.intro,
-								awardProveUrl: this.awardProveUrl,
+								awardProveUrl: this.awardProveUrl.val,
 								state: 0
 							})
 						}
-						else{
-							p = postApplyProject({
+						/* 创建申请表 */
+						else {
+							await postApplyProject({
 								applyingID: this.applyingID,
 								projectId: this.projectId,
 								intro: this.intro,
-								awardProveUrl: this.awardProveUrl,
+								awardProveUrl: this.awardProveUrl.val,
 								state: 0
 							})
 						}
-						p.then(res => {
-							console.log(res);
-							this.gLoading(this, false)
-							this.gToastSuccess(this.applyingID > 0 ? "修改申请成功" :"申请认领成功")
-							this.$emit("success",1)
-						})
-						.catch(err => {
-							this.gLoading(this, false)
-							this.gToastError('申请认领错误')
-						})
-					})
+						this.gLoading(this, false)
+						this.gToastSuccess(this.applyingID > 0 ? "修改申请成功" :"申请认领成功")
+						this.$emit("success",1)
+					} catch(err) {
+						this.gLoading(this,false)
+						console.log(err);
+						gToastError("申请失败...")
+					}
 				})
 			}
 		}

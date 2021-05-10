@@ -1,8 +1,6 @@
 import request from "./request.js"
 
-/* 获取用户列表 */
-const getTalents = () => request("/talentMarket","GET",{})
-
-export {
-	getTalents
-}
+/**
+ * 策略获取人才
+ */
+exports.getTalents = () => request("/talentMarket","GET",{})

@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { getPrepay_id } from "@/static/request/api_order.js"
 export default {
 	data() {
 		return {
@@ -76,7 +75,6 @@ export default {
 				time_expire: formaterTime(Date.now()+5*60000), //过期时间，5分钟
 				goodsTag: "Aha币"
 			}
-			// getPrepay_id()
 			console.log(test);
 			return
 			
