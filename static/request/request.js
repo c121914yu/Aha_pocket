@@ -30,7 +30,7 @@ function myRequest(url,method,data){
 					console.log(result.data)
 					/* 如果是token过期，关闭所有界面回到登录页 */
 					if(result.data.code === 103){
-						// 如果token跟缓存的相同，说明没有被重置过，是真正的过期
+						/* 如果token跟缓存的相同，说明没有被重置过，是真正的过期 */
 						if(token === uni.getStorageSync("token")){
 							uni.clearStorageSync("token")
 							uni.reLaunch({
@@ -40,7 +40,7 @@ function myRequest(url,method,data){
 								}
 							})
 						}
-						// 如果token跟缓存不同，说明token是被重置过的，不是真正过期
+						/* 如果token跟缓存不同，说明token是被重置过的，不是真正过期 */
 						else{
 							resolve(myRequest(url,method,data))
 						}
@@ -56,7 +56,6 @@ function myRequest(url,method,data){
 			},
 			fail(err) 
 			{
-				console.log("服务器错误")
 				console.log(err.data)
 				Vue.prototype.gToastError("服务器错误")
 				reject(err)

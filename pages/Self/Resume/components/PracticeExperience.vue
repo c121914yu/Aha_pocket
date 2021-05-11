@@ -1,34 +1,38 @@
+<!-- 
+	实习经历
+	author yjl
+ -->
 <template>
-	<view v-if="loaded" class="practice-experience">
-		<resumeInput
+	<view v-if="is_loaded" class="practice-experience">
+		<resume-input
 			label="企业名称"
 			placeholder="实习企业名称"
 			v-model="company">
-		</resumeInput>
-		<resumeInput
+		</resume-input>
+		<resume-input
 			label="实习职位"
 			placeholder="实习职位"
 			v-model="post">
-		</resumeInput>
-		<resumeDataPicker
+		</resume-input>
+		<resume-data-picker
 			label="开始时间"
 			placeholder="开始时间"
 			v-model="startTime">
-		</resumeDataPicker>
-		<resumeDataPicker
+		</resume-data-picker>
+		<resume-data-picker
 			label="结束时间"
 			placeholder="结束时间"
 			is_today
 			v-model="endTime">
-		</resumeDataPicker>
-		<resumeTextarea
+		</resume-data-picker>
+		<resume-textarea
 			label="工作描述"
 			placeholder="工作描述"
 			v-model="description">
-		</resumeTextarea>
+		</resume-textarea>
 		<view class="btns">
-			<button v-if="index" class="delete" @click="remove">删除</button>
-			<button class="save" @click="save">保存</button>
+			<button v-if="index!==null" class="delete" @click="onclickRemoveExp">删除</button>
+			<button class="save" @click="onclickSave">{{index === null ? "创建经历" : "保存"}}</button>
 		</view>
 	</view>
 </template>
@@ -39,9 +43,14 @@ import resumeInput from "./Resume_input.vue"
 import resumeDataPicker from "./Resume_datePicker"
 import resumeTextarea from "./Resume_textarea.vue"
 export default {
+	components: {
+		"resume-input": resumeInput,
+		"resume-data-picker": resumeDataPicker,
+		"resume-textarea": resumeTextarea,
+	},
 	data() {
 		return {
-			loaded: false,
+			is_loaded: false,
 			index: null,
 			is_remove: false,
 			company: "",
@@ -51,11 +60,6 @@ export default {
 			endTime: "",
 		};
 	},
-	components: {
-		resumeInput,
-		resumeDataPicker,
-		resumeTextarea
-	},
 	onLoad(e) {
 		if(e.index){
 			this.index = e.index
@@ -64,26 +68,30 @@ export default {
 				this[key] = resume[key]
 			}
 		}
-		this.loaded = true
+		this.is_loaded = true
 		console.log(getApp().globalData.gResume.practiceExperiences);
 	},
 	beforeDestroy() {
-		/* 新简历返回 | 删除时不触发 */
+		/* 创建简历 | 删除简历时不触发更新 */
 		if(this.index !== null && !this.is_remove){
 			this.putExperience()
 		}
 	},
 	methods: {
-		save()
+		/**
+		 * 点击保存按键，判断是创建还是修改，如果是创建经历则调用API添加经历。
+		 */
+		onclickSave()
 		{
 			/* 新简历点击保存时手动触发更新 */
 			if(this.index === null){
 				this.putExperience()
 			}
-			uni.navigateBack({
-				delta: 1
-			})
+			this.gBackPage("")
 		},
+		/**
+		 * 更新经历（追加也是更新）
+		 */
 		putExperience()
 		{
 			const data = {
@@ -107,16 +115,16 @@ export default {
 			
 			putResume(getApp().globalData.gResume)
 		},
-		/* 删除经历 */
-		remove()
+		/**
+		 * 删除经历
+		 */
+		onclickRemoveExp()
 		{
 			this.gShowModal("确认删除该经历？",() => {
 				this.is_remove = true
 				getApp().globalData.gResume.practiceExperiences.splice(this.index,1)
 				putResume(getApp().globalData.gResume)
-				uni.navigateBack({
-					delta: 1
-				})
+				this.gBackPage("")
 			})
 		}
 	}

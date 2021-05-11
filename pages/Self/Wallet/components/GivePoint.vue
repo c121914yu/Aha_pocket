@@ -1,26 +1,29 @@
-<!-- 转赠贡献度 -->
+<!-- 
+	转赠Aha币弹窗
+	author yjl
+-->
 <template>
 	<view class="give-point fix-screen">
 		<view class="content">
 			<view class="search">
 				<text class="iconfont icon-sousuo"></text>
 				<input type="text" placeholder="根据userId搜索用户" v-model="userId"/>
-				<text class="search-btn" @click="searchUser">搜索</text>
+				<text class="search-btn" @click="onclickSearch">搜索</text>
 			</view>
-			<view v-if="userCard" class="userInfo">
+			<view v-if="obj_userInfo" class="userInfo">
 				<view class="center h3">用户信息</view>
-				<image :src="userCard.avatarUrl"></image>
+				<image :src="obj_userInfo.avatarUrl"></image>
 				<view class="item userId">
 					<text class="label">userId:</text>
-					<text class="value">{{userCard.userId}}</text>
+					<text class="value">{{obj_userInfo.userId}}</text>
 				</view>
 				<view class="item name">
 					<text class="label">昵&emsp;称:</text>
-					<text class="value">{{userCard.nickname}}</text>
+					<text class="value">{{obj_userInfo.nickname}}</text>
 				</view>
 				<view class="item">
 					<text class="label">转赠数量:</text>
-					<input type="number" :max="canGivePoint" placeholder="需要转赠的贡献点" v-model.number="giveAmount">
+					<input type="number" :max="canGivePoint" placeholder="需要转赠的贡献点" v-model.number="amountGive">
 				</view>
 				<view class="item">
 					<text class="label">可转赠:</text>
@@ -30,7 +33,7 @@
 			<view v-else class="blank"></view>
 			<view class="btns">
 				<view class="cancel" @click="$emit('close')">取消</view>
-				<view class="sure strong" @click="sure">确认</view>
+				<view class="sure strong" @click="onclickGive">确认</view>
 			</view>
 		</view>
 	</view>
@@ -42,39 +45,42 @@ export default {
 	data() {
 		return {
 			userId: "",
-			userCard: null,
-			canGivePoint: Math.floor(getApp().globalData.gUserInfo.contribPoint * 0.7),
-			giveAmount: ""
+			obj_userInfo: null, // 用户信息
+			canGivePoint: Math.floor(getApp().globalData.gUserInfo.contribPoint * 0.7), // 可以赠送多少点
+			amountGive: "", // 赠送数量
 		}
 	},
 	methods: {
-		/* 根据userId搜索用户 */
-		searchUser()
+		/**
+		 * 点击搜索，触发用户搜索
+		 */
+		onclickSearch()
 		{
-			if(this.userId === ""){
-				return
+			if(this.userId){
+				getUser(this.userId)
+				.then(res => {
+					console.log(res.data);
+					this.obj_userInfo = res.data
+					if(!this.obj_userInfo){
+						this.gToastError("用户不存在")
+					}
+					else{
+						this.userId = ""
+					}
+				})
 			}
-			getUser(this.userId)
-			.then(res => {
-				this.userCard = res.data
-				console.log(res.data);
-				if(!this.userCard){
-					this.gToastError("用户不存在")
-				}
-				else{
-					this.userId = ""
-				}
-			})
 		},
-		/* 确认转赠，需调用modal提示框再次提示风险.成功后重新请求账单 */
-		sure()
+		/**
+		 * 点击确认，检测输入值是否大于最大值
+		 */
+		onclickGive()
 		{
-			if(this.giveAmount > 0){
-				if(this.giveAmount > this.canGivePoint){
+			if(this.amountGive > 0){
+				if(this.amountGive > this.canGivePoint){
 					this.gToastError("超出转赠数量")
 				}
 				else{
-					this.gShowModal(`你即将转赠 ${this.giveAmount} 个贡献点给 ${this.userCard.nickname},请确认操作！`,() => {
+					this.gShowModal(`你即将转赠 ${this.amountGive} 个贡献点给 ${this.obj_userInfo.nickname},请确认操作！`,() => {
 						this.gToastSuccess("转赠成功")
 						this.$emit("success")
 					})

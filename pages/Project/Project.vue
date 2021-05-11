@@ -1,7 +1,7 @@
 <template>
 	<view class="project">
 		<view class="header">
-			<Avatar :src="avatarUrl" size="100" readed="readed"></Avatar>
+			<Avatar :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="100" readed="readed"></Avatar>
 			<view class="right">
 				<!-- 项目题目 -->
 				<view class="small item">
@@ -460,7 +460,7 @@ export default {
 		*/
 		preview(file) 
 		{
-			const type = getApp().globalData.arr_fileTypes.find(item => item.reg.test(file.filename)).value
+			const type = getApp().globalData.garr_fileTypes.find(item => item.reg.test(file.filename)).value
 			/* 文档类跳转*/
 			if(type === 2){
 				uni.navigateTo({

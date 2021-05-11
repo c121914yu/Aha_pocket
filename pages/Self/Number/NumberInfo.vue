@@ -1,15 +1,14 @@
-<!-- 账号信息设置 -->
+<!-- 
+	账号信息设置
+	author yjl
+-->
 <template>
 	<view class="number-info">
-		<userAgreement
-			v-if="showNotice"
-			@readed="showNotice=false">
-		</userAgreement>
 		<!-- VIP -->
 		<view class="item wxnumber">
 			<text class="iconfont icon-VIP"></text>
 			<text class="label">VIP</text>
-			<text class="small bind" @click="openVip">开通VIP</text>
+			<text class="small bind" @click="onclickOpenVip">开通VIP</text>
 		</view>
 		<!-- 微信号 -->
 		<view class="item wxnumber">
@@ -19,7 +18,7 @@
 				class="small"
 				:class="oauths.wechat ? 'val' : 'bind'"
 				open-type="getUserInfo" 
-				@getuserinfo="bindWx">
+				@getuserinfo="onclickBindWx">
 				{{oauths.wechat ? "已绑定" : "点击绑定"}}
 			</button>
 		</view>
@@ -30,12 +29,12 @@
 			<text 
 				class="small"
 				:class="oauths.phone ? 'val' : 'bind'"
-				@click="showBindPhone=true">
+				@click="is_showBindPhone=true">
 				{{oauths.phone ? oauths.phone : "点击绑定"}}
 			</text>
 		</view>
 		<!-- 是否签署协议 -->
-		<view class="item phone" @click="showNotice=true">
+		<view class="item phone" @click="is_showNotice=true">
 			<text class="iconfont icon-xieyi"></text>
 			<text class="label">协议状态</text>
 			<text 
@@ -64,13 +63,16 @@
 			<text class="label">实名认证</text>
 			<text class="small bind">点击认证</text>
 		</navigator>
-	
-		<!-- 弹窗组件 -->
+		<!-- 绑定手机弹窗 -->
 		<BindPhone 
-			v-if="!oauths.phone && showBindPhone" 
-			@close="showBindPhone=false" 
+			v-if="!oauths.phone && is_showBindPhone" 
+			@close="is_showBindPhone=false" 
 			@success="reGetMe">
 		</BindPhone>
+		<user-agreement
+			v-if="is_showNotice"
+			@readed="is_showNotice=false">
+		</user-agreement>
 		<Loading ref="loading"></Loading>
 	</view>
 </template>
@@ -79,15 +81,19 @@
 import { bindWxchat } from "@/static/request/api_userInfo.js"
 import userAgreement from "./UserAgreement.vue"
 export default {
+	components: {
+		"user-agreement": userAgreement
+	},
 	data() {
 		return {
 			userInfo: getApp().globalData.gUserInfo,
 			wxNumber: "",
-			showNotice: false,
-			showBindPhone: false
+			is_showNotice: false,
+			is_showBindPhone: false
 		}
 	},
 	computed: {
+		/* 账号绑定信息，可能有微信，手机 */
 		oauths(){
 			if(this.userInfo.oauths){
 				let oauths = {}
@@ -99,66 +105,61 @@ export default {
 			return {}
 		}
 	},
-	components: {
-		userAgreement
-	},
 	onShow() {
 		this.reGetMe()
 	},
 	methods: {
-		/* 重新获取个人信息 */
+		/**
+		 * 重新获取个人信息
+		 */
 		reGetMe()
 		{
-			this.showNotice = false
-			this.showBindPhone = false
+			this.is_showNotice = false
+			this.is_showBindPhone = false
 			this.gGetMeInfo()
 			.then(res => {
 				this.userInfo = res
 			})
 			.catch(err => {
-				uni.navigateBack({
-					delta: 1,
-					success: () => {
-						this.gToastError("出现BUG")
-					}
-				})
+				this.gBackPage("获取个人信息失败")
 			})
 		},
-		/* 开通VIP */
-		openVip()
+		/**
+		 * 开通VI
+		 */
+		onclickOpenVip()
 		{
 			this.gToastMsg("功能未开放！")
 		},
-		/* 绑定微信号 */
-		bindWx()
+		/**
+		 * 绑定微信号
+		 */
+		async onclickBindWx()
 		{
 			if(!this.oauths.wechat){
 				this.gLoading(this, true)
-				uni.getUserInfo({
-					provider: 'weixin',
-					withCredentials: true,
-					lang: 'zh_CN',
-					success: res => {
-						uni.login({
-							provider: 'weixin',
-							success: (loginRes) => {
-								bindWxchat(loginRes.code)
-								.then(res => {
-									console.log(res.data)
-									this.gToastSuccess("绑定成功")
-									this.reGetMe()
-									this.gLoading(this, false)
-								})
-								.catch(() => {
-									this.gLoading(this, false)
-								})
-							}
-						})
-					},
-					fail: () => {
-						this.gLoading(this, false)
-					}
-				})
+				try{
+					/* 获取用户信息 */
+					let res = await uni.getUserInfo({
+						provider: 'weixin',
+						withCredentials: true,
+						lang: 'zh_CN'
+					})
+					res = res[1]
+					/* 获取登录凭证，openid */
+					let loginRes = await uni.login({
+										provider: 'weixin'
+									})
+					loginRes = loginRes[1]
+					/* 调用wx绑定接口 */
+					const userInfo = await bindWxchat(loginRes.code)
+					this.gToastSuccess("绑定成功")
+					this.reGetMe()
+					this.gLoading(this, false)
+				} catch(err) {
+					console.log(err);
+					this.gLoading(this, false)
+				}
 			}
 		}
 	}

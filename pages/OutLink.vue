@@ -23,10 +23,16 @@ export default {
 		this.url = e.url
 	},
 	methods: {
+		/**
+		 * 加载成功，关闭动画
+		 */
 		linkSuccess()
 		{
 			this.gLoading(this,false)
 		},
+		/**
+		 * 加载失败
+		 */
 		linkErr()
 		{
 			this.gToastError("连接错误")

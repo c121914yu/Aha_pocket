@@ -33,6 +33,11 @@ exports.putMe = (data) => request("/userInfo/me","PUT",data)
 exports.getUser = (userId) => request(`/userInfo/${userId}`,"GET")
 
 /**
+ * 获取自己的简历
+ */
+exports.getMyResume = (userId) => request("/resume/me","GET")
+
+/**
  * 获取简历信息
  * @param {Number}  userId
  */

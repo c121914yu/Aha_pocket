@@ -1,3 +1,6 @@
+<!-- 
+	简历日期选择组件
+ -->
 <template>
 	<view class="picker">
 		<picker
@@ -19,7 +22,12 @@
 		</picker>
 		<view v-if="is_today" class="today">
 			<view class="blank"></view>
-			<button v-if="value !== '至今'" @click="$emit('input','至今')">至今</button>
+			<button 
+				v-if="value !== '至今'" 
+				class="btn-today"
+				@click="$emit('input','至今')">
+				至今
+			</button>
 		</view>
 	</view>
 </template>
@@ -51,16 +59,19 @@ export default {
 	},
 	data() {
 		return {
-			startVal: "",
-			searchResult: []
+			startVal: ""
 		};
 	},
 	created() {
 		this.startVal = this.value.replace("/","-")
 	},
 	methods: {
-		/* 选择时间,'-'改成'/' */
-		pickered(e) {
+		/**
+		 * 点击选择时间,'-'改成'/'，触发更新
+		 * @param {Object} e 日期选择器参数
+		 */
+		pickered(e) 
+		{
 			let value = e.detail.value
 			value = value.replace("-","/")
 			this.$emit('input', value)
@@ -95,7 +106,7 @@ export default {
 		display flex
 		.blank
 			height 20px
-		button
+		.btn-today
 			height 20px
 			width 40px
 			text-align center

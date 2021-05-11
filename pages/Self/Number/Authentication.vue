@@ -1,4 +1,7 @@
-<!-- 身份验证 -->
+<!-- 
+	身份验证
+	author yjl
+-->
 <template>
 	<view class="authentication">
 		<view class="content">
@@ -10,7 +13,7 @@
 				label="姓名"
 				contentWidth="350rpx"
 				circle
-				v-model="trueName">
+				v-model="trueName.val">
 			</SelfInput>
 			<!-- 身份 -->
 			<SelfRadio
@@ -25,7 +28,11 @@
 			<view class="proves">
 				<!-- 身份证正面 -->
 				<view class="item identify-front">
-					<image v-if="idCardFront" :src="idCardFront" mode="widthFix" @click="showMenu('idCardFront')"></image>
+					<image 
+						v-if="idCardFront" 
+						:src="idCardFront" mode="widthFix"
+						@click="onclickImg('idCardFront')">
+					</image>
 					<view v-else class="remark" @click="chooseImg('idCardFront')">
 						<text class="iconfont icon-tianjia"></text>
 						<text>身份证正面图</text>
@@ -33,7 +40,12 @@
 				</view>
 				<!-- 身份证反面 -->
 				<view class="item identify-front">
-					<image v-if="idCardBack" :src="idCardBack" mode="widthFix" @click="showMenu('idCardBack')"></image>
+					<image 
+						v-if="idCardBack" 
+						:src="idCardBack" 
+						mode="widthFix" 
+						@click="onclickImg('idCardBack')">
+					</image>
 					<view v-else class="remark" @click="chooseImg('idCardBack')">
 						<text class="iconfont icon-tianjia"></text>
 						<text>身份证反面图</text>
@@ -41,7 +53,12 @@
 				</view>
 				<!-- 学生证 -->
 				<view v-if="type === 0" class="item identify-front">
-					<image v-if="studentCard" :src="studentCard" mode="widthFix" @click="showMenu('studentCard')"></image>
+					<image 
+						v-if="studentCard" 
+						:src="studentCard" 
+						mode="widthFix" 
+						@click="onclickImg('studentCard')">
+					</image>
 					<view v-else class="remark" @click="chooseImg('studentCard')">
 						<text class="iconfont icon-tianjia"></text>
 						<text>学生证/校园卡</text>
@@ -49,9 +66,7 @@
 				</view>
 			</view>
 			<!-- 提交 -->
-			<view class="submit">
-				<button @click="submit">提交</button>
-			</view>
+			<BottomBtn @click="onclickSubmit">提交</BottomBtn>
 		</view>
 		<Loading ref="loading"></Loading>
 	</view>
@@ -63,7 +78,10 @@ export default {
 	data() {
 		return {
 			state: getApp().globalData.gUserInfo.authenticated, // 0未验证，1验证中，2验证失败，3验证通过
-			trueName: "",
+			trueName: {
+				val: "",
+				errMsg: "姓名不能为空"
+			},
 			type: 0,
 			idCardFront: "", //身份证正面
 			idCardBack: "", //身份证反面
@@ -80,87 +98,78 @@ export default {
 			}
 		}
 	},
+	onLoad() {
+		this.gUndesign()
+	},
 	methods: {
-		/* 选择图片 */
+		/**
+		 * 选择图片
+		 * @param {String} item 变量字段
+		 */
 		chooseImg(item)
 		{
-			uni.chooseImage({
-				count: 1, //默认9
-				sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
-				success:  (img) => {
-					this[item] = img.tempFilePaths[0]
-				}
+			this.gChooseImage(1,true)
+			.then(res => {
+				this[item] = res[0]
 			})
 		},
-		/*
-			trueName: 进入操作菜单
-			desc: 点击图片进入操作菜单，提示修改图片或者预览图片
-			input: 输入一个变量的字段
-			time: 2020/11/12
+	   /**
+		* 点击图片，打开menu操作菜单
+		* @param {String} item 变量字段
 		*/
-		showMenu(item)
+		onclickImg(item)
 		{
 			/* 进入操作菜单 */
-			uni.showActionSheet({
-				itemList: ['预览图片', '修改图片','删除图片'],
-				success: (res) => {
-					/* 预览图片 */
-					if(res.tapIndex === 0){
-						uni.previewImage({
-							urls: [this[item]]
-						})
-					}
-					/* 修改图片 */
-					else if(res.tapIndex === 1){
+			this.gMenuPicker(['预览图片', '修改图片','删除图片'])
+			.then(res => {
+				switch(res) {
+					case "预览图片":
+						this.gReadImage([this[item]])
+						break
+					case "修改图片":
 						this.chooseImg(item)
-					}
-					/* 删除图片 */
-					else if(res.tapIndex === 2){
+						break
+					case "删除图片":
 						this.gShowModal("确认删除该证明图片?",() => {
 							this[item] = ""
 						})
-					}
+						break
 				}
 			})
 		},
-		/* 提交事件 */
-		submit()
+		/**
+		 * 提交实名验证,如果是审核中，则提示是否重新审核。
+		 */
+		onclickSubmit()
 		{
 			/* 已通过验证提醒 */
 			if(this.state === 3){
-				this.gShowModal("重新提交实名认证需重新审核，请确认",() => {
-					this.prove()
+				this.gShowModal("重新提交实名认证需重新审核,请确认!",() => {
+					this.uploadProve()
 				})
 			}
 			else{
-				this.prove()
+				this.uploadProve()
 			}
 		},
-		/* 请求上传证明 */
-		prove()
+		/**
+		 * 上传证明,校验空值
+		 */
+		uploadProve()
 		{
 			/* 空值检测 */
-			if(this.trueName === ""){
-				this.gToastError("姓名为空")
-			}
-			else if(this.idCardFront === "" || this.idCardBack === ""){
-				this.gToastError("身份证明为空")
-			}
-			else if(this.identify === 0 && this.studentCard === ""){
-				this.gToastError("学生证明为空")
-			}
-			else{
+			
+			if(!this.gIsNull([this.trueName])){
 				this.gLoading(this,true)
 				const data = {
 					trueName: this.trueName,
 					type: this.type,
 				}
 				const signatures = [
-					{path: this.idCardFront,name: `idCardFront/${Date.now()}.jpg`,key: "idCardFrontFilename"},
-					{path: this.idCardBack,name: `idCardBack/${Date.now()}.jpg`,key: "idCardBackFilename"}
+					this.idCardFront,this.idCardBack
 				]
 				if(this.studentCard){
-					signatures.push({path: this.studentCard,name: `studentCard/${Date.now()}.jpg`,key: "studentCardFilename"})
+					signatures.push(this.studentCard)
 				}
 				/* 获取上传签名 */
 				Promise.all(signatures.map(item => getAuthenticationSignature(item.name)))

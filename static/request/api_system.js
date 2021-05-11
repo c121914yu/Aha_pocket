@@ -21,7 +21,7 @@ exports.signNotice = () => request("/sign/notice","POST")
  * @param {String}  sortBy 排序关键字time、status、type、level、replyTime
  * @param {String}  orderBy 排序方式
  */
-exports.getFeedbackMe = (param) => request("/feedback/me","GET",param)
+exports.getMyFeedback = (param) => request("/feedback/me","GET",param)
 
 /**
  * 用户提交反馈

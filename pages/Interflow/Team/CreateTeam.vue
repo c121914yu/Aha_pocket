@@ -1,7 +1,11 @@
+<!-- 
+	创建团队
+	author yjl
+ -->
 <template>
 	<view class="create-team">
 		<view class="card">
-			<view style="margin-bottom: 50px;" class="h3">团队基本信息</view>
+			<view style="margin-bottom: 50px" class="h3">团队基本信息</view>
 			<!-- 头像 -->
 			<view class="avatar">
 				<view v-if="avatar" @click="onclickAvatar">
@@ -28,13 +32,13 @@
 				v-model="tag">
 			</SelfInput>
 			<Tags 
-				:tags="tagsList"
+				:tags="tag | splitTags"
 				Color="var(--black)"
 				bgColor="transparent"
 				border="var(--border2)">
 			</Tags>
 			<!-- 团队介绍 -->
-			<view style="margin: 5px 0;" class="title strong">团队介绍</view>
+			<view style="margin: 5px 0" class="title strong">团队介绍</view>
 			<view class="intro" v-if="intro" v-html="intro"></view>
 			<button class="intro-btn" @click="startEdit">编辑</button>
 		</view>
@@ -46,7 +50,7 @@
 
 <script>
 import { postTeam } from "@/static/request/api_team.js"
-import { getPublicSignature } from '@/static/request/api_system.js';
+import { getPublicSignature } from '@/static/request/api_system.js'
 export default {
 	data() {
 		return {
@@ -59,30 +63,27 @@ export default {
 			tag: "",
 			intro: "",
 			arr_school: ["浙江大学","浙江工业大学","杭州电子科技大学","浙江理工大学","浙江农林大学","浙江科技学院","浙江外国语学院","中国计量大学","浙江财经大学"]
-		};
-	},
-	computed: {
-		tagsList() {
-			return this.tag.split(' ').filter(tag => tag !== '');
 		}
 	},
 	onShow() {
+		/* 获取md内容 */
 		this.intro = getApp().globalData.gEditContent
 		getApp().globalData.gEditContent = ""
 	},
 	methods: {
-		/* 选择图片 */
-		chooseImg(item) 
+		/**
+		 * 选择头像
+		 */
+		chooseImg() 
 		{
-			uni.chooseImage({
-				count: 1, //默认9
-				sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
-				success: img => {
-					this.avatar = img.tempFilePaths[0];
-				}
+			this.gChooseImage()
+			.then(url => {
+				this.avatar = url[0]
 			})
 		},
-		/* 点击头像，menu弹窗提示查看头像/修改头像 */
+		/**
+		 * 点击头像，menu弹窗提示查看头像/修改头像
+		 */
 		onclickAvatar()
 		{
 			this.gMenuPicker(["查看头像","修改头像"])
@@ -95,7 +96,9 @@ export default {
 				}
 			})
 		},
-		/* 开始富文本编辑 */
+		/**
+		 * 开始富文本编辑
+		 */
 		startEdit()
 		{
 			getApp().globalData.gEditContent = this.intro
@@ -103,21 +106,25 @@ export default {
 				url: "../../EditMd/EditMd"
 			})
 		},
-		/* 点击创建团队 */
+		/**
+		 * 点击创建团队
+		 */
 		async onclickCreate()
 		{
 			if(!this.gIsNull([this.name])){
 				this.gLoading(this,true)
 				if(this.avatar){
-					/* 获取上传签名 */
 					try{
+						/* 获取上传签名 */
 						const sign = await getPublicSignature(`${Date.now()}.JPG`)
+						/* 上传图片 */
 						const url = await this.gUploadFile(this.avatar, sign.data)
 						this.avatar = url.header.Location
 					} catch(err) {
 						this.gLoading(this,false)
 					}
 				}
+				/* 创建团队API */
 				const data = {
 					avatar : this.avatar || "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png",
 					name: this.name.val,

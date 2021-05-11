@@ -11,6 +11,7 @@
 			:style="{
 				'border-radius': `${radius}px`
 			}"
+			class="input"
 			:type="type" 
 			:value="value"
 			:placeholder="placeholder" 
@@ -70,7 +71,7 @@ export default {
 		position absolute
 		margin-left 10px
 		color var(--origin2)
-	input
+	.input
 		flex 1
 		padding 5px 0 5px 30px
 		background-color #FFFFFF

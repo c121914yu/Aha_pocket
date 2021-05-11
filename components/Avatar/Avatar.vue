@@ -7,7 +7,7 @@
 			'background-color': bgColor
 		}"
 		@click="readImg">
-		<image :src="src" mode="widthFix"></image>
+		<image class="img" :src="src" mode="widthFix"></image>
 	</view>
 </template>
 
@@ -54,6 +54,6 @@ export default {
 	display flex
 	align-items center
 	overflow hidden
-	image
+	.img
 		width 100%
 </style>

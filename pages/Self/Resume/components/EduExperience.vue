@@ -1,47 +1,51 @@
+<!-- 
+	教育经历
+	author yjl
+ -->
 <template>
-	<view v-if="loaded" class="edu-experience">
+	<view v-if="is_loaded" class="edu-experience">
 		<!-- 学位 -->
-		<resumeMenuPicker
+		<resume-menu-picker
 			label="学位"
 			:arr_range="['博士后','博士','硕士','本科','专科','高中']"
 			placeholder="学位情况"
 			v-model="degree">
-		</resumeMenuPicker>
+		</resume-menu-picker>
 		<!-- 学校 -->
-		<resumeInput
+		<resume-input
 			label="学校"
 			placeholder="你的学校"
 			:arr_search="arr_school"
 			v-model="school">
-		</resumeInput>
+		</resume-input>
 		<!-- 专业 -->
-		<resumeInput
+		<resume-input
 			label="专业"
 			placeholder="你的专业"
 			v-model="specialty">
-		</resumeInput>
+		</resume-input>
 		<!-- 成绩 -->
-		<resumeMenuPicker
+		<resume-menu-picker
 			label="成绩排名"
 			:arr_range="arr_grade"
 			placeholder="成绩排名"
 			v-model="grade">
-		</resumeMenuPicker>
+		</resume-menu-picker>
 		<view class="border"></view>
-		<resumeDataPicker
+		<resume-data-picker
 			label="入学时间"
 			placeholder="入学时间"
 			v-model="startTime">
-		</resumeDataPicker>
-		<resumeDataPicker
+		</resume-data-picker>
+		<resume-data-picker
 			label="毕业时间"
 			placeholder="毕业时间"
 			is_today
 			v-model="endTime">
-		</resumeDataPicker>
+		</resume-data-picker>
 		<view class="btns">
-			<button v-if="index" class="delete" @click="remove">删除</button>
-			<button class="save" @click="save">保存</button>
+			<button v-if="index!==null" class="delete" @click="onclickRemoveExp">删除</button>
+			<button class="save" @click="onclickSave">{{index === null ? "创建经历" : "保存"}}</button>
 		</view>
 	</view>
 </template>
@@ -52,11 +56,16 @@ import resumeInput from "./Resume_input.vue"
 import resumeDataPicker from "./Resume_datePicker"
 import resumeMenuPicker from "./Resume_menuPicker.vue"
 export default {
+	components: {
+		"resume-input": resumeInput,
+		"resume-data-picker": resumeDataPicker,
+		"resume-menu-picker": resumeMenuPicker,
+	},
 	data() {
 		return {
-			loaded: false,
-			index: null,
-			is_remove: false,
+			is_loaded: false,
+			is_remove: false, // 是否是删除该经历
+			index: null, // 经历的下标
 			degree: "",
 			school: "",
 			specialty: "",
@@ -67,11 +76,6 @@ export default {
 			arr_grade: ['前1%', '1%-5%', '5%-20%', '20%-50%', '50%-100%'], // 成绩等级
 		};
 	},
-	components: {
-		resumeInput,
-		resumeDataPicker,
-		resumeMenuPicker
-	},
 	onLoad(e) {
 		if(e.index){
 			this.index = e.index
@@ -80,26 +84,30 @@ export default {
 				this[key] = resume[key]
 			}
 		}
-		this.loaded = true
+		this.is_loaded = true
 		console.log(getApp().globalData.gResume.eduExperiences);
 	},
 	beforeDestroy() {
-		/* 新简历返回 | 删除时不触发 */
+		/* 创建简历 | 删除简历时不触发更新 */
 		if(this.index !== null && !this.is_remove){
 			this.putExperience()
 		}
 	},
 	methods: {
-		save()
+		/**
+		 * 点击保存按键，判断是创建还是修改，如果是创建经历则调用API添加经历。
+		 */
+		onclickSave()
 		{
 			/* 新简历点击保存时手动触发更新 */
 			if(this.index === null){
 				this.putExperience()
 			}
-			uni.navigateBack({
-				delta: 1
-			})
+			this.gBackPage("")
 		},
+		/**
+		 * 更新经历（追加也是更新）
+		 */
 		putExperience()
 		{
 			const data = {
@@ -110,11 +118,13 @@ export default {
 				startTime: this.startTime,
 				endTime: this.endTime,
 			}
-			if(this.index){
+			/* 修改经历 */
+			if(this.index !== null){
 				getApp().globalData.gResume.eduExperiences[this.index] = data
 			}
+			/* 添加经历，判断是否为null */
 			else{
-				if(getApp().globalData.gResume.eduExperiences){
+				if(getApp().globalData.gResume.eduExperiences !== null){
 					getApp().globalData.gResume.eduExperiences.push(data)
 				}
 				else{
@@ -123,16 +133,16 @@ export default {
 			}
 			putResume(getApp().globalData.gResume)
 		},
-		/* 删除经历 */
-		remove()
+		/**
+		 * 删除经历
+		 */
+		onclickRemoveExp()
 		{
 			this.gShowModal("确认删除该经历？",() => {
 				this.is_remove = true
 				getApp().globalData.gResume.eduExperiences.splice(this.index,1)
 				putResume(getApp().globalData.gResume)
-				uni.navigateBack({
-					delta: 1
-				})
+				this.gBackPage("")
 			})
 		}
 	}

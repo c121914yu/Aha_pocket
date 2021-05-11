@@ -1,4 +1,7 @@
-<!-- 用户信息主页 -->
+<!-- 
+	用户信息主页
+	author yjl
+-->
 <template>
 	<view class="user-home">
 		<view class="header">
@@ -9,25 +12,26 @@
 				</view>
 			  	<view class="right">
 			  		<view class="nickname">{{nickname}}</view>
-			  		<view class="honor">全国大学生服务外包大赛: 国一</view>
-			  		<Tags :tags="tags"></Tags>
+			  		<view class="honor"></view>
+			  		<Tags :tags="arr_tags"></Tags>
+					<!-- 用户关系，非自己可以点击关注，咨询 -->
 					<view v-if="userRelation !== 1" class="user-relation">
-						<view class="attention" @click="attentionUser">
+						<view class="attention" @click="onclickAttention">
 							<text class="iconfont icon-xiazai"></text>
 							{{userRelation === 2 ? "取消关注" : "关注"}}
 						</view>
-						<navigator class="consult" :url="'./Inform/Inform_send?id=' + userId">
+						<navigator class="consult" :url="`./Inform/Inform_send?id=${userId}`">
 							<text class="iconfont icon-xiazai"></text>咨询
 						</navigator>
-						<button class="share" open-type="share">
-							<text class="iconfont icon-xiazai"></text>分享
-						</button>
 					</view>
+					<button class="share" open-type="share">
+						<text class="iconfont icon-xiazai"></text>分享
+					</button>
 			  	</view>
 			</view>
 			<view class="second">
 				<view class="statistics center">
-					<view class="strong">{{userPoint | filter_point}}Aha币</view>
+					<view class="strong">{{Math.floor(userPoint)}}Aha币</view>
 					<view class="small">竞赛成果</view>
 				</view>
 				<view class="statistics center">
@@ -42,14 +46,14 @@
 		</view>
 		<!-- 导航 -->
 		<TopNavs 
-			:navs="navs"
+			:navs="arr_navs"
 			color="var(--black)"
 			backgroundColor="#ffffff"
 			@navChange="trackType=$event.val">
 		</TopNavs>
 		<!-- 足迹内容 -->
 		<view class="card tracks">
-			<TimeTracks :tracks="userTracks"></TimeTracks>
+			<TimeTracks :tracks="arr_userTracks"></TimeTracks>
 		</view>
 		<!-- 简历 -->
 		<view v-if="resume && resume.name" class="card resume">
@@ -113,7 +117,7 @@
 </template>
 
 <script>
-import { getUser,getUserStatistice,getUserTracks,getResume,followUser,unfollowUser,getUserRelation } from '@/static/request/api_userInfo.js';
+import { getUser,getUserStatistice,getUserTracks,getResume,followUser,unfollowUser,getUserRelation } from '@/static/request/api_userInfo.js'
 export default {
 	data() {
 		return {
@@ -121,64 +125,57 @@ export default {
 			userRelation: 1,//0-无关系 1-自己 2-已关注 3-被关注 4-互关
 			avatarUrl: '',
 			nickname: 'Aha会员',
-			tags: [],
+			arr_tags: [],
 			userPoint: 0, //用户累计Aha点
 			resume: null,
-			navs: [
+			arr_navs: [
 				{label: "平台轨迹",val: ""},
 				{label: "竞赛",val: "project"},
 				{label: "服务",val: ""},
 				{label: "外包",val: ""}
 			],
 			trackType: "",
-			userTracks: []
-		};
-	},
-	filters: {
-		filter_point(val){
-			return Math.floor(val)
+			arr_userTracks: []
 		}
 	},
 	onLoad(e) {
 		if (!e.userId) {
-			this.gToastError('ID为空')
-			uni.navigateBack({
-				delta: 1
-			})
+			this.gBackPage("ID无效")
 		}
 		else {
-			this.gLoading(this, true);
-			this.userId = e.userId;
+			this.gLoading(this, true)
+			this.userId = e.userId
 			/* 根据用户userId，请求数据 */
 			getUser(this.userId)
 			.then(res => {
 				/* 格式化比赛标签和特征标签 */
 				if(res.data.specialtyTags){
-					this.tags = this.tags.concat(res.data.specialtyTags.split(','))
+					this.arr_tags = this.arr_tags.concat(res.data.specialtyTags.split(','))
 				}
 				if(res.data.compTags){
-					this.tags = this.tags.concat(res.data.compTags.split(','))
+					this.arr_tags = this.arr_tags.concat(res.data.compTags.split(','))
 				}
 				this.avatarUrl = res.data.avatarUrl
 				this.nickname = res.data.nickname
 			})
-			/* 获取用户关系,用户等级,介绍 */
-			Promise.all([getUserRelation(this.userId),getUserStatistice(this.userId),getResume(this.userId)])
+			/* 获取用户关系,用户等级,介绍，用户轨迹 */
+			Promise.all([getUserRelation(this.userId),getUserStatistice(this.userId),getResume(this.userId),this.getUserTrack()])
 			.then(res => {
 				this.userRelation = res[0].data
 				this.userPoint = res[1].data.totalContribPoint
 				this.resume = res[2].data
-				console.log(this.resume);
+				// console.log(this.resume)
 			})
-			/* 获取用户轨迹 */
-			this.getUserTrack()
-			this.gLoading(this, false);
+			this.gLoading(this, false)
 		}
 	},
 	methods: {
-		/* 关注/取消关注 */
-		attentionUser()
+		/**
+		 * 点击 关注/取消关注，执行不同方法
+		 */
+		onclickAttention()
 		{
+			/* userRelation=2代表已关注 */
 			if(this.userRelation === 2){
 				unfollowUser(this.userId)
 				this.userRelation = 0
@@ -187,23 +184,26 @@ export default {
 				followUser(this.userId)
 				this.userRelation = 2
 			}
+			/* 震动 */
 			uni.vibrateLong()
 		},
-		/* 获取用户轨迹信息 */
+		/**
+		 * 获取用户轨迹信息
+		 */
 		getUserTrack()
 		{
-			getUserTracks(this.userId,this.trackType)
-			.then(res => {
-				res.data.forEach(track => {
-					const date = new Date(track.date)
-					track.date = `${date.getFullYear()}.${date.getMonth()+1}.${date.getDate()}`
-					this.userTracks.push(track)
-				})
-				console.log(res);
-			})
+			return  getUserTracks(this.userId,this.trackType)
+					.then(res => {
+						res.data.forEach(track => {
+							const date = new Date(track.date)
+							track.date = `${date.getFullYear()}.${date.getMonth()+1}.${date.getDate()}`
+							this.arr_userTracks.push(track)
+						})
+						console.log(res.data)
+					})
 		}
 	}
-};
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -213,6 +213,7 @@ export default {
 	background-color var(--white1)
 	.header
 		background-color var(--origin4)
+		/* 头像 标签 昵称等 */
 		.first
 			padding 15px 0 10px 10%
 			display flex
@@ -256,11 +257,13 @@ export default {
 					line-height 1.5
 					border-bottom-right-radius 0
 					border-top-right-radius 0
+		/* 统计数据 */
 		.second
 			padding 10px 0
 			color var(--gray1)
 			display flex
 			justify-content space-around
+	/* 用户信息卡片 */
 	.card
 		margin 15px auto
 		width 95%
@@ -273,9 +276,7 @@ export default {
 			text-align center
 			font-size 22rpx
 			color var(--gray2)
-	.remark
-		text-align center
-		color var(--gray2)
+	/* 简历 */
 	.resume
 		min-height 100px
 		.base-info

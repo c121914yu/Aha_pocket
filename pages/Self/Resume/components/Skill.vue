@@ -1,14 +1,18 @@
+<!-- 
+	个人技能
+	author yjl
+ -->
 <template>
 	<view class="skill">
 		<textarea 
 			placeholder="个人技能描述"
 			maxlength="1000"
-			@input="inputing"
+			auto-height="auto-height"
 			v-model="projectSkill"/>
 		<view class="count">
 			{{projectSkill.length || 0}} / 1000
 		</view>
-		<button @click="save">保存</button>
+		<button @click="gBackPage('')">保存</button>
 	</view>
 </template>
 
@@ -24,12 +28,9 @@ export default {
 		this.putData()
 	},
 	methods: {
-		save()
-		{
-			uni.navigateBack({
-				delta: 1
-			})
-		},
+		/**
+		 * 更新经历（追加也是更新）
+		 */
 		putData()
 		{
 			getApp().globalData.gResume.projectSkill = this.projectSkill
@@ -43,7 +44,8 @@ export default {
 .skill
 	padding 20px 10px
 	textarea
-		height 40vh
+		min-height 40vh
+		max-height 80vh
 		width 100%
 		padding-bottom 5px
 		border-bottom var(--border2)

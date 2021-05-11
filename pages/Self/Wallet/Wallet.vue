@@ -1,4 +1,7 @@
-<!-- 我的钱包 -->
+<!-- 
+	我的钱包
+	author yjl
+-->
 <template>
 	<view class="wallet">
 		<view class="head">
@@ -6,7 +9,7 @@
 				<view class="small">Aha币</view>
 				<view class="h3">{{ahaCredit}}</view>
 				<view class="function">
-					<view class="ctr" @click="isShowPay=true">
+					<view class="ctr" @click="is_showPay=true">
 						<text class="iconfont icon-qian"></text>
 						<text>充值</text>
 					</view>
@@ -20,7 +23,7 @@
 				<view class="small">Aha点</view>
 				<view class="h3">{{ahaPoint}}</view>
 				<view class="function">
-					<view class="ctr" @click="isShowConversion=true">
+					<view class="ctr" @click="is_showConversion=true">
 						<text class="iconfont icon-duihuan"></text>
 						<text>兑换码</text>
 					</view>
@@ -28,7 +31,7 @@
 			</view>
 		</view>
 		<!-- 卡片操作 -->
-		<view class="card" @click="withdrawDeposit">
+		<view class="card" @click="onclickWithdrawDeposit">
 			<text class="logo iconfont icon-tixian"></text>
 			<text class="name">Aha币提现</text>
 			<text class="explain">实名认证后才可提现</text>
@@ -41,9 +44,9 @@
 			<text class="right iconfont icon-right"></text>
 		</navigator>
 		
-		<PayAha v-if="isShowPay" @close="isShowPay=false"></PayAha>
-		<GivePoint v-if="isShowGive" @close="isShowGive=false" @finish="upDate"></GivePoint>
-		<Conversion v-if="isShowConversion" @close="isShowConversion=false" @finish="upDate"></Conversion>
+		<give-point v-if="is_showGive" @close="is_showGive=false" @finish="upDate"></give-point>
+		<pay-aha v-if="is_showPay" @close="is_showPay=false"></pay-aha>
+		<conversion v-if="is_showConversion" @close="is_showConversion=false" @finish="upDate"></conversion>
 	</view>
 </template>
 
@@ -52,44 +55,47 @@ import GivePoint from "./components/GivePoint.vue"
 import PayAha from "./components/PayAha.vue"
 import Conversion from "./components/Conversion.vue"
 export default {
+	components: {
+		"give-point": GivePoint,
+		"pay-aha": PayAha,
+		"conversion": Conversion
+	},
 	data() {
 		return {
-			ahaCredit: 0,
-			ahaPoint: 0,
-			isShowGive: false,
-			isShowPay: false,
-			isShowConversion: false
+			ahaCredit: 0, // aha币
+			ahaPoint: 0, // aha点
+			is_showGive: false, // 展示赠送弹窗
+			is_showPay: false, // 展示充值弹窗
+			is_showConversion: false, // 展示兑换弹窗
 		}
-	},
-	components: {
-		GivePoint,
-		PayAha,
-		Conversion
 	},
 	onShow() {
 		this.upDate()
 	},
 	methods: {
-		/* 重新更新余额和贡献点 */
+		/**
+		 * 请求最新的aha币和aha点
+		 */
 		upDate()
 		{
 			this.gGetMeInfo()
 			.then(res => {
 				this.ahaCredit = res.ahaCredit
 				this.ahaPoint = res.ahaPoint
-				// console.log(res);
 			})
-			this.isShowGive = false
-			this.isShowPay = false
-			this.isShowConversion = false
+			this.is_showGive = false
+			this.is_showPay = false
+			this.is_showConversion = false
 		},
-		/* 提现，判断是否实名认证，若未实名认证则跳转实名认证 */
-		withdrawDeposit()
+		/**
+		 * 点击提现，判断是否实名认证，若未实名认证则跳转实名认证
+		 */
+		onclickWithdrawDeposit()
 		{
 			uni.navigateTo({
 				url: "/pages/Self/Number/Authentication",
 				success: () => {
-					this.gToastError("请先实名认证")
+					this.gToastMsg("请先实名认证")
 				}
 			})
 		},

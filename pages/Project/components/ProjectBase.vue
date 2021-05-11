@@ -90,7 +90,7 @@ export default {
 		},
 	},
 	data() {
-		const Matches = getApp().globalData.Competitions.map(item => item.name)
+		const Matches = getApp().globalData.garr_competitions.map(item => item.name)
 		return {
 			isAnonymous: false,
 			name: '', // 项目名称
@@ -118,7 +118,7 @@ export default {
 		/* 根据比赛名称计算获奖等级 */
 		prizeLevels() {
 			let Levels = getApp().globalData.garr_prizeLevels
-			const match = getApp().globalData.Competitions.find(item => item.name === this.compName)
+			const match = getApp().globalData.garr_competitions.find(item => item.name === this.compName)
 			if(match){
 				const start = (5-match.level)*3
 				return Levels.slice(start,start+3)

@@ -1,8 +1,11 @@
-<!-- 通知信息 -->
+<!-- 
+	通知信息详细
+	author yjl
+-->
 <template>
 	<view class="inform">
 		<view class="head">
-			<text class="remove iconfont icon-remove" @click="removeInform"></text>
+			<text class="remove iconfont icon-remove" @click="onclickRemoveInform"></text>
 			<view class="h3">{{title}}</view>
 			<view class="item">
 				<text class="label">发件人:</text>
@@ -52,29 +55,21 @@ export default {
 			for(let key in res.data){
 				this[key] = res.data[key]
 			}
-			this.gLoading(this,false)
 		})
 		.catch(err => {
-			uni.navigateBack({
-				delta: 1
-			})
+			this.gBackPage("通知无效")
 		})
+		.finally(() => this.gLoading(this,false))
 	},
 	methods: {
-		/* 
-			调用modal提示框确认删除消息。
-			time: 2020/12/1
-		*/
-		removeInform()
+		/**
+		 * 点击删除通知，调用moda提示
+		 */
+		onclickRemoveInform()
 		{
 			this.gShowModal("确认删除该通知? ",() => {
 				deleteMessage(this.id)
-				uni.navigateBack({
-					delta: 1,
-					success: () => {
-						this.gToastSuccess("删除成功!")
-					}
-				})
+				this.gBackPage("删除成功")
 			})
 		}
 	}

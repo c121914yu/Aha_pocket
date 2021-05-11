@@ -1,7 +1,15 @@
+<!-- 
+	兴趣选择
+	author yjl
+ -->
 <template>
 	<view class="select-interest">
 		<!-- 蒙层 -->
-		<view class="mask" @click.self="$emit('close')" @touchmove.stop.prevent></view>
+		<view 
+			class="mask" 
+			@click.self="$emit('close')" 
+			@touchmove.stop.prevent>
+		</view>
 		<!-- 主体内容 -->
 		<view class="content">
 			<!-- 标题 -->
@@ -15,9 +23,9 @@
 				<view class="title strong">个人({{ specialtyAmount }} / 4)</view>
 				<view class="select-box">
 					<view class="item" 
-						v-for="(tag, index) in specialtyTags" 
+						v-for="(tag, index) in arr_specialtyTags" 
 						:key="index" 
-						@click="selectTag('specialtyAmount', tag)">
+						@click="onclickTag('specialtyAmount', tag)">
 						<text class="strong">{{ tag.text }}</text>
 						<view class="circle-out">
 							<view
@@ -33,7 +41,7 @@
 							type="text" 
 							placeholder="自定义标签" 
 							maxlength="6" 
-							@blur="addTag('specialtyTags')" 
+							@blur="onblurAddTag('arr_specialtyTags')" 
 							v-model="selfTag"/>
 					</view>
 				</view>
@@ -41,9 +49,9 @@
 				<view class="select-box">
 					<view 
 						class="item compete" 
-						v-for="(tag, index) in compTags" 
+						v-for="(tag, index) in arr_compTags" 
 						:key="index" 
-						@click="selectTag('compAmount', tag)">
+						@click="onclickTag('compAmount', tag)">
 						<view class="strong">{{ tag.text }}</view>
 						<view class="circle-out">
 							<view
@@ -55,10 +63,11 @@
 					</view>
 					<view v-if="compAmount < 4" class="item compete">
 						<input
+							class="input-interest"
 							type="text" 
 							placeholder="自定义标签" 
 							maxlength="6" 
-							@blur="addTag('compTags')" 
+							@blur="onblurAddTag('arr_compTags')" 
 							v-model="selfTag"/>
 					</view>
 				</view>
@@ -66,7 +75,7 @@
 			<!-- 底部按键 -->
 			<BottomBtn
 				text="确认"
-				@click="sure">
+				@click="onclickSure">
 			</BottomBtn>
 		</view>
 	</view>
@@ -78,7 +87,7 @@ export default {
 	data() {
 		return {
 			selfTag: "",
-			specialtyTags: [
+			arr_specialtyTags: [
 				{ text: '视觉', select: false },
 				{ text: '文书', select: false },
 				{ text: '前端', select: false },
@@ -87,7 +96,7 @@ export default {
 				{ text: '大数据', select: false },
 				{ text: '商业模式', select: false }
 			],
-			compTags: [
+			arr_compTags: [
 				{ text: '互联网+', select: false },
 				{ text: '挑战杯', select: false },
 				{ text: '服务外包', select: false },
@@ -99,43 +108,42 @@ export default {
 		};
 	},
 	computed: {
+		/* 计算选中的长度 */
 		specialtyAmount() {
-			if (this.specialtyTags) return this.specialtyTags.filter(item => item.select).length;
-			return 0;
+			return this.arr_specialtyTags.filter(item => item.select).length
 		},
 		compAmount() {
-			if (this.compTags) return this.compTags.filter(item => item.select).length;
-			return 0;
+			return this.arr_compTags.filter(item => item.select).length
 		}
 	},
 	created() {
 		/* 获取已经选择的标签，将其设置为true */
-		let specialtyTags = getApp().globalData.gUserInfo.userInfo.specialtyTags
-		specialtyTags = specialtyTags ? specialtyTags.split(',') : [],
+		let arr_specialtyTags = getApp().globalData.gUserInfo.userInfo.specialtyTags
+		arr_specialtyTags = arr_specialtyTags ? arr_specialtyTags.split(',') : [],
 		/* 判断是否在已存标签 */
-		specialtyTags.forEach(tag => {
+		arr_specialtyTags.forEach(tag => {
 			/* 判断该标签是否在预设中，若在直接修改select，不在则末尾追加 */
-			const index = this.specialtyTags.findIndex(item => item.text === tag)
+			const index = this.arr_specialtyTags.findIndex(item => item.text === tag)
 			if(index >= 0){
-				this.specialtyTags[index].select = true
+				this.arr_specialtyTags[index].select = true
 			}
 			else{
-				this.specialtyTags.push({
+				this.arr_specialtyTags.push({
 					text: tag,
 					select: true
 				})
 			}
 		})
-		let compTags = getApp().globalData.gUserInfo.userInfo.compTags
-		compTags = compTags ? compTags.split(',') : []
-		compTags.forEach(tag => {
+		let arr_compTags = getApp().globalData.gUserInfo.userInfo.compTags
+		arr_compTags = arr_compTags ? arr_compTags.split(',') : []
+		arr_compTags.forEach(tag => {
 			/* 判断该标签是否在预设中，若在直接修改select，不在则末尾追加 */
-			const index = this.compTags.findIndex(item => item.text === tag)
+			const index = this.arr_compTags.findIndex(item => item.text === tag)
 			if(index >= 0){
-				this.compTags[index].select = true
+				this.arr_compTags[index].select = true
 			}
 			else{
-				this.compTags.push({
+				this.arr_compTags.push({
 					text: tag,
 					select: true
 				})
@@ -143,54 +151,60 @@ export default {
 		})
 	},
 	methods: {
-		addTag(arr)
+		/**
+		 * @param {String} key 对应的对象名
+		 */
+		onblurAddTag(key)
 		{
 			if(this.selfTag){
-				this[arr].push({
+				this[key].push({
 					text: this.selfTag,
 					select: true
 				})
 				this.selfTag = ""
 			}
 		},
-		/* 点击标签，切换选中状态 */
-		selectTag(key, tag) 
+		/**
+		 * 点击标签，切换选中状态
+		 * @param {String} key 对应的对象名
+		 * @param {Object} tag 标签对象
+		 */
+		onclickTag(key, tag) 
 		{
+			/* 未选中 */
 			if (!tag.select) {
+				/* 如果小于4个，则选中 */
 				if (this[key] < 4) {
-					tag.select = !tag.select
+					tag.select = true
 				}
 			} 
+			/* 如果未选中直接变true */
 			else {
-				tag.select = !tag.select
+				tag.select = false
 			}
 		},
-		/* 点击确认 */
-		sure() 
+		/**
+		 * 点击确认,更新全局用户属性，并调用api更新数据库
+		 */
+		onclickSure() 
 		{
-			const specialtyTags = this.specialtyTags
-				.filter(item => item.select)
-				.map(item => item.text)
-				.join(',');
-			const compTags = this.compTags
+			const specialtyTags = this.arr_specialtyTags
 				.filter(item => item.select)
 				.map(item => item.text)
 				.join(',')
-			/* 判断是否相等 */
-			if(specialtyTags !== getApp().globalData.gUserInfo.userInfo.specialtyTags || compTags !== getApp().globalData.gUserInfo.userInfo.compTags)
-			{
-				putMe({
-					specialtyTags,
-					compTags
-				})
-				getApp().globalData.gUserInfo.userInfo.specialtyTags = specialtyTags
-				getApp().globalData.gUserInfo.userInfo.compTags = compTags
-				this.gToastSuccess('选择成功')
-				this.$emit('close')
-			}
-			else{
-				this.$emit('close')
-			}
+			const compTags = this.arr_compTags
+				.filter(item => item.select)
+				.map(item => item.text)
+				.join(',')
+			/* 更新 */
+			putMe({
+				specialtyTags,
+				compTags
+			})
+			getApp().globalData.gUserInfo.userInfo.specialtyTags = specialtyTags
+			getApp().globalData.gUserInfo.userInfo.compTags = compTags
+			this.gToastMsg('选择成功')
+			this.$emit('close')
 		}
 	}
 }
@@ -257,7 +271,7 @@ export default {
 			&::before
 				content ''
 				position absolute
-				margin-left -100px
+				margin-left -45%
 				width 22%
 				height 2px
 				background-color var(--origin2)
@@ -265,7 +279,7 @@ export default {
 			&::after
 				content ''
 				position absolute
-				margin-left 100px
+				margin-left 45%
 				width 22%
 				height 2px
 				background-color var(--origin2)
@@ -289,7 +303,7 @@ export default {
 				display flex
 				align-items center
 				justify-content space-between
-				input
+				.input-interest
 					font-size 26rpx
 					font-weight 700
 				&.compete

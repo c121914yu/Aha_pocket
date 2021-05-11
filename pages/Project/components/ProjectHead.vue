@@ -3,6 +3,7 @@
 	<view class="project-head">
 		<view class="sort-filter" :class="topRadius ? 'top-radius' : ''">
 			<text 
+				class="text"
 				:class="index === sortActive ? 'active' : ''" 
 				v-for="(sort, index) in sortList" 
 				:key="sort" 
@@ -13,7 +14,7 @@
 				:style="{
 					color: is_filterActive ? 'var(--origin2)' : ''
 				}"
-				class="filter"
+				class="text filter"
 				@click="is_showFileter = true">
 				筛选
 				<text class="iconfont icon-shaixuan"></text>
@@ -90,7 +91,7 @@ export default {
 		&.top-radius
 			border-top-left-radius 22px
 			border-top-right-radius 22px
-		text
+		.text
 			flex 1
 			padding 20rpx 0
 		.active

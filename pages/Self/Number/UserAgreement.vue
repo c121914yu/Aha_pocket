@@ -1,4 +1,7 @@
-<!-- 用户须知 -->
+<!-- 
+	用户须知
+	author yjl
+-->
 <template>
 	<view class="user-agreement">
 		<view class="content">
@@ -83,7 +86,7 @@ Aha口袋充分尊重并保护所有使用服务用户的个人隐私权，高�
 
 至此，您已经详细阅读并已理解本《Aha口袋用户协议》，并同意严格遵守本协议各条款和条件。
 	
-				<view style="text-align: end;">生效日期：2020年2月3日</view>
+				<view style="text-align: end">生效日期：2020年2月3日</view>
 				<!-- 隐私政策 -->
 				<view class="title center">Aha口袋《隐私权政策》</view>
 我们深知个人信息对您的重要性，并会尽全力保护您的个人信息安全可靠。我们致力于维持您对我们的信任，恪守以下原则，保护您的个人信息：权责一致原则、目的明确原则、选择同意原则、最少够用原则、确保安全原则、主体参与原则、公开透明原则等。同时，我们承诺，我们将按业界成熟的安全标准，采取相应的安全保护措施来保护您的个人信息。　　请在使用我们的产品（或服务）前，仔细阅读并了解本《隐私权政策》。
@@ -224,7 +227,7 @@ IOS手机：设置—>隐私—>权限—>应用；　　
 			</view>
 			<!-- 须知勾选 -->
 			<view class="sign" @click="isReaded = !isReaded">
-				<view class="square" :class="isReaded ? 'active' : ''">{{ isReaded ? '&#10003;' : '' }}</view>
+				<view class="square" :class="isReaded ? 'active' : ''">{{ isReaded ? '&#10003' : '' }}</view>
 				<view class="small">
 					我已阅读
 					<text class="strong">Aha口袋</text>
@@ -233,7 +236,12 @@ IOS手机：设置—>隐私—>权限—>应用；　　
 				</view>
 			</view>
 			<!-- 完成按键 -->
-			<button class="readed-btn" :class="isReaded ? 'already' : 'noReady'" @click="readed">我已阅读</button>
+			<button 
+				class="readed-btn" 
+				:class="isReaded ? 'already' : 'noReady'" 
+				@click="onclickRead">
+				我已阅读
+			</button>
 		</view>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
@@ -241,19 +249,19 @@ IOS手机：设置—>隐私—>权限—>应用；　　
 </template>
 
 <script>
-import { signNotice } from '@/static/request/api_system.js';
+import { signNotice } from '@/static/request/api_system.js'
 export default {
 	data() {
 		return {
 			isReaded: getApp().globalData.gUserInfo.signedNotice
-		};
+		}
 	},
 	methods: {
-		/* 
-			name: 我已阅读
-			desc: 点击我已阅读,判断是否勾选了用户协议，未勾选则跳过，勾选则触发请求
+	   /**
+		* 点击已阅读，判断是否勾选了用户协议，未勾选则跳过，勾选则触发请求
 		*/
-		readed() {
+		onclickRead() 
+		{
 			if (!this.isReaded){
 				return
 			}
@@ -262,21 +270,18 @@ export default {
 				return
 			}
 			/* 触发请求 */
-			this.gLoading(this, true);
+			this.gLoading(this, true)
 			signNotice()
 			.then(res => {
-				uni.setStorageSync('token', res.data);
-				this.gToastSuccess(res.msg);
-				getApp().globalData.gUserInfo.signedNotice = true;
-				this.$emit('readed');
-				this.gLoading(this, false);
+				uni.setStorageSync('token', res.data)
+				this.gToastMsg("签署成功")
+				getApp().globalData.gUserInfo.signedNotice = true
+				this.$emit('readed')
 			})
-			.catch(err => {
-				this.gLoading(this, false);
-			});
+			.finally(() => this.gLoading(this, false))
 		}
 	}
-};
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -336,6 +341,7 @@ export default {
 		.readed-btn
 			margin-top 10px
 			width 100%
+			padding 0
 			background-color rgba(144, 140, 139, 0.65)
 			color #333333
 			&.noReady:active
@@ -343,6 +349,4 @@ export default {
 			&.already
 				background-color var(--origin2)
 				color #FFFFFF
-		button
-			padding 0
 </style>

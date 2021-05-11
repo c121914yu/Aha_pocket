@@ -73,7 +73,7 @@ export default {
 						type: 'register'
 					})
 					.then(res => {
-						this.gToastSuccess(res.msg, 1000);
+						this.gToastMsg("验证码已发送",false,1000);
 						this.codeInput = true;
 						this.$refs.codeInput.setTimer();
 						this.gLoading(this, false);

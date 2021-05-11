@@ -1,5 +1,9 @@
+<!-- 
+	校园经历
+	author yjl
+ -->
 <template>
-	<view v-if="loaded" class="school-experience">
+	<view v-if="is_loaded" class="school-experience">
 		<resumeInput
 			label="社团名称"
 			placeholder="社团名称"
@@ -27,8 +31,8 @@
 			v-model="description">
 		</resumeTextarea>
 		<view class="btns">
-			<button v-if="index" class="delete" @click="remove">删除</button>
-			<button class="save" @click="save">保存</button>
+			<button v-if="index!==null" class="delete" @click="onclickRemoveExp">删除</button>
+			<button class="save" @click="onclickSave">{{index === null ? "创建经历" : "保存"}}</button>
 		</view>
 	</view>
 </template>
@@ -41,7 +45,7 @@ import resumeTextarea from "./Resume_textarea.vue"
 export default {
 	data() {
 		return {
-			loaded: false,
+			is_loaded: false,
 			index: null,
 			is_remove: false,
 			organization: "",
@@ -64,26 +68,30 @@ export default {
 				this[key] = resume[key]
 			}
 		}
-		this.loaded = true
+		this.is_loaded = true
 		console.log(getApp().globalData.gResume.schoolExperiences);
 	},
 	beforeDestroy() {
-		/* 新简历返回 | 删除时不触发 */
+		/* 创建简历 | 删除简历时不触发更新 */
 		if(this.index !== null && !this.is_remove){
 			this.putExperience()
 		}
 	},
 	methods: {
-		save()
+		/**
+		 * 点击保存按键，判断是创建还是修改，如果是创建经历则调用API添加经历。
+		 */
+		onclickSave()
 		{
 			/* 新简历点击保存时手动触发更新 */
 			if(this.index === null){
 				this.putExperience()
 			}
-			uni.navigateBack({
-				delta: 1
-			})
+			this.gBackPage("")
 		},
+		/**
+		 * 更新经历（追加也是更新）
+		 */
 		putExperience()
 		{
 			const data = {
@@ -107,16 +115,16 @@ export default {
 			
 			putResume(getApp().globalData.gResume)
 		},
-		/* 删除经历 */
-		remove()
+		/**
+		 * 删除经历
+		 */
+		onclickRemoveExp()
 		{
 			this.gShowModal("确认删除该经历？",() => {
 				this.is_remove = true
 				getApp().globalData.gResume.schoolExperiences.splice(this.index,1)
 				putResume(getApp().globalData.gResume)
-				uni.navigateBack({
-					delta: 1
-				})
+				this.gBackPage("")
 			})
 		}
 	}

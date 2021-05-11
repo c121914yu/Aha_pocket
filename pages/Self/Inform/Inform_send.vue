@@ -1,14 +1,17 @@
-<!-- 消息发送 -->
+<!-- 
+	消息发送
+	author yjl
+-->
 <template>
 	<view class="send-inform">
 		<view class="head">
 			<view class="item">
 				<text class="label">主&emsp;题:</text>
-				<input type="text" placeholder="通知主题" v-model="title">
+				<input type="text" placeholder="通知主题" v-model="title.val">
 			</view>
 			<view class="item">
 				<text class="label">收件人:</text>
-				<input type="text" placeholder="收件人ID" v-model.number="receiverUserId">
+				<input type="text" placeholder="收件人ID" v-model.number="receiverUserId.val">
 			</view>
 			<view class="item">
 				<text class="label">发件人:</text>{{sendName}}
@@ -16,13 +19,13 @@
 		</view>
 		<!-- 信息内容 -->
 		<view class="content">
-			<view v-if="content" v-html="content"></view>
+			<view v-if="content" v-html="content.val"></view>
 			<view class="hint" v-else>无内容...</view>
 		</view>
 		<!-- 操作按键 -->
 		<view class="btns">
-			<button class="edit" @click="startEdit">编辑</button>
-			<button class="send" @click="sendMsg">发送</button>
+			<button class="edit" @click="onclickEdit">编辑</button>
+			<button class="send" @click="onclickSend">发送</button>
 		</view>
 		
 		<!-- 加载动画 -->
@@ -35,66 +38,56 @@ import { postMessage } from "@/static/request/api_userInfo.js"
 export default {
 	data() {
 		return {
-			name: "",
 			sendName: getApp().globalData.gUserInfo.userInfo.nickname,
-			receiverUserId: "",
-			title: "",
-			content: "",
-			editContent: false
+			title: {
+				val: "",
+				errMsg: "主题不能为空"
+			},
+			receiverUserId: {
+				val: "",
+				errMsg: "收件人不能为空"
+			},
+			content: {
+				val: "",
+				errMsg: "内容不能为空"
+			}
 		}
 	},
 	onLoad(e) {
 		if(e.id){
-			this.receiverUserId = e.id
+			this.receiverUserId.val = e.id
 		}
 	},
 	onShow() {
-		if(this.editContent){
-			this.content = getApp().globalData.gEditContent
-			this.editContent = false
-		}
+		this.content.val = getApp().globalData.gEditContent
 	},
 	methods: {
-		/* 开始编辑 */
-		startEdit()
+		/**
+		 * 开始编辑
+		 */
+		onclickEdit()
 		{
-			this.editContent = true
-			getApp().globalData.gEditContent = this.content
+			getApp().globalData.gEditContent = this.content.val
 			uni.navigateTo({
 				url: "../../EditMd/EditMd"
 			})
 		},
-		/* 点击发送 */
-		sendMsg()
+		/**
+		 * 点击发送
+		 */
+		onclickSend()
 		{
-			if(this.title === ""){
-				this.gToastError("主题为空")
-			}
-			else if(this.receiverUserId === ""){
-				this.gToastError("收件人为空")
-			}
-			else if(this.content === ""){
-				this.gToastError("内容为空")
-			}
-			else{
+			if(!this.gIsNull([this.title,this.receiverUserId,this.content])){
 				this.gLoading(this,true)
 				postMessage({
-					receiverUserId: this.receiverUserId,
-					title: this.title,
-					content: this.content
+					receiverUserId: +this.receiverUserId.val,
+					title: this.title.val,
+					content: this.content.val
 				})
 				.then(res => {
-					uni.navigateBack({
-						delta: 1,
-						success: () => {
-							this.gToastSuccess("发送成功")
-						}
-					})
-					this.gLoading(this,false)
+					this.gBackPage("发送成功")
 				})
-				.catch(err => {
-					this.gLoading(this,false)
-				})
+				.finally(() => this.gLoading(this,false))
 			}
 		}
 	},
@@ -126,7 +119,7 @@ export default {
 		.hint
 			color var(--gray2)
 	.btns
-		position absolute
+		position fixed
 		bottom 0
 		left 0
 		right 0
@@ -141,12 +134,4 @@ export default {
 			width 35%
 		.edit
 			background-color var(--gray1)
-	.editor
-		z-index 5
-		position fixed
-		top 0
-		left 0
-		right 0
-		bottom 0
-		background-color #FFFFFF
 </style>

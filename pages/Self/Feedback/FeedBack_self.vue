@@ -1,4 +1,7 @@
-<!-- 我的反馈 -->
+<!-- 
+	我的反馈
+	author yjl
+-->
 <template>
 	<view class="my-feedback">
 		<view 
@@ -29,12 +32,12 @@
 </template>
 
 <script>
-import { getFeedbackMe } from "@/static/request/api_system.js"
+import { getMyFeedback } from "@/static/request/api_system.js"
 export default {
 	data() {
 		return {
 			pageNum: 1,
-			pageSize: 8,
+			pageSize:10,
 			is_loadAll: false,
 			feedbacks: [],
 			arr_status: [
@@ -51,47 +54,49 @@ export default {
 		}
 	},
 	onLoad() {
-		this.getFeedback(true)
+		this.loadFeedback(true)
 	},
 	onReachBottom() {
 		if(!this.is_loadAll){
-			this.getFeedback()
+			this.loadFeedback()
 		}
 	},
 	methods: {
-		/* 判断是否加载全部 */
-		judgeLoadAll(size)
-		{
-			this.is_loadAll = false
-			if(size < this.pageSize)
-				this.is_loadAll = true
-			else
-				this.pageNum++
-		},
-		getFeedback(init=false)
+		/**
+		 * 加载我的反馈
+		 * @param {Boolean}  init 是否初始化
+		 */
+		loadFeedback(init=false)
 		{
 			if(init){
 				this.pageNum = 1
 			}
-			getFeedbackMe({
+			getMyFeedback({
 				pageNum: this.pageNum,
 				pageSize: this.pageSize
 			})
 			.then(res => {
-				this.judgeLoadAll(res.data.pageData.length)
-				const data = res.data.pageData.map(feedback => {
-					const type = getApp().globalData.feedbackTypes.find(item => item.value === feedback.type)
+				if(res.data.pageData.length < this.pageSize){
+					this.is_loadAll = true
+				}
+				else{
+					this.pageNum++
+				}
+				if(init){
+					this.feedbacks = []
+				}
+				res.data.pageData.forEach(feedback => {
+					const type = getApp().globalData.garr_feedbackTypes.find(item => item.value === feedback.type)
 					const result = this.arr_feedbackResult.find(item => item.value === feedback.level)
-					return{
+					this.feedbacks.push({
 						...feedback,
 						type: type.label,
 						time: this.gformatDate(feedback.time),
 						replyTime: this.gformatDate(feedback.replyTime),
 						status: this.arr_status.find(item => item.value === feedback.status),
 						level: result ? result.text : ""
-					}
+					})
 				})
-				this.feedbacks = init ? data : this.feedbacks.concat(data)
 				console.log(this.feedbacks);
 			})
 		}

@@ -11,6 +11,7 @@
 				<view class="search-input">
 					<text class="iconfont icon-sousuo"></text>
 					<input 
+						class="input"
 						type="text" 
 						placeholder="根据项目题目搜索" 
 						@input="initData"
@@ -76,7 +77,7 @@ export default {
 			searchText: '',
 			filterType: ['参与赛事', '获奖等级'],
 			filterNav: null,
-			arr_compType: getApp().globalData.compType,
+			arr_compType: getApp().globalData.garr_compType,
 			compType: 0,
 			arr_level: getApp().globalData.garr_prizeLevels,
 			level: 0,
@@ -109,7 +110,7 @@ export default {
 		/* 筛选当前选中分类的比赛 */
 		arr_competition() {
 			const typeId = this.arr_compType[this.compType].value;
-			return getApp().globalData.Competitions.filter(item => item.competitionType.id === typeId);
+			return getApp().globalData.garr_competitions.filter(item => item.competitionType.id === typeId);
 		}
 	},
 	methods: {
@@ -203,7 +204,7 @@ export default {
 					position absolute
 					margin-left 10px
 					color var(--origin2)
-				input
+				.input
 					flex 1
 					padding-left 30px
 					background-color #FFFFFF
@@ -256,7 +257,7 @@ export default {
 			border-top-left-radius 22px
 			border-top-right-radius 22px
 			display flex
-			button
+			.filter-btn, .all-btn
 				width 30%
 				padding 0px 10px
 			.filter-btn

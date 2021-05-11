@@ -1,4 +1,7 @@
-<!-- 充值Aha币 -->
+<!-- 
+	充值Aha币弹窗
+	author yjl
+-->
 <template>
 	<view class="fix-screen">
 		<view class="content">
@@ -11,17 +14,22 @@
 			<view class="preamount">
 				<view 
 					class="item"
-					:class="checkAmount === index ? 'active' : ''"
+					:class="selectPreIndex === index ? 'active' : ''"
 					v-for="(item,index) in arr_preAmount"
 					:key="item"
-					@click="checkAmount=index;amount=''">
+					@click="selectPreIndex=index;amount=''">
 					{{item}}个
 				</view>
 			</view>
-			<!-- 自定义数量 -->
-			<input class="self-input" type="number" placeholder="输入充值Aha币数量" @input="checkAmount=null" v-model.number="amount">
+			<!-- 自定义数量,绑定输入值，输入时会清空选择点数 -->
+			<input 
+				class="self-input" 
+				type="number" 
+				placeholder="输入充值Aha币数量" 
+				@input="selectPreIndex=null" 
+				v-model.number="amount">
 			<view class="btns">
-				<button class="pay" @click="pay">充值</button>
+				<button class="pay" @click="onclickPay">充值</button>
 				<button class="cancel" @click="$emit('close')">取消</button>
 			</view>
 		</view>
@@ -33,16 +41,19 @@ export default {
 	data() {
 		return {
 			arr_preAmount: [5,10,20,30,50,100],
-			checkAmount: 0,
+			selectPreIndex: 0,
 			amount: ""
 		}
 	},
 	methods: {
-		/* 支付 */
-		pay() {
+		/**
+		 * 点击支付
+		 */
+		onclickPay() 
+		{
 			let amount = ""
-			if(this.checkAmount){
-				amount = this.arr_preAmount[this.checkAmount]
+			if(this.selectPreIndex){
+				amount = this.arr_preAmount[this.selectPreIndex]
 			}
 			else{
 				amount = this.amount

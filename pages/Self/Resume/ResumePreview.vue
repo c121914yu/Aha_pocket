@@ -1,8 +1,17 @@
-<!-- 简历预览 -->
+<!-- 
+	简历预览
+	author yjl
+-->
 <template>
 	<view class="preview">
 		<!-- 下载按键 -->
-		<icon class="download" type="download" size="30" color="#f8b62d" @click="download"></icon>
+		<icon 
+			class="download" 
+			type="download" 
+			size="30" 
+			color="#f8b62d" 
+			@click="onclickDownload">
+		</icon>
 		<!-- 基本信息 -->
 		<view class="part base-info">
 			<!-- 姓名 -->
@@ -148,14 +157,7 @@ export default {
 		}
 	},
 	methods: {
-		/* 
-			name: 下载界面
-			description: 将整页下载成pdf文件
-			input: null
-			return: null
-			time: 2020/10/22
-		*/
-		download() {}
+		onclickDownload() {}
 	},
 };
 </script>

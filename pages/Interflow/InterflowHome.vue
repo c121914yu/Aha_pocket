@@ -1,12 +1,20 @@
+<!-- 
+	竞赛交流
+	author yjl
+-->
 <template>
-	<view v-if="env!==2" class="forum-home">
+	<view class="forum-home">
 		<TopNavs 
-			:navs="navs"
+			:navs="arr_navs"
 			padding
 			@navChange="currentNav=$event.value">
 		</TopNavs>
-		<Talents ref="Talents"  v-if="currentNav===0"></Talents>
-		<Teams v-if="currentNav===1"></Teams>
+		<talents 
+			v-if="currentNav===0"
+			ref="Talents">
+		</talents>
+		<teams v-if="currentNav===1">
+		</teams>
 	</view>
 </template>
 
@@ -14,20 +22,20 @@
 import Teams from "./Team/Teams.vue"
 import Talents from "./Talents.vue"
 export default {
+	components: {
+		"talents": Talents,
+		"teams": Teams,
+	},
 	data() {
 		return {
 			env: getApp().globalData.env,
-			navs: [ // 顶部导航
-				{label: "人才市场",amount: 0,value: 0},
-				{label: "竞赛组队",amount: 0,value: 1},
-				{label: "竞赛论坛",amount: 0,value: 2},
+			arr_navs: [ // 顶部导航
+				{label: "人才市场",value: 0},
+				{label: "竞赛组队",value: 1},
+				{label: "竞赛论坛",value: 2},
 			],
-			currentNav: 1
-		};
-	},
-	components: {
-		Teams,
-		Talents
+			currentNav: 0
+		}
 	},
 	onLoad() {
 		if(this.env === 2){

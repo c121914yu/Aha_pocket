@@ -10,7 +10,7 @@
 		<!-- 排名图标 -->
 		<text v-if="ranking !== 0" :class="'ranking iconfont ' + rankingIcon"></text>
 		<!-- 头像 -->
-		<Avatar :src="project.avatarUrl" size="57"></Avatar>
+		<Avatar :src="project.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="57"></Avatar>
 		<!-- 资源信息 -->
 		<view class="info" :class="border ? 'border' : ''">
 			<!-- 资源名称 -->
@@ -26,7 +26,7 @@
 			<!-- 获奖信息 -->
 			<view><text class="comp-name strong">{{ compName }}</text></view>
 			<!-- 标签 -->
-			<Tags class="tags" :tags="tags"></Tags>
+			<Tags class="tags" :tags="this.project.tags | splitTags"></Tags>
 			<view class="blank"></view>
 			<!-- 时间 & 数据统计 & 状态-->
 			<view class="footer">
@@ -104,7 +104,7 @@ export default {
 		},
 		compName() {
 			if (this.project.compId !== 0) {
-				const match = getApp().globalData.Competitions.find(match => match.id === this.project.compId)
+				const match = getApp().globalData.garr_competitions.find(match => match.id === this.project.compId)
 				if (match){
 					return match.name;
 				} 
@@ -117,12 +117,6 @@ export default {
 				return res.src
 			}
 			return null
-		},
-		tags() {
-			if (!this.project.tags) {
-				return []
-			}
-			return this.project.tags.split(" ")
 		},
 		projectStatus() {
 			if(this.project.isAnonymous){
@@ -156,12 +150,14 @@ export default {
 
 <style lang="stylus" scoped>
 .project-card
+	position relative
 	background-color #FFFFFF
-	padding 5px
+	padding 8px
 	display flex
-	align-items center
 	overflow hidden
 	.ranking
+		margin-right 3px
+		margin-top 5%
 		color var(--origin2)
 		font-size 34rpx
 	/* 资源信息 */
@@ -220,10 +216,9 @@ export default {
 				font-size 24rpx
 			.status
 				color #FFFFFF
-				padding 2px 17px 12px
+				padding 2px 20px 12px
 				font-size 22rpx
-				transform rotate(-45deg) translate(29rpx,40rpx)
-				// border-radius 5px
+				transform rotate(-45deg) translate(35rpx,53rpx)
 				&.passed
 					background-color #67C23A
 				&.failed

@@ -1,11 +1,15 @@
+<!-- 
+	简历
+	author yjl
+ -->
 <template>
 	<view class="resume">
 		<!-- 头部 -->
 		<navigator 
 			class="header"
 			hover-class="none"
-			url="components/BaseInfo">
-			<image class="avatar" :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
+			url="./components/BaseInfo">
+			<image class="avatar" :src="avatarUrl"></image>
 			<view class="right">
 				<view class="name">
 					{{resume.name || "姓名"}}
@@ -118,17 +122,6 @@
 				</navigator>
 			</view>
 		</view>
-		<!-- 个人技能描述 -->
-		<navigator class="resume-item skill" hover-class="none" url="components/Skill">
-			<view class="head">
-				<view class="h3">个人技能描述</view>
-				<text class="desc"></text>
-				<text style="color: var(--gray1);font-weight:700;" class="iconfont icon-right"></text>
-			</view>
-			<view class="message">
-				{{resume.projectSkill || ""}}
-			</view>
-		</navigator>
 		<!-- 个人荣誉 -->
 		<view class="resume-item honors">
 			<navigator class="head" hover-class="none" url="components/Honors">
@@ -149,6 +142,17 @@
 				</navigator>
 			</view>
 		</view>
+		<!-- 个人技能描述 -->
+		<navigator class="resume-item skill" hover-class="none" url="components/Skill">
+			<view class="head">
+				<view class="h3">个人技能描述</view>
+				<text class="desc"></text>
+				<text style="color: var(--gray1);font-weight:700;" class="iconfont icon-right"></text>
+			</view>
+			<view class="message">
+				{{resume.projectSkill || ""}}
+			</view>
+		</navigator>
 		<!-- 自我描述 -->
 		<navigator class="resume-item description" hover-class="none" url="components/SelfIntro">
 			<view class="head">
@@ -164,12 +168,13 @@
 		<navigator class="preview" hover-class="none" url="ResumePreview">
 			<button>预览简历</button>
 		</navigator>
+		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
 </template>
 
 <script>
-import { getResume, putResume } from '@/static/request/api_userInfo.js'
+import { getMyResume } from '@/static/request/api_userInfo.js'
 export default {
 	data() {
 		return {
@@ -177,45 +182,47 @@ export default {
 			avatarUrl: getApp().globalData.gUserInfo.userInfo.avatarUrl
 		}
 	},
-	onShow() {
+	onLoad() {
 		this.gLoading(this, true);
-		/* 已经有简历记录 */
-		if(getApp().globalData.gResume){
-			this.resume = getApp().globalData.gResume
-			this.$forceUpdate()
+		getMyResume()
+		.then(res => {
+			console.log(res.data);
+			this.resume = res.data
+			getApp().globalData.gResume = res.data
 			this.updateProgress()
-		}
-		else {
-			getResume(getApp().globalData.gUserInfo.userInfo.userId)
-			.then(res => {
-				this.resume = res.data
-				getApp().globalData.gResume = res.data
-				this.updateProgress()
-			})
-			.catch(err => {
-				this.gLoading(this, false)
-			})
+		})
+		.finally(() => this.gLoading(this, false))
+	},
+	onShow() {
+		/* 有简历记录，说明不是第一次加载，获取最新简历 */
+		if(this.resume){
+			this.resume = getApp().globalData.gResume
+			this.updateProgress()
 		}
 	},
 	methods: {
-		/* 更新导航栏标题 */
+		/**
+		 * 更新导航栏标题,更新简历完成的进度
+		 */
 		updateProgress()
 		{
-			let length = -1
-			let noBlank = 0
-			/* 统计完整度 */
-			for(let key in this.resume){
-				length++
-				if(this.resume[key] && this.resume[key].length > 0){
-					noBlank++
+			if(this.resume){
+				let length = -1
+				let noBlank = 0
+				/* 统计完整度 */
+				for(let key in this.resume){
+					length++
+					if(this.resume[key] && this.resume[key].length > 0){
+						noBlank++
+					}
 				}
+				/* 更新导航文字 */
+				uni.setNavigationBarTitle({
+					title: `个人简历(${Math.round(noBlank/length*100)}%)`
+				})
+				/* 强制刷新 */
+				this.$forceUpdate()
 			}
-			/* 更新导航文字 */
-			uni.setNavigationBarTitle({
-				title: `个人简历(${Math.round(noBlank/length*100)}%)`
-			})
-			console.log(this.resume);
-			this.gLoading(this, false)
 		}
 	}
 }

@@ -33,7 +33,7 @@
 				</view>
 				<button type="default" @click="onclickLogin">登录</button>
 				<!-- 暂时只给微信登录 -->
-				<!-- <view class="center small register"><navigator url="./Register" hover-class="none">立即注册</navigator></view> -->
+				<view class="center small register"><navigator url="./Register" hover-class="none">立即注册</navigator></view>
 			</view>
 			<!-- 第三方登录 -->
 			<view class="small other">

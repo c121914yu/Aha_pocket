@@ -1,24 +1,28 @@
+<!-- 
+	个人荣誉
+	author yjl
+ -->
 <template>
-	<view v-if="loaded" class="honors">
-		<resumeInput
+	<view v-if="is_loaded" class="honors">
+		<resume-input
 			label="荣誉名称"
 			placeholder="荣誉名称"
 			v-model="name">
-		</resumeInput>
-		<resumeDataPicker
+		</resume-input>
+		<resume-data-picker
 			label="获奖时间"
 			placeholder="获奖时间"
 			:endTime="gGetToday()"
 			v-model="time">
-		</resumeDataPicker>
-		<resumeTextarea
+		</resume-data-picker>
+		<resume-textarea
 			label="荣誉描述"
 			placeholder="荣誉描述"
 			v-model="description">
-		</resumeTextarea>
+		</resume-textarea>
 		<view class="btns">
-			<button v-if="index" class="delete" @click="remove">删除</button>
-			<button class="save" @click="save">保存</button>
+			<button v-if="index!==null" class="delete" @click="onclickRemoveHonors">删除</button>
+			<button class="save" @click="onclickSave">{{index === null ? "创建成就" : "保存"}}</button>
 		</view>
 	</view>
 </template>
@@ -29,20 +33,20 @@ import resumeInput from "./Resume_input.vue"
 import resumeDataPicker from "./Resume_datePicker"
 import resumeTextarea from "./Resume_textarea.vue"
 export default {
+	components: {
+		"resume-input": resumeInput,
+		"resume-data-picker": resumeDataPicker,
+		"resume-textarea": resumeTextarea,
+	},
 	data() {
 		return {
-			loaded: false,
-			index: null,
+			is_loaded: false,
 			is_remove: false,
+			index: null,
 			name: "",
 			description: "",
 			time: "",
 		};
-	},
-	components: {
-		resumeInput,
-		resumeDataPicker,
-		resumeTextarea
 	},
 	onLoad(e) {
 		if(e.index){
@@ -52,26 +56,30 @@ export default {
 				this[key] = resume[key]
 			}
 		}
-		this.loaded = true
+		this.is_loaded = true
 		console.log(getApp().globalData.gResume.honors);
 	},
 	beforeDestroy() {
-		/* 新简历返回 | 删除时不触发 */
+		/* 创建简历 | 删除简历时不触发更新 */
 		if(this.index!== null && !this.is_remove){
 			this.putExperience()
 		}
 	},
 	methods: {
-		save()
+		/**
+		 * 点击保存按键，判断是创建还是修改，如果是创建经历则调用API添加经历。
+		 */
+		onclickSave()
 		{
 			/* 新简历点击保存时手动触发更新 */
 			if(this.index === null){
 				this.putExperience()
 			}
-			uni.navigateBack({
-				delta: 1
-			})
+			this.gBackPage("")
 		},
+		/**
+		 * 更新经历（追加也是更新）
+		 */
 		putExperience()
 		{
 			const data = {
@@ -92,16 +100,16 @@ export default {
 			}
 			putResume(getApp().globalData.gResume)
 		},
-		/* 删除荣誉 */
-		remove()
+		/**
+		 * 删除成就
+		 */
+		onclickRemoveHonors()
 		{
-			this.gShowModal("确认删除该经历？",() => {
+			this.gShowModal("确认删除该成就？",() => {
 				this.is_remove = true
 				getApp().globalData.gResume.honors.splice(this.index,1)
 				putResume(getApp().globalData.gResume)
-				uni.navigateBack({
-					delta: 1
-				})
+				this.gBackPage("")
 			})
 		}
 	}

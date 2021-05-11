@@ -15,6 +15,7 @@
 					transform: `translateX(${-(slideIndex + 1) * 100}%)`,
 					transition: imgAnimation ? 'var(--speed-slide)' : ''
 				}"
+				class="img"
 				v-for="(img, index) in showImg"
 				:key="index"
 				:src="img.pictureUrl"
@@ -236,7 +237,7 @@ export default {
 		background-color var(--origin4)
 		overflow hidden
 		display flex
-		image
+		.img
 			flex-shrink 0
 			width 100%
 			height 100%

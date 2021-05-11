@@ -1,3 +1,7 @@
+<!-- 
+	个人介绍
+	author yjl
+ -->
 <template>
 	<view class="intro">
 		<textarea 
@@ -7,7 +11,7 @@
 		<view class="count">
 			{{intro.length || 0}} / 1000
 		</view>
-		<button @click="save">保存</button>
+		<button @click="gBackPage('')">保存</button>
 	</view>
 </template>
 
@@ -23,12 +27,9 @@ export default {
 		this.putData()
 	},
 	methods: {
-		save()
-		{
-			uni.navigateBack({
-				delta: 1
-			})
-		},
+		/**
+		 * 更新经历（追加也是更新）
+		 */
 		putData()
 		{
 			getApp().globalData.gResume.intro = this.intro

@@ -14,10 +14,4 @@ app.$mount()
 /* 注册全局方法 */
 require( "./static/js/globalFun.js" )
 /* 注册全局filter */
-/* 分割tag标签 */
-Vue.filter("splitTags", (tag) => {
-	if(tag){
-		return tag.split(" ")
-	}
-	return []
-})
+require( "./static/js/globalFilter.js" )

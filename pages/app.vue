@@ -120,8 +120,8 @@ export default {
 		}
 		else if(this.currentNav === 1){
 			switch(this.$refs.interflowHome.currentNav){
-				/* 加载更多人才 */
-				case 0: this.$refs.interflowHome.$refs.Talents.loadTalent();break
+				/* 人才市场 */
+				case 0: this.$refs.interflowHome.$refs.Talents.rechBottom();break
 			}
 		}
 	},
@@ -174,7 +174,7 @@ export default {
 			/* 加载比赛信息 */
 			getAllCompetition()
 			.then(res => {
-			    getApp().globalData.Competitions = res.data
+			    getApp().globalData.garr_competitions = res.data
 			})
 			/* 加载项目列表 */
 			this.$refs.projectHome.loadProjects(true)

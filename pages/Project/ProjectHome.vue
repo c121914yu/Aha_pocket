@@ -184,7 +184,7 @@ export default {
 			border-radius 22px
 			overflow hidden
 			background-color var(--origin3)
-			view
+			.week, .news
 				flex 1
 				padding 10px 0 50px
 				color var(--origin2)

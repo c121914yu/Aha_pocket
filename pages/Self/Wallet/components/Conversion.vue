@@ -1,4 +1,7 @@
-<!-- 兑换 -->
+<!-- 
+	兑换货币弹窗
+	author yjl
+-->
 <template>
 	<view class="conversion fix-screen">
 		<view class="content">
@@ -6,7 +9,7 @@
 			<input type="text" placeholder="兑换码" v-model="code">
 			<view class="btns">
 				<view class="cancel" @click="$emit('close')">取消</view>
-				<view class="confirm" @click="confirm">确认</view>
+				<view class="confirm" @click="onclickConfirm">确认</view>
 			</view>
 		</view>
 	</view>
@@ -21,7 +24,10 @@ export default {
 		};
 	},
 	methods: {
-		confirm()
+		/**
+		 * 点击确认，校验验证码
+		 */
+		onclickConfirm()
 		{
 			if(this.code){
 				useCDKEY(this.code)

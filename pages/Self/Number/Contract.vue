@@ -1,8 +1,11 @@
-<!-- 合同 & 电子前面 -->
+<!-- 
+	合同签署
+	author yjl
+-->
 <template>
 	<view 
 		class="contract"
-		:class="showSign ? 'unmove' : ''">
+		:class="is_showSign ? 'unmove' : ''">
 		<view class="center h3">Aha 平台知识产权许可使用合同</view>
 		<view class="title">
 			<view class="item">
@@ -21,11 +24,11 @@
 （4）平台贡献点获得方式及使用方式、乙方上传资源所能获得的贡献点值由本平台拟定，具体判断标准如下：
 用户可上传的资源类型为PPT、文档、论文、成果演示、竞赛心得，用户上传的资源通过分类和获奖等级赋予不同的贡献点值。
 		<image
-			v-for="(url,index) in contractImg"
+			v-for="(url,index) in arr_contractImg"
 			:key="index"
 			:src="url" 
 			mode="widthFix" 
-			@click="readImg(index)">
+			@click="gReadImage(arr_contractImg,index)">
 		</image>
 （注：以上区分标签中资源意义位阶划分由平台评审委员会做出，评审委员会由师生组成。)
 	为保证意思自治及公平公开原则的实现，评审委员会在做出评审结果后将即时通知乙方，乙方若同意评审结果，甲方将按评审结果确定贡献值并发布资源。
@@ -71,11 +74,12 @@
 
 （特别说明：本合同一式贰份，甲方一份，乙方一份，具有同等法律效力）
 		</view>
-		<view v-if="!is_sign">
+		<!-- 展示是否签署合同 -->
+		<view v-if="!is_signed">
 			<!-- 签名 -->
 			<view class="signature">
 				<view class="name">
-					姓名: <input type="text" v-model="name">
+					姓名: <input type="text" v-model="name.val">
 				</view>
 				<view class="signature-view">
 					签名：
@@ -86,53 +90,50 @@
 					</image>
 				</view>
 			</view>
-			<button style="background-color: #5d7092;" @click="showSign=true">进入签名</button>
-			<button v-if="signUrl" @click="confirm">确认</button>
+			<button style="background-color: #5d7092;" @click="is_showSign=true">进入签名</button>
+			<button v-if="signUrl" @click="onclickConfirm">确认</button>
 		</view>
 		<view v-else class="signed center">
 			已签署合同
 		</view>
-		<Signature 
-			v-if="showSign"
+		<signature 
+			v-if="is_showSign"
 			@confirm="confirmSign">
-		</Signature>
+		</signature>
 	</view>
 </template>
 
 <script>
 import Signature from "./components/Signature.vue"
 export default {
+	components:{
+		"signature": Signature
+	},
 	data() {
 		return {
-			contractImg: [
+			arr_contractImg: [
 				"https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/contract1.png",
 				"https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/contract2.png",
 				"https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/contract3.png",
 			],
-			showSign: false,
+			is_showSign: false, // 是否展示签名板
+			is_signed: getApp().globalData.gUserInfo.signedContract, // 是否已经签署过合同
 			signUrl: "",
-			name: "",
-			is_sign: getApp().globalData.gUserInfo.signedContract
+			name: {
+				val: "",
+				errMsg: "名字不能为空"
+			},
 		}
 	},
 	methods: {
-		readImg(index)
-		{
-			uni.previewImage({
-				urls: this.contractImg,
-				current: index
-			})
-		},
-		/* 
-			name: 签名完成
-			desc: 签名完成，获取签名图片url并展示在界面
-			input:
-						url: String,签名URL
-		*/
+	    /**
+		 * 签名完成，更新地址，并滚动页码到最底部（跳出签名板时候会在顶部）
+		 * @param {String} url
+		 */
 		confirmSign(url)
 		{
 			this.signUrl = url
-			this.showSign = false
+			this.is_showSign = false
 			this.$nextTick(() => {
 				uni.pageScrollTo({
 					duration: 0,
@@ -140,58 +141,46 @@ export default {
 				})
 			})
 		},
-		/* 
-			name: 确认签署
-			desc: 确认签署合同，将签名图片发送会后台.
-		*/
-		confirm()
+	    /**
+		 * 点击确认签署，将签名图片发送会后台
+		 */
+		onclickConfirm()
 		{
-			uni.showLoading({
-				title: "请求中"
-			})
-			if(this.name === "")
-			{
-				this.gToastError("请输入姓名")
-				return
+			if(!this.gIsNull([this.name])){
+				uni.showLoading({
+					title: "上传签名中..."
+				})
+				uni.uploadFile({
+					url: `${getApp().globalData.baseUrl}/sign/contract`,
+					filePath: this.signUrl,
+					name: "file",
+					header: {
+						'Authorization': uni.getStorageSync("token")
+					},
+					formData: {
+						name: this.name,
+					},
+					success: (res) => {
+						const data = JSON.parse(res.data)
+						if(data.code === 200){
+							uni.setStorageSync("token",data.data)
+							getApp().globalData.gUserInfo.signedContract = true
+							this.gBackPage("签署合同成功")
+						}
+						else{
+							this.gToastMsg(data.msg)
+						}
+					},
+					fail: (err) => {
+						console.log(err);
+						this.gToastMsg("上传签名失败")
+					},
+					complete: () => {
+						uni.hideLoading()
+					}
+				})
 			}
-			uni.uploadFile({
-				url: getApp().globalData.baseUrl + "/sign/contract",
-				filePath: this.signUrl,
-				name: "file",
-				header: {
-					'Authorization': uni.getStorageSync("token")
-				},
-				formData: {
-					name: this.name,
-				},
-				success: (res) => {
-					console.log(res);
-					const data = JSON.parse(res.data)
-					if(data.code === 200){
-						uni.setStorageSync("token",data.data)
-						getApp().globalData.gUserInfo.signedContract = true
-						uni.navigateBack({
-							delta: 1,
-							success: () => {
-								this.gToastSuccess(data.msg)
-							}
-						})
-					}
-					else{
-						this.gToastError(data.msg)
-					}
-				},
-				fail: (err) => {
-					console.log(err)
-				},
-				complete: () => {
-					uni.hideLoading()
-				}
-			})
 		}
-	},
-	components:{
-		Signature
 	}
 }
 </script>

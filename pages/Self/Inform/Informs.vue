@@ -1,8 +1,11 @@
-<!-- 通知 -->
+<!-- 
+	通知列表
+	author yjl
+-->
 <template>
 	<view class="inform">
 		<TopNavs
-			:navs="navs"
+			:navs="arr_navs"
 			padding
 			@navChange="changeNav">
 		</TopNavs>
@@ -42,7 +45,7 @@ import { getMessages } from '@/static/request/api_userInfo.js';
 export default {
 	data() {
 		return {
-			navs: [
+			arr_navs: [
 				{label: "系统通知",value: "system",amount: 0},
 				{label: "用户消息",value: "private",amount: 0},
 				// {text: "企业通知",value: "企业通知",amount: 0}
@@ -55,27 +58,33 @@ export default {
 		}
 	},
 	onShow() {
-		this.getMsg(true,true)
+		this.loadInforms(true,true)
 	},
 	onPullDownRefresh() {
-		this.getMsg(true,true)
+		this.loadInforms(true,true)
 	},
 	onReachBottom() {
 		if (!this.is_showAll) {
-			this.getMsg(false,false,false)
+			this.loadInforms(false,false,false)
 		}
 	},
 	methods: {
-		/* 消息类型切换 */
+		/**
+		 * 消息类型切换
+		 * @param {Object} nav
+		 * @param {Number} index
+		 */
 		changeNav(nav,index)
 		{
 			if(index !== this.currentNav){
 				this.currentNav = index
-				this.getMsg(true)
+				this.loadInforms(true)
 			}
 		},
-		/* 获取消息列表 */
-		getMsg(init=false,count=false,loading=true) 
+		/**
+		 * 获取消息列表
+		 */
+		loadInforms(init=false,count=false,loading=true) 
 		{
 			this.gLoading(this, loading)
 			if(init){
@@ -86,11 +95,11 @@ export default {
 				pageSize: this.pageSize
 			}
 			if(!count){
-				params.type = this.navs[this.currentNav].value
+				params.type = this.arr_navs[this.currentNav].value
 			}
 			/* 清空统计 */
 			else{
-				this.navs.forEach(item => {
+				this.arr_navs.forEach(item => {
 					item.amount = 0
 				})
 			}
@@ -110,7 +119,7 @@ export default {
 					if(count){
 						/* 统计未读 */
 						if(item.status === 0){
-							this.navs[item.type].amount++
+							this.arr_navs[item.type].amount++
 						}
 						/* 只筛选当前类型 */
 						if(item.type === this.currentNav){
@@ -124,15 +133,12 @@ export default {
 					}
 				})
 				console.log(this.arr_informs);
-				uni.stopPullDownRefresh()
-				this.gLoading(this, false)
 			})
-			.catch(err => {
+			.finally(() => {
 				this.gLoading(this, false)
 				uni.stopPullDownRefresh()
 			})
-		},
-		
+		}
 	}
 }
 </script>
@@ -161,6 +167,7 @@ export default {
 			.right
 				margin-left 5px
 				flex 1
+				overflow hidden
 				.head
 					display flex
 					justify-content space-between

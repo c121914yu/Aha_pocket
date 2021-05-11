@@ -12,6 +12,7 @@
 			:style="{
 				'width': small ? '16px' : '20px'
 			}"
+			class="img"
 			:src="userLevel.src" 
 			mode="widthFix">
 		</image>
@@ -46,13 +47,13 @@ export default {
 	},
 	data(){
 		return {
-				userLevel: getApp().globalData.arr_userLevel[0],
+				userLevel: getApp().globalData.garr_userLevel[0],
 		}
 	},
 	watch: {
 		point: {
 			handler: function(val){
-				this.userLevel =  getApp().globalData.arr_userLevel.find(item => this.point < item.totalContribPoint)
+				this.userLevel =  getApp().globalData.garr_userLevel.find(item => this.point < item.totalContribPoint)
 			},
 			immediate: true
 		}
@@ -67,7 +68,7 @@ export default {
 	font-size 24rpx
 	display flex
 	align-items center
-	image
+	.img
 		position absolute
 		left 0
 		top 0

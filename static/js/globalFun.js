@@ -13,6 +13,7 @@
 	gChooseImage - 选择图片
 	gReadImage - 预览图片
 	gIsNull - 判断输入是否为空
+	gBackPage - 页面后退并提示文字
 */
 import Vue from 'vue'
 
@@ -281,23 +282,6 @@ Vue.prototype.gClipboardData = (content,msg) => {
 }
 
 /**
- * 未设计界面提示
- */
-Vue.prototype.gUndesign = (back=true) => {
-	uni.showModal({
-		title: "提示",
-		content: "该模块正在设计,尽情期待!",
-		confirmText: "期待",
-		showCancel: false,
-		success: () => {
-			uni.navigateBack({
-				delta: 1
-			})
-		}
-	})
-}
-
-/**
  * 选择图片
  * @param {Number}  count 图片数量
  * @param {Boolean}  original 是否可选原图
@@ -332,13 +316,50 @@ Vue.prototype.gReadImage = (urls,current=0) => {
  * 判断数据是否为空
  * @param {Array}  list 数组对象，必须包含val和errMsg值，检测val为空时提示errMsg
  * @return {Boolean}
+ * author yjl
  */
 Vue.prototype.gIsNull = (list) => {
 	for(let i=0;i<list.length;i++){
 		if(!list[i].val){
-			Vue.prototype.gToastError(list[i].errMsg)
+			Vue.prototype.gToastMsg(list[i].errMsg)
 			return true
 		}
 	}
 	return false
+}
+
+/**
+ * 页面后退并提示文字
+ * @param {Number}  page 后退多少页
+ * @param {String} msg  提升文字 
+ * author yjl
+ */
+Vue.prototype.gBackPage = (msg,page=1) => {
+	uni.navigateBack({
+		delta: page,
+		complete: () => {
+			if(msg){
+				setTimeout(() => {
+					Vue.prototype.gToastMsg(msg)
+				})
+			}
+		}
+	})
+}
+
+/**
+ * 未设计界面提示
+ */
+Vue.prototype.gUndesign = (back=true) => {
+	uni.showModal({
+		title: "提示",
+		content: "该模块正在设计,尽情期待!",
+		confirmText: "期待",
+		showCancel: false,
+		success: () => {
+			uni.navigateBack({
+				delta: 1
+			})
+		}
+	})
 }

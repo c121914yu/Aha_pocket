@@ -23,12 +23,12 @@
 		</view>
 		<!-- 用户卡片 -->
 		<view v-if="activeIndex===0" class="cards">
-			<navigator 
+			<navigator
 				class="user-card"
 				:class="activeIndex === 0 ? 'first' : ''"
-				v-for="(user,i) in users"
-				:key="i"
-				:url="'../../Self/UserHome?userId=' + user.userId">
+				v-for="user in arr_users"
+				:key="user.userId"
+				:url="`../../Self/UserHome?userId=${user.userId}`">
 				<Avatar :src="user.avatarUrl" size="50"></Avatar>
 				<view class="right">
 					<text class="name strong">{{user.nickname}}</text>
@@ -62,7 +62,6 @@
 		</view>
 		<!-- 团队卡片 -->
 		<view class="team">
-			
 		</view>
 		<view style="color: var(--gray2);" class="center small">{{ is_showAll ? "已加载全部" : "" }}</view>
 		<!-- 加载动画 -->
@@ -73,82 +72,80 @@
 <script>
 import { getTalents } from "@/static/request/api_forum.js"
 import { getTeams } from "@/static/request/api_team.js"
-var userLevels = getApp().globalData.arr_userLevel
-var data = []
+var userLevels = getApp().globalData.garr_userLevel
 export default {
 	data() {
 		return {
 			activeIndex: 0,
-			users: [],
-			is_showAll: false,
-			page: 0,
-			pageSize: 10
+			pageNum: 1,
+			pageSize: 20,
+			arr_users: [],
+			arr_teams: [],
+			is_loadAll: false
 		};
 	},
 	watch: {
-		activeIndex: "getList"
+		// activeIndex: "loadList"
 	},
 	created() {
 		/* 定时滚动卡片中项目情况 */
 		setInterval(() => {
-			this.users.forEach((user,i) => {
+			this.arr_users.forEach((user,i) => {
 				let index = user.projectIndex
-				this.users[i].projectIndex = index < user.projectInfo.length-1 ? index+1 : 0
+				this.arr_users[i].projectIndex = index < user.projectInfo.length-1 ? index+1 : 0
 			})
 		},3000)
-		this.getList()
+		this.loadTalent(true,true)
 	},
 	methods: {
-		getList()
+		/**
+		 * 触底加载
+		 */
+		rechBottom()
 		{
-			this.gLoading(this, true)
-			let p
-			if(this.activeIndex === 0){
-				p = getTalents()
-						
-			}
-			else if(this.activeIndex === 1){
-				p = getTeams()
-			}
-			p.then(res => {
-				data = res.data
-				console.log(data);
-				this.loadTalent(true)
-			})
-			.finally(() => this.gLoading(this, false))
+			console.log("触底加载");
 		},
-		loadTalent(init=false)
+		/**
+		 * 加载用户
+		 * @param {Boolean}  init 是否初始化
+		 * @param {Boolean}  loading 是否加载动画
+		 */
+		loadTalent(init=false,loading=false)
 		{
-			if(init){
-				this.users = []
-				this.page = 0
+			this.gLoading(this,loading)
+			if(init) {
+				this.pageNum = 1
 			}
-			if(!this.is_showAll){
-				for(let i=this.page*this.pageSize;i<this.page*this.pageSize+10;i++){
-					if(!data[i]){
-						this.is_showAll = true
-						return
-					}
-					const item = {...data[i]}
+			getTalents()
+			.then(res => {
+				if(init){
+					this.arr_users = []
+				}
+				res.data.forEach(user => {
 					// 用户标签
-					if(!item.specialtyTags){
-						item.specialtyTags = [""]
+					if(!user.specialtyTags){
+						user.specialtyTags = [""]
 					}
 					else{
-						item.specialtyTags = item.specialtyTags.split(",")
+						user.specialtyTags = user.specialtyTags.split(",")
 					}
 					// 项目标签
-					item.projectIndex = 0
+					user.projectIndex = 0
 					// 项目情况
-					for(let j=0;j<item.projectInfo.length;j++){
-						item.projectInfo[j].awardLabel = getApp().globalData.garr_prizeLevels.find(prize => prize.value === item.projectInfo[j].awardLevel).label
+					for(let j=0;j<user.projectInfo.length;j++){
+						user.projectInfo[j].awardLabel = getApp().globalData.garr_prizeLevels.find(prize => prize.value === user.projectInfo[j].awardLevel).label
 					}
-					this.users.push(item)
-				}
-				this.page++
-			}
-			this.gLoading(this,false)
-			// console.log(this.users);
+					this.arr_users.push(user)
+				})
+			})
+			.finally(() => this.gLoading(this,false))
+		},
+		/**
+		 * 加载团队
+		 */
+		loadTeams(init=false,loading=false)
+		{
+			
 		}
 	}
 }

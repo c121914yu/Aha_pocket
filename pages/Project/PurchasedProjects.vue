@@ -122,7 +122,7 @@ export default {
 		*/
 		readFile(file,index1,index2)
 		{
-			const type = getApp().globalData.arr_fileTypes.find(item => item.reg.test(file.filename)).value
+			const type = getApp().globalData.garr_fileTypes.find(item => item.reg.test(file.filename)).value
 			/* 文档类跳转readFile界面 */
 			if(type === 2){
 				uni.navigateTo({

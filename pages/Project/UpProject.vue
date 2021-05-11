@@ -64,7 +64,7 @@ export default {
 			/* 赛事类型和获奖等级需要转化成数值 */
 			this.awardLevel = base.awardLevel ? base.awardLevel.value : null
 			/* 计算compId */
-			let compId = getApp().globalData.Competitions.find(item => item.name === base.compName)
+			let compId = getApp().globalData.garr_competitions.find(item => item.name === base.compName)
 			compId = compId ? compId.id : 0
 			
 			compId = compId ? compId : 0;

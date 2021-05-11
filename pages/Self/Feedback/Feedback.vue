@@ -1,3 +1,7 @@
+<!-- 
+	用户反馈页面
+	author yjl
+-->
 <template>
 	<view class="feedback">
 		<view class="feedback-type">
@@ -21,7 +25,7 @@
 				maxlength="-1"
 				auto-height	
 				v-model="content"/>
-			<button class="center" @click="feedback">反馈</button>
+			<button class="center" @click="submitFeedback">反馈</button>
 		</view>
 	</view>
 </template>
@@ -31,32 +35,33 @@ import { feedbackProblem } from "@/static/request/api_system.js"
 export default {
 	data() {
 		return {
-			types: getApp().globalData.feedbackTypes,
+			types: getApp().globalData.garr_feedbackTypes,
 			content: "",
 			type: null,
 		}
 	},
 	methods: {
-		/* 确认反馈问题，检查空值，调用API，清除内容 */
-		feedback()
+		/**
+		 * 提交反馈
+		 */
+		submitFeedback()
 		{
-			if(this.content === ""){
-				return
-			}
-			this.gShowModal("您确认提交反馈？",() => {
-				feedbackProblem({
-					type: this.type,
-					content: this.content
-				})
-				.then(res => {
-					uni.redirectTo({
-						url: "FeedBack_self",
-						success: () => {
-							this.gToastSuccess("反馈成功")
-						}
+			if(this.content){
+				this.gShowModal("您确认提交反馈？",() => {
+					feedbackProblem({
+						type: this.type,
+						content: this.content
+					})
+					.then(res => {
+						uni.navigateTo({
+							url: "FeedBack_self",
+							success: () => {
+								this.gToastSuccess("感谢您的反馈")
+							}
+						})
 					})
 				})
-			})
+			}
 		}
 	}
 }

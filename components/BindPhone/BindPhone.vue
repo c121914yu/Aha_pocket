@@ -5,21 +5,22 @@
 			<view class="h3 center">绑定手机号</view>
 			<form @submit="bind">
 				<view class="item">
-					<input name="phone" type="text" placeholder="手机号" v-model="phone">
+					<input class="input" name="phone" type="text" placeholder="手机号" v-model="phone">
 					<text class="iconfont icon-phone"></text>
 				</view>
 				<view class="item code">
-					<input name="code" type="text" placeholder="验证码" v-model="code">
+					<input class="input" name="code" type="text" placeholder="验证码" v-model="code">
 					<text class="iconfont icon-password"></text>
 					<button 
 						:class="time === 0 ? 'active' : 'undo'"
+						class="btn"
 						@click="getCode">
 						{{codeText}}
 					</button>
 				</view>
 				<view class="btns">
-					<button form-type="submit">绑定</button>
-					<button class="cancel" @click="$emit('close')">取消</button>
+					<button class="btn" form-type="submit">绑定</button>
+					<button class="btn cancel" @click="$emit('close')">取消</button>
 				</view>
 			</form>
 		</div>
@@ -127,11 +128,11 @@ export default {
 				left 10px
 				color var(--origin2)
 				font-size 34rpx
-			input
+			.input
 				flex 1
 				padding-left 30px
 				border var(--border2)
-			button
+			.btn
 				margin-left 10px
 				padding 0 10px
 				font-weight 24rpx
@@ -144,7 +145,7 @@ export default {
 						transform none
 		.btns
 			display flex
-			button
+			.btn
 				width 35%
 				padding 0 10px
 			.cancel

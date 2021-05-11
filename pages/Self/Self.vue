@@ -1,6 +1,6 @@
 <!-- 
 	我的Aha界面
-	author: yjl
+	author yjl
  -->
 <template>
 	<view class="self">
@@ -11,14 +11,14 @@
 				<view class="bg bg3"></view>
 				<view class="bg bg2"></view>
 				<view class="bg bg1"></view>
-				<image :src="userInfo.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
+				<image class="img" :src="obj_userInfo.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
 			</view>
 			<!-- 右侧昵称 & 标签 -->
 			<view class="right">
 				<!-- 昵称 -->
 				<input 
 					class="name" 
-					:value="userInfo.nickname" 
+					:value="obj_userInfo.nickname" 
 					maxlength="15" 
 					@blur="onblurUpdateNickname"/>
 				<!-- 标签 -->
@@ -55,7 +55,7 @@
 		<view class="tasks">
 			<navigator 
 				class="task" 
-				v-for="(task, index) in tasks" 
+				v-for="(task, index) in arr_tasks" 
 				:key="index" 
 				hover-class="none" 
 				:url="task.to">
@@ -70,7 +70,7 @@
 				:style="{
 					animationDelay: index * 0.1 + 's'
 				}"
-				v-for="(item, index) in funtions1"
+				v-for="(item, index) in arr_funtions1"
 				:key="index"
 				hover-stay-time="50"
 				:url="item.to"
@@ -92,9 +92,9 @@
 			<navigator
 				class="item"
 				:style="{
-					animationDelay: (index + funtions1.length) * 0.1 + 's'
+					animationDelay: (index + arr_funtions1.length) * 0.1 + 's'
 				}"
-				v-for="(item, index) in funtions2"
+				v-for="(item, index) in arr_funtions2"
 				:key="index"
 				hover-stay-time="50"
 				:url="item.to">
@@ -125,7 +125,7 @@
 			管理员MD编辑器
 		</navigator>
 		<!-- 兴趣选择 -->
-		<select-interest v-if="is_checkTags" @close="is_checkTags=falsetags"></select-interest>
+		<select-interest v-if="is_checkTags" @close="is_checkTags=false"></select-interest>
 		<!-- 加载动画 -->
 		<Loading ref="loading"></Loading>
 	</view>
@@ -142,22 +142,22 @@ export default {
 	},
 	data() {
 		return {
-			userInfo: getApp().globalData.gUserInfo.userInfo,
+			obj_userInfo: getApp().globalData.gUserInfo.userInfo,
 			userPoint: 0,
 			/* 任务列表 */
-			tasks: [
+			arr_tasks: [
 				{ name: '已购项目', icon: 'icon-shouye', to: "/pages/Project/PurchasedProjects" },
 				{ name: '组队信息', icon: 'icon-zudui', to: "/pages/Project/PurchasedProjects"},
 				{ name: '外包信息', icon: 'icon-waibao', to: "/pages/Project/PurchasedProjects" }
 			],
 			/* 功能列表 */
-			funtions1: [
+			arr_funtions1: [
 				{ name: 'ID', icon: 'icon-ID', to: '#', val: getApp().globalData.gUserInfo.userInfo.userId },
 				{ name: '消息通知', icon: 'icon-tongzhi1', to: '/pages/Self/Inform/Informs', val: 0 },
 				{ name: '我的钱包', icon: 'icon-ziyuan', to: '/pages/Self/Wallet/Wallet'},
 				{ name: '账号信息', icon: 'icon-zhanghao', to: '/pages/Self/Number/NumberInfo' },
 			],
-			funtions2: [
+			arr_funtions2: [
 				{ name: '我的收藏', icon: 'icon-shoucang', to: '/pages/Self/MyCollection'},
 				{ name: '个人简历', icon: 'icon-jianli', to: '/pages/Self/Resume/Resume'},
 				{ name: '意见反馈', icon: 'icon-feedback', to: '/pages/Self/Feedback/Feedback'},
@@ -204,7 +204,7 @@ export default {
 		{
 			getUnreadCount()
 			.then(res => {
-				this.funtions1[1].val = res.data
+				this.arr_funtions1[1].val = res.data
 			})
 		},
 		/**
@@ -237,13 +237,13 @@ export default {
 		onblurUpdateNickname(e) 
 		{
 			const value = e.detail.value
-			if (value !== this.userInfo.nickname) {
+			if (value !== this.obj_userInfo.nickname) {
 				putMe({
 					nickname: value
 				})
 				.then(res => {
-					this.userInfo.nickname = value
-					getApp().globalData.gUserInfo.userInfo = this.userInfo
+					this.obj_userInfo.nickname = value
+					getApp().globalData.gUserInfo.userInfo = this.obj_userInfo
 					this.gToastMsg('修改昵称成功!')
 				})
 			}
@@ -258,14 +258,14 @@ export default {
 			.then(res => {
 				switch(res) {
 					case "预览头像": 
-						this.gReadImage([this.userInfo.avatarUrl])
+						this.gReadImage([this.obj_userInfo.avatarUrl])
 						break
 					case "修改头像": 
 						this.changeAvatar()
 						break
 					case "查看个人主页": 
 						uni.navigateTo({
-							url: `Self/UserHome?userId=${this.userInfo.userId}`
+							url: `Self/UserHome?userId=${this.obj_userInfo.userId}`
 						})
 										
 				}
@@ -289,8 +289,8 @@ export default {
 					avatarUrl: upImg.header.Location
 				})
 				/* 更新页面内容 */
-				this.userInfo.avatarUrl = upImg.header.Location
-				getApp().globalData.gUserInfo.userInfo = this.userInfo
+				this.obj_userInfo.avatarUrl = upImg.header.Location
+				getApp().globalData.gUserInfo.userInfo = this.obj_userInfo
 				this.gToastMsg('修改头像成功!')
 				this.gLoading(this,false)
 			} catch(err){
@@ -344,7 +344,7 @@ bgSetting(size, color)
 			display flex
 			align-items center
 			justify-content center
-			image
+			.img
 				z-index 5
 				width 30vw
 				height 30vw
@@ -392,7 +392,7 @@ bgSetting(size, color)
 			display flex
 			animation 1ms closeCurtain forwards
 			animation-delay 0.4s
-			view
+			.one, .two
 				width 50%
 			.one
 				background-color var(--origin2)
@@ -455,8 +455,9 @@ bgSetting(size, color)
 			transform translateY(50vh)
 			opacity 0
 			padding 0 20px
-			background-color #FFFFFF
 			border-radius 0
+			text-align start
+			background-color #FFFFFF
 			display flex
 			align-items center
 			animation funShow 0.1s ease-out forwards
