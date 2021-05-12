@@ -4,11 +4,11 @@
 -->
 <template>
 	<view class="inform">
-		<TopNavs
+		<top-navs
 			:navs="arr_navs"
 			padding
 			@navChange="changeNav">
-		</TopNavs>
+		</top-navs>
 		<!-- 通知列表 -->
 		<view class="informs">
 			<navigator 
@@ -31,12 +31,12 @@
 		<view v-if="arr_informs.length===0" class="remark center">无通知</view>
 		<view v-else class="remark center">{{ is_showAll ? "已加载全部" : "" }}</view>
 		<!-- 发送信息 -->
-		<BottomBtn
+		<btn-bottom
 			text="发送私信"
 			linkTo="Inform_send">
-		</BottomBtn>
+		</btn-bottom>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

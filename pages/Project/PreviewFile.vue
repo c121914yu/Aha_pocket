@@ -12,7 +12,7 @@
 			@error="loadErr(index)"
 			@click="preview(index)">
 		</image>
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

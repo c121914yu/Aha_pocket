@@ -6,7 +6,7 @@
 	<view class="orders">
 		<!-- 搜索 -->
 		<view class="search">
-			<SearchInput placeholder="输入账单相关内容" v-model="searchText"></SearchInput>
+			<search-input placeholder="输入账单相关内容" v-model="searchText"></search-input>
 		</view>
 		<!-- 货币流水 -->
 		<view 
@@ -31,7 +31,7 @@
 		</view>
 		<p class="center small remark">{{is_showAll ? "已加载全部" : ""}}</p>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

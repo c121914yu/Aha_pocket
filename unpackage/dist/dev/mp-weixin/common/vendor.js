@@ -822,7 +822,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -2667,7 +2667,7 @@ var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _i
 
 /***/ }),
 
-/***/ 192:
+/***/ 185:
 /*!************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_order.js ***!
   \************************************************/
@@ -2718,6 +2718,65 @@ exports.getOrder = function (orderId) {return (0, _request.default)("/contribPoi
                                                                                                                            * @param {Number}  projectId
                                                                                                                            */
 exports.checkResourcePurchased = function (projectId) {return (0, _request.default)("/project/purchased/".concat(projectId), "GET", {});};
+
+/***/ }),
+
+/***/ 194:
+/*!*************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_system.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/**
+                                                                                                                                                                           * 获取系统公告
+                                                                                                                                                                           */
+exports.getNotice = function () {return (0, _request.default)("/notice", "GET");};
+
+/**
+                                                                                    * 签署须知协议
+                                                                                    */
+exports.signNotice = function () {return (0, _request.default)("/sign/notice", "POST");};
+
+/**
+                                                                                           * 获取我的反馈
+                                                                                           * @param {Number}  pageNum
+                                                                                           * @param {Number}  pageSize
+                                                                                           * @param {Number}  status 状态
+                                                                                           * @param {Number}  type 类型
+                                                                                           * @param {Number}  lowestLevel 最低级别
+                                                                                           * @param {Number}  highestLevel 最高级别
+                                                                                           * @param {String}  sortBy 排序关键字time、status、type、level、replyTime
+                                                                                           * @param {String}  orderBy 排序方式
+                                                                                           */
+exports.getMyFeedback = function (param) {return (0, _request.default)("/feedback/me", "GET", param);};
+
+/**
+                                                                                                         * 用户提交反馈
+                                                                                                         * @param {Number}  type 反馈类型
+                                                                                                         * @param {String}  content
+                                                                                                         */
+exports.feedbackProblem = function (data) {return (0, _request.default)("/feedback", "POST", data);};
+
+/**
+                                                                                                       * 获取轮播图
+                                                                                                       */
+exports.getSlideCard = function () {return (0, _request.default)("/slideShow", "GET");};
+
+/**
+                                                                                          * 使用兑换码
+                                                                                          * @param {String}  code 兑换码
+                                                                                          */
+exports.useCDKEY = function (code) {return (0, _request.default)("/activity/code?code=".concat(code), "POST");};
+
+/**
+                                                                                                                  * 获取公共上传签名
+                                                                                                                  * @param {String}  filename
+                                                                                                                  */
+exports.getPublicSignature = function (filename) {return (0, _request.default)("/project/sign/upload/public?filename=" + filename, "GET");};
 
 /***/ }),
 
@@ -8247,7 +8306,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8268,14 +8327,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -8361,7 +8420,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8825,6 +8884,258 @@ if (hadRuntime) {
   }
 }
 
+
+/***/ }),
+
+/***/ 259:
+/*!**************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectWithoutProperties(source, excluded) {if (source == null) return {};var target = _objectWithoutPropertiesLoose(source, excluded);var key, i;if (Object.getOwnPropertySymbols) {var sourceSymbolKeys = Object.getOwnPropertySymbols(source);for (i = 0; i < sourceSymbolKeys.length; i++) {key = sourceSymbolKeys[i];if (excluded.indexOf(key) >= 0) continue;if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;target[key] = source[key];}}return target;}function _objectWithoutPropertiesLoose(source, excluded) {if (source == null) return {};var target = {};var sourceKeys = Object.keys(source);var key, i;for (i = 0; i < sourceKeys.length; i++) {key = sourceKeys[i];if (excluded.indexOf(key) >= 0) continue;target[key] = source[key];}return target;}
+
+/**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * 获取公共文件上传签名
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * @param {String}  filename
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
+exports.getPublicSignature = function (filename) {return (0, _request.default)("/project/sign/upload/public?filename=".concat(filename), "GET");};
+
+/**
+                                                                                                                                                    * 创建项目
+                                                                                                                                                    * @param {String}  name
+                                                                                                                                                    * @param {String}  avatarUrl
+                                                                                                                                                    * @param {Number}  compId 比赛外键
+                                                                                                                                                    * @param {String}  compName 比赛名
+                                                                                                                                                    * @param {Number}  awardLevel 获奖等级
+                                                                                                                                                    * @param {String}  tags
+                                                                                                                                                    * @param {Date}  awardTime 获奖时间
+                                                                                                                                                    * @param {String}  awardProveUrl
+                                                                                                                                                    * @param {String}  intro
+                                                                                                                                                    * @param {Boolean}  isAnonymous 是否为匿名资源
+                                                                                                                                                    */
+exports.postProject = function (data) {return (0, _request.default)("/project", "POST", data);};
+
+/**
+                                                                                                  * 获取所有项目粗略信息表
+                                                                                                  * @param {Number}  pageNum
+                                                                                                  * @param {Number}  pageSize
+                                                                                                  * @param {Number}  userId 根据用户ID筛选
+                                                                                                  * @param {Number}  compId 根据比赛ID筛选
+                                                                                                  * @param {Number}  awardLevel 根据获奖等级筛选
+                                                                                                  * @param {String}  sortBy 排序字段
+                                                                                                  * @param {String}  orderBy 排序方式
+                                                                                                  */
+exports.getProjects = function (params) {return (0, _request.default)("/project", "GET", params);};
+
+/**
+                                                                                                     * 获取个人项目列表
+                                                                                                     * @param {Number}  pageNum
+                                                                                                     * @param {Number}  pageSize
+                                                                                                     * @param {Number}  compId 根据比赛ID筛选
+                                                                                                     * @param {Number}  awardLevel 根据获奖等级筛选
+                                                                                                     * @param {String}  sortBy 排序字段
+                                                                                                     * @param {String}  orderBy 排序方式
+                                                                                                     */
+exports.getMeProjects = function (params) {return (0, _request.default)("/project/me", "GET", params);};
+
+/**
+                                                                                                          * 获取项目详细信息
+                                                                                                          * @param {Number}  projectId
+                                                                                                          */
+exports.getProject = function (projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
+
+/**
+                                                                                                                      * 更新项目详细信息
+                                                                                                                      * @param {Number}  projectId
+                                                                                                                      * @param {String}  name
+                                                                                                                      * @param {String}  avatarUrl
+                                                                                                                      * @param {Number}  compId 比赛外键
+                                                                                                                      * @param {String}  compName 比赛名
+                                                                                                                      * @param {Number}  awardLevel 获奖等级
+                                                                                                                      * @param {String}  tags
+                                                                                                                      * @param {Date}  awardTime 获奖时间
+                                                                                                                      * @param {String}  awardProveUrl
+                                                                                                                      * @param {String}  intro
+                                                                                                                      */
+exports.putProject = function (projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
+
+/**
+                                                                                                                              * 删除项目
+                                                                                                                              * @param {Number}  projectId
+                                                                                                                              */
+exports.deleteProject = function (projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
+
+/**
+                                                                                                                            * 获取个人项目列表
+                                                                                                                            * @param {Number}  pageNum
+                                                                                                                            * @param {Number}  pageSize
+                                                                                                                            * @param {Number}  projectId
+                                                                                                                            */
+exports.getRemarks = function (params) {return (0, _request.default)("/project/resource/score", "GET", params);};
+
+/**
+                                                                                                                   * 发布评论
+                                                                                                                   * @param {Number}  resourceId 附件ID
+                                                                                                                   * @param {Number} score 评分
+                                                                                                                   * @param {String}  comment 内容
+                                                                                                                   */
+exports.postRemark = function (resourceId, data) {return (0, _request.default)("/project/resource/score/".concat(resourceId), "POST", data);};
+
+/**
+                                                                                                                                                * 删除评价
+                                                                                                                                                * @param {Number}  commentId
+                                                                                                                                                */
+exports.deleteRemark = function (commentId) {return (0, _request.default)("/project/resource/score/".concat(commentId), "DELETE");};
+
+/**
+                                                                                                                                      * 获取公开评论
+                                                                                                                                      * @param {Number}  pageNum
+                                                                                                                                      * @param {Number}  pageSize
+                                                                                                                                      * @param {Number}  projectId
+                                                                                                                                      */
+exports.getPublicComments = function (params) {return (0, _request.default)("/project/discuss/".concat(params.projectId), "GET", params);};
+
+/**
+                                                                                                                                             * 新建公开评论
+                                                                                                                                             * @param {Number}  projectId 项目ID
+                                                                                                                                             * @param {String}  comment 内容
+                                                                                                                                             */
+exports.postPublicComment = function (data) {return (0, _request.default)("/project/discuss", "POST", data);};
+
+/**
+                                                                                                                * 删除公开评论
+                                                                                                                * @param {Number}  commentId
+                                                                                                                */
+exports.deletePublicComment = function (commentId) {return (0, _request.default)("/project/discuss/".concat(commentId), "DELETE");};
+
+/**
+                                                                                                                                      * 判断是否收藏
+                                                                                                                                      * @param {Number}  projectId
+                                                                                                                                      */
+exports.isCollected = function (projectId) {return (0, _request.default)("/project/collection/check/".concat(projectId), "GET");};
+
+/**
+                                                                                                                                    * 收藏项目
+                                                                                                                                    * @param {Number}  projectId
+                                                                                                                                    */
+exports.collectProject = function (projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "POST");};
+
+/**
+                                                                                                                                  * 取消收藏项目
+                                                                                                                                  * @param {Number}  projectId
+                                                                                                                                  */
+exports.cancleCollectProject = function (projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "DELETE");};
+
+/**
+                                                                                                                                          * 获取项目所有资源信息
+                                                                                                                                          * @param {Number}  projectId
+                                                                                                                                          * @param {Boolean}  edit 是否处于编辑模式（项目管理员专属)
+                                                                                                                                          */
+exports.getResources = function (_ref) {var projectId = _ref.projectId,edit = _ref.edit;return (0, _request.default)("/project/".concat(projectId, "/resources?edit=").concat(edit), "GET");};
+
+/**
+                                                                                                                                                                                                * 获取上传文件签名
+                                                                                                                                                                                                * @param {Number}  projectId
+                                                                                                                                                                                                * @param {String}  filename
+                                                                                                                                                                                                */
+exports.getFilesSignature = function (projectId, filename) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private?filename=").concat(filename), "GET");};
+
+/**
+                                                                                                                                                                                                * 创建项目的资源信息
+                                                                                                                                                                                                * @param {Number}  projectId
+                                                                                                                                                                                                * @param {String}  name
+                                                                                                                                                                                                * @param {Number}  fileType 参考garr_fileClassify
+                                                                                                                                                                                                * @param {String}  filename 保存在oss里的资源文件名(包括前缀)
+                                                                                                                                                                                                * @param {Number}  price
+                                                                                                                                                                                                */
+exports.postResource = function (projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
+
+/**
+                                                                                                                                          * 删除资源
+                                                                                                                                          * @param {Number}  resourceId
+                                                                                                                                          */
+exports.deleteResource = function (resourceId) {return (0, _request.default)("/project/resource/".concat(resourceId), "DELETE", {});};
+
+/**
+                                                                                                                                        * 修改资源信息
+                                                                                                                                        * @param {Number}  resourceId
+                                                                                                                                        * @param {String}  name
+                                                                                                                                        * @param {Number}  fileType 参考garr_fileClassify
+                                                                                                                                        * @param {String}  filename 保存在oss里的资源文件名(包括前缀)
+                                                                                                                                        * @param {Number}  price
+                                                                                                                                        */
+exports.putResource = function (resourceId, data) {return (0, _request.default)("/project/resource/".concat(resourceId), "PUT", data);};
+
+/**
+                                                                                                                                          * 获取下载签名
+                                                                                                                                          * @param {Number}  resourceId
+                                                                                                                                          */
+exports.getLoadSignature = function (resourceId) {return (0, _request.default)("/project/resource/".concat(resourceId, "/sign/download"), "GET", {});};
+
+/**
+                                                                                                                                                         * 获取阅读签名
+                                                                                                                                                         * @param {Number}  resourceId
+                                                                                                                                                         */
+exports.getReadSignature = function (resourceId) {return (0, _request.default)("/project/resource/".concat(resourceId, "/sign/read"), "GET", {});};
+
+/*  */
+/**
+        * 创建项目成员
+        * @param {Number}  projectId
+        * @param {Number}  memberUserId 成员ID
+        * @param {Number}  rank 排名
+        * @param {String}  job 职务
+        * @param {Boolean}  editable 是否可编辑项目信息
+        */
+exports.postMember = function (projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};
+
+/**
+                                                                                                                                      * 更新项目单个成员信息
+                                                                                                                                      * @param {Number}  projectId
+                                                                                                                                      * @param {Number}  memberUserId 成员ID
+                                                                                                                                      * @param {Number}  rank 排名
+                                                                                                                                      * @param {String}  job 职务
+                                                                                                                                      * @param {Boolean}  editable 是否可编辑项目信息
+                                                                                                                                      */
+exports.putMember = function (projectId, memberUserId, data) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "PUT", data);};
+
+/**
+                                                                                                                                                                            * 批量更新项目成员
+                                                                                                                                                                            * @param {Number}  projectId
+                                                                                                                                                                            * @param {Array}  body 内容同上
+                                                                                                                                                                            */
+exports.putMembers = function (projectId, data) {return (0, _request.default)("/project/members/".concat(projectId), "PUT", data);};
+
+/**
+                                                                                                                                      * 删除成员
+                                                                                                                                      * @param {Number}  projectId
+                                                                                                                                      * @param {Number}  memberUserId 成员ID
+                                                                                                                                      */
+exports.deleteMember = function (projectId, memberUserId) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "DELETE");};
+
+/**
+                                                                                                                                                                      * 申请认领资源
+                                                                                                                                                                      * @param {Number}  projectId
+                                                                                                                                                                      * @param {String}  intro
+                                                                                                                                                                      * @param {String}  awardProveUrl
+                                                                                                                                                                      * @param {Number}  state 状态 0-正在审核 1-通过 2-不通过
+                                                                                                                                                                      */
+exports.postApplyProject = function (data) {return (0, _request.default)("/project/find", "POST", data);};
+
+/**
+                                                                                                            * 修改认领资源信息
+                                                                                                            * @param {Number}  projectFindId 申请表ID
+                                                                                                            */
+exports.putApplyProject = function (_ref2) {var applyingID = _ref2.applyingID,data = _objectWithoutProperties(_ref2, ["applyingID"]);return (0, _request.default)("/project/find/".concat(applyingID), "PUT", data);};
+
+/**
+                                                                                                                                                                                                                        * 判断用户是否已经提交认领
+                                                                                                                                                                                                                        * @param {Number}  projectId
+                                                                                                                                                                                                                        */
+exports.getApplyProject = function (projectId) {return (0, _request.default)("/project/find/judge/".concat(projectId), "GET");};
 
 /***/ }),
 
@@ -9560,258 +9871,6 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 265:
-/*!**************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectWithoutProperties(source, excluded) {if (source == null) return {};var target = _objectWithoutPropertiesLoose(source, excluded);var key, i;if (Object.getOwnPropertySymbols) {var sourceSymbolKeys = Object.getOwnPropertySymbols(source);for (i = 0; i < sourceSymbolKeys.length; i++) {key = sourceSymbolKeys[i];if (excluded.indexOf(key) >= 0) continue;if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;target[key] = source[key];}}return target;}function _objectWithoutPropertiesLoose(source, excluded) {if (source == null) return {};var target = {};var sourceKeys = Object.keys(source);var key, i;for (i = 0; i < sourceKeys.length; i++) {key = sourceKeys[i];if (excluded.indexOf(key) >= 0) continue;target[key] = source[key];}return target;}
-
-/**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * 获取公共文件上传签名
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * @param {String}  filename
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
-exports.getPublicSignature = function (filename) {return (0, _request.default)("/project/sign/upload/public?filename=".concat(filename), "GET");};
-
-/**
-                                                                                                                                                    * 创建项目
-                                                                                                                                                    * @param {String}  name
-                                                                                                                                                    * @param {String}  avatarUrl
-                                                                                                                                                    * @param {Number}  compId 比赛外键
-                                                                                                                                                    * @param {String}  compName 比赛名
-                                                                                                                                                    * @param {Number}  awardLevel 获奖等级
-                                                                                                                                                    * @param {String}  tags
-                                                                                                                                                    * @param {Date}  awardTime 获奖时间
-                                                                                                                                                    * @param {String}  awardProveUrl
-                                                                                                                                                    * @param {String}  intro
-                                                                                                                                                    * @param {Boolean}  isAnonymous 是否为匿名资源
-                                                                                                                                                    */
-exports.postProject = function (data) {return (0, _request.default)("/project", "POST", data);};
-
-/**
-                                                                                                  * 获取所有项目粗略信息表
-                                                                                                  * @param {Number}  pageNum
-                                                                                                  * @param {Number}  pageSize
-                                                                                                  * @param {Number}  userId 根据用户ID筛选
-                                                                                                  * @param {Number}  compId 根据比赛ID筛选
-                                                                                                  * @param {Number}  awardLevel 根据获奖等级筛选
-                                                                                                  * @param {String}  sortBy 排序字段
-                                                                                                  * @param {String}  orderBy 排序方式
-                                                                                                  */
-exports.getProjects = function (params) {return (0, _request.default)("/project", "GET", params);};
-
-/**
-                                                                                                     * 获取个人项目列表
-                                                                                                     * @param {Number}  pageNum
-                                                                                                     * @param {Number}  pageSize
-                                                                                                     * @param {Number}  compId 根据比赛ID筛选
-                                                                                                     * @param {Number}  awardLevel 根据获奖等级筛选
-                                                                                                     * @param {String}  sortBy 排序字段
-                                                                                                     * @param {String}  orderBy 排序方式
-                                                                                                     */
-exports.getMeProjects = function (params) {return (0, _request.default)("/project/me", "GET", params);};
-
-/**
-                                                                                                          * 获取项目详细信息
-                                                                                                          * @param {Number}  projectId
-                                                                                                          */
-exports.getProject = function (projectId) {return (0, _request.default)("/project/".concat(projectId), "GET", {});};
-
-/**
-                                                                                                                      * 更新项目详细信息
-                                                                                                                      * @param {Number}  projectId
-                                                                                                                      * @param {String}  name
-                                                                                                                      * @param {String}  avatarUrl
-                                                                                                                      * @param {Number}  compId 比赛外键
-                                                                                                                      * @param {String}  compName 比赛名
-                                                                                                                      * @param {Number}  awardLevel 获奖等级
-                                                                                                                      * @param {String}  tags
-                                                                                                                      * @param {Date}  awardTime 获奖时间
-                                                                                                                      * @param {String}  awardProveUrl
-                                                                                                                      * @param {String}  intro
-                                                                                                                      */
-exports.putProject = function (projectId, data) {return (0, _request.default)("/project/".concat(projectId), "PUT", data);};
-
-/**
-                                                                                                                              * 删除项目
-                                                                                                                              * @param {Number}  projectId
-                                                                                                                              */
-exports.deleteProject = function (projectId) {return (0, _request.default)("/project/".concat(projectId), "DELETE", {});};
-
-/**
-                                                                                                                            * 获取个人项目列表
-                                                                                                                            * @param {Number}  pageNum
-                                                                                                                            * @param {Number}  pageSize
-                                                                                                                            * @param {Number}  projectId
-                                                                                                                            */
-exports.getRemarks = function (params) {return (0, _request.default)("/project/resource/score", "GET", params);};
-
-/**
-                                                                                                                   * 发布评论
-                                                                                                                   * @param {Number}  resourceId 附件ID
-                                                                                                                   * @param {Number} score 评分
-                                                                                                                   * @param {String}  comment 内容
-                                                                                                                   */
-exports.postRemark = function (resourceId, data) {return (0, _request.default)("/project/resource/score/".concat(resourceId), "POST", data);};
-
-/**
-                                                                                                                                                * 删除评价
-                                                                                                                                                * @param {Number}  commentId
-                                                                                                                                                */
-exports.deleteRemark = function (commentId) {return (0, _request.default)("/project/resource/score/".concat(commentId), "DELETE");};
-
-/**
-                                                                                                                                      * 获取公开评论
-                                                                                                                                      * @param {Number}  pageNum
-                                                                                                                                      * @param {Number}  pageSize
-                                                                                                                                      * @param {Number}  projectId
-                                                                                                                                      */
-exports.getPublicComments = function (params) {return (0, _request.default)("/project/discuss/".concat(params.projectId), "GET", params);};
-
-/**
-                                                                                                                                             * 新建公开评论
-                                                                                                                                             * @param {Number}  projectId 项目ID
-                                                                                                                                             * @param {String}  comment 内容
-                                                                                                                                             */
-exports.postPublicComment = function (data) {return (0, _request.default)("/project/discuss", "POST", data);};
-
-/**
-                                                                                                                * 删除公开评论
-                                                                                                                * @param {Number}  commentId
-                                                                                                                */
-exports.deletePublicComment = function (commentId) {return (0, _request.default)("/project/discuss/".concat(commentId), "DELETE");};
-
-/**
-                                                                                                                                      * 判断是否收藏
-                                                                                                                                      * @param {Number}  projectId
-                                                                                                                                      */
-exports.isCollected = function (projectId) {return (0, _request.default)("/project/collection/check/".concat(projectId), "GET");};
-
-/**
-                                                                                                                                    * 收藏项目
-                                                                                                                                    * @param {Number}  projectId
-                                                                                                                                    */
-exports.collectProject = function (projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "POST");};
-
-/**
-                                                                                                                                  * 取消收藏项目
-                                                                                                                                  * @param {Number}  projectId
-                                                                                                                                  */
-exports.cancleCollectProject = function (projectId) {return (0, _request.default)("/project/collection/".concat(projectId), "DELETE");};
-
-/**
-                                                                                                                                          * 获取项目所有资源信息
-                                                                                                                                          * @param {Number}  projectId
-                                                                                                                                          * @param {Boolean}  edit 是否处于编辑模式（项目管理员专属)
-                                                                                                                                          */
-exports.getResources = function (_ref) {var projectId = _ref.projectId,edit = _ref.edit;return (0, _request.default)("/project/".concat(projectId, "/resources?edit=").concat(edit), "GET");};
-
-/**
-                                                                                                                                                                                                * 获取上传文件签名
-                                                                                                                                                                                                * @param {Number}  projectId
-                                                                                                                                                                                                * @param {String}  filename
-                                                                                                                                                                                                */
-exports.getFilesSignature = function (projectId, filename) {return (0, _request.default)("/project/".concat(projectId, "/resources/sign/upload/private?filename=").concat(filename), "GET");};
-
-/**
-                                                                                                                                                                                                * 创建项目的资源信息
-                                                                                                                                                                                                * @param {Number}  projectId
-                                                                                                                                                                                                * @param {String}  name
-                                                                                                                                                                                                * @param {Number}  fileType 参考garr_fileClassify
-                                                                                                                                                                                                * @param {String}  filename 保存在oss里的资源文件名(包括前缀)
-                                                                                                                                                                                                * @param {Number}  price
-                                                                                                                                                                                                */
-exports.postResource = function (projectId, data) {return (0, _request.default)("/project/resource/".concat(projectId), "POST", data);};
-
-/**
-                                                                                                                                          * 删除资源
-                                                                                                                                          * @param {Number}  resourceId
-                                                                                                                                          */
-exports.deleteResource = function (resourceId) {return (0, _request.default)("/project/resource/".concat(resourceId), "DELETE", {});};
-
-/**
-                                                                                                                                        * 修改资源信息
-                                                                                                                                        * @param {Number}  resourceId
-                                                                                                                                        * @param {String}  name
-                                                                                                                                        * @param {Number}  fileType 参考garr_fileClassify
-                                                                                                                                        * @param {String}  filename 保存在oss里的资源文件名(包括前缀)
-                                                                                                                                        * @param {Number}  price
-                                                                                                                                        */
-exports.putResource = function (resourceId, data) {return (0, _request.default)("/project/resource/".concat(resourceId), "PUT", data);};
-
-/**
-                                                                                                                                          * 获取下载签名
-                                                                                                                                          * @param {Number}  resourceId
-                                                                                                                                          */
-exports.getLoadSignature = function (resourceId) {return (0, _request.default)("/project/resource/".concat(resourceId, "/sign/download"), "GET", {});};
-
-/**
-                                                                                                                                                         * 获取阅读签名
-                                                                                                                                                         * @param {Number}  resourceId
-                                                                                                                                                         */
-exports.getReadSignature = function (resourceId) {return (0, _request.default)("/project/resource/".concat(resourceId, "/sign/read"), "GET", {});};
-
-/*  */
-/**
-        * 创建项目成员
-        * @param {Number}  projectId
-        * @param {Number}  memberUserId 成员ID
-        * @param {Number}  rank 排名
-        * @param {String}  job 职务
-        * @param {Boolean}  editable 是否可编辑项目信息
-        */
-exports.postMember = function (projectId, data) {return (0, _request.default)("/project/member/".concat(projectId), "POST", data);};
-
-/**
-                                                                                                                                      * 更新项目单个成员信息
-                                                                                                                                      * @param {Number}  projectId
-                                                                                                                                      * @param {Number}  memberUserId 成员ID
-                                                                                                                                      * @param {Number}  rank 排名
-                                                                                                                                      * @param {String}  job 职务
-                                                                                                                                      * @param {Boolean}  editable 是否可编辑项目信息
-                                                                                                                                      */
-exports.putMember = function (projectId, memberUserId, data) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "PUT", data);};
-
-/**
-                                                                                                                                                                            * 批量更新项目成员
-                                                                                                                                                                            * @param {Number}  projectId
-                                                                                                                                                                            * @param {Array}  body 内容同上
-                                                                                                                                                                            */
-exports.putMembers = function (projectId, data) {return (0, _request.default)("/project/members/".concat(projectId), "PUT", data);};
-
-/**
-                                                                                                                                      * 删除成员
-                                                                                                                                      * @param {Number}  projectId
-                                                                                                                                      * @param {Number}  memberUserId 成员ID
-                                                                                                                                      */
-exports.deleteMember = function (projectId, memberUserId) {return (0, _request.default)("/project/member/".concat(projectId, "/").concat(memberUserId), "DELETE");};
-
-/**
-                                                                                                                                                                      * 申请认领资源
-                                                                                                                                                                      * @param {Number}  projectId
-                                                                                                                                                                      * @param {String}  intro
-                                                                                                                                                                      * @param {String}  awardProveUrl
-                                                                                                                                                                      * @param {Number}  state 状态 0-正在审核 1-通过 2-不通过
-                                                                                                                                                                      */
-exports.postApplyProject = function (data) {return (0, _request.default)("/project/find", "POST", data);};
-
-/**
-                                                                                                            * 修改认领资源信息
-                                                                                                            * @param {Number}  projectFindId 申请表ID
-                                                                                                            */
-exports.putApplyProject = function (_ref2) {var applyingID = _ref2.applyingID,data = _objectWithoutProperties(_ref2, ["applyingID"]);return (0, _request.default)("/project/find/".concat(applyingID), "PUT", data);};
-
-/**
-                                                                                                                                                                                                                        * 判断用户是否已经提交认领
-                                                                                                                                                                                                                        * @param {Number}  projectId
-                                                                                                                                                                                                                        */
-exports.getApplyProject = function (projectId) {return (0, _request.default)("/project/find/judge/".concat(projectId), "GET");};
-
-/***/ }),
-
 /***/ 27:
 /*!************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_login.js ***!
@@ -9900,7 +9959,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 346:
+/***/ 340:
 /*!***********************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_team.js ***!
   \***********************************************/
@@ -10036,7 +10095,7 @@ exports.checkApply = function (_ref4) {var teamId = _ref4.teamId,memberId = _ref
 
 /***/ }),
 
-/***/ 64:
+/***/ 58:
 /*!******************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_competition.js ***!
   \******************************************************/
@@ -10053,66 +10112,7 @@ exports.getAllCompetition = function () {return (0, _request.default)("/competit
 
 /***/ }),
 
-/***/ 65:
-/*!*************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_system.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/**
-                                                                                                                                                                           * 获取系统公告
-                                                                                                                                                                           */
-exports.getNotice = function () {return (0, _request.default)("/notice", "GET");};
-
-/**
-                                                                                    * 签署须知协议
-                                                                                    */
-exports.signNotice = function () {return (0, _request.default)("/sign/notice", "POST");};
-
-/**
-                                                                                           * 获取我的反馈
-                                                                                           * @param {Number}  pageNum
-                                                                                           * @param {Number}  pageSize
-                                                                                           * @param {Number}  status 状态
-                                                                                           * @param {Number}  type 类型
-                                                                                           * @param {Number}  lowestLevel 最低级别
-                                                                                           * @param {Number}  highestLevel 最高级别
-                                                                                           * @param {String}  sortBy 排序关键字time、status、type、level、replyTime
-                                                                                           * @param {String}  orderBy 排序方式
-                                                                                           */
-exports.getMyFeedback = function (param) {return (0, _request.default)("/feedback/me", "GET", param);};
-
-/**
-                                                                                                         * 用户提交反馈
-                                                                                                         * @param {Number}  type 反馈类型
-                                                                                                         * @param {String}  content
-                                                                                                         */
-exports.feedbackProblem = function (data) {return (0, _request.default)("/feedback", "POST", data);};
-
-/**
-                                                                                                       * 获取轮播图
-                                                                                                       */
-exports.getSlideCard = function () {return (0, _request.default)("/slideShow", "GET");};
-
-/**
-                                                                                          * 使用兑换码
-                                                                                          * @param {String}  code 兑换码
-                                                                                          */
-exports.useCDKEY = function (code) {return (0, _request.default)("/activity/code?code=".concat(code), "POST");};
-
-/**
-                                                                                                                  * 获取公共上传签名
-                                                                                                                  * @param {String}  filename
-                                                                                                                  */
-exports.getPublicSignature = function (filename) {return (0, _request.default)("/project/sign/upload/public?filename=" + filename, "GET");};
-
-/***/ }),
-
-/***/ 707:
+/***/ 701:
 /*!************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_forum.js ***!
   \************************************************/
@@ -10129,10 +10129,10 @@ exports.getTalents = function () {return (0, _request.default)("/talentMarket", 
 
 /***/ }),
 
-/***/ 729:
-/*!***************************************************!*\
-  !*** D:/服务外包/竞赛统计/components/SelectCity/citys.js ***!
-  \***************************************************/
+/***/ 723:
+/*!****************************************************!*\
+  !*** D:/服务外包/竞赛统计/components/select-city/citys.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

@@ -24,13 +24,6 @@
 				"navigationBarTitleText": "Aha口袋"
 			}
 		},
-		/* 评论详细 */
-		{
-			"path": "pages/Comment/CommentDetail",
-			"style": {
-				"navigationBarTitleText": "评论信息"
-			}
-		},
 		/* 
 			主页
 			4个副页全部放在app.vue中

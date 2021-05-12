@@ -65,7 +65,7 @@
 				</view>
 			</view>
 		</view>
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

@@ -9,21 +9,21 @@
 				<text class="h3">实名信息</text>
 				<text class="state" :class="statusObj.class">*{{statusObj.msg}}</text>
 			</view>
-			<SelfInput
+			<aha-input
 				label="姓名"
 				contentWidth="350rpx"
 				circle
 				v-model="trueName.val">
-			</SelfInput>
+			</aha-input>
 			<!-- 身份 -->
-			<SelfRadio
+			<aha-radio
 				label="当前身份"
 				:radio="[
 					{label:'学生',value:0},
 					{label:'非学生',value:1}
 				]"
 				v-model="type">
-			</SelfRadio>
+			</aha-radio>
 			<!-- 图片 -->
 			<view class="proves">
 				<!-- 身份证正面 -->
@@ -66,9 +66,9 @@
 				</view>
 			</view>
 			<!-- 提交 -->
-			<BottomBtn @click="onclickSubmit">提交</BottomBtn>
+			<btn-bottom @click="onclickSubmit">提交</btn-bottom>
 		</view>
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

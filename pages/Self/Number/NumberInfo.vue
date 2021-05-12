@@ -64,25 +64,27 @@
 			<text class="small bind">点击认证</text>
 		</navigator>
 		<!-- 绑定手机弹窗 -->
-		<BindPhone 
+		<bind-phone 
 			v-if="!oauths.phone && is_showBindPhone" 
 			@close="is_showBindPhone=false" 
 			@success="reGetMe">
-		</BindPhone>
+		</bind-phone>
 		<user-agreement
 			v-if="is_showNotice"
 			@readed="is_showNotice=false">
 		</user-agreement>
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 
 <script>
 import { bindWxchat } from "@/static/request/api_userInfo.js"
-import userAgreement from "./UserAgreement.vue"
+import UserAgreement from "./components/UserAgreement.vue"
+import BindPhone from "./components/BindPhone.vue"
 export default {
 	components: {
-		"user-agreement": userAgreement
+		"user-agreement": UserAgreement,
+		"bind-phone": BindPhone
 	},
 	data() {
 		return {

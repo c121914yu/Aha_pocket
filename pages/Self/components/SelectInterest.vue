@@ -73,10 +73,10 @@
 				</view>
 			</view>
 			<!-- 底部按键 -->
-			<BottomBtn
+			<btn-bottom
 				text="确认"
 				@click="onclickSure">
-			</BottomBtn>
+			</btn-bottom>
 		</view>
 	</view>
 </template>

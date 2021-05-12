@@ -16,12 +16,12 @@
 			<view class="content">
 				<view class="header">
 					<view class="blank"></view>
-					<SelfPicker2
+					<aha-picker
 						:arr_range="commentsRange"
 						:startIndex="commentsRange.findIndex(item => item.value === checkCommentType.value)"
 						placeholder="选择评论的附件"
 						v-model="checkCommentType">
-					</SelfPicker2>
+					</aha-picker>
 				</view>
 				<textarea 
 					placeholder="写下你的评论,让大家了解更多" 
@@ -33,7 +33,7 @@
 					fixed/>
 				<!-- 评分 -->
 				<view class="footer">
-					<CommentStar v-if="checkCommentType.value!=='public'" v-model="score"></CommentStar>
+					<comment-star v-if="checkCommentType.value!=='public'" v-model="score"></comment-star>
 					<view v-else></view>
 					<button class="publish" @click="publish">发表</button>
 				</view>

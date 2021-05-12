@@ -1,7 +1,7 @@
 <template>
 	<view class="project">
 		<view class="header">
-			<Avatar :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="100" readed="readed"></Avatar>
+			<aha-avatar :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="100" readed="readed"></aha-avatar>
 			<view class="right">
 				<!-- 项目题目 -->
 				<view class="small item">
@@ -185,7 +185,7 @@
 			@success="getCommentsInfo(true)">
 		</WriteRemark>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

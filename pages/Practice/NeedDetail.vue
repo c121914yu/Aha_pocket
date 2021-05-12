@@ -3,10 +3,10 @@
 	<div class="need">
 		<view class="header">
 			<view class="base-info">
-				<Avatar :src="avatar"></Avatar>
+				<aha-avatar :src="avatar"></aha-avatar>
 				<view class="right">
 					<view class="name strong">{{name}}</view>
-					<Tags class="tags" :tags="tags"></Tags>
+					<aha-tags class="tags" :tags="tags"></aha-tags>
 					<view class="time mini">{{time}}</view>
 				</view>
 			</view>
@@ -22,7 +22,7 @@
 			</view>
 		</view>
 		<!-- 导航条 -->
-		<TopNavs :navs="navs" color="var(--black)" backgroundColor="#fff"></TopNavs>
+		<top-navs :navs="navs" color="var(--black)" backgroundColor="#fff"></top-navs>
 		<!-- 服务信息卡片 -->
 		<view class="card">
 			<view class="title">需求方</view>
@@ -31,12 +31,12 @@
 				hover-class="none"
 				class="val user"
 				:url="'../Self/UserHome?userId=112'">
-				<Avatar :src="server.avatarUrl" size="50"></Avatar>
+				<aha-avatar :src="server.avatarUrl" size="50"></aha-avatar>
 				<view class="right">
 					<view class="name">
-						<text class="strong">{{server.nickname}}</text><UserLevel point="50" small></UserLevel>
+						<text class="strong">{{server.nickname}}</text><aha-user-level point="50" small></aha-user-level>
 					</view>
-					<Tags :tags="userTags"></Tags>
+					<aha-tags :tags="userTags"></aha-tags>
 				</view>
 			</navigator>
 		</view>
@@ -70,17 +70,17 @@
 					v-for="item in 5"
 					:key="item">
 					<view class="user-info">
-						<Avatar 
+						<aha-avatar 
 							src="https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png" 
 							size="35"
 							bgColor="none">
-						</Avatar>
+						</aha-avatar>
 						<view class="right">
 							<view class="name">的时光回溯多喝个</view>
 							<view class="time">2020-7-1</view>
 						</view>
 					</view>
-					<EllipsisText text="Lorem ipsum dolor sit amet, consectetur adipisicing elpudiandae fugit labore va culpa ipsam iste beatae tempore distinctio quod omnis similique nisi incidunt ducimus. nam explicabo."></EllipsisText>
+					<ellipsis-text text="Lorem ipsum dolor sit amet, consectetur adipisicing elpudiandae fugit labore va culpa ipsam iste beatae tempore distinctio quod omnis similique nisi incidunt ducimus. nam explicabo."></ellipsis-text>
 					<!-- 回复 & 点赞-->
 					<view class="interaction">
 						<navigator 

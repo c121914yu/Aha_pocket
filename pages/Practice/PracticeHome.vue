@@ -14,10 +14,10 @@
 		</view>
 		<!-- 搜索框 -->
 		<view class="search-input">
-			<SearchInput
+			<search-input
 				placeholder="搜索相关内容" 
 				v-model="searchText">
-			</SearchInput>
+			</search-input>
 		</view>
 		<!-- 一些分类 -->
 		<view 

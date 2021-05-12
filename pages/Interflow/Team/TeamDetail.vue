@@ -3,7 +3,7 @@
 		<view class="header">
 			<view class="first">
 				<view class="left">
-					<Avatar :src="avatar"></Avatar>
+					<aha-avatar :src="avatar"></aha-avatar>
 					<button 
 						v-if="applyText" 
 						class="apply-status" 
@@ -15,7 +15,7 @@
 					<view class="nickname">{{ name }}</view>
 					<!-- 学校 -->
 					<view class="school">{{school}}</view>
-					<Tags :tags="tag | splitTags"></Tags>
+					<aha-tags :tags="tag | splitTags"></aha-tags>
 					<view class="user-relation">
 						<navigator class="consult" :url="'./Inform/Inform_send?id=' + userId">
 							<text class="iconfont icon-xiazai"></text>
@@ -26,19 +26,19 @@
 			</view>
 		</view>
 		<!-- 导航 -->
-		<TopNavs 
+		<top-navs 
 			:navs="navs"
 			color="var(--black)"
 			backgroundColor="#ffffff"
 			@navChange="currentNavs=$event.value">
-		</TopNavs>
+		</top-navs>
 		<!-- 介绍-->
 		<view v-if="currentNavs===0" class="card">
 			<view class="rich-text" v-html="intro"></view>
 		</view>
 		<!-- 成就 -->
 		<view v-if="currentNavs===1" class="card">
-			<TimeTracks :tracks="teamTracks"></TimeTracks>
+			<time-tracks :tracks="teamTracks"></time-tracks>
 		</view>
 		<!-- 成员 -->
 		<view v-if="currentNavs===2" class="card">
@@ -62,7 +62,7 @@
 			:isApplying.sync="isApplying">
 		</apply-join>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

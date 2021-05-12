@@ -12,9 +12,9 @@
 				@click="clickTeam(team)">
 			</team-card>
 		</view>
-		<BottomBtn linkTo="./CreateTeam">创建团队</BottomBtn>
+		<btn-bottom linkTo="./CreateTeam">创建团队</btn-bottom>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

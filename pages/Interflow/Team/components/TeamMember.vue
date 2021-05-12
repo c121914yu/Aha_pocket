@@ -6,27 +6,27 @@
 		}"
 		class="team-member">
 		<view class="title">队长</view>
-		<view class="member" @click="$emit('click',captain)">
+		<view class="member" @click="$emit('click',obj_captain)">
 			<view class="left">
-				<Avatar :src="captain.memberRoughInfo.avatarUrl" size="50"></Avatar>
-				<view class="role">{{captain.role || "队长"}}</view>
+				<aha-avatar :src="obj_captain.memberRoughInfo.avatarUrl" size="50"></aha-avatar>
+				<view class="role">{{obj_captain.role || "队长"}}</view>
 			</view>
 			<view class="right">
-				<view class="name strong">{{captain.memberRoughInfo.nickname}}</view>
+				<view class="name strong">{{obj_captain.memberRoughInfo.nickname}}</view>
 				<view class="member-intro">
-					{{captain.memberIntro || "这个人还没填写介绍"}}
+					{{obj_captain.memberIntro || "这个人还没填写介绍"}}
 				</view>
 			</view>
 		</view>
-		<view v-if="admin.length>0">
+		<view v-if="arr_admin.length>0">
 			<view class="title">管理员</view>
 			<view
 				class="member" 
-				v-for="member in admin"
+				v-for="member in arr_admin"
 				:key="member.uid"
 				@click="$emit('click',member)">
 				<view class="left">
-					<Avatar :src="member.memberRoughInfo.avatarUrl" size="50"></Avatar>
+					<aha-avatar :src="member.memberRoughInfo.avatarUrl" size="50"></aha-avatar>
 					<view class="role">{{member.role || "管理员"}}</view>
 				</view>
 				<view class="right">
@@ -37,15 +37,15 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="teamMembers.length>0">
+		<view v-if="arr_teamMembers.length>0">
 			<view class="title">成员</view>
 			<view
 				class="member" 
-				v-for="member in teamMembers"
+				v-for="member in arr_teamMembers"
 				:key="member.uid"
 				@click="$emit('click',member)">
 				<view class="left">
-					<Avatar :src="member.memberRoughInfo.avatarUrl" size="50"></Avatar>
+					<aha-avatar :src="member.memberRoughInfo.avatarUrl" size="50"></aha-avatar>
 					<view class="role">{{member.role || "队员"}}</view>
 				</view>
 				<view class="right">
@@ -66,7 +66,7 @@ export default {
 			type: Number,
 			default: 0
 		},
-		members: {
+		arr_members: {
 			type: Array,
 			default: () => []
 		},
@@ -77,33 +77,35 @@ export default {
 	},
 	data() {
 		return {
-			captain: {},
-			admin: [],
-			teamMembers: []
+			obj_captain: {},
+			arr_admin: [],
+			arr_teamMembers: []
 		}
 	},
 	created() {
-		this.updateMember(this.members)
+		this.updateMember()
 	},
 	methods: {
-		updateMember(members)
+		updateMember()
 		{
-			let admin = [],teamMembers = []
-			/* 对members进行分类 */
-			members.forEach(member => {
-				if(member.uid === this.captainId){
-					this.captain = member
-				}
-				else if(member.isAdmin) {
-					admin.push(member)
-				}
-				else{
-					teamMembers.push(member)
-				}
+			this.$nextTick(() => {
+				let admin = [],teamMembers = []
+				/* 对members进行分类 */
+				this.arr_members.forEach(member => {
+					if(member.uid === this.captainId){
+						this.obj_captain = member
+					}
+					else if(member.isAdmin) {
+						admin.push(member)
+					}
+					else{
+						teamMembers.push(member)
+					}
+				})
+				console.log(this.arr_members)
+				this.arr_admin = admin
+				this.arr_teamMembers = teamMembers
 			})
-			console.log(this.members);
-			this.admin = admin
-			this.teamMembers = teamMembers
 		}
 	}
 }

@@ -4,7 +4,6 @@
     "pages/Login/Register",
     "pages/Login/FindPassword",
     "pages/OutLink",
-    "pages/Comment/CommentDetail",
     "pages/app",
     "pages/Self/UserHome",
     "pages/Self/Resume/Resume",
@@ -57,6 +56,5 @@
       "desc": "获取您当前的城市信息"
     }
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

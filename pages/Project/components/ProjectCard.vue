@@ -10,7 +10,7 @@
 		<!-- 排名图标 -->
 		<text v-if="ranking !== 0" :class="'ranking iconfont ' + rankingIcon"></text>
 		<!-- 头像 -->
-		<Avatar :src="project.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="57"></Avatar>
+		<aha-avatar :src="project.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="57"></aha-avatar>
 		<!-- 资源信息 -->
 		<view class="info" :class="border ? 'border' : ''">
 			<!-- 资源名称 -->
@@ -26,7 +26,7 @@
 			<!-- 获奖信息 -->
 			<view><text class="comp-name strong">{{ compName }}</text></view>
 			<!-- 标签 -->
-			<Tags class="tags" :tags="this.project.tags | splitTags"></Tags>
+			<aha-tags class="tags" :tags="this.project.tags | splitTags"></aha-tags>
 			<view class="blank"></view>
 			<!-- 时间 & 数据统计 & 状态-->
 			<view class="footer">

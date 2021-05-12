@@ -14,7 +14,7 @@
 			</view>
 			<!-- 是否允许编辑 -->
 			<view>
-				<SelfRadio
+				<aha-radio
 					label="允许编辑项目:"
 					labelColor="var(--font-dark)"
 					:radio="[
@@ -22,7 +22,7 @@
 						{label:'不允许',value:false}
 					]"
 					v-model="member.editable">
-				</SelfRadio>
+				</aha-radio>
 			</view>
 			<!-- 负责工作 -->
 			<view class="job">

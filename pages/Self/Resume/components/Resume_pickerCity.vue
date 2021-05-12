@@ -8,11 +8,11 @@
 			<text>{{value ? value : placeholder}}</text>
 			<text class="iconfont icon-xiala"></text>
 		</view>
-		<SelectCity 
+		<select-city 
 			v-if="is_selectCity" 
 			@select="$emit('input',$event);is_selectCity=false" 
 			v-model="value">
-		</SelectCity>
+		</select-city>
 	</view>
 </template>
 

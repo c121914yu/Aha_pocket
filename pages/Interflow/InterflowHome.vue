@@ -4,11 +4,11 @@
 -->
 <template>
 	<view class="forum-home">
-		<TopNavs 
+		<top-navs 
 			:navs="arr_navs"
 			padding
 			@navChange="currentNav=$event.value">
-		</TopNavs>
+		</top-navs>
 		<talents 
 			v-if="currentNav===0"
 			ref="Talents">

@@ -3,12 +3,12 @@
 		hover-class="none"
 		class="server-card" 
 		url="/pages/Epiboly/ServerDetail">
-		<Avatar :src="server.avatar" size="60"></Avatar>
+		<aha-avatar :src="server.avatar" size="60"></aha-avatar>
 		<view class="right">
 			<!-- 价格 -->
 			<view class="price">￥{{server.price}}</view>
 			<view class="name strong">{{server.name}}</view>
-			<Tags :tags="server.tags"></Tags>
+			<aha-tags :tags="server.tags"></aha-tags>
 			<view class="time">
 				{{server.time}}
 			</view>

@@ -1,10 +1,13 @@
-<!-- 团队卡片 -->
+<!-- 
+	团队卡片
+	author yjl
+-->
 <template>
 	<view class="team-card" @click="$emit('click')">
 		<!-- header部分左右布局 -->
 		<view class="header">
 			<!-- 左侧头像 -->
-			<Avatar :src="team.avatar || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="60"></Avatar>
+			<aha-avatar :src="team.avatar || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="60"></aha-avatar>
 			<!-- 如果是竞赛招募队友，要显示参与什么竞赛 -->
 			<view v-if="recruitState>0" class="recruit">
 				招募中
@@ -69,13 +72,6 @@ export default {
 				return this.team.tag.split(" ")
 			}
 			return []
-		}
-	},
-	filters: {
-		filterCaptain(id) {
-			// console.log(that.team.members);
-			// console.log(id);
-			return 1
 		}
 	}
 }

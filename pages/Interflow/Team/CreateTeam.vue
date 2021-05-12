@@ -9,7 +9,7 @@
 			<!-- 头像 -->
 			<view class="avatar">
 				<view v-if="avatar" @click="onclickAvatar">
-					<Avatar :src="avatar" size="50"></Avatar>
+					<aha-avatar :src="avatar" size="60"></aha-avatar>
 				</view>
 				<view v-else class="addAvatar" @click="chooseImg">
 					<text class="add">+</text>
@@ -17,34 +17,34 @@
 				</view>
 			</view>
 			<!-- 队伍名称 -->
-			<SelfInput label="团队名称" placeholder="取一个响亮的名称" v-model="name.val"></SelfInput>
+			<aha-input label="团队名称" placeholder="取一个响亮的名称" v-model="name.val"></aha-input>
 			<!-- 归属学校 -->
-			<SelfInput
+			<aha-input
 				label="归属学校" 
 				search
 				:arr_search="arr_school"
 				v-model="school">
-			</SelfInput>
+			</aha-input>
 			<!-- 标签 -->
-			<SelfInput 
+			<aha-input 
 				label="团队标签"
 				placeholder="让其他人更好的了解你的团队" 
 				v-model="tag">
-			</SelfInput>
-			<Tags 
+			</aha-input>
+			<aha-tags 
 				:tags="tag | splitTags"
 				Color="var(--black)"
 				bgColor="transparent"
 				border="var(--border2)">
-			</Tags>
+			</aha-tags>
 			<!-- 团队介绍 -->
 			<view style="margin: 5px 0" class="title strong">团队介绍</view>
 			<view class="intro" v-if="intro" v-html="intro"></view>
 			<button class="intro-btn" @click="startEdit">编辑</button>
 		</view>
-		<BottomBtn @click="onclickCreate">创建团队</BottomBtn>
+		<btn-bottom @click="onclickCreate">创建</btn-bottom>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

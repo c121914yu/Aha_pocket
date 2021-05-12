@@ -2,7 +2,7 @@
 	<view class="resource-home">
 		<!-- 轮播图 -->
 		<view class="header">
-			<SlideCard></SlideCard>
+			<slide-card></slide-card>
 		</view>
 		<!-- 榜单 -->
 		<view class="ranking">
@@ -52,7 +52,7 @@
 		<view class="center small remark">{{ is_showAll ? "已加载全部" : "" }}</view>
 
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

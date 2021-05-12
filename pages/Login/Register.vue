@@ -1,147 +1,140 @@
+<!-- 
+	注册
+	author yjl
+ -->
 <template>
 	<view class="register">
-		<image class="logo" src="https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png" mode="widthFix" />
+		<image 
+			class="logo" 
+			src="https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png" 
+			mode="widthFix" />
 		<view class="top"></view>
 		<view class="bottom">
-			<view class="card" v-if="!codeInput">
+			<view class="card" v-show="!is_inputCode">
 				<view class="input">
 					<text class="iconfont icon-user"></text>
-					<input type="number" placeholder="手机号" placeholder-class="placeholderStyle" v-model="phone" />
+					<input 
+						type="number" 
+						placeholder="手机号" 
+						v-model="phone.val" />
 				</view>
 				<view class="input">
 					<text class="iconfont icon-password"></text>
-					<input style="padding-right:40px" type="text" :password="isPassword" placeholder="密码" placeholder-class="placeholderStyle" v-model="password" />
-					<text class="iconfont icon-readed readed" @click="isPassword = !isPassword"></text>
+					<input 
+						style="padding-right:40px" 
+						type="text" 
+						:password="is_showPsw" 
+						placeholder="密码" 
+						v-model="password.val" />
+					<text class="iconfont icon-readed readed" @click="is_showPsw=!is_showPsw"></text>
 				</view>
 				<view class="input">
 					<text class="iconfont icon-password"></text>
-					<input type="text" password placeholder="再次输入密码" placeholder-class="placeholderStyle" v-model="password2" />
+					<input 
+						type="text" 
+						password 
+						placeholder="再次输入密码" 
+						v-model="password2.val" />
 				</view>
-				<button type="default" @click="getCode">获取验证码</button>
+				<button type="default" @click="onclickGetCode">获取验证码</button>
 			</view>
-			<view class="code-input" v-show="codeInput">
+			<view class="code-input" v-show="is_inputCode">
 				<view class="center">
-					<text class="strong h3">{{ phone }}</text>
+					<text class="strong h3">{{ phone.val }}</text>
 					正在注册账号
 				</view>
-				<CodeInput ref="codeInput" @getCode="getCode" @finishInput="register"></CodeInput>
-				<button @click="codeInput = false">修改注册信息</button>
+				<input-code 
+					ref="codeInput" 
+					@getCode="onclickGetCode" 
+					@finishInput="register">
+				</input-code>
+				<button @click="is_inputCode=false">修改注册信息</button>
 			</view>
 		</view>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 
 <script>
-import { Register, sendCode } from '../../static/request/api_login.js';
-var reg = /^1[3456789]\d{9}$/;
+import { Register, sendCode } from '../../static/request/api_login.js'
+var reg = /^1[3456789]\d{9}$/
 export default {
 	data() {
 		return {
-			phone: '',
-			password: '',
-			password2: '',
-			isPassword: true, // 是否展示密码
-			codeInput: false
-		};
+			phone: {
+				val: "",
+				errMsg: "手机号不能为空"
+			},
+			password: {
+				val: "",
+				errMsg: "密码不能为空"
+			},
+			password2: {
+				val: "",
+				errMsg: "请再次输入密码"
+			},
+			is_showPsw: true, // 是否展示密码
+			is_inputCode: false
+		}
 	},
 	methods: {
-		/*
-			name: getCode
-			description: 发送验证码，跳转验证码输入界面，需要检查手机格式和密码
-			input: 
-				this.phone: String,手机号
-				this.password: String,密码
-				this.password2: String,确认密码
-			return: null
-		*/
-		getCode() {
-			if (!reg.test(this.phone)) {
-				this.gToastError('手机格式错误');
-			} else if (this.password === '') {
-				this.gToastError('请填写密码');
-			} else if (this.password !== this.password2) {
-				this.gToastError('密码不一致');
-			} else {
-				/* 判断用户是否可以发送验证码 */
-				if (getApp().globalData.gCodeTime <= 0) {
-					this.gLoading(this, true);
-					/* 发送验证码 */
+		/**
+		 * 点击获取验证码，判断剩余时间是否大于0，大于0有效。展示验证码输入框
+		 */
+		onclickGetCode() 
+		{
+			if (!reg.test(this.phone.val)){
+				this.gToastMsg('手机格式错误')
+			} 
+			else if(this.gIsNull([this.phone,this.password])) {}
+			else if (this.password.val !== this.password2.val) {
+				this.gToastMsg('密码不一致')
+			}
+			else {
+				/* 发送验证码 */
+				if(getApp().globalData.gCodeTime <= 0){
 					sendCode({
-						phone: this.phone,
+						phone: this.phone.val,
 						type: 'register'
 					})
-					.then(res => {
-						this.gToastMsg("验证码已发送",false,1000);
-						this.codeInput = true;
-						this.$refs.codeInput.setTimer();
-						this.gLoading(this, false);
-					})
-					.catch(err => {
-						this.gLoading(this, false);
-					});
-				} 
-				else {
-					this.codeInput = true;
-					this.$refs.codeInput.setTimer();
+					this.gToastMsg("验证码已发送",false,1000)
 				}
+				this.is_inputCode = true
+				this.$refs.codeInput.setTimer()
 			}
 		},
-		/*
-			name: register
-			description: 注册账号
-			input: 
-				this.phone: String,手机号
-				this.password: String,密码
-				this.password2: String,第二次密码
-				this.code: String,验证码
-			return: null
-		*/
-		register(code) {
+	    /**
+		 * 注册账号
+		 * @param {String} code 验证码
+		 */
+		register(code) 
+		{
 			const data = {
-				phone: this.phone,
-				password: this.password,
+				phone: this.phone.val,
+				password: this.password.val,
 				code,
-				nickname: this.phone // 用户默认的昵称
-			};
-			this.gLoading(this, true);
+				nickname: this.phone.val, // 用户默认的昵称
+			}
+			this.gLoading(this, true)
 			Register(data)
 			.then(res => {
-				this.gToastSuccess(res.msg);
 				/* 储存token */
-				uni.setStorageSync('token', res.data.token);
+				uni.setStorageSync('token', res.data.token)
 				/* 储存个人信息 */
-				getApp().globalData.gUserInfo = res.data.personalUserInfo;
-				this.gLoading(this, false);
+				getApp().globalData.gUserInfo = res.data.personalUserInfo
 				/* 跳转主页 */
 				uni.reLaunch({
-					url: '../app'
+					url: '../app',
+					complete: () => {
+						this.gToastSuccess("注册成功!")
+					}
 				})
 			})
-			.catch(err => {
-				this.gLoading(this, false);
-			})
-		}
-	},
-	computed: {
-		/*
-			name: codeText
-			description: 获取验证码文本内容
-			input: 
-				this.time: Number,倒计时
-			return: 
-				获取验证码
-				0ns后获取
-				ns后获取
-		*/
-		codeText() {
-			if (this.time === 0) return '获取验证码';
-			else if (this.time >= 10) return `${this.time}s后获取`;
-			return `0${this.time}s后获取`;
+			.finally(() => this.gLoading(this, false))
 		}
 	}
-};
+}
 </script>
 
 <style lang="stylus" scoped>

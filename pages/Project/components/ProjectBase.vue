@@ -19,36 +19,36 @@
 				<text>添加头像</text>
 			</view>
 		</view>		
-		<SelfInput 
+		<aha-input 
 			label="题目" 
 			circle 
 			v-model="name">
-		</SelfInput>
+		</aha-input>
 		<!-- 标签 -->
-		<SelfInput label="标签" circle remark="(注: 不同标签用空格隔开)" v-model="tags"></SelfInput>
+		<aha-input label="标签" circle remark="(注: 不同标签用空格隔开)" v-model="tags"></aha-input>
 		<view class="tags">
 			<view class="tag" v-for="(tag, index) in tagList" :key="index">{{ tag }}</view>
 		</view>
 		<!-- 获奖情况 -->
 		<view class="set-prize">
 			<view class="title">获奖情况:</view>
-			<SelfInput 
+			<aha-input 
 				label="比赛名称" 
 				circle 
 				search
 				:arr_search="Matches" 
 				v-model="compName"
 				@input="awardLevel=''">
-			</SelfInput>
-			<SelfPicker
+			</aha-input>
+			<aha-picker-label
 				v-if="compName" 
 				label="获奖等级" 
 				contentWidth="300rpx" 
 				circle
 				:arr_range="prizeLevels"
 				v-model="awardLevel">
-			</SelfPicker>
-			<SelfPicker
+			</aha-picker-label>
+			<aha-picker-label
 				v-if="compName" 
 				label="获奖日期" 
 				contentWidth="300rpx" 
@@ -57,7 +57,7 @@
 				circle
 				date
 				v-model="awardTime">
-			</SelfPicker>
+			</aha-picker-label>
 			<view v-if="compName && !isAnonymous">
 				<view class="title">
 					获奖证明:

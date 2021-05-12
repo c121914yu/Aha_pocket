@@ -1,4 +1,7 @@
-<!-- 设置团队成员组件 -->
+<!-- 
+	设置团队成员组件
+	author yjl
+-->
 <template>
 	<view class="fix-screen set-member">
 		<view class="content">
@@ -44,7 +47,9 @@ export default {
 		}
 	},
 	methods: {
-		/* 判断该是否已经加入队伍，若不是则添加，若是则修改 */
+		/**
+		 * 判断该是否已经加入队伍，若不是则添加，若是则修改
+		 */
 		onclickSure()
 		{
 			const obj = {

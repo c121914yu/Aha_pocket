@@ -10,16 +10,12 @@
 			@readed="successSign">
 		</user-aggrement>
 		<!-- 系统公告 -->
-		<SystemNotice 
-			v-if="arr_systemNotice.length>0" 
-			:notices="arr_systemNotice"
-			@close="arr_systemNotice=[]">
-		</SystemNotice>
-		<!-- 导航 -->
-		<TabBar 
+		<system-notice ref="systemNotice"></system-notice>
+		<!-- 底部导航 -->
+		<aha-tabar 
 			:currentNav="currentNav"
 			@navigate="onclickTabBar">
-		</TabBar>
+		</aha-tabar>
 		<!-- 项目主页 -->
 		<project-hone 
 			ref="projectHome"
@@ -48,15 +44,18 @@
 
 <script>
 import { getAllCompetition } from "@/static/request/api_competition.js"
-import { getNotice } from "@/static/request/api_system.js"
-import userAgreement from "./Self/Number/UserAgreement.vue"
+import AhaNotice from "./System/AhaNotice.vue"
+import AhaTabar from "./System/AhaTabar.vue"
+import UserAgreement from "./Self/Number/components/UserAgreement.vue"
 import ProjectHome from "./Project/ProjectHome.vue"
 import InterflowHome from "./Interflow/InterflowHome"
 import PracticeHome from "./Practice/PracticeHome"
 import Self from "./Self/Self"
 export default {
 	components:{
-		"user-aggrement": userAgreement, // 用户协议弹窗
+		"system-notice": AhaNotice, // 系统公告
+		"aha-tabar": AhaTabar, // 自定义导航
+		"user-aggrement": UserAgreement, // 用户协议弹窗
 		"project-hone": ProjectHome, //项目主页
 		"interflow-home": InterflowHome,// 竞赛交流主页
 		"practice-home": PracticeHome, // 实践主页
@@ -72,7 +71,6 @@ export default {
 			],
 			currentNav: 0,
 			is_signedNotice: getApp().globalData.gUserInfo.signedNotice, // 是否已经签署用户协议
-			arr_systemNotice: []
 		}
 	},
 	watch: {
@@ -164,13 +162,7 @@ export default {
 		loadNeed()
 		{
 			/* 加载系统公告 */
-			getNotice()
-			.then(res => {
-				res.data.forEach(item => {
-					item.createTime = this.gformatDate(item.createTime,true)
-					this.arr_systemNotice.push(item)
-				})
-			})
+			this.$refs.systemNotice.loadNotice()
 			/* 加载比赛信息 */
 			getAllCompetition()
 			.then(res => {

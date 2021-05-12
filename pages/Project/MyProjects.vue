@@ -52,10 +52,10 @@
 		</view>
 		<view class="center mini remark">{{ is_showAll ? "已加载全部" : "" }}</view>
 		<!-- 上传项目 -->
-		<BottomBtn
+		<btn-bottom
 			text="上传项目"
 			@click="upProject">
-		</BottomBtn>
+		</btn-bottom>
 		<!-- 筛选组件 -->
 		<ProjectFilter
 			v-show="is_showFileter"
@@ -63,7 +63,7 @@
 			@filterChange="filterChange">
 		</ProjectFilter>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

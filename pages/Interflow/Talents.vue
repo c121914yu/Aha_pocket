@@ -19,7 +19,7 @@
 					筛选<text class="iconfont icon-shaixuan"></text>
 				</view>
 			</view>
-			<SearchInput style="margin-bottom: 5px;" placeholder="搜索用户"></SearchInput>
+			<search-input style="margin-bottom: 5px;" placeholder="搜索用户"></search-input>
 		</view>
 		<!-- 用户卡片 -->
 		<view v-if="activeIndex===0" class="cards">
@@ -29,16 +29,16 @@
 				v-for="user in arr_users"
 				:key="user.userId"
 				:url="`../../Self/UserHome?userId=${user.userId}`">
-				<Avatar :src="user.avatarUrl" size="50"></Avatar>
+				<aha-avatar :src="user.avatarUrl" size="50"></aha-avatar>
 				<view class="right">
 					<text class="name strong">{{user.nickname}}</text>
-					<UserLevel
+					<aha-user-level
 						class="level"
 						:point="user.totalContribPoint"
 						small
 						margin="0 3px 3px 0">
-					</UserLevel>
-					<Tags class="tags" :tags="user.specialtyTags"></Tags>
+					</aha-user-level>
+					<aha-tags class="tags" :tags="user.specialtyTags"></aha-tags>
 					<view class="footer">
 						<view class="experience">
 							<view 
@@ -65,7 +65,7 @@
 		</view>
 		<view style="color: var(--gray2);" class="center small">{{ is_showAll ? "已加载全部" : "" }}</view>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

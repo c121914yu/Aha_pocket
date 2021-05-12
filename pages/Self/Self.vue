@@ -24,13 +24,13 @@
 				<!-- 标签 -->
 				<view class="tags" @click="is_checkTags=true">
 					<!-- 等级标签 -->
-					<UserLevel 
+					<aha-user-level 
 						:point="userPoint"
 						small
 						backgroundColor="#ffffff"
 						color="#f8b86b"
 						margin="0 3px 3px 0">
-					</UserLevel>
+					</aha-user-level>
 					<view 
 						class="tag" 
 						v-for="(tag, index) in tags" 
@@ -127,7 +127,7 @@
 		<!-- 兴趣选择 -->
 		<select-interest v-if="is_checkTags" @close="is_checkTags=false"></select-interest>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

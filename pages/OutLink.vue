@@ -7,7 +7,7 @@
 			@binderror="linkErr">
 		</web-view>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

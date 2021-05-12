@@ -7,13 +7,13 @@
 		<view class="header">
 			<view class="first">
 				<view class="left">
-					<Avatar :src="avatarUrl"></Avatar>
-					<UserLevel :point="userPoint"></UserLevel>
+					<aha-avatar :src="avatarUrl"></aha-avatar>
+					<aha-user-level :point="userPoint"></aha-user-level>
 				</view>
 			  	<view class="right">
 			  		<view class="nickname">{{nickname}}</view>
 			  		<view class="honor"></view>
-			  		<Tags :tags="arr_tags"></Tags>
+			  		<aha-tags :tags="arr_tags"></aha-tags>
 					<!-- 用户关系，非自己可以点击关注，咨询 -->
 					<view v-if="userRelation !== 1" class="user-relation">
 						<view class="attention" @click="onclickAttention">
@@ -45,21 +45,21 @@
 			</view>
 		</view>
 		<!-- 导航 -->
-		<TopNavs 
+		<top-navs 
 			:navs="arr_navs"
 			color="var(--black)"
 			backgroundColor="#ffffff"
 			@navChange="trackType=$event.val">
-		</TopNavs>
+		</top-navs>
 		<!-- 足迹内容 -->
 		<view class="card tracks">
-			<TimeTracks :tracks="arr_userTracks"></TimeTracks>
+			<time-tracks :tracks="arr_userTracks"></time-tracks>
 		</view>
 		<!-- 简历 -->
 		<view v-if="resume && resume.name" class="card resume">
 			<view class="h3">简历</view>
 			<view class="base-info">
-				<Avatar :src="avatarUrl"></Avatar>
+				<aha-avatar :src="avatarUrl"></aha-avatar>
 				<view class="right">
 					<view class="name">{{resume.name}}</view>
 					<view class="intro small">{{resume.intro || ""}}</view>
@@ -112,7 +112,7 @@
 			</view>
 		</view>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

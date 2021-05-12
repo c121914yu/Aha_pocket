@@ -1,3 +1,7 @@
+<!-- 
+	富文本编辑器
+	author yjl
+ -->
 <template>
 	<view class="mdeditor"> 
 		<editor

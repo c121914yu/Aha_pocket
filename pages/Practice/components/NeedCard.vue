@@ -3,7 +3,7 @@
 		<!-- 价格 -->
 		<view class="price">￥{{need.price}}25</view>
 		<view class="header">
-			<Avatar :src="need.avatar" size="60"></Avatar>
+			<aha-avatar :src="need.avatar" size="60"></aha-avatar>
 			<view class="right">
 				<view class="name strong">{{need.name}}</view>
 				<view class="tags">

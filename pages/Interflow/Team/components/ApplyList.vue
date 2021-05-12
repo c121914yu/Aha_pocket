@@ -1,9 +1,11 @@
-<!-- 申请加入列表 -->
+<!-- 
+	申请加入列表弹窗
+-->
 <template>
 	<view class="apply-list fix-screen">
 		<view class="content">
 			<view class="h3 center">申请列表</view>
-			<text class="close iconfont icon-tianjia" @click="$emit('close',)"></text>
+			<text class="close iconfont icon-tianjia" @click="$emit('close')"></text>
 		</view>
 	</view>
 </template>
@@ -12,15 +14,15 @@
 import { checkApply } from "@/static/request/api_team.js"
 export default {
 	props: {
-		applyMembers: {
+		arr_applyMembers: {
 			type: Array,
 			default: () => []
 		}
 	},
 	created() {
 		checkApply({
-			teamId: this.applyMembers[0].tid,
-			memberId: this.applyMembers[0].uid,
+			teamId: this.arr_applyMembers[0].tid,
+			memberId: this.arr_applyMembers[0].uid,
 			state: 1
 		})
 		.then(res => {

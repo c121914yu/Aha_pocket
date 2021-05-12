@@ -29,7 +29,7 @@
 			<text class="hyphen">/</text>
 			<text class="max">{{ maxPage }}</text>
 		</view>
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

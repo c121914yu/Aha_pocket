@@ -5,11 +5,11 @@
 <template>
 	<view class="my-collection">
 		<!-- 导航 -->
-		<TopNavs
+		<top-navs
 			:navs="arr_navs"
 			padding
 			@navChange="changeType">
-		</TopNavs>
+		</top-navs>
 		<!-- 列表 -->
 		<view class="list" v-if="activeNav === 0">
 			<navigator 
@@ -28,7 +28,7 @@
 		</view>
 		<view class="remark small center">已加载全部</view>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

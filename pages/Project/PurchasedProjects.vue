@@ -2,7 +2,7 @@
 <template>
 	<view class="purchased-projects">
 		<view class="search">
-			<SearchInput placeholder="搜索相关项目" v-model="searchText"></SearchInput>
+			<search-input placeholder="搜索相关项目" v-model="searchText"></search-input>
 		</view>
 		<!-- 统计 -->
 		<view class="statistics">
@@ -44,7 +44,7 @@
 		<!-- 提示文字 -->
 		<view class="hint center small">已加载全部</view>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 

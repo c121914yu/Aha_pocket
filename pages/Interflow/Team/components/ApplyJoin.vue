@@ -1,4 +1,7 @@
-<!-- 申请加入弹窗 -->
+<!-- 
+	申请加入弹窗
+	author yjl
+-->
 <template>
 	<view class="apply-join fix-screen">
 		<view class="content">
@@ -27,6 +30,9 @@ export default {
 		};
 	},
 	methods: {
+		/**
+		 * 点击确认，调用申请加入团队AP
+		 */
 		onclickSure()
 		{
 			this.gShowModal("您的简历将发送给对方,确认申请加入?",() => {

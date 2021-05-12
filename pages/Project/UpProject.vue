@@ -13,7 +13,7 @@
 			<button v-if="step === 2" @click="putMembers">完成</button>
 		</view>
 		<!-- 加载动画 -->
-		<Loading ref="loading"></Loading>
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 
