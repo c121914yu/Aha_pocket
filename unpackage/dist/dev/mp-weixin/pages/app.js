@@ -217,7 +217,7 @@ var _api_competition = __webpack_require__(/*! @/static/request/api_competition.
 //
 //
 //
-var AhaNotice = function AhaNotice() {Promise.all(/*! require.ensure | pages/System/AhaNotice */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/System/AhaNotice")]).then((function () {return resolve(__webpack_require__(/*! ./System/AhaNotice.vue */ 381));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var AhaTabar = function AhaTabar() {__webpack_require__.e(/*! require.ensure | pages/System/AhaTabar */ "pages/System/AhaTabar").then((function () {return resolve(__webpack_require__(/*! ./System/AhaTabar.vue */ 388));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var UserAgreement = function UserAgreement() {Promise.all(/*! require.ensure | pages/Self/Number/components/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Number/components/UserAgreement")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Number/components/UserAgreement.vue */ 397));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages/Project/ProjectHome */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Project/ProjectHome")]).then((function () {return resolve(__webpack_require__(/*! ./Project/ProjectHome.vue */ 402));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var InterflowHome = function InterflowHome() {__webpack_require__.e(/*! require.ensure | pages/Interflow/InterflowHome */ "pages/Interflow/InterflowHome").then((function () {return resolve(__webpack_require__(/*! ./Interflow/InterflowHome */ 409));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PracticeHome = function PracticeHome() {__webpack_require__.e(/*! require.ensure | pages/Practice/PracticeHome */ "pages/Practice/PracticeHome").then((function () {return resolve(__webpack_require__(/*! ./Practice/PracticeHome */ 416));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 423));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { components: { "system-notice": AhaNotice, // 系统公告
+var AhaNotice = function AhaNotice() {Promise.all(/*! require.ensure | pages/System/AhaNotice */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/System/AhaNotice")]).then((function () {return resolve(__webpack_require__(/*! ./System/AhaNotice.vue */ 381));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var AhaTabar = function AhaTabar() {__webpack_require__.e(/*! require.ensure | pages/System/AhaTabar */ "pages/System/AhaTabar").then((function () {return resolve(__webpack_require__(/*! ./System/AhaTabar.vue */ 388));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var UserAgreement = function UserAgreement() {Promise.all(/*! require.ensure | pages/Self/Number/components/UserAgreement */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Number/components/UserAgreement")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Number/components/UserAgreement.vue */ 395));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var ProjectHome = function ProjectHome() {Promise.all(/*! require.ensure | pages/Project/ProjectHome */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Project/ProjectHome")]).then((function () {return resolve(__webpack_require__(/*! ./Project/ProjectHome.vue */ 402));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var InterflowHome = function InterflowHome() {__webpack_require__.e(/*! require.ensure | pages/Interflow/InterflowHome */ "pages/Interflow/InterflowHome").then((function () {return resolve(__webpack_require__(/*! ./Interflow/InterflowHome */ 409));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PracticeHome = function PracticeHome() {__webpack_require__.e(/*! require.ensure | pages/Practice/PracticeHome */ "pages/Practice/PracticeHome").then((function () {return resolve(__webpack_require__(/*! ./Practice/PracticeHome */ 416));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var Self = function Self() {Promise.all(/*! require.ensure | pages/Self/Self */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/Self/Self")]).then((function () {return resolve(__webpack_require__(/*! ./Self/Self */ 423));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { components: { "system-notice": AhaNotice, // 系统公告
     "aha-tabar": AhaTabar, // 自定义导航
     "user-aggrement": UserAgreement, // 用户协议弹窗
     "project-hone": ProjectHome, //项目主页
@@ -229,13 +229,7 @@ var AhaNotice = function AhaNotice() {Promise.all(/*! require.ensure | pages/Sys
     };}, watch: { /**
                    * 路由切换，修改对应的头部文字
                    * @param {Number} newNav
-                   */currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "社区论坛";break;case 2:text = "服务外包";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });if (getApp().globalData.env === 2 && newNav === 2) {uni.showToast({ title: "该模块正在开发!", icon: "none" });}} }, onLoad: function onLoad() {console.log(getApp().globalData.gUserInfo); /* 隐藏返回主页 */
-    wx.hideHomeButton();
-    if (this.is_signedNotice) {
-      this.loadNeed();
-    }
-  },
-  onShow: function onShow() {
+                   */currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "竞赛交流";break;case 2:text = "技能实践";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });} }, onLoad: function onLoad() {console.log(getApp().globalData.gUserInfo); /* 隐藏返回主页 */wx.hideHomeButton();if (this.is_signedNotice) {this.loadNeed();}}, onShow: function onShow() {
     /* 更新个人页未读 */
     if (this.$refs.Self) {
       this.$refs.Self.getUnread();
@@ -249,7 +243,13 @@ var AhaNotice = function AhaNotice() {Promise.all(/*! require.ensure | pages/Sys
     if (this.currentNav === 1) {
       switch (this.$refs.interflowHome.currentNav) {
         /* 人才市场 */
-        case 0:this.$refs.interflowHome.$refs.Talents.rechBottom();break;}
+        case 0:
+          this.$refs.interflowHome.$refs.Talents.reachBottom();
+          break;
+        /* 组队 */
+        case 1:
+          this.$refs.interflowHome.$refs.Talents.reachBottom();
+          break;}
 
     }
   },
@@ -290,16 +290,16 @@ var AhaNotice = function AhaNotice() {Promise.all(/*! require.ensure | pages/Sys
         * 加载所有依赖
         */
     loadNeed: function loadNeed()
-    {
+    {var _this = this;
       /* 加载系统公告 */
       this.$refs.systemNotice.loadNotice();
       /* 加载比赛信息 */
       (0, _api_competition.getAllCompetition)().
       then(function (res) {
         getApp().globalData.garr_competitions = res.data;
+        /* 加载项目列表 */
+        _this.$refs.projectHome.loadProjects(true);
       });
-      /* 加载项目列表 */
-      this.$refs.projectHome.loadProjects(true);
     },
     /**
         * 完成协议签署,重新加载依赖

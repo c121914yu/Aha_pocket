@@ -82,19 +82,13 @@ export default {
 			let text = ""
 			switch(newNav){
 				case 0: text="项目分享";break;
-				case 1: text="社区论坛";break;
-				case 2: text="服务外包";break;
+				case 1: text="竞赛交流";break;
+				case 2: text="技能实践";break;
 				case 3: text="个人信息";break;
 			}
 			uni.setNavigationBarTitle({
 				title: text
 			})
-			if(getApp().globalData.env === 2 && newNav === 2){
-				uni.showToast({
-					title: "该模块正在开发!",
-					icon: "none"
-				})
-			}
 		}
 	},
 	onLoad() {
@@ -119,7 +113,13 @@ export default {
 		else if(this.currentNav === 1){
 			switch(this.$refs.interflowHome.currentNav){
 				/* 人才市场 */
-				case 0: this.$refs.interflowHome.$refs.Talents.rechBottom();break
+				case 0: 
+					this.$refs.interflowHome.$refs.Talents.reachBottom()
+					break
+				/* 组队 */
+				case 1:
+					this.$refs.interflowHome.$refs.Talents.reachBottom()
+					break
 			}
 		}
 	},
@@ -167,9 +167,9 @@ export default {
 			getAllCompetition()
 			.then(res => {
 			    getApp().globalData.garr_competitions = res.data
+				/* 加载项目列表 */
+				this.$refs.projectHome.loadProjects(true)
 			})
-			/* 加载项目列表 */
-			this.$refs.projectHome.loadProjects(true)
 		},
 		/**
 		 * 完成协议签署,重新加载依赖

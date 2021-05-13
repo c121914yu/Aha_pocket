@@ -9,7 +9,7 @@
 			<!-- 左侧头像 -->
 			<aha-avatar :src="team.avatar || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="60"></aha-avatar>
 			<!-- 如果是竞赛招募队友，要显示参与什么竞赛 -->
-			<view v-if="recruitState>0" class="recruit">
+			<view v-if="team.recruitState>0" class="recruit">
 				招募中
 			</view>
 			<!-- 右侧两行 -->
@@ -51,17 +51,11 @@ export default {
 			default: true
 		}
 	},
-	data() {
-		return {
-			
-		};
-	},
 	computed: {
 		captain() {
 			return this.team.members.find(member => this.team.captainId).memberRoughInfo.nickname
 		},
 		teamIntro() {
-			console.log(this.team.recruitState);
 			if(this.team.recruitState > 0){
 				return this.team.recruitContent || "无团队介绍"
 			}
@@ -121,13 +115,13 @@ export default {
 				display flex
 				align-items center
 				.label
-					margin-right 2px
+					margin-right 3px
 					padding 0 10px
 					border-radius 4px
 					background-color var(--origin2)
 					color #FFFFFF
 				.val
-					color var(--origin2)
+					color var(--origin1)
 			.school
 				padding 0 10px
 				border-radius 4px

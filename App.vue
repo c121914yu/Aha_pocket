@@ -50,7 +50,7 @@ export default {
 				globalData.env = 2
 				break
 		}
-
+		// globalData.env = 2
 		/* 下载比赛等级图 */
 		const prizeLevels = uni.getStorageSync('prizeLevels')
 		if (prizeLevels) {

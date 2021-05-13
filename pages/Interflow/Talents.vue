@@ -1,3 +1,6 @@
+<!-- 
+	人才市场， 个人 & 团队
+ -->
 <template>
 	<view class="talents">
 		<view class="filters">
@@ -14,15 +17,17 @@
 					@click="activeIndex=1">
 					团队
 				</view>
-				<view 
+				<!-- <view 
 					class="item">
 					筛选<text class="iconfont icon-shaixuan"></text>
-				</view>
+				</view> -->
 			</view>
-			<search-input style="margin-bottom: 5px;" placeholder="搜索用户"></search-input>
+			<view class="search">
+				<search-input :placeholder="activeIndex===0 ? '搜索用户' : '搜索团队'"></search-input>
+			</view>
 		</view>
 		<!-- 用户卡片 -->
-		<view v-if="activeIndex===0" class="cards">
+		<view v-show="activeIndex===0" class="users">
 			<navigator
 				class="user-card"
 				:class="activeIndex === 0 ? 'first' : ''"
@@ -61,9 +66,15 @@
 			</navigator>
 		</view>
 		<!-- 团队卡片 -->
-		<view class="team">
+		<view  v-show="activeIndex===1" class="teams">
+			<navigator 
+				v-for="team in arr_teams"
+				:key="team.id"
+				:url="`/pages/Interflow/Team/TeamDetail?id=${team.id}`">
+				<team-card :team="team"></team-card>
+			</navigator>
 		</view>
-		<view style="color: var(--gray2);" class="center small">{{ is_showAll ? "已加载全部" : "" }}</view>
+		<view class="remark center small">{{ loadStatus }}</view>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
 	</view>
@@ -72,22 +83,43 @@
 <script>
 import { getTalents } from "@/static/request/api_forum.js"
 import { getTeams } from "@/static/request/api_team.js"
-var userLevels = getApp().globalData.garr_userLevel
+import TeamCard from "./Team/components/TeamCard.vue"
 export default {
+	components: {
+		"team-card": TeamCard
+	},
 	data() {
 		return {
 			activeIndex: 0,
-			pageNum: 1,
-			pageSize: 20,
+			obj_userLoadInfo: {
+				pageNum: 1,
+				pageSize: 10,
+				is_loadAll: false
+			},
 			arr_users: [],
+			obj_teamLoadInfo: {
+				pageNum: 1,
+				pageSize: 10,
+				is_loadAll: false
+			},
 			arr_teams: [],
-			is_loadAll: false
 		};
 	},
-	watch: {
-		// activeIndex: "loadList"
+	computed: {
+		/**
+		 * 加载状态，根据activeIndex和两个is_loadAll判断
+		 */
+		loadStatus() {
+			if(this.activeIndex === 0 && this.obj_userLoadInfo.is_loadAll) {
+				return "已加载全部"
+			}
+			if(this.activeIndex === 1 && this.obj_teamLoadInfo.is_loadAll) {
+				return "已加载全部"
+			}
+			return ""
+		}
 	},
-	created() {
+	mounted() {
 		/* 定时滚动卡片中项目情况 */
 		setInterval(() => {
 			this.arr_users.forEach((user,i) => {
@@ -95,57 +127,88 @@ export default {
 				this.arr_users[i].projectIndex = index < user.projectInfo.length-1 ? index+1 : 0
 			})
 		},3000)
-		this.loadTalent(true,true)
+		this.gLoading(this,true)
+		this.loadTalent()
+		this.loadTeams()
 	},
 	methods: {
 		/**
 		 * 触底加载
 		 */
-		rechBottom()
+		reachBottom()
 		{
-			console.log("触底加载");
+			switch(this.activeIndex) {
+				case 0:
+					this.loadTalent()
+					break
+				case 1:
+					this.loadTeams()
+					break
+			}
 		},
 		/**
 		 * 加载用户
-		 * @param {Boolean}  init 是否初始化
-		 * @param {Boolean}  loading 是否加载动画
 		 */
-		loadTalent(init=false,loading=false)
+		loadTalent()
 		{
-			this.gLoading(this,loading)
-			if(init) {
-				this.pageNum = 1
+			if(this.obj_userLoadInfo.is_loadAll){
+				return
 			}
-			getTalents()
+			getTalents({
+				pageNum: this.obj_userLoadInfo.pageNum,
+				pageSize: this.obj_userLoadInfo.pageSize
+			})
 			.then(res => {
-				if(init){
-					this.arr_users = []
-				}
 				res.data.forEach(user => {
-					// 用户标签
+					/* 判断是否有用户标签，并进行分割 */
 					if(!user.specialtyTags){
 						user.specialtyTags = [""]
 					}
 					else{
 						user.specialtyTags = user.specialtyTags.split(",")
 					}
-					// 项目标签
+					/* 用户默认项目下标 */
 					user.projectIndex = 0
-					// 项目情况
+					// 项目情况,获取获奖名次
 					for(let j=0;j<user.projectInfo.length;j++){
 						user.projectInfo[j].awardLabel = getApp().globalData.garr_prizeLevels.find(prize => prize.value === user.projectInfo[j].awardLevel).label
 					}
 					this.arr_users.push(user)
 				})
+				/* 判断是否加载全部 */
+				if(res.data.length < this.obj_userLoadInfo.pageSize) {
+					this.obj_userLoadInfo.is_loadAll = true
+				}
+				else {
+					this.obj_userLoadInfo.pageNum++
+				}
+				console.log("个人: ",this.arr_users.length);
 			})
 			.finally(() => this.gLoading(this,false))
 		},
 		/**
 		 * 加载团队
 		 */
-		loadTeams(init=false,loading=false)
+		loadTeams()
 		{
-			
+			if(this.obj_teamLoadInfo.is_loadAll){
+				return
+			}
+			getTeams({
+				pageNum: this.obj_teamLoadInfo.pageNum,
+				pageSize: this.obj_teamLoadInfo.pageSize
+			})
+			.then(res => {
+				this.arr_teams = this.arr_teams.concat(res.data)
+				/* 判断是否加载全部 */
+				if(res.data.length < this.obj_teamLoadInfo.pageSize) {
+					this.obj_teamLoadInfo.is_loadAll = true
+				}
+				else {
+					this.obj_teamLoadInfo.pageNum++
+				}
+				console.log("团队: ",res.data.length);
+			})
 		}
 	}
 }
@@ -153,7 +216,7 @@ export default {
 
 <style lang="stylus" scoped>
 .talents
-	padding 10px 0 80px
+	margin 10px
 	.filters
 		padding 0 10px
 		display flex
@@ -162,7 +225,6 @@ export default {
 			position relative
 			display flex
 			align-items flex-end
-			justify-content space-between
 			.item
 				width 60px
 				padding 5px 0
@@ -172,10 +234,16 @@ export default {
 				.iconfont
 					font-size 22rpx
 				&.active
+					font-weight 700
 					color var(--origin2)
 					background-color #FFFFFF
-	.cards
+		.search
+			margin-left 10px
+			margin-bottom 5px
+			flex 1
+	.users
 		padding 0 10px
+		/* 用户卡片 */
 		.user-card
 			margin-bottom 10px
 			background-color #FFFFFF
@@ -231,4 +299,10 @@ export default {
 						.iconfont
 							margin-right 2px
 							font-size 22rpx
+	.teams
+		padding 0 10px
+		navigator
+			display block
+	.remark
+		color var(--gray2)
 </style>

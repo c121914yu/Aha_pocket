@@ -88,7 +88,7 @@ export default {
 			this.images = res.data
 			this.setTimer()
 			// this.showImg.forEach(img => console.log(img.pictureUrl))
-			console.log(this.images);
+			console.log("滚动窗口",this.images);
 		})
 		.catch(err => {
 			this.gToastError("轮播图错误")

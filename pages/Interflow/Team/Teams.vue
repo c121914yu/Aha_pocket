@@ -1,15 +1,24 @@
-<!-- 组队信息 -->
+<!-- 
+	竞赛组队信息
+	author yjl
+-->
 <template>
-	<view class="teams">
+	<view
+		:style="{
+			'overflow': is_showSelect ? 'hidden' : 'auto'
+		}"
+		class="teams">
 		<!-- 筛选框 -->
-		
+		<view class="filter">
+			<team-filter @showSelect="is_showSelect=$event"></team-filter>
+		</view>
 		<view class="list">
-			<TeamCard
-				v-for="team in teams"
+			<team-card
+				v-for="team in arr_teams"
 				:key="team.id"
 				:team="team"
 				@click="onclickTeam(team)">
-			</TeamCard>
+			</team-card>
 		</view>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
@@ -17,39 +26,66 @@
 </template>
 
 <script>
-import TeamCard from "./components/TeamCard.vue"
 import { getTeams } from "@/static/request/api_team.js"
+import TeamCard from "./components/TeamCard.vue"
+import TeamFilter from "./components/TeamFilter.vue"
 export default {
 	components: {
-		TeamCard
+		"team-card": TeamCard,
+		"team-filter": TeamFilter
 	},
 	data() {
 		return {
-			pageSize: 15,
+			is_showSelect: false,
+			pageSize: 10,
 			pageNum: 1,
-			teams: []
+			is_loadAll: false,
+			arr_teams: []
 		}
 	},
 	created() {
-		this.loadTeams(true)
+		this.loadTeams(true,true)
 	},
 	methods: {
-		loadTeams(init=false)
+		/**
+		 * 加载竞赛团队数据，默认会筛选招募中的队伍
+		 * @param {Boolean}  init 是否初始化
+		 * @param {Boolean}  loading 加载动画
+		 */
+		loadTeams(init=false,loading=false)
 		{
+			this.gLoading(this,loading)
 			if(init){
 				this.pageNum = 1
 			}
-			this.gLoading(this,true)
-			getTeams()
+			getTeams({
+				pageNum: this.pageNum,
+				pageSize: this.pageSize,
+				recruit: 1
+			})
 			.then(res => {
-				console.log(res.data);
-				this.teams = this.teams.concat(res.data)
+				if(init) {
+					this.arr_teams = []
+				}
+				this.arr_teams = this.arr_teams.concat(res.data)
+				/* 判断是否加载全部 */
+				if(res.data.length < this.pageSize) {
+					this.is_loadAll = true
+				}
+				else {
+					this.pageNum++
+				}
+				console.log(this.arr_teams);
 			})
 			.finally(() => this.gLoading(this,false))
 		},
-		/* 点击团队卡片，跳转 */
+		/**
+		 * 点击团队卡片，跳转详细
+		 * @param {Object} team
+		 */
 		onclickTeam(team)
 		{
+			/* 该页是组件页，实际地址在app.vue，用绝对路径跳转比较保险 */
 			uni.navigateTo({
 				url: `/pages/Interflow/Team/TeamDetail?id=${team.id}`
 			})
@@ -60,8 +96,15 @@ export default {
 
 <style lang="stylus" scoped>
 .teams
-	padding 0 2% 80px 2%
+	height calc(100vh - 120px)
+	padding-top 40px
+	.filter
+		z-index 50
+		position fixed
+		top 50px
+		width 100%
 	.list
+		margin 10px 2%
 		padding 10px
 		border-radius 12px
 		background-color var(--origin4)

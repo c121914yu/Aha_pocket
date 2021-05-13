@@ -1,3 +1,7 @@
+<!-- 
+	项目主页
+	authro yjl
+ -->
 <template>
 	<view class="resource-home">
 		<!-- 轮播图 -->
@@ -65,7 +69,7 @@ export default {
 		return {
 			rankType: 'week',
 			pageNum: 1,
-			pageSize: 10,
+			pageSize: 5,
 			sortBy: "read",
 			filter: null,
 			RankingData: [],
@@ -120,12 +124,9 @@ export default {
 				else if(this.arr_projects.length > 0){
 					this.RankingData = [].concat(this.arr_projects)
 				}
-				this.gLoading(this, false)
 				console.log(this.arr_projects);
 			})
-			.catch(err => {
-				this.gLoading(this, false)
-			})
+			.finally(() => this.gLoading(this, false))
 		},
 		/* 
 			name: 加载更多数据

@@ -40,10 +40,10 @@
 				</view>
 			</view>
 			<!-- 幕布 -->
-			<view class="curtain" ref="curtain">
+			<!-- <view class="curtain">
 				<view class="one"></view>
 				<view class="two"></view>
-			</view>
+			</view> -->
 		</view>
 		<!-- 我的项目 & 外包管理 & 招募队友 -->
 		<view class="navs">
@@ -82,7 +82,7 @@
 			</navigator>
 			<button
 				class="item" 
-				style="animation-delay: 0.4stext-align: start"
+				style="animation-delay: 0.4s;text-align: start"
 				open-type="share">
 				<text class="iconfont icon-iconfontzhizuobiaozhun49"></text>
 				<text class="name small">邀请好友</text>
@@ -92,7 +92,7 @@
 			<navigator
 				class="item"
 				:style="{
-					animationDelay: (index + arr_funtions1.length) * 0.1 + 's'
+					'animation-delay': `${(index + arr_funtions1.length) * 0.1}s`
 				}"
 				v-for="(item, index) in arr_funtions2"
 				:key="index"
@@ -104,7 +104,7 @@
 			</navigator>
 			<button 
 				class="item" 
-				style="animation-delay: 0.7stext-align: start"
+				style="animation-delay: 0.7s;text-align: start"
 				open-type="contact">
 				<text class="iconfont icon-lianxikefu"></text>
 				<text class="name small">联系客服</text>
@@ -452,15 +452,16 @@ bgSetting(size, color)
 		.item
 			margin-bottom 1px
 			height 47px
-			transform translateY(50vh)
-			opacity 0
+			// transform translateY(50vh)
+			// opacity 0
+			opacity 1
 			padding 0 20px
 			border-radius 0
 			text-align start
 			background-color #FFFFFF
 			display flex
 			align-items center
-			animation funShow 0.1s ease-out forwards
+			// animation funShow 50ms forwards
 			&:first-child
 				border-top-left-radius 22px
 				border-top-right-radius 22px
@@ -503,8 +504,8 @@ bgSetting(size, color)
 @keyframes closeCurtain
 	to
 		z-index -1
-@keyframes funShow
-	to
-		transform translateY(0)
-		opacity 1
+// @keyframes funShow
+// 	to
+// 		transform translateY(0)
+// 		opacity 1
 </style>

@@ -143,11 +143,9 @@ export default {
 					this.pageNum++
 				}
 				this.projects = init ? res.data.pageData : this.projects.concat(res.data.pageData)
-				this.gLoading(this, false)
-				uni.stopPullDownRefresh()
 				console.log(this.projects);
 			})
-			.catch(err => {
+			.finally(() => {
 				this.gLoading(this, false)
 				uni.stopPullDownRefresh()
 			})

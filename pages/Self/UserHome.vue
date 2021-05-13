@@ -158,6 +158,7 @@ export default {
 				this.avatarUrl = res.data.avatarUrl
 				this.nickname = res.data.nickname
 			})
+			.finally(() => this.gLoading(this, false))
 			/* 获取用户关系,用户等级,介绍，用户轨迹 */
 			Promise.all([getUserRelation(this.userId),getUserStatistice(this.userId),getResume(this.userId),this.getUserTrack()])
 			.then(res => {
@@ -166,7 +167,6 @@ export default {
 				this.resume = res[2].data
 				// console.log(this.resume)
 			})
-			this.gLoading(this, false)
 		}
 	},
 	methods: {
@@ -183,9 +183,9 @@ export default {
 			else{
 				followUser(this.userId)
 				this.userRelation = 2
+				/* 震动 */
+				uni.vibrateLong()
 			}
-			/* 震动 */
-			uni.vibrateLong()
 		},
 		/**
 		 * 获取用户轨迹信息
@@ -220,7 +220,7 @@ export default {
 			align-items flex-start
 			.right
 				position relative
-				padding-right 40px
+				padding-right 45px
 				margin-left 5%
 				flex 1
 				.nickname

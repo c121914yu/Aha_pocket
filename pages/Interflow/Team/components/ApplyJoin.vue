@@ -6,10 +6,10 @@
 	<view class="apply-join fix-screen">
 		<view class="content">
 			<view class="h3 center">申请加入团队</view>
-			<textarea placeholder="简单描述下自己" v-model="applyIntro"/>
+			<textarea class="textarea" placeholder="简单描述下自己" v-model="applyIntro"/>
 			<view class="btns">
-				<button @click="onclickSure">确认</button>
-				<button style="background-color: #5d7092;" @click="$emit('update:isApplying',false)">取消</button>
+				<button class="btn" style="background-color: #5d7092;" @click="$emit('close')">取消</button>
+				<button class="btn" @click="onclickSure">确认</button>
 			</view>
 		</view>
 	</view>
@@ -41,7 +41,7 @@ export default {
 					intro: this.applyIntro
 				})
 				this.gToastSuccess("提交申请成功")
-				this.$emit('update:isApplying',false)
+				this.$emit("submitApply",this.applyIntro)
 			})
 		}
 	}
@@ -52,7 +52,7 @@ export default {
 .apply-join .content
 	width 90%
 	border-radius 8px
-	textarea
+	.textarea
 		margin 10px 0
 		width 100%
 		height 150px
@@ -60,7 +60,6 @@ export default {
 		border-radius 4px
 	.btns
 		display flex
-		button
+		.btn
 			width 35%
-		
 </style>

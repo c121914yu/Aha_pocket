@@ -26,7 +26,7 @@
 				<text class="label">时&emsp;间:</text>{{receiveDate}}
 			</view>
 		</view>
-		<view class="content" v-html="content"></view>
+		<view class="content rich-text" v-html="content"></view>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
 	</view>
@@ -48,13 +48,20 @@ export default {
 	},
 	onLoad(e) {
 		this.gLoading(this,true)
-		getMessage(e.id)
+		this.id = e.id
+		getMessage(this.id)
 		.then(res => {
-			console.log(res.data)
-			res.data.receiveDate = this.gformatDate(res.data.receiveDate,true)
-			for(let key in res.data){
-				this[key] = res.data[key]
+			if(!res.data) {
+				this.gBackPage("通知无效")
+				return
 			}
+			console.log(res.data)
+			this.title = res.data.title
+			this.senderUser = res.data.senderUser
+			this.receiverUser = res.data.receiverUser
+			this.type = res.data.type
+			this.receiveDate = this.gformatDate(res.data.receiveDate,true)
+			this.content = res.data.content.replace(/\n/g,"<br>")
 		})
 		.catch(err => {
 			this.gBackPage("通知无效")
@@ -105,6 +112,4 @@ export default {
 					font-weight 400
 	.content
 		padding 10px
-		text-indent 60rpx
-		word-break break-all
 </style>

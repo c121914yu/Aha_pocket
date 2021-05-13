@@ -240,16 +240,16 @@ export default {
 				&::before
 					content ''
 					position absolute
-					margin-left -55%
-					width 22%
+					margin-left -32%
+					width 30%
 					height 1px
 					background-color var(--gray2)
 					border-radius 10px
 				&::after
 					content ''
 					position absolute
-					margin-left 55%
-					width 22%
+					margin-left 32%
+					width 30%
 					height 1px
 					background-color var(--gray2)
 					border-radius 10px

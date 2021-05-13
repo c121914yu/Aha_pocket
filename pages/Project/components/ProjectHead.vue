@@ -82,7 +82,7 @@ export default {
 	position static
 	// 开头标题
 	.sort-filter
-		background-color var(--white2)
+		background-color var(--origin4)
 		font-size 24rpx
 		display flex
 		align-items center

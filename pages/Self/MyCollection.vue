@@ -12,19 +12,14 @@
 		</top-navs>
 		<!-- 列表 -->
 		<view class="list" v-if="activeNav === 0">
-			<navigator 
-				class="item"
-				hover-class="none"
+			<project-card
 				v-for="(project, index) in arr_list"
 				:key="index"
-				:url="`/pages/Project/Project?id=${project.id}`">
-				<project-card
-					margin="5px 0"
-					radius="16px"
-					:project="project"
-				>
-				</project-card>
-			</navigator>
+				margin="10px 0"
+				radius="16px"
+				:project="project"
+				@click="onclickProject(project)">
+			</project-card>
 		</view>
 		<view class="remark small center">已加载全部</view>
 		<!-- 加载动画 -->
@@ -87,10 +82,15 @@ export default {
 			})
 			.finally(err => this.gLoading(this,false))
 		},
-		/* 查看收藏内容 */
-		readed(url)
+		/**
+		 * 点击项目卡片
+		 * @param {Object} project
+		 */
+		onclickProject(project)
 		{
-			
+			uni.navigateTo({
+				url: `../Project/Project?id=${project.id}`
+			})
 		}
 	}
 }
@@ -99,12 +99,10 @@ export default {
 <style lang="stylus" scoped>
 .my-collection
 	min-height 100vh
+	padding-bottom 10px
 	background-color var(--white1)
 	.list
-		margin 0 5%
-		.item
-			width 100%
+		padding 0 5%
 	.remark
-		margin-top 10px
 		color var(--gray2)
 </style>

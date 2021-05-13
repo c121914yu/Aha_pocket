@@ -1,7 +1,26 @@
+<!-- 
+	我的团队
+	author yjl
+ -->
 <template>
 	<view v-if="env!==2" class="my-team">
-		<view style="margin: auto;width: 95%;">
-			<team-head></team-head>
+		<view class="search">
+			<search-input 
+				textBgColor="var(--origin2)" 
+				border="1px solid var(--origin2)"
+				placeholder="搜索我的团队"
+				v-model="search">
+			</search-input>
+		</view>
+		<view class="filter">
+			<view 
+				class="item"
+				:class="filter.value === activeFilter ? 'active' : ''"
+				v-for="filter in arr_filter"
+				:key="filter.value"
+				@click="activeFilter=filter.value">
+				{{filter.label}}
+			</view>
 		</view>
 		<view class="teams">
 			<team-card
@@ -9,7 +28,7 @@
 				:key="team"
 				:team="team"
 				:isShowContact="false"
-				@click="clickTeam(team)">
+				@click="onclickTeam(team)">
 			</team-card>
 		</view>
 		<btn-bottom linkTo="./CreateTeam">创建团队</btn-bottom>
@@ -21,46 +40,51 @@
 <script>
 import { getTeams } from "@/static/request/api_team.js"
 import TeamCard from "./components/TeamCard.vue"
-import TeamHead from "./components/TeamsHead.vue"
 export default {
-	data() {
-		return {
-			env: getApp().globalData.env,
-			teams: []
-		};
-	},
 	components: {
 		"team-card": TeamCard,
-		"team-head": TeamHead
 	},
-	onLoad() {
-		if(this.env === 2){
-			uni.showToast({
-				title: "该模块正在开发!",
-				icon: "none"
-			})
+	data() {
+		return {
+			arr_filter: [
+				{label: "全部",value: "all"},
+				{label: "招募中",value: "recruited"},
+				{label: "我创建",value: "created"},
+				{label: "我管理",value: "admin"}
+			],
+			activeFilter: "all",
+			teams: []
 		}
 	},
-	onShow() {
+	onLoad() {
+		this.loadTeams()
+	},
+	onPullDownRefresh() {
 		this.loadTeams()
 	},
 	methods: {
+		/**
+		 * 加载团队信息
+		 */
 		loadTeams()
 		{
 			this.gLoading(this,true)
 			getTeams()
 			.then(res => {
 				this.teams = res.data
-				console.log(res.data);
-				this.gLoading(this,false)
+				console.log(res.data)
 			})
-			.catch(err => {
-				this.gLoading(this,false)
+			.finally(() => {
+				this.gLoading(this, false)
+				uni.stopPullDownRefresh()
 			})
 		},
-		clickTeam(team)
+		/**
+		 * 点击团队卡片
+		 * @param {Object} team
+		 */
+		onclickTeam(team)
 		{
-			console.log(team.id);
 			this.gMenuPicker(["查看团队","修改团队信息"])
 			.then(res => {
 				if(res === "查看团队"){
@@ -82,8 +106,25 @@ export default {
 <style lang="stylus" scoped>
 .my-team
 	min-height 100vh
-	padding 10px 0 60px
+	padding-bottom 60px
 	background-color var(--white1)
+	.search
+		padding 5px 15px
+		background-color #FFFFFF
+	.filter
+		background-color #FFFFFF
+		display flex
+		align-items center
+		justify-content space-around
+		.item
+			padding 8px 0
+			white-space nowrap
+			border-bottom 3px solid transparent
+			font-size 24rpx
+			font-weight 600
+			&.active
+				border-bottom-color var(--origin2)
+				color var(--origin2)
 	.teams
 		width 90%
 		margin 10px auto

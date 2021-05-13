@@ -3,7 +3,7 @@ import request from "./request.js"
 /**
  * 获取团队列表
  */
-exports.getTeams = () => request("/team/","GET")
+exports.getTeams = (params) => request("/team/","GET",params)
 
 /**
  * 获取单个团队详细

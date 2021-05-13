@@ -52,10 +52,12 @@ export default {
 			type: String,
 			default: "none"
 		},
+		/* 搜索按键文字颜色 */
 		textColor: {
 			type: String,
 			default: "#ffffff"
 		},
+		/* 背景颜色 */
 		textBgColor: {
 			type: String,
 			default: "var(--origin3)"

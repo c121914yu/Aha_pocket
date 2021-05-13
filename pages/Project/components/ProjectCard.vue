@@ -15,18 +15,17 @@
 		<view class="info" :class="border ? 'border' : ''">
 			<!-- 资源名称 -->
 			<view class="head">
-				<text class="name strong">{{ project.name }}</text>
+				<view class="name strong">{{ project.name }}</view>
 				<image 
-					v-if="awardImg" 
 					class="award-img"
 					:src="awardImg"
 					mode="widthFix">
 				</image>
 			</view>
 			<!-- 获奖信息 -->
-			<view><text class="comp-name strong">{{ compName }}</text></view>
+			<view class="comp-name">{{ compName }}</view>
 			<!-- 标签 -->
-			<aha-tags class="tags" :tags="this.project.tags | splitTags"></aha-tags>
+			<aha-tags :tags="this.project.tags | splitTags"></aha-tags>
 			<view class="blank"></view>
 			<!-- 时间 & 数据统计 & 状态-->
 			<view class="footer">
@@ -162,42 +161,34 @@ export default {
 		font-size 34rpx
 	/* 资源信息 */
 	.info
-		margin-left 10px
 		position relative
+		margin-left 10px
 		flex 1
-		min-height 57px
-		font-size 18rpx
 		line-height 1.2
-		display flex
-		flex-direction column
 		&.border
 			border-bottom 1px solid var(--origin2)
 		.head
 			position relative
-			height 18px
 			.name
-				font-size 20rpx
-				overflow hidden
-				text-overflow ellipsis
-				white-space nowrap
+				font-size 24rpx
+				padding-right 45px
 			.award-img
 				position absolute
-				right 0
+				right -5px
 				top -5px
-				width 100rpx
+				width 50px
 		.comp-name
-			padding 0 10px
-			line-height 1.7
+			margin 5px 0
+			padding 2px 10px
+			font-size 20rpx
 			background-color #F5A200
 			color #FFFFFF
 			border-radius 22px
 			display inline-block
-		.tags
-			margin 5px
-			min-height 30px
 		/* 统计量 */
 		.footer
 			margin-top 5px
+			font-size 18rpx
 			color var(--origin2)
 			display flex
 			align-items flex-end
@@ -213,7 +204,7 @@ export default {
 					transform translateX(30px)
 			.iconfont
 				margin-right 3px
-				font-size 24rpx
+				font-size 22rpx
 			.status
 				color #FFFFFF
 				padding 2px 20px 12px

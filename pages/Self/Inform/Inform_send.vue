@@ -19,8 +19,8 @@
 		</view>
 		<!-- 信息内容 -->
 		<view class="content">
-			<view v-if="content" v-html="content.val"></view>
-			<view class="hint" v-else>无内容...</view>
+			<view v-if="content.val" v-html="content.val"></view>
+			<view v-else class="remark" @click="onclickEdit">点击编辑发送内容</view>
 		</view>
 		<!-- 操作按键 -->
 		<view class="btns">
@@ -60,6 +60,7 @@ export default {
 	},
 	onShow() {
 		this.content.val = getApp().globalData.gEditContent
+		getApp().globalData.gEditContent = ""
 	},
 	methods: {
 		/**

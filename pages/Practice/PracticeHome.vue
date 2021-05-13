@@ -1,17 +1,13 @@
 <!-- 外包 -->
 <template>
-	<view class="epibolies">
-		<!-- 类型选择 -->
-		<view class="navs">
-			<view 
-				class="nav"
-				:class="currentNav===nav.value ? 'active' : ''"
-				v-for="nav in navs"
-				:key="nav.value"
-				@click="currentNav=nav.value">
-				{{nav.label}}
-			</view>
-		</view>
+	<view v-if="env!==2" class="epibolies">
+		<!-- 导航选择类型 -->
+		<top-navs 
+			padding
+			small
+			radius="0"
+			:navs="navs">
+		</top-navs>
 		<!-- 搜索框 -->
 		<view class="search-input">
 			<search-input
@@ -74,6 +70,7 @@ var DOM_classifyWidth,touchX,scrolling = false
 export default {
 	data() {
 		return {
+			env: getApp().globalData.env,
 			navs: [
 				{label: "服务",value: 0},
 				{label: "需求",value: 1},
@@ -121,10 +118,15 @@ export default {
 		"need-card": NeedCard
 	},
 	mounted() {
-		const query = uni.createSelectorQuery().in(this);
-		query.select('#classify').boundingClientRect(data => {
-			DOM_classifyWidth = -(data.width / 2)
-		}).exec();
+		if(this.env === 2) {
+			this.gUndesign()
+		}
+		else {
+			const query = uni.createSelectorQuery().in(this);
+			query.select('#classify').boundingClientRect(data => {
+				DOM_classifyWidth = -(data.width / 2)
+			}).exec();
+		}
 	},
 	methods: {
 		/* 类型滚动，触摸开始 */
@@ -174,21 +176,6 @@ export default {
 	padding-bottom 80px
 	min-height 100vh
 	background-color var(--white1)
-	.navs
-		padding 5px 0
-		background-color #FFFFFF
-		display flex
-		.nav
-			flex 1
-			padding 7px
-			text-align center
-			background-color var(--origin4)
-			color var(--origin1)
-			&:first-of-type
-				margin-right 5px
-			&.active
-				background-color var(--origin2)
-				color #FFFFFF
 	/* 搜索框 */
 	.search-input
 		margin 5px 5%

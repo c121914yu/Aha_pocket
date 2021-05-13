@@ -233,6 +233,7 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "我的团队",
+				"enablePullDownRefresh": true,
 				"onReachBottomDistance": 150
 		    }
 		    

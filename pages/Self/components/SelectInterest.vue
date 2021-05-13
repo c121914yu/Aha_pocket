@@ -271,7 +271,7 @@ export default {
 			&::before
 				content ''
 				position absolute
-				margin-left -45%
+				margin-left -25%
 				width 22%
 				height 2px
 				background-color var(--origin2)
@@ -279,7 +279,7 @@ export default {
 			&::after
 				content ''
 				position absolute
-				margin-left 45%
+				margin-left 25%
 				width 22%
 				height 2px
 				background-color var(--origin2)

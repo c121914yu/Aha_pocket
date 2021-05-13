@@ -5,12 +5,16 @@
 <template>
 	<view 
 		class="top-nav"
-		:class="padding ? 'padding' : ''">
+		:class="padding ? 'padding' : ''"
+		:style="{
+			'--radius': radius
+		}">
 		<view 
 			class="nav"
 			:class="index === currentNav ? 'active' : ''"
 			:style="{
-				'background-color': backgroundColor
+				'background-color': backgroundColor,
+				'padding': small ? '5px 0' : '10px 0'
 			}"
 			v-for="(nav,index) in navs"
 			:key="index"
@@ -31,21 +35,34 @@
 export default {
 	name:"top-navs",
 	props: {
-		navs: { // ｛label:  ｝
+		navs: { // ｛label:  *｝
 			type: Array,
 			default: () => []
 		},
+		/* 是否显示边距 */
 		padding: {
 			type: Boolean,
 			default: false
 		},
+		/* 扁平 */
+		small: {
+			type: Boolean,
+			default: false
+		},
+		/* 文字颜色 */
 		color: {
 			type: String,
 			default: "var(--origin1)"
 		},
+		/* 选框背景色，选中默认都是origin2 */
 		backgroundColor: {
 			type: String,
 			default: "var(--origin4)"
+		},
+		/* 圆角 */
+		radius: {
+			type: String,
+			default: "22px"
 		}
 	},
 	data() {
@@ -76,17 +93,16 @@ export default {
 .top-nav
 	width 100%
 	background-color #FFFFFF
-	border-bottom-left-radius 22px
-	border-bottom-right-radius 22px
+	border-bottom-left-radius var(--radius)
+	border-bottom-right-radius var(--radius)
 	display flex
 	.nav
 		flex 1
-		padding 10px 0
 		text-align center
 		&:first-of-type
-			border-bottom-left-radius 22px
+			border-bottom-left-radius var(--radius)
 		&:last-of-type
-			border-bottom-right-radius 22px
+			border-bottom-right-radius var(--radius)
 		.label
 			letter-spacing 1px
 			font-size 24rpx
@@ -109,7 +125,7 @@ export default {
 				background-color var(--white2)
 				color var(--origin2)
 .padding
-	padding 5px 2px
+	padding 5px 4px
 	.nav
-		margin 0 2px
+		margin 0 4px
 </style>

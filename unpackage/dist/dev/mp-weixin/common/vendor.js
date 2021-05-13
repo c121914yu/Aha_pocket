@@ -822,7 +822,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -2253,11 +2253,16 @@ _vue.default.prototype.gLoading = function (that, type) {var delay = arguments.l
   /* 获取DOM */
   var dom = that.$refs.loading;
   if (dom) {
-    setTimeout(function () {
-      if (dom) {
-        dom.show = type;
-      }
-    }, delay);
+    dom.show = type;
+    /* 关闭状态，延迟关闭 */
+    // if(!type) {
+    // 	setTimeout(() => {
+    // 		dom.show = false
+    // 	},100)
+    // }
+    // else {
+    // 	dom.show = true
+    // }
   }
 };
 
@@ -8306,7 +8311,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8327,14 +8332,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -8420,7 +8425,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9972,12 +9977,12 @@ var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15
 /**
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * 获取团队列表
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  */
-exports.getTeams = function () {return (0, _request.default)("/team/", "GET");};
+exports.getTeams = function (params) {return (0, _request.default)("/team/", "GET", params);};
 
 /**
-                                                                                  * 获取单个团队详细
-                                                                                  * @param {Number}  teamId
-                                                                                  */
+                                                                                                * 获取单个团队详细
+                                                                                                * @param {Number}  teamId
+                                                                                                */
 exports.getTeam = function (teamId) {return (0, _request.default)("/team/".concat(teamId), "GET");};
 
 /**
@@ -10112,7 +10117,7 @@ exports.getAllCompetition = function () {return (0, _request.default)("/competit
 
 /***/ }),
 
-/***/ 701:
+/***/ 694:
 /*!************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_forum.js ***!
   \************************************************/
@@ -10125,11 +10130,11 @@ var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15
 /**
                                                                                                                                                                            * 策略获取人才
                                                                                                                                                                            */
-exports.getTalents = function () {return (0, _request.default)("/talentMarket", "GET", {});};
+exports.getTalents = function (params) {return (0, _request.default)("/talentMarket", "GET", params);};
 
 /***/ }),
 
-/***/ 723:
+/***/ 716:
 /*!****************************************************!*\
   !*** D:/服务外包/竞赛统计/components/select-city/citys.js ***!
   \****************************************************/

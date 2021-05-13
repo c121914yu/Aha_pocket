@@ -50,7 +50,8 @@
 			</aha-tags>
 			<!-- 团队介绍 -->
 			<view style="margin: 5px 0;" class="strong">团队介绍</view>
-			<view class="intro" v-if="intro" v-html="intro"></view>
+			<view v-if="intro" class="intro" v-html="intro"></view>
+			<view v-else class="intro" @click="startEdit">点击编辑团队介绍</view>
 			<button class="intro-btn" @click="startEdit('intro')">编辑</button>
 		</view>
 		<!-- 成员卡片 -->
@@ -186,6 +187,7 @@ export default {
 			console.log(res.data);
 			if(!res.data){
 				this.gBackPage("团队无效")
+				return
 			}
 			/* 赋值 */
 			this.id = res.data.id
