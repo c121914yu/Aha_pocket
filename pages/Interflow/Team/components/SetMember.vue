@@ -54,8 +54,8 @@ export default {
 		{
 			const obj = {
 				...this.member,
-				role: this.role,
-				memberIntro: this.memberIntro
+				role: this.role || "",
+				memberIntro: this.memberIntro || ""
 			}
 			if(this.member.isNewMember){
 				inviteMember(this.member.tid,this.member.uid)
@@ -66,8 +66,8 @@ export default {
 			else{
 				putMemberInfo({
 					teamId: this.member.tid,
-					role: this.role,
-					memberIntro: this.memberIntro
+					role: this.role || "",
+					memberIntro: this.memberIntro || ""
 				})
 				this.$emit("putMember",obj)
 			}

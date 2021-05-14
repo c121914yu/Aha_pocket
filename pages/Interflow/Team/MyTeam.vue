@@ -24,13 +24,14 @@
 		</view>
 		<view class="teams">
 			<team-card
-				v-for="(team,index) in teams"
+				v-for="(team,index) in arr_teams"
 				:key="team"
 				:team="team"
 				:isShowContact="false"
 				@click="onclickTeam(team)">
 			</team-card>
 		</view>
+		<view class="center remark">{{is_loadAll ? "已加载全部" : ""}}</view>
 		<btn-bottom linkTo="./CreateTeam">创建团队</btn-bottom>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
@@ -53,26 +54,47 @@ export default {
 				{label: "我管理",value: "admin"}
 			],
 			activeFilter: "all",
-			teams: []
+			pageNum: 1,
+			pageSize: 10,
+			is_loadAll: false,
+			arr_teams: []
 		}
 	},
 	onLoad() {
-		this.loadTeams()
+		this.loadTeams(true,true)
 	},
 	onPullDownRefresh() {
-		this.loadTeams()
+		if(!this.is_loadAll) {
+			this.loadTeams()
+		}
 	},
 	methods: {
 		/**
 		 * 加载团队信息
 		 */
-		loadTeams()
+		loadTeams(init=false,loading=false)
 		{
-			this.gLoading(this,true)
-			getTeams()
+			this.gLoading(this,loading)
+			if(init){
+				this.pageNum = 1
+			}
+			getTeams({
+				pageNum: this.pageNum,
+				pageSize: this.pageSize,
+			})
 			.then(res => {
-				this.teams = res.data
+				if(init) {
+					this.arr_teams = []
+				}
 				console.log(res.data)
+				/* 判断是否加载全部 */
+				if(res.data.length < this.pageSize) {
+					this.is_loadAll = true
+				}
+				else {
+					this.pageNum++
+				}
+				this.arr_teams = this.arr_teams.concat(res.data)
 			})
 			.finally(() => {
 				this.gLoading(this, false)
@@ -128,4 +150,7 @@ export default {
 	.teams
 		width 90%
 		margin 10px auto
+	.remark
+		font-size 22rpx
+		color var(--gray2)
 </style>

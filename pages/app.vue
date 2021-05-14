@@ -44,6 +44,7 @@
 
 <script>
 import { getAllCompetition } from "@/static/request/api_competition.js"
+import { getUnreadCount } from '@/static/request/api_userInfo.js'
 import AhaNotice from "./System/AhaNotice.vue"
 import AhaTabar from "./System/AhaTabar.vue"
 import UserAgreement from "./Self/Number/components/UserAgreement.vue"
@@ -97,6 +98,7 @@ export default {
 		wx.hideHomeButton()
 		if(this.is_signedNotice){
 			this.loadNeed()
+			this.judgeUnreadInforms()
 		}
 	},
 	onShow() {
@@ -131,6 +133,18 @@ export default {
 		}
 	},
 	methods: {
+		/**
+		 * 判断是否有未读，如果有未读，提示是否需要跳转消息通知
+		 */
+		judgeUnreadInforms()
+		{
+			getUnreadCount()
+			.then(res => {
+				if(res.data > 0) {
+					this.gToastMsg(`您有${res.data}条未读通知!`,false,2000)
+				}
+			})
+		},
 		/**
 		 * 点击tabbar，切换路由
 		 * @param {String} name 路由名
@@ -178,7 +192,7 @@ export default {
 		{
 			this.is_signedNotice = true
 			this.loadNeed()
-		},
+		}
 	}
 }
 </script>

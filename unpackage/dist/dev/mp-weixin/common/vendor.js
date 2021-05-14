@@ -2253,16 +2253,16 @@ _vue.default.prototype.gLoading = function (that, type) {var delay = arguments.l
   /* 获取DOM */
   var dom = that.$refs.loading;
   if (dom) {
-    dom.show = type;
+    // dom.show = type
     /* 关闭状态，延迟关闭 */
-    // if(!type) {
-    // 	setTimeout(() => {
-    // 		dom.show = false
-    // 	},100)
-    // }
-    // else {
-    // 	dom.show = true
-    // }
+    if (!type) {
+      setTimeout(function () {
+        dom.show = false;
+      }, 100);
+    } else
+    {
+      dom.show = true;
+    }
   }
 };
 
@@ -10059,12 +10059,12 @@ exports.handoverTeam = function (teamId, memberId) {return (0, _request.default)
                                                                                                                                                      * @param {Number}  teamId
                                                                                                                                                      * @param {String}  intro
                                                                                                                                                      */
-exports.applyJoinTeam = function (_ref3) {var teamId = _ref3.teamId,intro = _ref3.intro;return (0, _request.default)("/team/apply/".concat(teamId), "POST", { intro: intro });};
+exports.applyJoinTeam = function (_ref3) {var teamId = _ref3.teamId,data = _objectWithoutProperties(_ref3, ["teamId"]);return (0, _request.default)("/team/apply/".concat(teamId), "POST", data);};
 
 /**
-                                                                                                                                                                                  * 查看我的申请加入队伍状态、
-                                                                                                                                                                                  * @param {Number}  teamId
-                                                                                                                                                                                  */
+                                                                                                                                                                                                     * 查看我的申请加入队伍状态、
+                                                                                                                                                                                                     * @param {Number}  teamId
+                                                                                                                                                                                                     */
 exports.getMyApply = function (teamId) {return (0, _request.default)("/team/apply/me/".concat(teamId), "GET");};
 
 /**

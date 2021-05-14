@@ -4,32 +4,33 @@
 -->
 <template>
 	<view class="inform">
-		<top-navs
-			:navs="arr_navs"
-			padding
-			@navChange="changeNav">
-		</top-navs>
+		<view class="top-nav">
+			<top-navs
+				:navs="arr_navs"
+				padding
+				@navChange="changeNav">
+			</top-navs>
+		</view>
 		<!-- 通知列表 -->
 		<view class="informs">
-			<navigator 
+			<view 
 				class="item" 
 				:class="item.status === 0 ? 'unread' : ''"
 				v-for="(item, index) in arr_informs" 
-				:key="index" 
-				:url="'Inform?id=' + item.id"
-				hover-class="none">
+				:key="index"
+				@click="onclickInform(index)">
 				<image :src="item.senderUser.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
 				<view class="right">
 					<view class="head">
 						<text class="title">{{ item.title }}</text>
-						<text class="time">{{ item.receiveDate }}</text>
+						<text class="time">{{ gformatDate(item.receiveDate) }}</text>
 					</view>
 					<view class="content" v-html="item.content"></view>
 				</view>
-			</navigator>
+			</view>
 		</view>
 		<view v-if="arr_informs.length===0" class="remark center">无通知</view>
-		<view v-else class="remark center">{{ is_showAll ? "已加载全部" : "" }}</view>
+		<view v-else class="remark center">{{ is_loadAll ? "已加载全部" : "" }}</view>
 		<!-- 发送信息 -->
 		<btn-bottom
 			text="发送私信"
@@ -54,18 +55,18 @@ export default {
 			pageNum: 1,
 			pageSize: 10,
 			arr_informs: [],
-			is_showAll: false
+			is_loadAll: false
 		}
 	},
-	onShow() {
-		this.loadInforms(true,true)
+	onLoad() {
+		this.firstLoad()
 	},
 	onPullDownRefresh() {
-		this.loadInforms(true,true)
+		this.firstLoad()
 	},
 	onReachBottom() {
-		if (!this.is_showAll) {
-			this.loadInforms(false,false,false)
+		if (!this.is_loadAll) {
+			this.loadInforms()
 		}
 	},
 	methods: {
@@ -78,65 +79,78 @@ export default {
 		{
 			if(index !== this.currentNav){
 				this.currentNav = index
-				this.loadInforms(true)
+				this.firstLoad()
 			}
+		},
+		/**
+		 * 首次加载，全部类型都加载一次，统计未读
+		 */
+		firstLoad()
+		{
+			this.gLoading(this,true)
+			this.is_loadAll = false
+			this.pageNum = 1
+			Promise.all(this.arr_navs.map(item => getMessages({
+				pageNum: 1,
+				pageSize: 10,
+				type: item.value
+			})))
+			.then(res => {
+				this.arr_informs = res[this.currentNav].data.pageData
+				/* 统计数据 */
+				res.forEach((item,i) => {
+					item = item.data.pageData.filter(inform => inform.status === 0)
+					this.arr_navs[i].amount = item.length
+				})
+			})
+			.finally(() => {
+				this.gLoading(this,false)
+				uni.stopPullDownRefresh()
+			})
 		},
 		/**
 		 * 获取消息列表
 		 */
-		loadInforms(init=false,count=false,loading=true) 
+		loadInforms() 
 		{
-			this.gLoading(this, loading)
-			if(init){
-				this.pageNum = 1
-			}
-			let params = {
+			getMessages({
 				pageNum: this.pageNum,
-				pageSize: this.pageSize
-			}
-			if(!count){
-				params.type = this.arr_navs[this.currentNav].value
-			}
-			/* 清空统计 */
-			else{
-				this.arr_navs.forEach(item => {
-					item.amount = 0
-				})
-			}
-			getMessages(params)
+				pageSize: this.pageSize,
+				type: this.arr_navs[this.currentNav].value
+			})
 			.then(res => {
 				/* 是否加载所有 */
 				if(res.data.pageData.length < this.pageSize){
-					this.is_showAll = true
+					this.is_loadAll = true
 				}
 				else{
 					this.pageNum++
 				}
-				if(init){
-					this.arr_informs = []
-				}
 				res.data.pageData.forEach(item => {
-					if(count){
-						/* 统计未读 */
-						if(item.status === 0){
-							this.arr_navs[item.type].amount++
-						}
-						/* 只筛选当前类型 */
-						if(item.type === this.currentNav){
-							item.receiveDate = this.gformatDate(item.receiveDate)
-							this.arr_informs.push(item)
-						}
+					/* 统计未读 */
+					if(item.status === 0){
+						this.arr_navs[item.type].amount++
 					}
-					else{
-						item.receiveDate = this.gformatDate(item.receiveDate)
-						this.arr_informs.push(item)
-					}
+					this.arr_informs.push(item)
 				})
 				console.log(this.arr_informs);
 			})
-			.finally(() => {
-				this.gLoading(this, false)
-				uni.stopPullDownRefresh()
+		},
+		/**
+		 * 点击通知，跳转通知详细。判断是否是未读信息，如果是则更新下状态
+		 * @param {Object} i
+		 */
+		onclickInform(i) 
+		{
+			const inform = this.arr_informs[i]
+			uni.navigateTo({
+				url: `Inform?id=${inform.id}`,
+				success: () => {
+					if(inform.status === 0) {
+						this.arr_informs[i].status = 1
+						this.arr_navs[this.currentNav].amount--
+					}
+				}
 			})
 		}
 	}
@@ -147,13 +161,17 @@ export default {
 .inform
 	background-color var(--white1)
 	min-height 100vh
-	padding-bottom 60px
+	padding 52px 0 60px
+	.top-nav
+		position fixed
+		top 0
+		width 100%
 	/* 通知列表 */
 	.informs
 		.item
 			margin 10px 5%
 			background-color #FFFFFF
-			height 50px
+			height 60px
 			border-radius 50px 16px 16px 50px
 			padding 5px
 			display flex

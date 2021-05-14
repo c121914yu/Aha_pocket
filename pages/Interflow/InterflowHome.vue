@@ -21,6 +21,12 @@
 			v-if="arr_navs[1].loaded"
 			v-show="currentNav===1">
 		</teams>
+		<view
+			class="center"
+			v-if="arr_navs[2].loaded"
+			v-show="currentNav===2">
+			开发中...
+		</view>
 	</view>
 </template>
 

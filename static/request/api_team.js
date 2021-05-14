@@ -85,7 +85,7 @@ exports.handoverTeam = (teamId,memberId) => request(`/team/handover/${teamId}/${
  * @param {Number}  teamId
  * @param {String}  intro
  */
-exports.applyJoinTeam = ({teamId,intro}) => request(`/team/apply/${teamId}`,"POST",{intro})
+exports.applyJoinTeam = ({teamId,...data}) => request(`/team/apply/${teamId}`,"POST",data)
 
 /**
  * 查看我的申请加入队伍状态、

@@ -231,16 +231,16 @@ Vue.prototype.gLoading  = (that,type,delay=0) => {
 	/* 获取DOM */
 	const dom = that.$refs.loading
 	if(dom){
-		dom.show = type
+		// dom.show = type
 		/* 关闭状态，延迟关闭 */
-		// if(!type) {
-		// 	setTimeout(() => {
-		// 		dom.show = false
-		// 	},100)
-		// }
-		// else {
-		// 	dom.show = true
-		// }
+		if(!type) {
+			setTimeout(() => {
+				dom.show = false
+			},100)
+		}
+		else {
+			dom.show = true
+		}
 	}
 }
 

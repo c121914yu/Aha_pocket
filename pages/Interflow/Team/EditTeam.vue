@@ -4,11 +4,13 @@
  -->
 <template>
 	<view class="edit-team">
-		<top-navs 
-			backgroundColor="var(--origin3)"
-			:navs="arr_navs"
-			@navChange="currentNav=$event.value">
-		</top-navs>
+		<view class="nav">
+			<top-navs
+				backgroundColor="var(--origin3)"
+				:navs="arr_navs"
+				@navChange="currentNav=$event.value">
+			</top-navs>
+		</view>
 		<!-- 基本信息卡片 -->
 		<view v-if="currentNav===0" class="card">
 			<view class="h3">团队基本信息</view>
@@ -50,14 +52,19 @@
 			</aha-tags>
 			<!-- 团队介绍 -->
 			<view style="margin: 5px 0;" class="strong">团队介绍</view>
-			<view v-if="intro" class="intro" v-html="intro"></view>
-			<view v-else class="intro" @click="startEdit">点击编辑团队介绍</view>
+			<view v-if="intro" class="rich-text" v-html="intro"></view>
+			<view v-else class="rich-text" @click="startEdit">点击编辑团队介绍</view>
 			<button class="intro-btn" @click="startEdit('intro')">编辑</button>
 		</view>
 		<!-- 成员卡片 -->
 		<view v-if="currentNav===1" class="card member-info">
 			<!-- 查看申请加入的成员 -->
-			<button v-if="arr_applyMembers.length>0" class="apply-list-btn" @click="isShowApplyList=true">查看申请列表</button>
+			<button 
+				v-if="arr_applyMembers.length>0" 
+				class="apply-list-btn"
+				@click="is_showApplyList=true">
+				查看申请列表
+			</button>
 			<view style="margin-bottom: 5px;" class="h3">团队成员信息</view>
 			<search-input 
 				placeholder="邀请成员ID" 
@@ -92,9 +99,18 @@
 			<!-- 招募文字 -->
 			<view v-if="recruitState>0" style="color: var(--origin1);" class="strong">
 				招募描述
-				<text style="margin-left: 10px;color: var(--black);" class="small" @click="startEdit('recruitContent')">点击编辑</text>
+				<text 
+					style="margin-left: 10px;color: var(--black);" 
+					class="small" 
+					@click="startEdit('recruitContent')">
+					点击编辑
+				</text>
 			</view>
-			<view v-if="recruitState>0" class="recruitContent" v-html="recruitContent || '无招募内容'"></view>
+			<view 
+				v-if="recruitState>0" 
+				class="rich-text" 
+				v-html="recruitContent || '无招募内容'">
+			</view>
 			<!-- 解散队伍 -->
 			<view v-if="myRole===2" class="dissolve-team" @click="dissolveTeam">解散队伍</view>
 		</view>
@@ -109,7 +125,8 @@
 		<apply-list 
 			v-if="is_showApplyList" 
 			:arr_applyMembers="arr_applyMembers"
-			@close="is_showApplyList=false">
+			@close="is_showApplyList=false"
+			@checked="checkApply">
 		</apply-list>
 		<btn-bottom 
 			v-if="myRole > 0 && currentNav===0 || currentNav===2"
@@ -239,9 +256,37 @@ export default {
 		{
 			getApply(this.id)
 			.then(res => {
-				this.arr_applyMembers = res.data.filter(item => item.state===0)
-				console.log(res.data);
+				this.arr_applyMembers = res.data.filter(item => item.state===0).map(item => {
+					item.applyTime = this.gformatDate(item.applyTime)
+					item.handleTime = this.gformatDate(item.handleTime)
+					return item
+				})
+				console.log(this.arr_applyMembers)
 			})
+		},
+		/**
+		 * 审核申请人员,更新申请列表.并将member加到项目成员中
+		 */
+		checkApply({member,i,type})
+		{
+			if(type) {
+				this.arr_members.push({
+					isAdmin: false,
+					uid: member.uid,
+					tid: this.id,
+					memberRoughInfo: {
+						nickname: member.userInfo.nickname,
+						avatarUrl: member.userInfo.avatarUrl,
+					},
+					role: "",
+					memberIntro: ""
+				})
+				this.$refs["teamMember"].updateMember()
+			}
+			this.arr_applyMembers.splice(i,1)
+			if(this.arr_applyMembers.length === 0) {
+				this.is_showApplyList = false
+			}
 		},
 		/**
 		 * 选择图片
@@ -335,31 +380,32 @@ export default {
 		 */
 		onclickMember(member)
 		{
-			let ctrList = ["查看成员主页"]
-			/* 点击自己 */
-			if(getApp().globalData.gUserInfo.userInfo.userId === member.uid){
-				ctrList.push("编辑成员信息")
+			let ctrList
+			const myId = getApp().globalData.gUserInfo.userInfo.userId
+			if(myId === member.uid){
+				ctrList = ["查看成员主页"]
 			}
-			/* 管理员 */
-			else if(this.myRole > 0){
-				ctrList.push("编辑成员信息")
-				/* 队长且不是点击自己头像 */
-				if(this.myRole === 2 && getApp().globalData.gUserInfo.userInfo.userId !== member.uid){
-					if(member.isAdmin){
-						ctrList.push("取消管理员")
-					}
-					else{
-						ctrList.push("设置管理员")
-					}
-					ctrList.push("移交队长权限","踢出成员")
+			else {
+				switch(this.myRole) {
+					case 0: // 普通成员
+						ctrList = ["查看成员主页"]
+						break
+					case 1: // 管理员
+						if(!member.isAdmin) {
+							ctrList = ["查看成员主页","编辑成员信息","踢出成员"]
+						}
+						else {
+							ctrList = ["查看成员主页"]
+						}
+						break
+					case 2: // 队长
+						if(member.isAdmin) {
+							ctrList = ["查看成员主页","编辑成员信息","取消管理员","踢出成员","移交队长权限"]
+						}
+						else {
+							ctrList = ["查看成员主页","编辑成员信息","设置管理员","踢出成员","移交队长权限"]
+						}
 				}
-			}
-			/* 非管理员且不是点击自己 */
-			else{
-				uni.navigateTo({
-					url: `../../Self/UserHome?userId=${member.uid}`
-				})
-				return
 			}
 			this.gMenuPicker(ctrList)
 			.then(res => {
@@ -403,6 +449,8 @@ export default {
 				else if(res === "移交队长权限"){
 					this.gShowModal("确认移交队长权限?该操作不可逆,请谨慎!",() => {
 						handoverTeam(member.tid,member.uid)
+						const index = this.arr_members.findIndex(item => item.uid === member.uid)
+						this.arr_members[index].isAdmin = true
 						this.captainId = member.uid
 						this.myRole = 1
 						/* 修改数组信息 */
@@ -487,8 +535,19 @@ export default {
 <style lang="stylus" scoped>
 .edit-team
 	min-height 100vh
-	padding-bottom 60px
+	padding 40px 0 60px
 	background-color var(--white1)
+	.nav
+		z-index 10
+		position fixed
+		height 40px
+		top 0
+		width 100%
+	.rich-text
+		padding 5px
+		border 1px solid var(--origin2)
+		border-radius 8px
+		font-size 24rpx
 	.card
 		position relative
 		margin 10px auto
@@ -519,21 +578,9 @@ export default {
 					font-size 50rpx
 		.info-input
 			margin 10px 0
-		.intro
-			*
-				white-space pre-wrap
-				word-wrap break-word
-			padding 2px
-			border 2px solid var(--origin2)
-			border-radius 8px
 		.intro-btn
 			margin-top 10px
 			padding 0
-		.recruitContent
-			padding 5px
-			border 1px solid var(--origin2)
-			border-radius 4px
-			font-size 24rpx
 		.dissolve-team
 			margin-top 10px
 			text-align end

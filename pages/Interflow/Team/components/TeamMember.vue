@@ -102,7 +102,6 @@ export default {
 						teamMembers.push(member)
 					}
 				})
-				console.log(this.arr_members)
 				this.arr_admin = admin
 				this.arr_teamMembers = teamMembers
 			})

@@ -49,7 +49,7 @@
 		<view class="navs">
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/MyProjects">我的项目</navigator>
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Interflow/Team/MyTeam">我的团队</navigator>
-			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Practice/MyEpiboly">外包需求</navigator>
+			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Practice/MyEpiboly">我的讨论</navigator>
 		</view>
 		<!-- 任务 进行中 & 已完成 & 贡献详情 -->
 		<view class="tasks">
@@ -147,8 +147,8 @@ export default {
 			/* 任务列表 */
 			arr_tasks: [
 				{ name: '已购项目', icon: 'icon-shouye', to: "/pages/Project/PurchasedProjects" },
-				{ name: '组队信息', icon: 'icon-zudui', to: "/pages/Project/PurchasedProjects"},
-				{ name: '外包信息', icon: 'icon-waibao', to: "/pages/Project/PurchasedProjects" }
+				{ name: '服务', icon: 'icon-zudui', to: "/pages/Project/PurchasedProjects"},
+				{ name: '需求', icon: 'icon-waibao', to: "/pages/Project/PurchasedProjects" }
 			],
 			/* 功能列表 */
 			arr_funtions1: [

@@ -173,7 +173,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _api_competition = __webpack_require__(/*! @/static/request/api_competition.js */ 58); //
+var _api_competition = __webpack_require__(/*! @/static/request/api_competition.js */ 58);
+var _api_userInfo = __webpack_require__(/*! @/static/request/api_userInfo.js */ 14); //
 //
 //
 //
@@ -229,7 +230,8 @@ var AhaNotice = function AhaNotice() {Promise.all(/*! require.ensure | pages/Sys
     };}, watch: { /**
                    * 路由切换，修改对应的头部文字
                    * @param {Number} newNav
-                   */currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "竞赛交流";break;case 2:text = "技能实践";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });} }, onLoad: function onLoad() {console.log(getApp().globalData.gUserInfo); /* 隐藏返回主页 */wx.hideHomeButton();if (this.is_signedNotice) {this.loadNeed();}}, onShow: function onShow() {
+                   */currentNav: function currentNav(newNav) {var text = "";switch (newNav) {case 0:text = "项目分享";break;case 1:text = "竞赛交流";break;case 2:text = "技能实践";break;case 3:text = "个人信息";break;}uni.setNavigationBarTitle({ title: text });} }, onLoad: function onLoad() {console.log(getApp().globalData.gUserInfo); /* 隐藏返回主页 */wx.hideHomeButton();if (this.is_signedNotice) {this.loadNeed();this.judgeUnreadInforms();}},
+  onShow: function onShow() {
     /* 更新个人页未读 */
     if (this.$refs.Self) {
       this.$refs.Self.getUnread();
@@ -262,9 +264,21 @@ var AhaNotice = function AhaNotice() {Promise.all(/*! require.ensure | pages/Sys
   },
   methods: {
     /**
-              * 点击tabbar，切换路由
-              * @param {String} name 路由名
+              * 判断是否有未读，如果有未读，提示是否需要跳转消息通知
               */
+    judgeUnreadInforms: function judgeUnreadInforms()
+    {var _this = this;
+      (0, _api_userInfo.getUnreadCount)().
+      then(function (res) {
+        if (res.data > 0) {
+          _this.gToastMsg("\u60A8\u6709".concat(res.data, "\u6761\u672A\u8BFB\u901A\u77E5!"), false, 2000);
+        }
+      });
+    },
+    /**
+        * 点击tabbar，切换路由
+        * @param {String} name 路由名
+        */
     onclickTabBar: function onclickTabBar(name)
     {
       var index = this.navs.findIndex(function (item) {return item.name === name;});
@@ -290,7 +304,7 @@ var AhaNotice = function AhaNotice() {Promise.all(/*! require.ensure | pages/Sys
         * 加载所有依赖
         */
     loadNeed: function loadNeed()
-    {var _this = this;
+    {var _this2 = this;
       /* 加载系统公告 */
       this.$refs.systemNotice.loadNotice();
       /* 加载比赛信息 */
@@ -298,7 +312,7 @@ var AhaNotice = function AhaNotice() {Promise.all(/*! require.ensure | pages/Sys
       then(function (res) {
         getApp().globalData.garr_competitions = res.data;
         /* 加载项目列表 */
-        _this.$refs.projectHome.loadProjects(true);
+        _this2.$refs.projectHome.loadProjects(true);
       });
     },
     /**

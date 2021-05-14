@@ -11,7 +11,7 @@
 			<text class="iconfont icon-guanbi" @click="arr_notices=[]"></text>
 			<view class="notice">
 				<view class="center h3">{{arr_notices[currentPage].title}}</view>
-				<view class="notice-content" v-html="arr_notices[currentPage].content"></view>
+				<view class="notice-content rich-text" v-html="arr_notices[currentPage].content"></view>
 			</view>
 			<text class="page small">{{currentPage+1}} / {{arr_notices.length}}</text>
 			<view class="ctr">
@@ -79,7 +79,6 @@ export default {
 			.notice-content
 				height 50vh
 				padding 0 10px
-				white-space pre-wrap
 				overflow auto
 		/* 页码 */
 		.page

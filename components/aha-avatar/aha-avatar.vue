@@ -11,7 +11,7 @@
 			'background-color': bgColor
 		}"
 		@click="readImg">
-		<image class="img" :src="src" mode="widthFix"></image>
+		<image class="img" :src="src || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" mode="widthFix"></image>
 	</view>
 </template>
 
@@ -21,7 +21,7 @@ export default {
 	props: {
 		src: {
 			type: String,
-			default: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png"
+			default: ""
 		},
 		size: {
 			type: Number,

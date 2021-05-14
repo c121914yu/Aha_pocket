@@ -48,9 +48,11 @@ export default {
 				break
 			case 'release':
 				globalData.env = 2
+				globalData.baseUrl = "https://ahapocket.cn/api"
 				break
 		}
 		// globalData.env = 2
+		// globalData.baseUrl = "https://ahapocket.cn/api"
 		/* 下载比赛等级图 */
 		const prizeLevels = uni.getStorageSync('prizeLevels')
 		if (prizeLevels) {

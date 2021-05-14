@@ -97,7 +97,7 @@ export default {
 			uni.reLaunch({
 				url: '../app',
 				success: () => {
-					this.gToastSuccess('登录成功')
+					this.gToastSuccess('登录成功',false,1000)
 				}
 			})
 		},
