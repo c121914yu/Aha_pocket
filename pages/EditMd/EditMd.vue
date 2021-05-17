@@ -14,6 +14,9 @@
 			:show-img-resize="true"
 			@ready="onEditorReady"
 		></editor>   
+		<button v-if="copy" class="text-to-html" @click="onclickAnalysis">
+			解析文本
+		</button>
 		<!-- 操作工具 -->
 		<view class="tools" > 
 			<eIcon
@@ -138,13 +141,28 @@ export default {
 				.fields({
 					size: true,
 					context: true
-				},res => {
-					this.editorCtx = res.context;
+				},(res) => {
+					this.editorCtx = res.context
 					this.editorCtx.setContents({
 						html: getApp().globalData.gEditContent
 					})
 				})
 				.exec()
+		},
+		/**
+		 * 解析内容成html
+		 */
+		onclickAnalysis()
+		{
+			this.gShowModal("确认解析所有文本成HTMl?",() => {
+				this.editorCtx.getContents({
+					success: (res) => {
+						this.editorCtx.setContents({
+							html: res.text
+						})
+					} 
+				})
+			})
 		},
 		/**
 		 * 设置标题
@@ -307,4 +325,12 @@ export default {
 		grid-template-columns repeat(6,1fr)
 	img
 		border-radius 8px
+	.text-to-html
+		position absolute
+		opacity 0.8
+		line-height 1
+		top 2px
+		right 2px
+		padding 5px
+		font-size 22rpx
 </style>

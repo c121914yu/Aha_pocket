@@ -3,19 +3,19 @@
 	author: yjl
  -->
 <template>
-	<view class="app">
+	<view class="app" @touchmove="ontouchMove">
 		<!-- 用户须知 -->
-		<user-aggrement 
+		<user-aggrement
 			v-if="!is_signedNotice"
 			@readed="successSign">
 		</user-aggrement>
 		<!-- 系统公告 -->
-		<system-notice ref="systemNotice"></system-notice>
+		<system-notice 
+			ref="systemNotice" 
+			@isSlide="is_canSlide=$event">
+		</system-notice>
 		<!-- 底部导航 -->
-		<aha-tabar 
-			:currentNav="currentNav"
-			@navigate="onclickTabBar">
-		</aha-tabar>
+		<aha-tabar :currentNav="currentNav" @navigate="onclickTabBar"></aha-tabar>
 		<!-- 项目主页 -->
 		<project-hone 
 			ref="projectHome"
@@ -64,6 +64,7 @@ export default {
 	},
 	data() {
 		return {
+			is_canSlide: true,
 			navs: [ // 利用loaded实现类似keep-alive效果
 				{name: "ProjectHome",loaded: true},
 				{name: "Interflow",loaded: false},
@@ -120,7 +121,7 @@ export default {
 					break
 				/* 组队 */
 				case 1:
-					this.$refs.interflowHome.$refs.Talents.reachBottom()
+					this.$refs.interflowHome.$refs.Teams.loadTeams()
 					break
 			}
 		}
@@ -133,6 +134,16 @@ export default {
 		}
 	},
 	methods: {
+		/**
+		 * 滑动事件
+		 */
+		ontouchMove(e)
+		{
+			/* 阻止滑动 */
+			if(!this.is_canSlide) {
+				e.preventDefault()
+			}
+		},
 		/**
 		 * 判断是否有未读，如果有未读，提示是否需要跳转消息通知
 		 */
@@ -197,6 +208,3 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-
-</style>

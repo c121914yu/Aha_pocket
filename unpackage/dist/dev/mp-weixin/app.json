@@ -42,7 +42,11 @@
     "pages/Interflow/Team/MyTeam",
     "pages/Interflow/Team/CreateTeam",
     "pages/Interflow/Team/EditTeam",
-    "pages/Interflow/Team/TeamDetail"
+    "pages/Interflow/Team/TeamDetail",
+    "pages/Interflow/Forum/Create_EditForum",
+    "pages/Interflow/Forum/ForumDetail",
+    "pages/Interflow/Forum/MyForum",
+    "pages/Interflow/Forum/CommentWindow"
   ],
   "subPackages": [],
   "window": {

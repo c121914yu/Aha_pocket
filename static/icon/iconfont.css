@@ -1,16 +1,27 @@
 @font-face {
   font-family: 'iconfont';  /* Project id 2449283 */
-  src: url('//at.alicdn.com/t/font_2449283_ug8dk95f9nc.woff2?t=1620911886191') format('woff2'),
-       url('//at.alicdn.com/t/font_2449283_ug8dk95f9nc.woff?t=1620911886191') format('woff'),
-       url('//at.alicdn.com/t/font_2449283_ug8dk95f9nc.ttf?t=1620911886191') format('truetype');
+  src: url('//at.alicdn.com/t/font_2449283_773zx8bugzp.woff2?t=1621238584657') format('woff2'),
+       url('//at.alicdn.com/t/font_2449283_773zx8bugzp.woff?t=1621238584657') format('woff'),
+       url('//at.alicdn.com/t/font_2449283_773zx8bugzp.ttf?t=1621238584657') format('truetype');
 }
-
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-dianzan_active:before {
+  content: "\e61c";
+}
+
+.icon-pinglun:before {
+  content: "\e61e";
+}
+
+.icon-zan:before {
+  content: "\e61b";
 }
 
 .icon-xiazai:before {

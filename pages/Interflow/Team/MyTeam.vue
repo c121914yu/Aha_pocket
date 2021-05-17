@@ -128,7 +128,9 @@ export default {
 <style lang="stylus" scoped>
 .my-team
 	min-height 100vh
-	padding-bottom 60px
+	margin-bottom 60px
+	padding-bottom constant(safe-area-inset-bottom)
+	padding-bottom env(safe-area-inset-bottom)
 	background-color var(--white1)
 	.search
 		padding 5px 15px

@@ -19,24 +19,25 @@
 		</talents>
 		<teams 
 			v-if="arr_navs[1].loaded"
-			v-show="currentNav===1">
+			v-show="currentNav===1"
+			ref="Teams">
 		</teams>
-		<view
-			class="center"
+		<Forums
 			v-if="arr_navs[2].loaded"
 			v-show="currentNav===2">
-			开发中...
-		</view>
+		</Forums>
 	</view>
 </template>
 
 <script>
 import Teams from "./Team/Teams.vue"
 import Talents from "./Talents.vue"
+import Forums from "./Forum/Forums.vue"
 export default {
 	components: {
 		"talents": Talents,
 		"teams": Teams,
+		"forums": Forums
 	},
 	data() {
 		return {
@@ -65,7 +66,10 @@ export default {
 <style lang="stylus" scoped>
 .forum-home
 	min-height 100vh
-	padding 50px 0 70px 0
+	padding-top 50px
+	margin-bottom 80px
+	padding-bottom constant(safe-area-inset-bottom)
+	padding-bottom env(safe-area-inset-bottom)
 	background-color var(--white1)
 	.nav
 		z-index 100

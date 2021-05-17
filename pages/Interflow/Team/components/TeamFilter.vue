@@ -3,7 +3,7 @@
 	author yjl
  -->
 <template>
-	<view class="team-filter">
+	<view class="team-filter" @touchmove.stop>
 		<!-- 蒙层 -->
 		<view v-show="is_showSelect" class="mask"></view>
 		<!-- 筛选 & 排序文字 -->
@@ -32,14 +32,10 @@
 			</view>
 		</view>
 		<!-- 下拉列表 -->
-		<view 
-			v-show="is_showSelect"
-			:style="{
-				'height': selectType === null ? 0 : '70vh'
-			}"
-			class="container">
+		<view v-show="is_showSelect" class="container">
 			<view class="content">
-				<view class="left">
+				<!-- 左侧数据 -->
+				<scroll-view class="left" scroll-y="scroll-y">
 					<view 
 						class="item"
 						:class="[
@@ -51,9 +47,9 @@
 						@click="onclickLeft(index,item.key)">
 						{{item.label}}
 					</view>
-				</view>
+				</scroll-view>
 				<!-- 排序下拉时没有右侧数据 -->
-				<view v-if="selectType!==3" class="right">
+				<scroll-view v-if="selectType!==3" class="right" scroll-y="scroll-y">
 					<view
 						class="item"
 						:class="index === acticveIndex[1] ? 'active' : ''"
@@ -62,7 +58,7 @@
 						@click="onclickRight(index,item.key)">
 						{{item.label}}
 					</view>
-				</view>
+				</scroll-view>
 			</view>
 			<view class="btns">
 				<button class="btn reset" @click="onclickReset">重置</button>
@@ -201,8 +197,8 @@ export default {
 					this.selectType = i
 				})
 			}
-			/* 限制父级的最大高度，防止蒙层滚动 */
-			this.$emit("showSelect",this.is_showSelect)
+			/* 如果打开select防止蒙层滚动 */
+			this.$emit("canSlide",!this.is_showSelect)
 		},
 		/**
 		 * 点击左侧
@@ -315,11 +311,12 @@ export default {
 				.iconfont
 					transform rotate(180deg)
 	.container
-		position relative
-		height 0
+		z-index 10
+		position absolute
+		width 100%
+		height 65vh
 		border-bottom-left-radius 22px
 		border-bottom-right-radius 22px
-		transition .2s
 		background-color #FFFFFF
 		overflow hidden
 		.content

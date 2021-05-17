@@ -170,25 +170,30 @@ export default {
 			this.loadProjects(true)
 			this.is_showFileter = false
 		},
-		/* 上传项目,选择web或者小程序 */
+		/**
+		 * 点击上传项目
+		 */
 		upProject()
 		{
-			uni.showActionSheet({
-				itemList: ["小程序上传","电脑上传"],
-				success: (res) => {
-					if(res.tapIndex === 0){
-						uni.navigateTo({
-							url: "UpProject"
-						})
-					}
-					else {
-						this.gClipboardData(
-							"http://localhost:8081/project/up/"+uni.getStorageSync("token"),
-							"已复制连接,请使用电脑浏览器打开!"
-						)
-					}
-				}
+			uni.navigateTo({
+				url: "UpProject"
 			})
+			// uni.showActionSheet({
+			// 	itemList: ["小程序上传","电脑上传"],
+			// 	success: (res) => {
+			// 		if(res.tapIndex === 0){
+			// 			uni.navigateTo({
+			// 				url: "UpProject"
+			// 			})
+			// 		}
+			// 		else {
+			// 			this.gClipboardData(
+			// 				"http://localhost:8081/project/up/"+uni.getStorageSync("token"),
+			// 				"已复制连接,请使用电脑浏览器打开!"
+			// 			)
+			// 		}
+			// 	}
+			// })
 		},
 		/* 
 			name: 项目设置
@@ -239,7 +244,9 @@ export default {
 .my-projects
 	min-height 100vh
 	background-color var(--white1)
-	padding-bottom 55px
+	margin-bottom 60px
+	padding-bottom constant(safe-area-inset-bottom)
+	padding-bottom env(safe-area-inset-bottom)
 	/* 数据统计 */
 	.header
 		margin-bottom 10px

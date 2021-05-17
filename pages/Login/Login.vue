@@ -33,7 +33,7 @@
 				</view>
 				<button type="default" @click="onclickLogin">登录</button>
 				<!-- 暂时只给微信登录 -->
-				<view class="center small register"><navigator url="./Register" hover-class="none">立即注册</navigator></view>
+				<!-- <view class="center small register"><navigator url="./Register" hover-class="none">立即注册</navigator></view> -->
 			</view>
 			<!-- 第三方登录 -->
 			<view class="small other">
@@ -146,11 +146,11 @@ export default {
 								})
 				uni.setStorageSync('token', userInfo.data.token)
 				this.loginSuccess(userInfo.data.personalUserInfo)
-				this.gLoading(this, false)
-			}catch(e){
-				this.gLoading(this, false)
-				this.gToastError("请求错误")
+			} catch(e) {
+				console.error(e)
+				this.gToastError("wx登录错误")
 			}
+			this.gLoading(this, false)
 		}
 	}
 }

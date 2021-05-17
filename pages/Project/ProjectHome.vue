@@ -124,7 +124,7 @@ export default {
 				else if(this.arr_projects.length > 0){
 					this.RankingData = [].concat(this.arr_projects)
 				}
-				console.log(this.arr_projects);
+				console.log("项目:",this.arr_projects);
 			})
 			.finally(() => this.gLoading(this, false))
 		},
@@ -168,7 +168,9 @@ export default {
 .resource-home
 	// 偏离底部导航距离
 	min-height 100vh
-	padding-bottom 80px
+	margin-bottom 80px
+	padding-bottom constant(safe-area-inset-bottom)
+	padding-bottom env(safe-area-inset-bottom)
 	background-color var(--white1)
 	// 轮播图
 	.header

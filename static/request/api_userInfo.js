@@ -1,3 +1,4 @@
+/* 用户相关 */
 import request from "./request.js"
 
 /**
@@ -141,3 +142,10 @@ exports.followUser = (userId) => request(`/user/follow/${userId}`,"POST")
  * @param {Number}  userId 对方ID
  */
 exports.unfollowUser = (userId) => request(`/user/unfollow/${userId}`,"POST")
+
+/**
+ * 策略获取人才
+ * @param {Number}  pageNum
+ * @param {Number}  pageSize
+ */
+exports.getTalents = (params) => request("/talentMarket","GET",params)

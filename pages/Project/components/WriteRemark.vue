@@ -160,6 +160,8 @@ export default {
 		background-color var(--origin2)
 		display flex
 		align-items center
+		padding-bottom constant(safe-area-inset-bottom)
+		padding-bottom env(safe-area-inset-bottom)
 		.write
 			margin 0
 			flex 1

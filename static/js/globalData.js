@@ -6,6 +6,7 @@ export default  {
 	gUserInfo: {}, // 个人信息
 	gEditContent: "", // MD编辑内容
 	garr_competitions: [], // 所有比赛
+	garr_forumTags: [],
 	garr_prizeLevels: [//获奖等级
 		{ label: '保研国一', value: 53,max: 4000,min: 2000,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/43.png"},
 		{ label: '保研国二', value: 52,max: 3000,min: 1500,src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/42.png" },

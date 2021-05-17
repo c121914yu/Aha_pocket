@@ -3,14 +3,10 @@
 	author yjl
 -->
 <template>
-	<view
-		:style="{
-			'overflow': is_showSelect ? 'hidden' : 'auto'
-		}"
-		class="teams">
+	<view class="teams" @touchmove="ontouchMove">
 		<!-- 筛选框 -->
 		<view class="filter">
-			<team-filter @showSelect="is_showSelect=$event"></team-filter>
+			<team-filter @canSlide="is_canSlide=$event"></team-filter>
 		</view>
 		<view class="list">
 			<team-card
@@ -36,7 +32,7 @@ export default {
 	},
 	data() {
 		return {
-			is_showSelect: false,
+			is_canSlide: true,
 			pageSize: 10,
 			pageNum: 1,
 			is_loadAll: false,
@@ -48,12 +44,25 @@ export default {
 	},
 	methods: {
 		/**
+		 * 滑动事件
+		 */
+		ontouchMove(e)
+		{
+			/* 阻止滑动 */
+			if(!this.is_canSlide) {
+				e.preventDefault()
+			}
+		},
+		/**
 		 * 加载竞赛团队数据，默认会筛选招募中的队伍
 		 * @param {Boolean}  init 是否初始化
 		 * @param {Boolean}  loading 加载动画
 		 */
 		loadTeams(init=false,loading=false)
 		{
+			if(this.is_loadAll) {
+				return
+			}
 			this.gLoading(this,loading)
 			if(init){
 				this.pageNum = 1
@@ -75,7 +84,7 @@ export default {
 				else {
 					this.pageNum++
 				}
-				console.log(this.arr_teams);
+				console.log(this.arr_teams[0]);
 			})
 			.finally(() => this.gLoading(this,false))
 		},
@@ -96,7 +105,7 @@ export default {
 
 <style lang="stylus" scoped>
 .teams
-	height calc(100vh - 120px)
+	min-height 80vh
 	padding-top 40px
 	.filter
 		z-index 50
@@ -104,6 +113,7 @@ export default {
 		top 50px
 		width 100%
 	.list
+		z-index 10
 		margin 10px 2%
 		padding 10px
 		border-radius 12px

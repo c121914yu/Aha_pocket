@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { getTalents } from "@/static/request/api_forum.js"
+import { getTalents } from "@/static/request/api_userInfo.js"
 import { getTeams } from "@/static/request/api_team.js"
 import TeamCard from "./Team/components/TeamCard.vue"
 export default {
@@ -216,7 +216,7 @@ export default {
 
 <style lang="stylus" scoped>
 .talents
-	margin 10px
+	margin 10px 10px 0 10px
 	.filters
 		padding 0 10px
 		display flex

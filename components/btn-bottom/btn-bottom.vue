@@ -10,7 +10,7 @@
 		class="bottom-btn">
 		<button
 			:style="{
-				'margin': '0 15%',
+				'margin': '10px 15%',
 				'background-color': btnColor,
 				'color': bgColor,
 				'padding': padding
@@ -66,7 +66,8 @@ export default {
 	bottom 0
 	left 0
 	right 0
-	padding 10px
 	border-top-left-radius 22px
 	border-top-right-radius 22px
+	padding-bottom constant(safe-area-inset-bottom)
+	padding-bottom env(safe-area-inset-bottom)
 </style>

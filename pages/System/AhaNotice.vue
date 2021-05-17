@@ -5,13 +5,17 @@
 <template>
 	<view 
 		v-if="arr_notices.length>0" 
-		class="notice fix-screen" 
+		class="aha-notice fix-screen"
 		@touchmove.stop.prevent>
 		<view class="content">
-			<text class="iconfont icon-guanbi" @click="arr_notices=[]"></text>
+			<text class="iconfont icon-guanbi" @click="closeNotice"></text>
 			<view class="notice">
 				<view class="center h3">{{arr_notices[currentPage].title}}</view>
-				<view class="notice-content rich-text" v-html="arr_notices[currentPage].content"></view>
+				<scroll-view 
+					class="notice-content rich-text" 
+					scroll-y="scroll-y"
+					v-html="arr_notices[currentPage].content">
+				</scroll-view>
 			</view>
 			<text class="page small">{{currentPage+1}} / {{arr_notices.length}}</text>
 			<view class="ctr">
@@ -52,14 +56,26 @@ export default {
 					item.createTime = this.gformatDate(item.createTime,true)
 					this.arr_notices.push(item)
 				})
+				/* 要展示弹窗，阻止父组件滚动 */
+				if(this.arr_notices.length >= 0) {
+					this.$emit("isSlide",false)
+				}
 			})
+		},
+		/**
+		 * 关闭弹窗,清空公告，允许父组件滚动
+		 */
+		closeNotice()
+		{
+			this.arr_notices = []
+			this.$emit("isSlide",true)
 		}
 	}
 }
 </script>
 
 <style lang="stylus" scoped>
-.notice
+.aha-notice
 	.content
 		position relative
 		width 92%
@@ -75,11 +91,13 @@ export default {
 		/* 公告内容 */
 		.notice
 			margin-bottom 10px
-			padding 0 10px
+			padding 0 15px 0 10px
+			.h3
+				margin-bottom 5px
 			.notice-content
-				height 50vh
+				max-height 70vh
 				padding 0 10px
-				overflow auto
+				overflow-y auto
 		/* 页码 */
 		.page
 			position absolute

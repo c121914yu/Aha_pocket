@@ -49,7 +49,7 @@
 		<view class="navs">
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Project/MyProjects">我的项目</navigator>
 			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Interflow/Team/MyTeam">我的团队</navigator>
-			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Practice/MyEpiboly">我的讨论</navigator>
+			<navigator hover-class="hoverScale" hover-stay-time="50" url="/pages/Interflow/Forum/MyForum">我的讨论</navigator>
 		</view>
 		<!-- 任务 进行中 & 已完成 & 贡献详情 -->
 		<view class="tasks">
@@ -324,10 +324,10 @@ bgSetting(size, color)
 	background-color color
 .self
 	min-height 100vh
-	width 100%
-	padding-bottom 150rpx
+	margin-bottom 80px
+	padding-bottom constant(safe-area-inset-bottom)
+	padding-bottom env(safe-area-inset-bottom)
 	background-color var(--white1)
-	overflow hidden
 	/* 头部 */
 	.head
 		position relative

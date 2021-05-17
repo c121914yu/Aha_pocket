@@ -55,7 +55,7 @@ export default {
 		/* 搜索按键文字颜色 */
 		textColor: {
 			type: String,
-			default: "#ffffff"
+			default: "var(--origin1)"
 		},
 		/* 背景颜色 */
 		textBgColor: {

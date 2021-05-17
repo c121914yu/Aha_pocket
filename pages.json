@@ -226,7 +226,6 @@
 				"navigationBarTitleText": "需求详情"
 			}
 		}, 
-		/* 论坛区 */
 		/* 团队相关 */
 		{
 		    "path" : "pages/Interflow/Team/MyTeam",
@@ -257,6 +256,32 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "团队详细"
+		    }
+		},
+		/* 论坛相关 */
+		{
+		    "path" : "pages/Interflow/Forum/Create_EditForum",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "编辑讨论"
+		    }
+		}, {
+		    "path" : "pages/Interflow/Forum/ForumDetail",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "讨论详情"
+		    }
+		}, {
+		    "path" : "pages/Interflow/Forum/MyForum",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "我的讨论"
+		    }
+		}, {
+		    "path" : "pages/Interflow/Forum/CommentWindow",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "全部评论"
 		    }
 		}
     ],

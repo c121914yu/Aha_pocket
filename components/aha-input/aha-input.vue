@@ -83,13 +83,13 @@ export default {
 			type: String,
 			default: ''
 		},
-		/* 类型 */
-		search: {
+		/* 是否禁止 */
+		disabled: {
 			type: Boolean,
 			default: false
 		},
-		/* 是否禁止 */
-		disabled: {
+		/* 是否可搜索 */
+		search: {
 			type: Boolean,
 			default: false
 		},

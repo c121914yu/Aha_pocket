@@ -1,3 +1,4 @@
+/* 登录，注册，找回密码 */
 import request from "./request.js"
 /**
  * 发送验证码

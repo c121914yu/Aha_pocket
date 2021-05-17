@@ -2402,13 +2402,14 @@ _vue.default.prototype.gUndesign = function () {var back = arguments.length > 0 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /* 用户相关 */
 
 /**
-                                                                                                                                                                           * 绑定手机号
-                                                                                                                                                                           * @param {String}  phone
-                                                                                                                                                                           * @param {String}  code 验证码
-                                                                                                                                                                           */
+                                                                                                                                                                         * 绑定手机号
+                                                                                                                                                                         * @param {String}  phone
+                                                                                                                                                                         * @param {String}  code 验证码
+                                                                                                                                                                         */
 exports.bindPhone = function (data) {return (0, _request.default)("/bind/phone", "POST", data);};
 
 /**
@@ -2546,6 +2547,13 @@ exports.followUser = function (userId) {return (0, _request.default)("/user/foll
                                                                                                                  */
 exports.unfollowUser = function (userId) {return (0, _request.default)("/user/unfollow/".concat(userId), "POST");};
 
+/**
+                                                                                                                     * 策略获取人才
+                                                                                                                     * @param {Number}  pageNum
+                                                                                                                     * @param {Number}  pageSize
+                                                                                                                     */
+exports.getTalents = function (params) {return (0, _request.default)("/talentMarket", "GET", params);};
+
 /***/ }),
 
 /***/ 15:
@@ -2680,13 +2688,14 @@ var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _i
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /* 订单相关 */
 
 /**
-                                                                                                                                                                           * 创建订单
-                                                                                                                                                                           * @param {Number}  prohjectId 项目ID
-                                                                                                                                                                           * @param {Array}   resourceId 购买的附件id
-                                                                                                                                                                           */
+                                                                                                                                                                         * 创建订单
+                                                                                                                                                                         * @param {Number}  prohjectId 项目ID
+                                                                                                                                                                         * @param {Array}   resourceId 购买的附件id
+                                                                                                                                                                         */
 exports.postOrder = function (data) {return (0, _request.default)("/contribPoint/order", "POST", data);};
 
 /**
@@ -2734,11 +2743,12 @@ exports.checkResourcePurchased = function (projectId) {return (0, _request.defau
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /* 系统相关 */
 
 /**
-                                                                                                                                                                           * 获取系统公告
-                                                                                                                                                                           */
+                                                                                                                                                                         * 获取系统公告
+                                                                                                                                                                         */
 exports.getNotice = function () {return (0, _request.default)("/notice", "GET");};
 
 /**
@@ -8900,12 +8910,13 @@ if (hadRuntime) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
 var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectWithoutProperties(source, excluded) {if (source == null) return {};var target = _objectWithoutPropertiesLoose(source, excluded);var key, i;if (Object.getOwnPropertySymbols) {var sourceSymbolKeys = Object.getOwnPropertySymbols(source);for (i = 0; i < sourceSymbolKeys.length; i++) {key = sourceSymbolKeys[i];if (excluded.indexOf(key) >= 0) continue;if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;target[key] = source[key];}}return target;}function _objectWithoutPropertiesLoose(source, excluded) {if (source == null) return {};var target = {};var sourceKeys = Object.keys(source);var key, i;for (i = 0; i < sourceKeys.length; i++) {key = sourceKeys[i];if (excluded.indexOf(key) >= 0) continue;target[key] = source[key];}return target;}
 
 /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * 获取公共文件上传签名
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * @param {String}  filename
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    * 获取公共文件上传签名
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    * @param {String}  filename
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    */
 exports.getPublicSignature = function (filename) {return (0, _request.default)("/project/sign/upload/public?filename=".concat(filename), "GET");};
 
 /**
@@ -9884,12 +9895,13 @@ exports.getApplyProject = function (projectId) {return (0, _request.default)("/p
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /* 登录，注册，找回密码 */
 /**
-                                                                                                                                                                           * 发送验证码
-                                                                                                                                                                           * @param {String}  phone
-                                                                                                                                                                           * @param {String}  type 取值register、changePassword、bindPhone,对应不同方案
-                                                                                                                                                                           */
+                                                                                                                                                                               * 发送验证码
+                                                                                                                                                                               * @param {String}  phone
+                                                                                                                                                                               * @param {String}  type 取值register、changePassword、bindPhone,对应不同方案
+                                                                                                                                                                               */
 exports.sendCode = function (data) {return (0, _request.default)("/sms/code", "POST", data);};
 
 /**
@@ -9972,11 +9984,12 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
 var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectWithoutProperties(source, excluded) {if (source == null) return {};var target = _objectWithoutPropertiesLoose(source, excluded);var key, i;if (Object.getOwnPropertySymbols) {var sourceSymbolKeys = Object.getOwnPropertySymbols(source);for (i = 0; i < sourceSymbolKeys.length; i++) {key = sourceSymbolKeys[i];if (excluded.indexOf(key) >= 0) continue;if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;target[key] = source[key];}}return target;}function _objectWithoutPropertiesLoose(source, excluded) {if (source == null) return {};var target = {};var sourceKeys = Object.keys(source);var key, i;for (i = 0; i < sourceKeys.length; i++) {key = sourceKeys[i];if (excluded.indexOf(key) >= 0) continue;target[key] = source[key];}return target;}
 
 /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * 获取团队列表
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    * 获取团队列表
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    */
 exports.getTeams = function (params) {return (0, _request.default)("/team/", "GET", params);};
 
 /**
@@ -10089,6 +10102,140 @@ exports.checkApply = function (_ref4) {var teamId = _ref4.teamId,memberId = _ref
 
 /***/ }),
 
+/***/ 373:
+/*!************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_forum.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectWithoutProperties(source, excluded) {if (source == null) return {};var target = _objectWithoutPropertiesLoose(source, excluded);var key, i;if (Object.getOwnPropertySymbols) {var sourceSymbolKeys = Object.getOwnPropertySymbols(source);for (i = 0; i < sourceSymbolKeys.length; i++) {key = sourceSymbolKeys[i];if (excluded.indexOf(key) >= 0) continue;if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;target[key] = source[key];}}return target;}function _objectWithoutPropertiesLoose(source, excluded) {if (source == null) return {};var target = {};var sourceKeys = Object.keys(source);var key, i;for (i = 0; i < sourceKeys.length; i++) {key = sourceKeys[i];if (excluded.indexOf(key) >= 0) continue;target[key] = source[key];}return target;}
+
+exports.postTag = function (tagName) {return (0, _request.default)("/post/tags?tagName=".concat(tagName), "POST");};
+
+/**
+                                                                                                                      * 获取平台所有讨论标签
+                                                                                                                      */
+exports.getDiscussionTags = function () {return (0, _request.default)("/post/tags/all", "GET");};
+
+/**
+                                                                                                   * 发布讨论
+                                                                                                   * @param {String}  title
+                                                                                                   * @param {String}  content
+                                                                                                   * @param {Number}  tagId
+                                                                                                   */
+exports.postDiscussion = function (data) {return (0, _request.default)("/post", "POST", data);};
+
+/**
+                                                                                                  * 删除讨论
+                                                                                                  * @param {String}  postId
+                                                                                                  */
+exports.deleteDiscussion = function (postId) {return (0, _request.default)("/post/".concat(postId), "DELETE");};
+
+/**
+                                                                                                                  * 修改讨论
+                                                                                                                  * @param {String}  postId
+                                                                                                                  * @param {String}  title
+                                                                                                                  * @param {String}  content
+                                                                                                                  * @param {Number}  tagId
+                                                                                                                  */
+exports.putDiscussion = function (_ref) {var postId = _ref.postId,data = _objectWithoutProperties(_ref, ["postId"]);return (0, _request.default)("/post/".concat(postId), "PUT", data);};
+
+/**
+                                                                                                                                                                                           * 获取特定标签下的讨论
+                                                                                                                                                                                           * @param {Number}  pageNum
+                                                                                                                                                                                           * @param {Number}  pageSize
+                                                                                                                                                                                           * @param {String}  strategy 策略 hottest-最热, latest-最新（默认)
+                                                                                                                                                                                           * @param {Number}  tagId 标签ID
+                                                                                                                                                                                           */
+exports.getDiscussions = function (_ref2) {var tagId = _ref2.tagId,params = _objectWithoutProperties(_ref2, ["tagId"]);return (0, _request.default)("/post/tag/".concat(tagId), "GET", params);};
+
+/**
+                                                                                                                                                                                                   * 获取讨论详细
+                                                                                                                                                                                                   * @param {String}  postId
+                                                                                                                                                                                                   */
+exports.getDiscussion = function (postId) {return (0, _request.default)("/post/detail/".concat(postId), "GET");};
+
+/**
+                                                                                                                   * 获取我收藏/点赞的讨论
+                                                                                                                   * @param {Number}  pageNum
+                                                                                                                   * @param {Number}  pageSize
+                                                                                                                   * @param {Boolean}  isLike true-点赞的（默认),false-收藏的
+                                                                                                                   */
+exports.getMylikeDiscussion = function (params) {return (0, _request.default)("/post/myLike", "GET", params);};
+
+/**
+                                                                                                                 * 点赞 / 取消点赞讨论帖子
+                                                                                                                 * @param {Boolean}  isLike true-点赞false-取消点赞
+                                                                                                                 */
+exports.likeDiscussion = function (postId, isLike) {return (0, _request.default)("/post/like/".concat(postId, "?isLike=").concat(isLike), "POST");};
+
+/**
+                                                                                                                                                      * 收藏 / 取消收藏讨论帖子
+                                                                                                                                                      * @param {Boolean}  isCollect true-收藏 false-取消收藏
+                                                                                                                                                      */
+exports.collectDiscussion = function (postId, isCollect) {return (0, _request.default)("/post/collection/".concat(postId, "?isCollect=").concat(isCollect), "POST");};
+
+/**
+                                                                                                                                                                        * 分页获取讨论评论内容
+                                                                                                                                                                        * @param {Number}  pageNum
+                                                                                                                                                                        * @param {Number}  pageSize
+                                                                                                                                                                        * @param {Number} replayNum 每条评论的回复数量
+                                                                                                                                                                        * @param {String} loadBy 策略 hottest-最热（默认), latest-最新
+                                                                                                                                                                        */
+exports.getDiscComments = function (_ref3) {var postId = _ref3.postId,params = _objectWithoutProperties(_ref3, ["postId"]);return (0, _request.default)("/post/".concat(postId, "/comments"), "GET", params);};
+
+/**
+                                                                                                                                                                                                                 * 点赞 / 取消点赞评论内容
+                                                                                                                                                                                                                 * @param {Boolean}  isLike true-点赞false-取消点赞
+                                                                                                                                                                                                                 */
+exports.likeDiscComment = function (commentId) {return (0, _request.default)("/post/comment/like/".concat(commentId), "POST");};
+
+/**
+                                                                                                                                  * 发布评论
+                                                                                                                                  * @param {String}  postId 讨论帖子ID
+                                                                                                                                  * @param {String}  content
+                                                                                                                                  */
+exports.postDiscComment = function (data) {return (0, _request.default)("/post/".concat(data.postId, "/comment"), "POST", data);};
+
+/**
+                                                                                                                                    * 删除评论
+                                                                                                                                    * @param {String}  commentId
+                                                                                                                                    */
+exports.deleteDiscComment = function (commentId) {return (0, _request.default)("/post/comment/".concat(commentId), "DELETE");};
+
+/**
+                                                                                                                                 * 分页获取讨论的评论的回复内容
+                                                                                                                                 * @param {Number}  pageNum
+                                                                                                                                 * @param {Number}  pageSize
+                                                                                                                                 * @param {String} loadBy 策略 hottest-最热（默认), latest-最新
+                                                                                                                                 */
+exports.getDiscCommentsReply = function (_ref4) {var commentId = _ref4.commentId,params = _objectWithoutProperties(_ref4, ["commentId"]);return (0, _request.default)("/post/comment/".concat(commentId, "/replies"), "GET", params);};
+
+/**
+                                                                                                                                                                                                                                         * 点赞 / 取消点赞回复内容
+                                                                                                                                                                                                                                         * @param {Boolean}  isLike true-点赞false-取消点赞
+                                                                                                                                                                                                                                         */
+exports.likeDiscCommentReply = function (replyId) {return (0, _request.default)("/post/comment/reply/like/".concat(replyId), "POST");};
+
+/**
+                                                                                                                                         * 发布回复
+                                                                                                                                         * @param {Number}  toId 被回复对象的用户Id
+                                                                                                                                         * @param {String}  commentId 评论ID
+                                                                                                                                         * @param {String}  content
+                                                                                                                                         */
+exports.postDiscCommentReply = function (data) {return (0, _request.default)("/post/comment/reply", "POST", data);};
+
+/**
+                                                                                                                      * 删除回复
+                                                                                                                      * @param {String}  replyId
+                                                                                                                      */
+exports.deleteDiscCommentReply = function (replyId) {return (0, _request.default)("/post/comment/reply/".concat(replyId), "DELETE");};
+
+/***/ }),
+
 /***/ 4:
 /*!*******************************!*\
   !*** D:/服务外包/竞赛统计/pages.json ***!
@@ -10108,33 +10255,17 @@ exports.checkApply = function (_ref4) {var teamId = _ref4.teamId,memberId = _ref
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /* 比赛相关 */
 
 /**
-                                                                                                                                                                           * 获取所有竞赛信息
-                                                                                                                                                                           */
+                                                                                                                                                                         * 获取所有竞赛信息
+                                                                                                                                                                         */
 exports.getAllCompetition = function () {return (0, _request.default)("/competition", "GET", {});};
 
 /***/ }),
 
-/***/ 694:
-/*!************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_forum.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/**
-                                                                                                                                                                           * 策略获取人才
-                                                                                                                                                                           */
-exports.getTalents = function (params) {return (0, _request.default)("/talentMarket", "GET", params);};
-
-/***/ }),
-
-/***/ 716:
+/***/ 755:
 /*!****************************************************!*\
   !*** D:/服务外包/竞赛统计/components/select-city/citys.js ***!
   \****************************************************/
@@ -10345,6 +10476,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   gUserInfo: {}, // 个人信息
   gEditContent: "", // MD编辑内容
   garr_competitions: [], // 所有比赛
+  garr_forumTags: [],
   garr_prizeLevels: [//获奖等级
   { label: '保研国一', value: 53, max: 4000, min: 2000, src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/43.png" },
   { label: '保研国二', value: 52, max: 3000, min: 1500, src: "https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/media/42.png" },

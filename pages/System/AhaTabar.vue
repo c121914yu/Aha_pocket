@@ -47,10 +47,11 @@ export default {
 
 <style lang="stylus" scoped>
 .tabBar
+	padding-bottom constant(safe-area-inset-bottom)
+	padding-bottom env(safe-area-inset-bottom)
 	z-index 10
 	position fixed
 	bottom 0
-	height 70px
 	width 100%
 	background-color var(--origin2)
 	display flex
@@ -75,7 +76,7 @@ export default {
 		z-index 1
 		position absolute
 		width 25vw
-		height 90%
+		height 63px
 		background-color var(--origin1)
 		border-radius 10px
 		transition .3s

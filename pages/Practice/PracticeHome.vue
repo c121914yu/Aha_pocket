@@ -173,7 +173,9 @@ export default {
 
 <style lang="stylus" scoped>
 .epibolies
-	padding-bottom 80px
+	margin-bottom 80px
+	padding-bottom constant(safe-area-inset-bottom)
+	padding-bottom env(safe-area-inset-bottom)
 	min-height 100vh
 	background-color var(--white1)
 	/* 搜索框 */
