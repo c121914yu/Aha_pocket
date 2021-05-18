@@ -10148,14 +10148,29 @@ exports.putDiscussion = function (_ref) {var postId = _ref.postId,data = _object
                                                                                                                                                                                            * @param {Number}  pageNum
                                                                                                                                                                                            * @param {Number}  pageSize
                                                                                                                                                                                            * @param {String}  strategy 策略 hottest-最热, latest-最新（默认)
-                                                                                                                                                                                           * @param {Number}  tagId 标签ID
+                                                                                                                                                                                           * @param {Number}  tag 标签ID
                                                                                                                                                                                            */
 exports.getDiscussions = function (_ref2) {var tagId = _ref2.tagId,params = _objectWithoutProperties(_ref2, ["tagId"]);return (0, _request.default)("/post/tag/".concat(tagId), "GET", params);};
 
 /**
-                                                                                                                                                                                                   * 获取讨论详细
-                                                                                                                                                                                                   * @param {String}  postId
+                                                                                                                                                                                                   * 获取所有讨论
+                                                                                                                                                                                                   * @param {Number}  pageNum
+                                                                                                                                                                                                   * @param {Number}  pageSize
+                                                                                                                                                                                                   * @param {String}  strategy 策略 hottest-最热, latest-最新（默认)
                                                                                                                                                                                                    */
+exports.getAllDiscussions = function (params) {return (0, _request.default)("/post", "GET", params);};
+
+/**
+                                                                                                        * 获取指定用户的讨论
+                                                                                                        * @param {Number}  pageNum
+                                                                                                        * @param {Number}  pageSize
+                                                                                                        */
+exports.getUserDiscussions = function (_ref3) {var userId = _ref3.userId,params = _objectWithoutProperties(_ref3, ["userId"]);return (0, _request.default)("/post/u/".concat(userId), "GET", params);};
+
+/**
+                                                                                                                                                                                                         * 获取讨论详细
+                                                                                                                                                                                                         * @param {String}  postId
+                                                                                                                                                                                                         */
 exports.getDiscussion = function (postId) {return (0, _request.default)("/post/detail/".concat(postId), "GET");};
 
 /**
@@ -10185,25 +10200,25 @@ exports.collectDiscussion = function (postId, isCollect) {return (0, _request.de
                                                                                                                                                                         * @param {Number} replayNum 每条评论的回复数量
                                                                                                                                                                         * @param {String} loadBy 策略 hottest-最热（默认), latest-最新
                                                                                                                                                                         */
-exports.getDiscComments = function (_ref3) {var postId = _ref3.postId,params = _objectWithoutProperties(_ref3, ["postId"]);return (0, _request.default)("/post/".concat(postId, "/comments"), "GET", params);};
+exports.getDiscComments = function (_ref4) {var postId = _ref4.postId,params = _objectWithoutProperties(_ref4, ["postId"]);return (0, _request.default)("/post/".concat(postId, "/comments"), "GET", params);};
 
 /**
                                                                                                                                                                                                                  * 点赞 / 取消点赞评论内容
                                                                                                                                                                                                                  * @param {Boolean}  isLike true-点赞false-取消点赞
                                                                                                                                                                                                                  */
-exports.likeDiscComment = function (commentId) {return (0, _request.default)("/post/comment/like/".concat(commentId), "POST");};
+exports.likeDiscComment = function (commentId, isLike) {return (0, _request.default)("/post/comment/like/".concat(commentId, "?isLike=").concat(isLike), "POST");};
 
 /**
-                                                                                                                                  * 发布评论
-                                                                                                                                  * @param {String}  postId 讨论帖子ID
-                                                                                                                                  * @param {String}  content
-                                                                                                                                  */
-exports.postDiscComment = function (data) {return (0, _request.default)("/post/".concat(data.postId, "/comment"), "POST", data);};
+                                                                                                                                                                     * 发布评论
+                                                                                                                                                                     * @param {String}  postId 讨论帖子ID
+                                                                                                                                                                     * @param {String}  content
+                                                                                                                                                                     */
+exports.postDiscComment = function (data) {return (0, _request.default)("/post/comment", "POST", data);};
 
 /**
-                                                                                                                                    * 删除评论
-                                                                                                                                    * @param {String}  commentId
-                                                                                                                                    */
+                                                                                                           * 删除评论
+                                                                                                           * @param {String}  commentId
+                                                                                                           */
 exports.deleteDiscComment = function (commentId) {return (0, _request.default)("/post/comment/".concat(commentId), "DELETE");};
 
 /**
@@ -10212,20 +10227,20 @@ exports.deleteDiscComment = function (commentId) {return (0, _request.default)("
                                                                                                                                  * @param {Number}  pageSize
                                                                                                                                  * @param {String} loadBy 策略 hottest-最热（默认), latest-最新
                                                                                                                                  */
-exports.getDiscCommentsReply = function (_ref4) {var commentId = _ref4.commentId,params = _objectWithoutProperties(_ref4, ["commentId"]);return (0, _request.default)("/post/comment/".concat(commentId, "/replies"), "GET", params);};
+exports.getDiscCommentsReply = function (_ref5) {var commentId = _ref5.commentId,params = _objectWithoutProperties(_ref5, ["commentId"]);return (0, _request.default)("/post/comment/".concat(commentId, "/replies"), "GET", params);};
 
 /**
                                                                                                                                                                                                                                          * 点赞 / 取消点赞回复内容
                                                                                                                                                                                                                                          * @param {Boolean}  isLike true-点赞false-取消点赞
                                                                                                                                                                                                                                          */
-exports.likeDiscCommentReply = function (replyId) {return (0, _request.default)("/post/comment/reply/like/".concat(replyId), "POST");};
+exports.likeDiscCommentReply = function (replyId, isLike) {return (0, _request.default)("/post/comment/reply/like/".concat(replyId, "?isLike=").concat(isLike), "POST");};
 
 /**
-                                                                                                                                         * 发布回复
-                                                                                                                                         * @param {Number}  toId 被回复对象的用户Id
-                                                                                                                                         * @param {String}  commentId 评论ID
-                                                                                                                                         * @param {String}  content
-                                                                                                                                         */
+                                                                                                                                                                            * 发布回复
+                                                                                                                                                                            * @param {Number}  toId 被回复对象的用户Id
+                                                                                                                                                                            * @param {String}  commentId 评论ID
+                                                                                                                                                                            * @param {String}  content
+                                                                                                                                                                            */
 exports.postDiscCommentReply = function (data) {return (0, _request.default)("/post/comment/reply", "POST", data);};
 
 /**
@@ -10265,7 +10280,7 @@ exports.getAllCompetition = function () {return (0, _request.default)("/competit
 
 /***/ }),
 
-/***/ 755:
+/***/ 769:
 /*!****************************************************!*\
   !*** D:/服务外包/竞赛统计/components/select-city/citys.js ***!
   \****************************************************/

@@ -1,15 +1,24 @@
 @font-face {
   font-family: 'iconfont';  /* Project id 2449283 */
-  src: url('//at.alicdn.com/t/font_2449283_773zx8bugzp.woff2?t=1621238584657') format('woff2'),
-       url('//at.alicdn.com/t/font_2449283_773zx8bugzp.woff?t=1621238584657') format('woff'),
-       url('//at.alicdn.com/t/font_2449283_773zx8bugzp.ttf?t=1621238584657') format('truetype');
+  src: url('//at.alicdn.com/t/font_2449283_09uh5bvp6lbo.woff2?t=1621343660267') format('woff2'),
+       url('//at.alicdn.com/t/font_2449283_09uh5bvp6lbo.woff?t=1621343660267') format('woff'),
+       url('//at.alicdn.com/t/font_2449283_09uh5bvp6lbo.ttf?t=1621343660267') format('truetype');
 }
+
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-jilu-copy:before {
+  content: "\e61f";
+}
+
+.icon-hudong:before {
+  content: "\e667";
 }
 
 .icon-dianzan_active:before {

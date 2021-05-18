@@ -4,17 +4,34 @@
 -->
 <template>
 	<view class="my-forum">
-		<view class="navs">
-			<top-navs :navs="arr_navs"></top-navs>
+		<!-- 互动，点赞， -->
+		<view class="header">
+			<view class="item">
+				<text class="iconfont icon-hudong"></text>
+				<view class="label">互动</view>
+			</view>
+			<view class="item">
+				<text class="iconfont icon-zan"></text>
+				<view class="label">点赞</view>
+			</view>
+			<view class="item">
+				<text class="iconfont icon-jilu-copy"></text>
+				<view class="label">历史</view>
+			</view>
 		</view>
 		<!-- 帖子列表 -->
 		<view class="list">
-			<navigator
+			<view
 				class="forum"
 				v-for="(item,index) in arr_forums"
-				:key="item.id"
-				:url="`/pages/Interflow/Forum/ForumDetail?id=${item.id}`">
-				<forum-card :forum="item"></forum-card>
+				:key="item.id">
+				<forum-card :forum="item" @click="onclickForum"></forum-card>
+			</view>
+			<view v-if="arr_forums.length > 0" class="center remark">
+				{{is_loadAll ? "已加载全部" : ""}}
+			</view>
+			<navigator v-else class="no-forum" hover-class="none" url="./Create_EditForum">
+				还没有发布过讨论,点击立即发布!
 			</navigator>
 		</view>
 		<btn-bottom @click="onclickPublist">发布讨论</btn-bottom>
@@ -24,7 +41,7 @@
 </template>
 
 <script>
-import { getDiscussionTags,getMylikeDiscussion,deleteDiscussion } from "@/static/request/api_forum.js"
+import { getDiscussionTags,getUserDiscussions,deleteDiscussion } from "@/static/request/api_forum.js"
 import ForumCard from "./components/ForumCard.vue"
 export default {
 	components: {
@@ -32,28 +49,21 @@ export default {
 	},
 	data() {
 		return {
-			arr_forumTags: getApp().globalData.garr_forumTags,
-			arr_navs: [
-				{label: "主持贴"},
-				{label: "点赞贴"},
-				{label: "评论贴"}
-			],
 			pageNum: 0,
 			pageSize: 10,
 			is_loadAll: false,
 			arr_forums: []
 		}
 	},
-	onLoad() {
-		if(this.arr_forumTags.length === 0) {
+	onShow() {
+		if(getApp().globalData.garr_forumTags.length === 0) {
 			/* 获取所有标签 */
 			getDiscussionTags()
 			.then(res => {
 				getApp().globalData.garr_forumTags = res.data
-				this.arr_forumTags = res.data
 			})
 		}
-		this.loadDisc()
+		this.loadDisc(true,true)
 	},
 	methods: {
 		/**
@@ -65,25 +75,55 @@ export default {
 			if(init) {
 				this.pageNum = 0
 			}
-			getMylikeDiscussion({
+			getUserDiscussions({
 				pageNum: this.pageNum,
 				pageSize: this.pageSize,
-				isLike: true
+				userId: getApp().globalData.gUserInfo.userInfo.userId
 			})
 			.then(res => {
 				if(init) {
 					this.arr_forums = []
 				}
+				this.arr_forums = this.arr_forums.concat(res.data.pageData)
+				console.log(this.arr_forums);
 				if(res.data.pageData.length < this.pageSize) {
 					this.is_loadAll = true
 				}
 				else {
-					this.pageSize++
+					this.pageNum++
 				}
-				this.arr_forums = this.arr_forums.concat(res.data.pageData)
-				console.log(this.arr_forums);
 			})
 			.finally(() => this.gLoading(this,false))
+		},
+		/**
+		 * 点击帖子，展开menu菜单
+		 * @param {Object} forum
+		 */
+		onclickForum(forum)
+		{
+			this.gMenuPicker(["查看讨论","修改讨论","删除讨论"])
+			.then(res => {
+				switch(res) {
+					case "查看讨论":
+						uni.navigateTo({
+							url: `./ForumDetail?id=${forum.id}`
+						})
+						break
+					case "修改讨论":
+						uni.navigateTo({
+							url: `./Create_EditForum?id=${forum.id}`
+						})
+						break
+					case "删除讨论":
+						this.gShowModal("确认删除讨论？",() => {
+							deleteDiscussion(forum.id)
+							const index = this.arr_forums.findIndex(item => item.id === forum.id)
+							this.arr_forums.splice(index,1)
+							this.gToastMsg("讨论已删除")
+						})
+						break
+				}
+			})
 		},
 		/**
 		 * 点击发布
@@ -100,20 +140,31 @@ export default {
 
 <style lang="stylus" scoped>
 .my-forum
-	padding-top 40px
 	margin-bottom 60px
 	padding-bottom constant(safe-area-inset-bottom)
 	padding-bottom env(safe-area-inset-bottom)
-	.navs
-		z-index 100
-		position fixed
-		top 0
-		left 0
-		right 0
+	.header
+		padding 15px 0
+		display flex
+		justify-content space-around
+		.item
+			text-align center
+			.iconfont
+				font-size 50rpx
+				font-weight 700
 	.list
 		margin 10px 0
 		background-color #FFFFFF
 		.forum
-			display block
 			border-bottom var(--border2)
+		.remark
+			margin 10px 0
+			color var(--gray2)
+		.no-forum
+			margin 20px 0
+			text-align center
+			color var(--origin1)
+			font-size 30rpx
+			font-weight 700
+			display block
 </style>

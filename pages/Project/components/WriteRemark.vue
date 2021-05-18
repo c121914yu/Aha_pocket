@@ -98,7 +98,7 @@ export default {
 			else {
 				collectProject(this.projectId)
 				this.$emit("collectChange",1)
-				uni.vibrateLong()
+				uni.vibrateShort()
 			}
 			this.isCollect = !this.isCollect
 		},
@@ -154,29 +154,30 @@ export default {
 		bottom 0
 		left 0
 		right 0
-		padding 12px 20px
+		padding 0 20px
 		border-top-left-radius 16px
 		border-top-right-radius 16px
 		background-color var(--origin2)
 		display flex
 		align-items center
+		justify-content space-between
 		padding-bottom constant(safe-area-inset-bottom)
 		padding-bottom env(safe-area-inset-bottom)
 		.write
-			margin 0
-			flex 1
+			margin 12px 0
+			width 60%
 			padding 7px
 			line-height 1
 			background-color #FFFFFF
 			color var(--font-dark)
 			border-radius 22px
 		.icon
-			margin-left 15px
 			font-size 44rpx
 			color #FFFFFF
 			&.collected
 				color #e86452
 			&.share
+				margin 0
 				padding 0
 				line-height 1
 				background-color transparent

@@ -8,8 +8,8 @@
 		<navigator 
 			v-if="relation===1" 
 			class="edit"
-			:url="`./Create_EditForum?id=${this.id}`">
-			编辑{{this.id}}<text class="iconfont icon-write"></text>
+			:url="`./Create_EditForum?id=${id}`">
+			编辑<text class="iconfont icon-write"></text>
 		</navigator>
 		<view class="header">
 			<view class="title">{{title}}</view>
@@ -18,10 +18,15 @@
 				<view class="read">{{read}}次阅读</view>
 			</view>
 			<view class="author">
-				<view class="avatar"><image :src="obj_authorInfo.avatarUrl"></image></view>
+				<navigator
+					class="avatar"
+					:url="`/pages/Self/UserHome?userId=${obj_authorInfo.userId}`">
+					<image class="img" :src="obj_authorInfo.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
+				</navigator>
 				<view class="name">
 					{{obj_authorInfo.nickname}}
 				</view>
+				<view class="level"><aha-user-level :point="authorPoint"></aha-user-level></view>
 				<!-- 私信 & 关注按键 -->
 				<navigator 
 					v-if="relation !== 1"
@@ -47,20 +52,35 @@
 			</view>
 			<!-- 点赞 -->
 			<view class="like center">
-				<text v-if="is_liked" class="iconfont icon-dianzan_active red"></text>
-				<text v-else class="iconfont icon-zan"></text>
+				<text v-if="likes>0">已有{{likes}}人赞...</text>
+				<text v-if="is_liked" style="font-size: 40rpx;" class="iconfont icon-dianzan_active red" @click="onclickLike"></text>
+				<text v-else style="font-size: 40rpx;" class="iconfont icon-zan" @click="onclickLike"></text>
 			</view>
 		</view>
 		<!-- 评论区 -->
 		<view class="comments">
 			<!-- 无评论提示 -->
-			<view v-if="arr_comments.length===0" class="center no-comment">
+			<view v-if="commentNum===0" class="center no-comment" @click="onclickComment(true)">
 				暂无评论,点击抢楼!
+			</view>
+			<!-- 评论列表 -->
+			<comment-card
+				v-for="(comment,i) in arr_comments"
+				:key="comment.id"
+				:comment="comment"
+				@onclickLike="arr_comments[i].isLike=$event.isLike;arr_comments[i].likes=$event.likes"
+				@reply="onclickReply">
+			</comment-card>
+			<!-- 查看全部评论 -->
+			<view 
+				v-if="commentNum > arr_comments.length" 
+				class="read-allcomment center" 
+				@click="onclickComment(false)">
+				查看全部评论
 			</view>
 		</view>
 		<!-- 推荐文章 -->
 		<view class="recommend">
-			
 		</view>
 		<!-- 底部导航 -->
 		<view class="footer-nav">
@@ -70,7 +90,7 @@
 			<view class="ctr" @click="onclickComment(false)">
 				<text class="iconfont icon-pinglun"></text>
 				<view class="center">评论</view>
-				<view v-if="arr_comments.length>0" class="dot">{{arr_comments.length}}</view>
+				<view v-if="commentNum>0" class="dot">{{commentNum}}</view>
 			</view>
 			<view class="ctr" @click="onclickCollect">
 				<text v-if="is_collected" class="iconfont icon-collection red"></text>
@@ -95,32 +115,39 @@
 </template>
 
 <script>
-import { getDiscussion,likeDiscussion,collectDiscussion } from "@/static/request/api_forum.js"
-import { getUserRelation,followUser,unfollowUser } from '@/static/request/api_userInfo.js'
+import { getDiscussion,getDiscComments,likeDiscussion,collectDiscussion } from "@/static/request/api_forum.js"
+import { getUserRelation,followUser,unfollowUser,getUserStatistice } from '@/static/request/api_userInfo.js'
+import CommentCard from "./components/CommentCard.vue"
 export default {
+	components: {
+		"comment-card": CommentCard
+	},
 	data() {
 		return {
-			relation: 1, // 0-无关系 1-自己 2-已关注 3-被关注 4-互关
+			relation: 0, // 0-无关系 1-自己 2-已关注 3-被关注 4-互关
 			id: "",
 			obj_authorInfo: {},
+			authorPoint: 0,
 			commentNum: 0,
 			arr_comments: [],
 			content: "",
-			createTime: "",
+			createTime: new Date(),
 			collections: 0,
 			is_collected: false,
 			likes: 0,
 			is_liked: false,
 			read: 0,
 			tagId: 0,
-			title: "",
+			title: "讨论题目",
 			updateTime: "",
 			is_showCommentWindow: 0, // 0不展示，1展示，2展示并聚焦输入框
+			/* 加载评论 */
+			pageNum: 1,
+			pageSize: 10
 		}
 	},
 	onLoad(e) {
 		this.id = e.id
-		console.log(this.id);
 		this.gLoading(this,true)
 		getDiscussion(this.id)
 		.then(res => {
@@ -129,7 +156,6 @@ export default {
 			}
 			this.obj_authorInfo = res.data.authorInfo
 			this.commentNum = res.data.commentNum
-			this.arr_comments = res.data.arr_comments
 			this.content = res.data.content
 			this.createTime = res.data.createTime
 			this.collections = res.data.collections
@@ -146,8 +172,23 @@ export default {
 			.then(res => {
 				this.relation = res.data
 			})
+			/* 获取作者统计数据 */
+			getUserStatistice(this.obj_authorInfo.userId)
+			.then(res => {
+				this.authorPoint = res.data.totalContribPoint
+			})
 		})
 		.finally(() => this.gLoading(this,false))
+	},
+	onShow() {
+		getDiscComments({
+			postId: this.id,
+			pageNum: 0,
+			pageSize: 5
+		})
+		.then(res => {
+			this.arr_comments = res.data.pageData
+		})
 	},
 	onShareAppMessage(e){
 		return {
@@ -180,6 +221,7 @@ export default {
 			collectDiscussion(this.id,this.is_collected)
 			if(this.is_collected){
 				this.collections++
+				uni.vibrateShort()
 			}
 			else {
 				this.collections--
@@ -194,10 +236,20 @@ export default {
 			likeDiscussion(this.id,this.is_liked)
 			if(this.is_liked){
 				this.likes++
+				uni.vibrateShort()
 			}
 			else {
-				this.likes
+				this.likes--
 			}
+		},
+		/**
+		 * 点击评论卡片，触发回复
+		 */
+		onclickReply(comment)
+		{
+			uni.navigateTo({
+				url: `./CommentWindow?id=${this.id}&focus=1&reply=${JSON.stringify(comment)}`
+			})
 		},
 		/**
 		 * 点击评论，跳转全部评论页面，并携带参数，判断是否需要聚焦输入框
@@ -213,7 +265,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .forum-detail
 	padding-bottom 50px
 	min-height 100vh
@@ -245,6 +297,7 @@ export default {
 			.read
 				padding-left 10px
 		.author
+			position relative
 			display flex
 			align-items flex-start
 			.avatar
@@ -260,15 +313,20 @@ export default {
 			.name
 				margin-left 10px
 				flex 1
+				height 100%
 				font-weight 700
 				white-space nowrap
-				overflow hidden
+				overflow-x hidden
 				text-overflow ellipsis
+			.level
+				position absolute
+				top 40rpx
+				left 60px
 			button
 				margin-left 10px
-				width 70px
+				width 60px
 				line-height 1.4
-				font-size 24rpx
+				font-size 22rpx
 				border var(--border2)
 				border-radius 22px
 				color var(--font-dark)
@@ -281,11 +339,16 @@ export default {
 			color var(--gray2)
 			font-size 22rpx
 			text-align end
+		.like text
+			margin-left 5px
 	.comments
 		margin 10px 0
-		padding 10px
 		background-color #FFFFFF
 		.no-comment
+			padding 10px
+			color var(--origin1)
+		.read-allcomment
+			padding 10px
 			color var(--origin1)
 	.footer-nav
 		position fixed
@@ -300,9 +363,8 @@ export default {
 		justify-content space-between
 		/* 写评论样式 */
 		.wtrite-comment
-			margin 0 5px
 			height 90% 
-			width 45%
+			width 40%
 			padding 0 10px
 			background-color var(--white1)
 			border-radius 22px

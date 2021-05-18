@@ -42,13 +42,20 @@
 				<forum-card :forum="item"></forum-card>
 			</navigator>
 		</view>
+		<navigator 
+			v-if="arr_discussions.length===0" 
+			hover-class="none"
+			class="remark center"
+			:url="`/pages/Interflow/Forum/Create_EditForum?tagId=${arr_forumTags[activeTagIndex].id}`">
+			没有找到相关讨论,点击创建!
+		</navigator>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 
 <script>
-import { getDiscussionTags,getDiscussions } from "@/static/request/api_forum.js"
+import { getDiscussionTags,getAllDiscussions,getDiscussions } from "@/static/request/api_forum.js"
 import ForumCard from "./components/ForumCard.vue"
 export default {
 	components: {
@@ -56,7 +63,7 @@ export default {
 	},
 	data() {
 		return {
-			arr_forumTags: getApp().globalData.garr_forumTags,
+			arr_forumTags: [],
 			arr_sort: [
 				{label: "时间",value: "latest"},
 				{label: "热度",value: "hottest"}
@@ -70,14 +77,23 @@ export default {
 			searchText: ""
 		}
 	},
+	watch: {
+		"activeTagIndex": function() {
+			this.loadDisc(true,true)
+		}
+	},
 	created() {
-		if(this.arr_forumTags.length === 0) {
+		const tags = getApp().globalData.garr_forumTags
+		if(tags.length === 0) {
 			/* 获取所有标签 */
 			getDiscussionTags()
 			.then(res => {
 				getApp().globalData.garr_forumTags = res.data
-				this.arr_forumTags = res.data
+				this.arr_forumTags = [{id: null,name: "全部"}].concat(res.data)
 			})
+		}
+		else {
+			this.arr_forumTags = [{id: null,name: "全部"}].concat(tags)
 		}
 		this.loadDisc(true,true)
 	},
@@ -87,24 +103,41 @@ export default {
 		 */
 		loadDisc(init=false,loading=false)
 		{
-			this.gLoading(this,loading)
 			if(init) {
 				this.pageNum = 0
+				this.is_loadAll = false
 			}
-			getDiscussions({
-				tagId: 3,
+			if(this.is_loadAll) {
+				return
+			}
+			this.gLoading(this,loading)
+			const params = {
 				pageNum: this.pageNum,
 				pageSize: this.pageSize,
 				strategy: this.strategy.value
-			})
-			.then(res => {
+			}
+			let p
+			if(this.activeTagIndex === 0) {
+				p = getAllDiscussions(params)
+			}
+			else {
+				p = getDiscussions({
+					...params,
+					tagId: this.arr_forumTags[this.activeTagIndex].id
+				})
+			}
+			p.then(res => {
+				if(init) {
+					this.arr_discussions = []
+				}
+				this.arr_discussions = this.arr_discussions.concat(res.data.pageData)
+				/* 判断页码 */
 				if(res.data.pageData.length < this.pageSize) {
 					this.is_loadAll = true
 				}
 				else {
-					this.pageSize++
+					this.pageNum++
 				}
-				this.arr_discussions = this.arr_discussions.concat(res.data.pageData)
 				console.log(this.arr_discussions);
 			})
 			.finally(() => this.gLoading(this,false))
@@ -129,6 +162,7 @@ export default {
 <style lang="stylus" scoped>
 .forums
 	padding-top 42px
+	min-height 100vh
 	background-color var(--white1)
 	.filter
 		z-index 10
@@ -182,4 +216,8 @@ export default {
 		.forum
 			display block
 			border-bottom var(--border2)
+	.remark
+		margin 10px 0
+		color var(--origin1)
+		display block
 </style>

@@ -123,6 +123,10 @@ export default {
 				case 1:
 					this.$refs.interflowHome.$refs.Teams.loadTeams()
 					break
+				/* 论坛 */
+				case 2:
+					this.$refs.interflowHome.$refs.forum.loadDisc()
+					break
 			}
 		}
 	},

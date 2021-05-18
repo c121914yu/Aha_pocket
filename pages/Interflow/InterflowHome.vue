@@ -13,16 +13,17 @@
 			</top-navs>
 		</view>
 		<talents
+			ref="Talents"
 			v-if="arr_navs[0].loaded"
-			v-show="currentNav===0"
-			ref="Talents">
+			v-show="currentNav===0">
 		</talents>
 		<teams 
+			ref="Teams"
 			v-if="arr_navs[1].loaded"
-			v-show="currentNav===1"
-			ref="Teams">
+			v-show="currentNav===1">
 		</teams>
 		<Forums
+			ref="forum"
 			v-if="arr_navs[2].loaded"
 			v-show="currentNav===2">
 		</Forums>
@@ -56,6 +57,10 @@ export default {
 		 */
 		navChange(e)
 		{
+			/* 如果是论坛，要刷新 */
+			if(this.currentNav === 2 && this.arr_navs[2].loaded) {
+				// this.$nextTick(this.$refs.)
+			}
 			this.arr_navs[e.value].loaded = true
 			this.currentNav = e.value
 		}

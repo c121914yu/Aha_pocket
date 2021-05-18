@@ -62,15 +62,20 @@ export default {
 			})
 			getDiscussion(e.id)
 			.then(res => {
-				console.log(res.data);
+				this.id = res.data.id
+				this.title.val = res.data.title
+				this.tag.val = this.arr_forumTags.find(item => item.id === res.data.tagId).name
+				this.content = res.data.content
 			})
 		}
 		else {
 			uni.setNavigationBarTitle({
 				title: "创建讨论"
 			})
+			if(e.tagId) {
+				this.tag.val = this.arr_forumTags.find(item => item.id === +e.tagId).name
+			}
 		}
-		console.log(this.arr_forumTags);
 	},
 	onShow() {
 		/* 获取md内容 */
@@ -115,7 +120,7 @@ export default {
 					})
 					.then(res => {
 						console.log(res);
-						this.gToastSuccess("修改成功")
+						this.gBackPage("修改成功")
 					})
 					.finally(() => this.gLoading(this,false))
 				}

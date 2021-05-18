@@ -4,7 +4,7 @@
  -->
 <template>
 	<view class="forum-card" @click="$emit('click',forum)">
-		<view class="avatar"><image :src="forum.authorInfo.avatarUrl"></image></view>
+		<view class="avatar"><image :src="forum.authorInfo.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image></view>
 		<view class="right">
 			<view class="head">
 				<view class="name">{{forum.authorInfo.nickname}}</view>

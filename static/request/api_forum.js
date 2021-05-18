@@ -36,9 +36,24 @@ exports.putDiscussion = ({postId,...data}) => request(`/post/${postId}`,"PUT",da
  * @param {Number}  pageNum
  * @param {Number}  pageSize
  * @param {String}  strategy 策略 hottest-最热, latest-最新（默认)
- * @param {Number}  tagId 标签ID
+ * @param {Number}  tag 标签ID
  */
 exports.getDiscussions = ({tagId,...params}) => request(`/post/tag/${tagId}`,"GET",params)
+
+/**
+ * 获取所有讨论
+ * @param {Number}  pageNum
+ * @param {Number}  pageSize
+ * @param {String}  strategy 策略 hottest-最热, latest-最新（默认)
+ */
+exports.getAllDiscussions = (params) => request(`/post`,"GET",params)
+
+/**
+ * 获取指定用户的讨论
+ * @param {Number}  pageNum
+ * @param {Number}  pageSize
+ */
+exports.getUserDiscussions = ({userId,...params}) => request(`/post/u/${userId}`,"GET",params)
 
 /**
  * 获取讨论详细
@@ -79,14 +94,14 @@ exports.getDiscComments = ({postId,...params}) => request(`/post/${postId}/comme
  * 点赞 / 取消点赞评论内容
  * @param {Boolean}  isLike true-点赞false-取消点赞
  */
-exports.likeDiscComment = (commentId) => request(`/post/comment/like/${commentId}`,"POST")
+exports.likeDiscComment = (commentId,isLike) => request(`/post/comment/like/${commentId}?isLike=${isLike}`,"POST")
 
 /**
  * 发布评论
  * @param {String}  postId 讨论帖子ID
  * @param {String}  content
  */
-exports.postDiscComment = (data) => request(`/post/${data.postId}/comment`,"POST",data)
+exports.postDiscComment = (data) => request("/post/comment","POST",data)
 
 /**
  * 删除评论
@@ -106,7 +121,7 @@ exports.getDiscCommentsReply = ({commentId,...params}) => request(`/post/comment
  * 点赞 / 取消点赞回复内容
  * @param {Boolean}  isLike true-点赞false-取消点赞
  */
-exports.likeDiscCommentReply = (replyId) => request(`/post/comment/reply/like/${replyId}`,"POST")
+exports.likeDiscCommentReply = (replyId,isLike) => request(`/post/comment/reply/like/${replyId}?isLike=${isLike}`,"POST")
 
 /**
  * 发布回复

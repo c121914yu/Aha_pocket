@@ -307,6 +307,8 @@ export default {
 
 <style lang="stylus" scoped>
 .mdeditor
+	*
+		font-size 24rpx
 	box-sizing border-box
 	height 100vh
 	padding 30rpx

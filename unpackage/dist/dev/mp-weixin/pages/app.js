@@ -257,6 +257,10 @@ var AhaNotice = function AhaNotice() {Promise.all(/*! require.ensure | pages/Sys
         /* 组队 */
         case 1:
           this.$refs.interflowHome.$refs.Teams.loadTeams();
+          break;
+        /* 论坛 */
+        case 2:
+          this.$refs.interflowHome.$refs.forum.loadDisc();
           break;}
 
     }
