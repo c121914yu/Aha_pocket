@@ -3,12 +3,12 @@
 	author yjl
 -->
 <template>
-	<view class="forum-detail">
+	<view id="forum" class="forum-detail" @touchmove="ontouchMove">
 		<!-- 编辑按键 -->
 		<navigator 
 			v-if="relation===1" 
 			class="edit"
-			:url="`./Create_EditForum?id=${id}`">
+			:url="`./Create_EditForum?id=${postId}`">
 			编辑<text class="iconfont icon-write"></text>
 		</navigator>
 		<view class="header">
@@ -57,37 +57,26 @@
 				<text v-else style="font-size: 40rpx;" class="iconfont icon-zan" @click="onclickLike"></text>
 			</view>
 		</view>
-		<!-- 评论区 -->
-		<view class="comments">
-			<!-- 无评论提示 -->
-			<view v-if="commentNum===0" class="center no-comment" @click="onclickComment(true)">
-				暂无评论,点击抢楼!
-			</view>
-			<!-- 评论列表 -->
-			<comment-card
-				v-for="(comment,i) in arr_comments"
-				:key="comment.id"
-				:comment="comment"
-				@onclickLike="arr_comments[i].isLike=$event.isLike;arr_comments[i].likes=$event.likes"
-				@reply="onclickReply">
-			</comment-card>
-			<!-- 查看全部评论 -->
-			<view 
-				v-if="commentNum > arr_comments.length" 
-				class="read-allcomment center" 
-				@click="onclickComment(false)">
-				查看全部评论
-			</view>
-		</view>
 		<!-- 推荐文章 -->
-		<view class="recommend">
+		<view class="recommend"></view>
+		<!-- 评论区 -->
+		<view id="comments" class="comments">
+			<comments 
+				v-if="postId"
+				ref="Comments"
+				:postId="postId"
+				:commentNum.sync="commentNum"
+				@startWriteComment="startWrite(0)"
+				@startReplyComment="startWrite(1,$event)"
+				@startReplyOtherReply="startWrite(2,$event)">
+			</comments>
 		</view>
 		<!-- 底部导航 -->
 		<view class="footer-nav">
-			<view class="wtrite-comment" @click="onclickComment(true)">
+			<view class="wtrite-comment" @click="startWrite(0)">
 				<text class="iconfont icon-write"></text>写评论...
 			</view>
-			<view class="ctr" @click="onclickComment(false)">
+			<view class="ctr" @click="toComment">
 				<text class="iconfont icon-pinglun"></text>
 				<view class="center">评论</view>
 				<view v-if="commentNum>0" class="dot">{{commentNum}}</view>
@@ -109,27 +98,38 @@
 				<view class="center">分享</view>
 			</button>
 		</view>
+		<!-- 写评论 -->
+		<write-comment
+			v-if="obj_writeContent"
+			:postId="postId"
+			:placeholder="obj_writeContent.placeholder"
+			:commentId="obj_writeContent.commentId"
+			:toUserId="obj_writeContent.toUserId"
+			@close="obj_writeContent=null"
+			@writeFinish="writeFinish">
+		</write-comment>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 
 <script>
-import { getDiscussion,getDiscComments,likeDiscussion,collectDiscussion } from "@/static/request/api_forum.js"
+import { getDiscussion,likeDiscussion,collectDiscussion } from "@/static/request/api_forum.js"
 import { getUserRelation,followUser,unfollowUser,getUserStatistice } from '@/static/request/api_userInfo.js'
-import CommentCard from "./components/CommentCard.vue"
+import Comments from "./components/Comments.vue"
+import WriteComment from "./components/WriteComment.vue"
 export default {
 	components: {
-		"comment-card": CommentCard
+		"comments": Comments,
+		"write-comment": WriteComment,
 	},
 	data() {
 		return {
 			relation: 0, // 0-无关系 1-自己 2-已关注 3-被关注 4-互关
-			id: "",
+			postId: "",
 			obj_authorInfo: {},
 			authorPoint: 0,
 			commentNum: 0,
-			arr_comments: [],
 			content: "",
 			createTime: new Date(),
 			collections: 0,
@@ -137,25 +137,21 @@ export default {
 			likes: 0,
 			is_liked: false,
 			read: 0,
-			tagId: 0,
 			title: "讨论题目",
-			updateTime: "",
-			is_showCommentWindow: 0, // 0不展示，1展示，2展示并聚焦输入框
-			/* 加载评论 */
-			pageNum: 1,
-			pageSize: 10
+			updateTime: new Date(), //最后更新时间
+			/* 评论对象 */
+			obj_writeContent: null,
 		}
 	},
 	onLoad(e) {
-		this.id = e.id
+		this.postId = e.id
 		this.gLoading(this,true)
-		getDiscussion(this.id)
+		getDiscussion(this.postId)
 		.then(res => {
 			if(!res.data) {
 				this.gBackPage("帖子无效")
 			}
 			this.obj_authorInfo = res.data.authorInfo
-			this.commentNum = res.data.commentNum
 			this.content = res.data.content
 			this.createTime = res.data.createTime
 			this.collections = res.data.collections
@@ -163,9 +159,18 @@ export default {
 			this.likes = res.data.likes
 			this.is_liked = res.data.isLiked
 			this.read = res.data.read
-			this.tagId = res.data.tagId
 			this.title = res.data.title
 			this.updateTime = res.data.updateTime
+			
+			/* 评论数据 */
+			this.commentNum = res.data.commentNum
+			this.arr_comments = res.data.comments.pageData
+			if(this.arr_comments.length < this.pageSize) {
+				this.is_loadAllComment = true
+			}
+			else {
+				this.is_loadAllComment = false
+			}
 			console.log(res.data);
 			/* 获取与用户的关系 */
 			getUserRelation(this.obj_authorInfo.userId)
@@ -180,26 +185,27 @@ export default {
 		})
 		.finally(() => this.gLoading(this,false))
 	},
-	onShow() {
-		getDiscComments({
-			postId: this.id,
-			pageNum: 0,
-			pageSize: 5
-		})
-		.then(res => {
-			this.arr_comments = res.data.pageData
-		})
-	},
 	onShareAppMessage(e){
 		return {
 			title: "Aha口袋",
-			path: `pages/Interflow/Forum/ForumDetail?id=${this.id}`,
+			path: `pages/Interflow/Forum/ForumDetail?id=${this.postId}`,
 			desc: "Aha口袋邀您阅读" + this.title,
 		}
 	},
+	onReachBottom() {
+		this.$refs["Comments"].loadComment()
+	},
 	methods: {
 		/**
-		 * 点击关注用户
+		 * 滑动事件
+		 */
+		ontouchMove(e)
+		{
+			/* 阻止滑动 */
+			e.preventDefault()
+		},
+		/**
+		 * 点击关注用户,根据用户关系执行关注/取消关注
 		 */
 		onclickAttention()
 		{
@@ -213,12 +219,26 @@ export default {
 			}
 		},
 		/**
+		 * 跳转评论区
+		 */
+		toComment()
+		{
+			uni.createSelectorQuery().select("#comments").boundingClientRect(data=>{//目标节点
+			　　uni.createSelectorQuery().select("#forum").boundingClientRect((res)=>{//最外层盒子节点
+					uni.pageScrollTo({
+						duration:0,
+						scrollTop: data.top - res.top,
+					})
+			　　}).exec()
+			}).exec()
+		},
+		/**
 		 * 点击收藏，切换收藏和未收藏状态
 		 */
 		onclickCollect()
 		{
 			this.is_collected = !this.is_collected
-			collectDiscussion(this.id,this.is_collected)
+			collectDiscussion(this.postId,this.is_collected)
 			if(this.is_collected){
 				this.collections++
 				uni.vibrateShort()
@@ -233,7 +253,7 @@ export default {
 		onclickLike()
 		{
 			this.is_liked = !this.is_liked
-			likeDiscussion(this.id,this.is_liked)
+			likeDiscussion(this.postId,this.is_liked)
 			if(this.is_liked){
 				this.likes++
 				uni.vibrateShort()
@@ -243,24 +263,59 @@ export default {
 			}
 		},
 		/**
-		 * 点击评论卡片，触发回复
+		 * 开启写入框，根据不同模式，调用不同提示内容
+		 * @param {Number} type 写入类型，0 写评论，1 回复评论，2 回复其他人回复
 		 */
-		onclickReply(comment)
+		startWrite(type,obj)
 		{
-			uni.navigateTo({
-				url: `./CommentWindow?id=${this.id}&focus=1&reply=${JSON.stringify(comment)}`
-			})
+			console.log(obj);
+			switch(type) {
+				case 0:
+					this.obj_writeContent = {
+						type: 0,
+						placeholder: "友善发言..."
+					}
+					break
+				case 1:
+					this.obj_writeContent = {
+						type: 1,
+						placeholder: `回复${obj.userInfo.nickname}:`,
+						commentId: obj.commentId,
+						toUserId: obj.userInfo.userId
+					}
+					break
+				case 2:
+					this.obj_writeContent = {
+						type: 2,
+						placeholder: `@${obj.userInfo.nickname}:`,
+						commentId: obj.commentId,
+						toUserId: obj.userInfo.userId
+					}
+					break
+			}
+			
 		},
 		/**
-		 * 点击评论，跳转全部评论页面，并携带参数，判断是否需要聚焦输入框
-		 * @param {Boolean} focus
+		 * 写入完成，根据写入对象的type判断3种写入模式。
 		 */
-		onclickComment(focus)
+		writeFinish()
 		{
-			uni.navigateTo({
-				url: `./CommentWindow?id=${this.id}&focus=${focus ? 1 : 0}`
-			})
-		}
+			switch(this.obj_writeContent.type) {
+				/* 新评论，重新根据时间优先请求评论 */
+				case 0:
+					this.$refs["Comments"].changeCommentSort("latest")
+					this.commentNum++
+					this.toComment()
+					break
+				/* 回复评论 && 回复其他回复，调用评论组件的回复成功方法 */
+				case 1:
+				case 2:
+					this.$refs["Comments"].replySuccess(this.obj_writeContent.commentId)
+					break
+			}
+			this.obj_writeContent = null
+		},
+		
 	}
 }
 </script>
@@ -314,14 +369,13 @@ export default {
 				margin-left 10px
 				flex 1
 				height 100%
-				font-weight 700
 				white-space nowrap
 				overflow-x hidden
 				text-overflow ellipsis
 			.level
 				position absolute
-				top 40rpx
-				left 60px
+				top 45rpx
+				left 55px
 			button
 				margin-left 10px
 				width 60px
@@ -343,13 +397,6 @@ export default {
 			margin-left 5px
 	.comments
 		margin 10px 0
-		background-color #FFFFFF
-		.no-comment
-			padding 10px
-			color var(--origin1)
-		.read-allcomment
-			padding 10px
-			color var(--origin1)
 	.footer-nav
 		position fixed
 		bottom 0

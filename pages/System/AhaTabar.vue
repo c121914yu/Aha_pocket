@@ -10,7 +10,7 @@
 			v-for="(nav,index) in navs"
 			:key="index"
 			@click="$emit('navigate',nav.name)">
-			<text v-if="currentNav===0 && index===0" class="iconfont icon-shuaxin"></text>
+			<text v-if="index !== 3 && currentNav === index" class="iconfont icon-shuaxin"></text>
 			<text v-else :class="'iconfont ' + nav.icon"></text>
 			<view class="text">
 				{{nav.text}}
@@ -26,6 +26,12 @@
 
 <script>
 export default {
+	props:{
+		currentNav: {
+			type: Number,
+			default: 0
+		}
+	},
 	data() {
 		return {
 			navs: [
@@ -34,12 +40,6 @@ export default {
 				{icon: "icon-waibao",text: "技能实践",name: "Practice"},
 				{icon: "icon-user",text: "我的Aha",name: "Self"},
 			]
-		}
-	},
-	props:{
-		currentNav: {
-			type: Number,
-			default: 0
 		}
 	}
 }

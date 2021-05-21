@@ -10,10 +10,12 @@
 			<image class="img" :src="comment.userInfo.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
 		</navigator>
 		<view class="right">
-			<view class="head" @longpress="onlongpress">
+			<view class="head">
+				<!-- 昵称 -->
 				<view class="name">
 					{{comment.userInfo.nickname}}
 				</view>
+				<!-- 点赞 -->
 				<view  
 					v-if="comment.isLike" 
 					class="like red"
@@ -26,27 +28,19 @@
 					<text class="iconfont icon-zan"></text>{{comment.likes}}
 				</view>
 			</view>
-			<view @click="$emit('reply',comment)" @longpress="onlongpress">
-				<text class="content">{{comment.content}}</text>
-				<text class="time">{{gformatDate(comment.createTime)}}</text>
-			</view>
-			<!-- 回复 -->
-			<view v-if="is_showReply" class="replies">
-				<reply-card 
-					v-for="(reply,index) in arr_replies"
-					:key="reply.id"
-					:reply="reply"
-					@onclickLike="onclickLikeReply(reply,index)"
-					@reply="$emit('reply',reply)"
-					@deleteReply="deleteReply">
-				</reply-card>
-				<!-- 查看更多回复 -->
+			<!-- 评论内容 -->
+			<view class="content" @click="$emit('reply')">{{comment.content}}</view>
+			<!-- 底部，评论时间，回复数量，操作图标 -->
+			<view class="footer">
+				<view class="time">{{gformatDate(comment.createTime)}}</view>
 				<view 
-					v-if="arr_replies.length < comment.replyNum" 
-					class="read-more center" 
-					@click="loadReply">
-					查看更多回复
+					v-if="comment.replyNum>0 && is_showReply" 
+					class="reply-num"
+					@click="$emit('showReply')">
+					{{comment.replyNum}}回复
 				</view>
+				<view class="blank"></view>
+				<view style="font-size: 36rpx;" class="iconfont icon-xinxi" @click="onclickControl"></view>
 			</view>
 		</view>
 		<!-- 加载动画 -->
@@ -55,12 +49,8 @@
 </template>
 
 <script>
-import { getDiscCommentsReply,likeDiscComment,likeDiscCommentReply,deleteDiscComment } from "@/static/request/api_forum.js"
-import ReplyCard from "./ReplyCard.vue"
+import { getDiscCommentsReply,likeDiscComment,deleteDiscComment } from "@/static/request/api_forum.js"
 export default {
-	components: {
-		"reply-card": ReplyCard
-	},
 	props: {
 		comment: {
 			type: Object,
@@ -68,53 +58,32 @@ export default {
 		},
 		is_showReply: {
 			type: Boolean,
-			default: false
+			default: true
 		}
-	},
-	data() {
-		return {
-			pageNum: 0,
-			pageSize: 5,
-			arr_replies: [],
-			replyNum: 0
-		}
-	},
-	created() {
-		this.arr_replies = this.comment.replies.pageData
-		this.replyNum = this.comment.replyNum
 	},
 	methods: {
 		/**
-		 * 加载评论
+		 * 点赞 / 取消点赞评论
+		 * 触发父级点赞事件
 		 */
-		loadReply()
+		onclickLike()
 		{
-			this.gLoading(this,true)
-			getDiscCommentsReply({
-				commentId: this.comment.id,
-				pageNum: this.pageNum,
-				pageSize: this.pageSize
+			likeDiscComment(this.comment.id,!this.comment.isLike)
+			this.$emit("onclickLike",{
+				isLike: !this.comment.isLike,
+				likes: !this.comment.isLike ? this.comment.likes+1 : this.comment.likes-1,
+				replyNum: this.comment.replyNum,
+				commentId: this.comment.id
 			})
-			.then(res => {
-				/* 第一次点击的话，删除原来的评论 */
-				if(this.arr_replies.length < this.pageSize) {
-					this.arr_replies = []
-				}
-				this.arr_replies = this.arr_replies.concat(res.data.pageData)
-				if(res.data.pageData.length === this.pageSize) {
-					this.pageNum++
-				}
-			})
-			.finally(() => this.gLoading(this,false))
+			if(!this.comment.isLike) {
+				uni.vibrateShort()
+			}
 		},
 		/**
-		 * 长按提示复制内容,回复,查看用户
+		 * 打开menu操作面板，复制内容,回复,查看用户
 		 */
-		onlongpress()
+		onclickControl()
 		{
-			if(!this.is_showReply){
-				return
-			}
 			const list = ["复制","回复","查看用户"]
 			if(this.comment.uid === getApp().globalData.gUserInfo.userInfo.userId){
 				list.push("删除评论")
@@ -126,7 +95,7 @@ export default {
 						this.gClipboardData(this.comment.content,"已复制")
 						break
 					case "回复":
-						this.$emit("reply",this.comment)
+						this.$emit("reply")
 						break
 					case "查看用户":
 						uni.navigateTo({
@@ -136,47 +105,11 @@ export default {
 					case "删除评论":
 						this.gShowModal("确认删除评论?",() => {
 							deleteDiscComment(this.comment.id)
-							this.$emit("deleteComment",this.comment.id)
+							this.$emit("deleteComment")
 						})
 						break
 				}
 			})
-		},
-		/**
-		 * 删除回复
-		 * @param {String} id 回复id
-		 */
-		deleteReply(id)
-		{
-			const index = this.arr_replies.findIndex(item => item.id === id)
-			this.arr_replies.splice(index,1)
-			this.comment.replyNum--
-		},
-		/**
-		 * 点赞 / 取消点赞评论
-		 */
-		onclickLike()
-		{
-			likeDiscComment(this.comment.id,!this.comment.isLike)
-			this.$emit("onclickLike",{
-				isLike: !this.comment.isLike,
-				likes: !this.comment.isLike ? this.comment.likes+1 : this.comment.likes-1
-			})
-			if(!this.comment.isLike) {
-				uni.vibrateShort()
-			}
-		},
-		/**
-		 * 点赞 / 取消点赞回复
-		 */
-		onclickLikeReply(reply,index)
-		{
-			likeDiscCommentReply(reply.id,!reply.isLike)
-			this.arr_replies[index].likes = !this.arr_replies[index].isLike ? this.arr_replies[index].likes+1 : this.arr_replies[index].likes-1
-			this.arr_replies[index].isLike = !this.arr_replies[index].isLike
-			if(this.arr_replies[index].isLike) {
-				uni.vibrateShort()
-			}
 		}
 	}
 }
@@ -207,27 +140,26 @@ export default {
 			justify-content space-between
 			.name
 				color var(--black)
-				.remove
-					color var(--gray2)
-					font-size 24rpx
-			.like
 				font-size 24rpx
+			.like
 				color var(--gray2)
 				.iconfont
 					margin-right 2px
+					font-size 30rpx
 		.content
 			padding 5px 0
 			color var(--black)
-			font-weight 700
 			font-size 28rpx
-		.time
-			font-size 18rpx
-			color var(--gray2)
-			margin-left 5px
-		/* 查看更多回复 */
-		.read-more
-			margin-left -40px
-			padding 5px
-			color var(--origin1)
+		.footer
 			font-size 24rpx
+			display flex
+			align-items flex-start
+			.time
+				color var(--gray2)
+			.reply-num
+				margin-left 10px
+				padding 2px 10px
+				border-radius 22px
+				background-color var(--origin4)
+				color var(--black)
 </style>

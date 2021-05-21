@@ -23,7 +23,7 @@
 			v-show="currentNav===1">
 		</teams>
 		<Forums
-			ref="forum"
+			ref="Forum"
 			v-if="arr_navs[2].loaded"
 			v-show="currentNav===2">
 		</Forums>
@@ -57,12 +57,26 @@ export default {
 		 */
 		navChange(e)
 		{
-			/* 如果是论坛，要刷新 */
-			if(this.currentNav === 2 && this.arr_navs[2].loaded) {
-				// this.$nextTick(this.$refs.)
-			}
 			this.arr_navs[e.value].loaded = true
 			this.currentNav = e.value
+		},
+		/**
+		 * 刷新内容
+		 */
+		onclickRefresh()
+		{
+			switch(this.currentNav) {
+				case 0:
+					this.$refs.Talents.loadTalent(true)
+					this.$refs.Talents.loadTeams(true)
+					break
+				case 1:
+					this.$refs.Teams.loadTeams(true)
+					break
+				case 2:
+					this.$refs.Forum.loadDisc(true)
+					break
+			}
 		}
 	}
 }
@@ -72,7 +86,6 @@ export default {
 .forum-home
 	min-height 100vh
 	padding-top 50px
-	margin-bottom 80px
 	padding-bottom constant(safe-area-inset-bottom)
 	padding-bottom env(safe-area-inset-bottom)
 	background-color var(--white1)

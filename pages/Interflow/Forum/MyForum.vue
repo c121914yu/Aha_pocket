@@ -5,7 +5,7 @@
 <template>
 	<view class="my-forum">
 		<!-- 互动，点赞， -->
-		<view class="header">
+		<view class="header" @click="undesign">
 			<view class="item">
 				<text class="iconfont icon-hudong"></text>
 				<view class="label">互动</view>
@@ -133,6 +133,10 @@ export default {
 			uni.navigateTo({
 				url: "./Create_EditForum"
 			})
+		},
+		undesign()
+		{
+			this.gToastMsg("设计中...")
 		}
 	}
 }

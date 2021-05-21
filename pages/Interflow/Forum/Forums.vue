@@ -43,11 +43,10 @@
 			</navigator>
 		</view>
 		<navigator 
-			v-if="arr_discussions.length===0" 
 			hover-class="none"
 			class="remark center"
 			:url="`/pages/Interflow/Forum/Create_EditForum?tagId=${arr_forumTags[activeTagIndex].id}`">
-			没有找到相关讨论,点击创建!
+			{{bottomText}}
 		</navigator>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
@@ -77,6 +76,16 @@ export default {
 			searchText: ""
 		}
 	},
+	computed: {
+		bottomText() {
+			 if(this.arr_discussions.length === 0) {
+				return "没有找到相关讨论,点击创建!"
+			 }
+			 else if(this.is_loadAll) {
+				return "已加载全部讨论,没找到合适？点击创建!"
+			 }
+		}
+	},
 	watch: {
 		"activeTagIndex": function() {
 			this.loadDisc(true,true)
@@ -95,22 +104,22 @@ export default {
 		else {
 			this.arr_forumTags = [{id: null,name: "全部"}].concat(tags)
 		}
-		this.loadDisc(true,true)
+		this.loadDisc(true)
 	},
 	methods: {
 		/**
 		 * 加载讨论帖子
 		 */
-		loadDisc(init=false,loading=false)
+		loadDisc(init=false)
 		{
 			if(init) {
 				this.pageNum = 0
 				this.is_loadAll = false
+				this.gLoading(this,true)
 			}
 			if(this.is_loadAll) {
 				return
 			}
-			this.gLoading(this,loading)
 			const params = {
 				pageNum: this.pageNum,
 				pageSize: this.pageSize,
@@ -162,17 +171,17 @@ export default {
 <style lang="stylus" scoped>
 .forums
 	padding-top 42px
-	min-height 100vh
 	background-color var(--white1)
 	.filter
 		z-index 10
 		position fixed
 		top 50px
+		width 100%
 		background-color #FFFFFF
 		border-bottom var(--border2)
 		.tags
 			height 42px
-			margin-right 50px
+			margin-right 55px
 			padding 0 5px
 			display flex
 			align-items center
@@ -208,7 +217,7 @@ export default {
 		align-items center
 		.iconfont
 			margin-left 5px
-			font-size 40rpx
+			font-size 45rpx
 			color var(--origin2)
 	.list
 		margin 10px 0

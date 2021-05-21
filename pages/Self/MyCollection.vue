@@ -34,7 +34,6 @@
 				<forum-card :forum="item"></forum-card>
 			</navigator>
 		</view>
-		
 		<view class="remark center">{{is_loadAll ? "已加载全部" : ""}}</view>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
@@ -65,14 +64,16 @@ export default {
 			arr_list: [],
 		}
 	},
-	onLoad() {
-		this.loadProject(true,true)
+	onShow() {
+		const index = this.activeNav
+		this.activeNav = -1
+		this.changeType({},index)
 	},
 	methods: {
 		/**
 		 * 改变展示收藏的类型，修改下标,重新请求数据
 		 * @param {Object} nav
-		 * @param {Object} index
+		 * @param {Number} index
 		 */
 		changeType(nav,index)
 		{
@@ -114,13 +115,14 @@ export default {
 			getMylikeDiscussion({
 				pageNum: this.pageNum,
 				pageSize: this.pageSize,
-				isLike: true
+				isLike: false
 			})
 			.then(res => {
 				if(init) {
 					this.arr_list = []
 				}
 				this.arr_list = this.arr_list.concat(res.data.pageData)
+				this.arr_navs[1].amount = this.arr_list.length
 				if(res.data.pageData.length < this.pageSize) {
 					this.is_loadAll = true
 				}

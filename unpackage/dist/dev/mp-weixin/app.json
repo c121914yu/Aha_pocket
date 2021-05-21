@@ -45,8 +45,7 @@
     "pages/Interflow/Team/TeamDetail",
     "pages/Interflow/Forum/Create_EditForum",
     "pages/Interflow/Forum/ForumDetail",
-    "pages/Interflow/Forum/MyForum",
-    "pages/Interflow/Forum/CommentWindow"
+    "pages/Interflow/Forum/MyForum"
   ],
   "subPackages": [],
   "window": {

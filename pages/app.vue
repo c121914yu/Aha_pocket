@@ -111,7 +111,7 @@ export default {
 	onReachBottom(){
 		/* 加载更多项目 */
 		if(this.currentNav === 0){
-			this.$refs.projectHome.loadMore()
+			this.$refs.projectHome.loadProjects()
 		}
 		else if(this.currentNav === 1){
 			switch(this.$refs.interflowHome.currentNav){
@@ -125,7 +125,7 @@ export default {
 					break
 				/* 论坛 */
 				case 2:
-					this.$refs.interflowHome.$refs.forum.loadDisc()
+					this.$refs.interflowHome.$refs.Forum.loadDisc()
 					break
 			}
 		}
@@ -167,6 +167,7 @@ export default {
 		onclickTabBar(name)
 		{
 			const index = this.navs.findIndex(item => item.name === name)
+			this.navs[index].loaded = true
 			/* 如果不是点击当前路由，则回到顶部 */
 			if(index !== this.currentNav){
 				uni.pageScrollTo({
@@ -175,15 +176,21 @@ export default {
 				})
 			}
 			/* 位于项目页，且点击当前路由，刷新项目 */
-			else if(index === 0 && index === this.currentNav){
+			else{
 				uni.pageScrollTo({
 					duration: 0,
 					scrollTop: 0 
 				})
-				this.$refs.projectHome.loadProjects(true)
+				switch (index) {
+					case 0:
+						this.$refs.projectHome.loadProjects(true,true)
+						break
+					case 1:
+						this.$refs.interflowHome.onclickRefresh()
+						break
+				}
 			}
 			this.currentNav = index
-			this.navs[this.currentNav].loaded = true
 		},
 		/**
 		 * 加载所有依赖
@@ -212,3 +219,8 @@ export default {
 }
 </script>
 
+<style lang="stylus">
+.app
+	padding-bottom 80px
+	background-color var(--white1)
+</style>

@@ -127,9 +127,8 @@ export default {
 				this.arr_users[i].projectIndex = index < user.projectInfo.length-1 ? index+1 : 0
 			})
 		},3000)
-		this.gLoading(this,true)
-		this.loadTalent()
-		this.loadTeams()
+		this.loadTalent(true)
+		this.loadTeams(true)
 	},
 	methods: {
 		/**
@@ -149,8 +148,13 @@ export default {
 		/**
 		 * 加载用户
 		 */
-		loadTalent()
+		loadTalent(init=false)
 		{
+			if(init) {
+				this.gLoading(this,true)
+				this.obj_userLoadInfo.is_loadAll = false
+				this.obj_userLoadInfo.pageNum = 1
+			}
 			if(this.obj_userLoadInfo.is_loadAll){
 				return
 			}
@@ -159,6 +163,9 @@ export default {
 				pageSize: this.obj_userLoadInfo.pageSize
 			})
 			.then(res => {
+				if(init) {
+					this.arr_users = []
+				}
 				res.data.forEach(user => {
 					/* 判断是否有用户标签，并进行分割 */
 					if(!user.specialtyTags){
@@ -189,8 +196,12 @@ export default {
 		/**
 		 * 加载团队
 		 */
-		loadTeams()
+		loadTeams(init=false)
 		{
+			if(init) {
+				this.obj_teamLoadInfo.is_loadAll = false
+				this.obj_teamLoadInfo.pageNum = 1
+			}
 			if(this.obj_teamLoadInfo.is_loadAll){
 				return
 			}
@@ -199,6 +210,9 @@ export default {
 				pageSize: this.obj_teamLoadInfo.pageSize
 			})
 			.then(res => {
+				if(init) {
+					this.arr_teams = []
+				}
 				this.arr_teams = this.arr_teams.concat(res.data)
 				/* 判断是否加载全部 */
 				if(res.data.length < this.obj_teamLoadInfo.pageSize) {

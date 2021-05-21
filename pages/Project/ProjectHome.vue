@@ -53,8 +53,7 @@
 				></projectCard>
 			</view>
 		</view>
-		<view class="center small remark">{{ is_showAll ? "已加载全部" : "" }}</view>
-
+		<view class="center small remark">{{ is_loadAll ? "已加载全部" : "" }}</view>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
 	</view>
@@ -74,7 +73,7 @@ export default {
 			filter: null,
 			RankingData: [],
 			arr_projects: [],
-			is_showAll: false
+			is_loadAll: false
 		};
 	},
 	components: {
@@ -87,11 +86,14 @@ export default {
 			desc: 请求项目数据，根据界面条件排序/筛选。传入init参数，判断是否初始化进行操作。
 			time: 2020/12/4
 		*/
-		loadProjects(init=false,loading=true) 
+		loadProjects(init=false,loading=false) 
 		{
 			if (init) {
-				this.is_showAll = false
+				this.is_loadAll = false
 				this.pageNum = 1
+			}
+			if(this.is_loadAll) {
+				return
 			}
 			this.gLoading(this, loading)
 			let params = {
@@ -105,7 +107,7 @@ export default {
 			getProjects(params)
 			.then(res => {
 				if(res.data.pageData.length < this.pageSize){
-					this.is_showAll = true
+					this.is_loadAll = true
 				}
 				else{
 					this.pageNum++
@@ -128,21 +130,11 @@ export default {
 			})
 			.finally(() => this.gLoading(this, false))
 		},
-		/* 
-			name: 加载更多数据
-			time: 2020/11/30
-		*/
-		loadMore() 
-		{
-			if (!this.is_showAll) {
-				this.loadProjects(false,false)
-			}
-		},
 		/* 排序发生改变，获取排序字段并重新请求数据 */
 		sortChange(e)
 		{
 			this.sortBy = e.val
-			this.loadProjects(true)
+			this.loadProjects(true,true)
 		},
 		/* 
 			name: 确认筛选
@@ -151,7 +143,7 @@ export default {
 	    filterChange(e)
 	    {
 			this.filter = e
-			this.loadProjects(true)
+			this.loadProjects(true,true)
 	    },
 		/* 进入项目详细 */
 		readProject(id) 
@@ -168,7 +160,6 @@ export default {
 .resource-home
 	// 偏离底部导航距离
 	min-height 100vh
-	margin-bottom 80px
 	padding-bottom constant(safe-area-inset-bottom)
 	padding-bottom env(safe-area-inset-bottom)
 	background-color var(--white1)

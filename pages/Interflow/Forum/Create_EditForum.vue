@@ -72,7 +72,7 @@ export default {
 			uni.setNavigationBarTitle({
 				title: "创建讨论"
 			})
-			if(e.tagId) {
+			if(e.tagId && e.tagId !== "null") {
 				this.tag.val = this.arr_forumTags.find(item => item.id === +e.tagId).name
 			}
 		}
@@ -109,7 +109,12 @@ export default {
 				if(this.id === null) {
 					postDiscussion(data)
 					.then(res => {
-						this.gBackPage("发布成功")
+						uni.redirectTo({
+							url: `ForumDetail?id=${res.data}`,
+							success: () => {
+								this.gToastMsg("发布成功")
+							}
+						})
 					})
 					.finally(() => this.gLoading(this,false))
 				}

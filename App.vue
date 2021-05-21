@@ -41,7 +41,6 @@ export default {
 			case 'develop':
 				globalData.env = 0
 				globalData.baseUrl = 'https://ahapocket.cn/aha_test'
-				// globalData.baseUrl = "https://ahapocket.cn/api"
 				break
 			case 'trial':
 				globalData.env = 1

@@ -40,7 +40,7 @@ export default {
 		}
 	},
 	created() {
-		this.loadTeams(true,true)
+		this.loadTeams(true)
 	},
 	methods: {
 		/**
@@ -58,14 +58,15 @@ export default {
 		 * @param {Boolean}  init 是否初始化
 		 * @param {Boolean}  loading 加载动画
 		 */
-		loadTeams(init=false,loading=false)
+		loadTeams(init=false)
 		{
-			if(this.is_loadAll) {
-				return
-			}
-			this.gLoading(this,loading)
 			if(init){
 				this.pageNum = 1
+				this.is_loadAll = false
+				this.gLoading(this,true)
+			}
+			if(this.is_loadAll) {
+				return
 			}
 			getTeams({
 				pageNum: this.pageNum,

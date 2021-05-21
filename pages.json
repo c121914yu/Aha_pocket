@@ -269,19 +269,14 @@
 		    "path" : "pages/Interflow/Forum/ForumDetail",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "讨论详情"
+		        "navigationBarTitleText": "讨论详情",
+				"onReachBottomDistance": 150
 		    }
 		}, {
 		    "path" : "pages/Interflow/Forum/MyForum",
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "我的讨论"
-		    }
-		}, {
-		    "path" : "pages/Interflow/Forum/CommentWindow",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "全部评论"
 		    }
 		}
     ],

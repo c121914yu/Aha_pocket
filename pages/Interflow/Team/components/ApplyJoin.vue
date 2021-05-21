@@ -6,7 +6,12 @@
 	<view class="apply-join fix-screen">
 		<view class="content">
 			<view class="h3 center">申请加入团队</view>
-			<textarea class="textarea" placeholder="简单描述下自己" v-model="applyIntro"/>
+			<textarea 
+				class="textarea" 
+				focus="focus"
+				:show-confirm-bar="false"
+				placeholder="简单描述下自己" 
+				v-model="applyIntro"/>
 			<view class="btns">
 				<button class="btn" style="background-color: #5d7092;" @click="$emit('close')">取消</button>
 				<button class="btn" @click="onclickSure">确认</button>
@@ -35,6 +40,9 @@ export default {
 		 */
 		onclickSure()
 		{
+			if(!this.applyIntro) {
+				return
+			}
 			this.gShowModal("您的简历将发送给对方,确认申请加入?",() => {
 				applyJoinTeam({
 					teamId: this.teamId,
