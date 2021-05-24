@@ -136,3 +136,12 @@ exports.postDiscCommentReply = (data) => request("/post/comment/reply","POST",da
  * @param {String}  replyId
  */
 exports.deleteDiscCommentReply = (replyId) => request(`/post/comment/reply/${replyId}`,"DELETE")
+
+/**
+ * 分页获取用户发布的评论
+ * @param {Number}  pageNum
+ * @param {Number}  pageSize
+ * @param {Number}  replyNum 评论数量
+ * @param {String} loadBy 策略 hottest-最热（默认), latest-最新
+ */
+exports.getUserComments = ({userId,...params}) => request(`/post/comment/u/${userId}`,"GET",params)

@@ -29,7 +29,9 @@
 							</view>
 						</view>
 					</view>
-					<view class="intro rich-text" v-html="member.intro || '无申请介绍'"></view>
+					<view class="intro">
+						<rich-text :nodes="member.intro || '无申请介绍'"></rich-text>
+					</view>
 				</view>
 			</view>
 		</view>

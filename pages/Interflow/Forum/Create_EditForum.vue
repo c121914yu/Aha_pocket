@@ -25,8 +25,12 @@
 				讨论内容
 				<text class="start-edit" @click="startEdit">点击编辑...</text>
 			</view>
-			<view  v-if="content" class="rich-text" v-html="content"></view>
-			<view  v-else class="rich-text"><text class="remark" @click="startEdit">点击编辑讨论内容...</text></view>
+			<view v-if="content" class="rich-text">
+				<rich-text :nodes="content"></rich-text>
+			</view>
+			<view  v-else class="rich-text">
+				<text class="remark" @click="startEdit">点击编辑讨论内容...</text>
+			</view>
 		</view>
 		<btn-bottom @click="onclickFinish">
 			{{id === null ? "发布讨论" : "修改讨论"}}

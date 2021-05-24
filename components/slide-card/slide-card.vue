@@ -255,5 +255,5 @@ export default {
 			width 20rpx
 			height 20rpx
 			border-radius 50%
-			transition var(--speed-hover)
+			transition 0.5s
 </style>

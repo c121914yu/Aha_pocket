@@ -5,7 +5,7 @@
 <template>
 	<view 
 		class="claim-project fix-screen"  
-		@touchmove.stop.prevent 
+		@touchmove.stop 
 		@click="$emit('close')">
 		<view class="content" @click.stop>
 			<view class="h3 center">{{applyingID > 0 ? "修改申请材料" : "申请认领项目"}}</view>
@@ -14,18 +14,20 @@
 				<text class="label">证明材料：</text>
 				<button 
 					v-if="!awardProveUrl.val" 
+					class="btn-choose"
 					@click="chooseImage">
 					选择证明<text class="iconfont icon-tianjia"></text>
 				</button>
 				<image 
 					v-else 
+					class="img"
 					:src="awardProveUrl.val" 
 					mode="widthFix" 
 					@click="onclickImg">
 				</image>
 			</view>
 			<!-- 描述文字 -->
-			<textarea placeholder="一些描述文字..."  v-model="intro"/>
+			<textarea class="textarea" placeholder="一些描述文字..."  v-model="intro"/>
 			<!-- 确认 -->
 			<button class="apply" @click="onclickSure">
 				{{applyingID > 0 ? "修改申请" : "申请认领"}}
@@ -146,7 +148,7 @@ export default {
 			margin 10px 0
 			display flex
 			align-items center
-			button
+			.btn-choose
 				margin 0 0 0 10px
 				padding 0 10px
 				line-height 1.5
@@ -157,12 +159,12 @@ export default {
 					margin-left 5px
 					color #FFFFFF
 					font-size 40rpx
-			image
+			.img
 				width 80px
 				max-height 120px
 				border var(--border2)
 				border-radius 8px
-		textarea
+		.textarea
 			width 100%
 			border var(--border2)
 			border-radius 8px

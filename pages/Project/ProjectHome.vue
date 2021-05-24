@@ -3,7 +3,7 @@
 	authro yjl
  -->
 <template>
-	<view class="resource-home">
+	<view class="resource-home" @touchmove.prevent>
 		<!-- 轮播图 -->
 		<view class="header">
 			<slide-card></slide-card>

@@ -52,7 +52,9 @@
 			</aha-tags>
 			<!-- 团队介绍 -->
 			<view style="margin: 5px 0;" class="strong">团队介绍</view>
-			<view v-if="intro" class="rich-text" v-html="intro"></view>
+			<view v-if="intro" class="rich-text">
+				<rich-text :nodes="intro"></rich-text>
+			</view>
 			<view v-else class="rich-text" @click="startEdit">点击编辑团队介绍</view>
 			<button class="intro-btn" @click="startEdit('intro')">编辑</button>
 		</view>
@@ -108,8 +110,8 @@
 			</view>
 			<view 
 				v-if="recruitState>0" 
-				class="rich-text" 
-				v-html="recruitContent || '无招募内容'">
+				class="rich-text">
+				<rich-text :nodes="recruitContent || '无招募内容'"></rich-text>
 			</view>
 			<!-- 解散队伍 -->
 			<view v-if="myRole===2" class="dissolve-team" @click="dissolveTeam">解散队伍</view>

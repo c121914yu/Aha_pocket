@@ -822,7 +822,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -2037,6 +2037,7 @@ function normalizeComponent (
 
 
 
+
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 
 
@@ -2375,6 +2376,24 @@ _vue.default.prototype.gBackPage = function (msg) {var page = arguments.length >
 };
 
 /**
+    * 阅读富文本，跳转富文本阅读器
+    * @param {String}  content
+    * @param {type}  name 阅读器标题名
+    */
+_vue.default.prototype.gReadRichText = function (content, name) {
+  if (!content) {
+    return;
+  }
+  getApp().globalData.gobj_RichText = {
+    content: content,
+    name: name };
+
+  uni.navigateTo({
+    url: "/pages/System/AhaRichText" });
+
+};
+
+/**
     * 未设计界面提示
     */
 _vue.default.prototype.gUndesign = function () {var back = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
@@ -2680,7 +2699,7 @@ var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _i
 
 /***/ }),
 
-/***/ 187:
+/***/ 196:
 /*!************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_order.js ***!
   \************************************************/
@@ -2732,66 +2751,6 @@ exports.getOrder = function (orderId) {return (0, _request.default)("/contribPoi
                                                                                                                            * @param {Number}  projectId
                                                                                                                            */
 exports.checkResourcePurchased = function (projectId) {return (0, _request.default)("/project/purchased/".concat(projectId), "GET", {});};
-
-/***/ }),
-
-/***/ 196:
-/*!*************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_system.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /* 系统相关 */
-
-/**
-                                                                                                                                                                         * 获取系统公告
-                                                                                                                                                                         */
-exports.getNotice = function () {return (0, _request.default)("/notice", "GET");};
-
-/**
-                                                                                    * 签署须知协议
-                                                                                    */
-exports.signNotice = function () {return (0, _request.default)("/sign/notice", "POST");};
-
-/**
-                                                                                           * 获取我的反馈
-                                                                                           * @param {Number}  pageNum
-                                                                                           * @param {Number}  pageSize
-                                                                                           * @param {Number}  status 状态
-                                                                                           * @param {Number}  type 类型
-                                                                                           * @param {Number}  lowestLevel 最低级别
-                                                                                           * @param {Number}  highestLevel 最高级别
-                                                                                           * @param {String}  sortBy 排序关键字time、status、type、level、replyTime
-                                                                                           * @param {String}  orderBy 排序方式
-                                                                                           */
-exports.getMyFeedback = function (param) {return (0, _request.default)("/feedback/me", "GET", param);};
-
-/**
-                                                                                                         * 用户提交反馈
-                                                                                                         * @param {Number}  type 反馈类型
-                                                                                                         * @param {String}  content
-                                                                                                         */
-exports.feedbackProblem = function (data) {return (0, _request.default)("/feedback", "POST", data);};
-
-/**
-                                                                                                       * 获取轮播图
-                                                                                                       */
-exports.getSlideCard = function () {return (0, _request.default)("/slideShow", "GET");};
-
-/**
-                                                                                          * 使用兑换码
-                                                                                          * @param {String}  code 兑换码
-                                                                                          */
-exports.useCDKEY = function (code) {return (0, _request.default)("/activity/code?code=".concat(code), "POST");};
-
-/**
-                                                                                                                  * 获取公共上传签名
-                                                                                                                  * @param {String}  filename
-                                                                                                                  */
-exports.getPublicSignature = function (filename) {return (0, _request.default)("/project/sign/upload/public?filename=" + filename, "GET");};
 
 /***/ }),
 
@@ -8321,7 +8280,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8342,14 +8301,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -8435,7 +8394,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"竞赛统计","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8843,7 +8802,67 @@ internalMixin(Vue);
 
 /***/ }),
 
-/***/ 229:
+/***/ 205:
+/*!*************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_system.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /* 系统相关 */
+
+/**
+                                                                                                                                                                         * 获取系统公告
+                                                                                                                                                                         */
+exports.getNotice = function () {return (0, _request.default)("/notice", "GET");};
+
+/**
+                                                                                    * 签署须知协议
+                                                                                    */
+exports.signNotice = function () {return (0, _request.default)("/sign/notice", "POST");};
+
+/**
+                                                                                           * 获取我的反馈
+                                                                                           * @param {Number}  pageNum
+                                                                                           * @param {Number}  pageSize
+                                                                                           * @param {Number}  status 状态
+                                                                                           * @param {Number}  type 类型
+                                                                                           * @param {Number}  lowestLevel 最低级别
+                                                                                           * @param {Number}  highestLevel 最高级别
+                                                                                           * @param {String}  sortBy 排序关键字time、status、type、level、replyTime
+                                                                                           * @param {String}  orderBy 排序方式
+                                                                                           */
+exports.getMyFeedback = function (param) {return (0, _request.default)("/feedback/me", "GET", param);};
+
+/**
+                                                                                                         * 用户提交反馈
+                                                                                                         * @param {Number}  type 反馈类型
+                                                                                                         * @param {String}  content
+                                                                                                         */
+exports.feedbackProblem = function (data) {return (0, _request.default)("/feedback", "POST", data);};
+
+/**
+                                                                                                       * 获取轮播图
+                                                                                                       */
+exports.getSlideCard = function () {return (0, _request.default)("/slideShow", "GET");};
+
+/**
+                                                                                          * 使用兑换码
+                                                                                          * @param {String}  code 兑换码
+                                                                                          */
+exports.useCDKEY = function (code) {return (0, _request.default)("/activity/code?code=".concat(code), "POST");};
+
+/**
+                                                                                                                  * 获取公共上传签名
+                                                                                                                  * @param {String}  filename
+                                                                                                                  */
+exports.getPublicSignature = function (filename) {return (0, _request.default)("/project/sign/upload/public?filename=" + filename, "GET");};
+
+/***/ }),
+
+/***/ 238:
 /*!************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_forum.js ***!
   \************************************************/
@@ -8989,6 +9008,15 @@ exports.postDiscCommentReply = function (data) {return (0, _request.default)("/p
                                                                                                                       * @param {String}  replyId
                                                                                                                       */
 exports.deleteDiscCommentReply = function (replyId) {return (0, _request.default)("/post/comment/reply/".concat(replyId), "DELETE");};
+
+/**
+                                                                                                                                        * 分页获取用户发布的评论
+                                                                                                                                        * @param {Number}  pageNum
+                                                                                                                                        * @param {Number}  pageSize
+                                                                                                                                        * @param {Number}  replyNum 评论数量
+                                                                                                                                        * @param {String} loadBy 策略 hottest-最热（默认), latest-最新
+                                                                                                                                        */
+exports.getUserComments = function (_ref6) {var userId = _ref6.userId,params = _objectWithoutProperties(_ref6, ["userId"]);return (0, _request.default)("/post/comment/u/".concat(userId), "GET", params);};
 
 /***/ }),
 
@@ -9783,7 +9811,65 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 262:
+/***/ 27:
+/*!************************************************!*\
+  !*** D:/服务外包/竞赛统计/static/request/api_login.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /* 登录，注册，找回密码 */
+/**
+                                                                                                                                                                               * 发送验证码
+                                                                                                                                                                               * @param {String}  phone
+                                                                                                                                                                               * @param {String}  type 取值register、changePassword、bindPhone,对应不同方案
+                                                                                                                                                                               */
+exports.sendCode = function (data) {return (0, _request.default)("/sms/code", "POST", data);};
+
+/**
+                                                                                                * 用户注册
+                                                                                                * @param {String}  phone
+                                                                                                * @param {String}  password
+                                                                                                * @param {String} code 验证码
+                                                                                                * @return {String} token 用户凭证
+                                                                                                * @return {Object} userInfo
+                                                                                                */
+exports.Register = function (data) {return (0, _request.default)("/register/phone", "POST", data);};
+
+/**
+                                                                                                      * 修改密码
+                                                                                                      * @param {String}  newPassword
+                                                                                                      * @param {String}  code
+                                                                                                      */
+exports.ChangePassword = function (data) {return (0, _request.default)("/changePassword/phone/".concat(data.phone, " "), "POST", data);};
+
+/**
+                                                                                                                                           * 用户手机登录
+                                                                                                                                           * @param {String}  phone
+                                                                                                                                           * @param {String}  password
+                                                                                                                                           * @return {String} token 用户凭证
+                                                                                                                                           * @return {Object} userInfo
+                                                                                                                                           */
+exports.Login = function (data) {return (0, _request.default)("/login/phone", "POST", data);};
+
+/**
+                                                                                                * 微信登录
+                                                                                                * @param {String}  code 用户code值，通过微信api获取
+                                                                                                * @return {String} token 用户凭证
+                                                                                                * @return {Object} userInfo
+                                                                                                */
+exports.WXLogin = function (data) {return (0, _request.default)("/login/wechat", "POST", data);};
+
+/**
+                                                                                                   * 退出登录
+                                                                                                   */
+exports.loginOut = function () {return (0, _request.default)("/logout ", "GET", {});};
+
+/***/ }),
+
+/***/ 271:
 /*!**************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_project.js ***!
   \**************************************************/
@@ -10036,64 +10122,6 @@ exports.getApplyProject = function (projectId) {return (0, _request.default)("/p
 
 /***/ }),
 
-/***/ 27:
-/*!************************************************!*\
-  !*** D:/服务外包/竞赛统计/static/request/api_login.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /* 登录，注册，找回密码 */
-/**
-                                                                                                                                                                               * 发送验证码
-                                                                                                                                                                               * @param {String}  phone
-                                                                                                                                                                               * @param {String}  type 取值register、changePassword、bindPhone,对应不同方案
-                                                                                                                                                                               */
-exports.sendCode = function (data) {return (0, _request.default)("/sms/code", "POST", data);};
-
-/**
-                                                                                                * 用户注册
-                                                                                                * @param {String}  phone
-                                                                                                * @param {String}  password
-                                                                                                * @param {String} code 验证码
-                                                                                                * @return {String} token 用户凭证
-                                                                                                * @return {Object} userInfo
-                                                                                                */
-exports.Register = function (data) {return (0, _request.default)("/register/phone", "POST", data);};
-
-/**
-                                                                                                      * 修改密码
-                                                                                                      * @param {String}  newPassword
-                                                                                                      * @param {String}  code
-                                                                                                      */
-exports.ChangePassword = function (data) {return (0, _request.default)("/changePassword/phone/".concat(data.phone, " "), "POST", data);};
-
-/**
-                                                                                                                                           * 用户手机登录
-                                                                                                                                           * @param {String}  phone
-                                                                                                                                           * @param {String}  password
-                                                                                                                                           * @return {String} token 用户凭证
-                                                                                                                                           * @return {Object} userInfo
-                                                                                                                                           */
-exports.Login = function (data) {return (0, _request.default)("/login/phone", "POST", data);};
-
-/**
-                                                                                                * 微信登录
-                                                                                                * @param {String}  code 用户code值，通过微信api获取
-                                                                                                * @return {String} token 用户凭证
-                                                                                                * @return {Object} userInfo
-                                                                                                */
-exports.WXLogin = function (data) {return (0, _request.default)("/login/wechat", "POST", data);};
-
-/**
-                                                                                                   * 退出登录
-                                                                                                   */
-exports.loginOut = function () {return (0, _request.default)("/logout ", "GET", {});};
-
-/***/ }),
-
 /***/ 3:
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -10125,7 +10153,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 343:
+/***/ 352:
 /*!***********************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_team.js ***!
   \***********************************************/
@@ -10263,6 +10291,369 @@ exports.checkApply = function (_ref4) {var teamId = _ref4.teamId,memberId = _ref
 /***/ }),
 
 /***/ 58:
+/*!*******************************************!*\
+  !*** D:/服务外包/竞赛统计/static/js/Htmlparse.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /*
+                                                                                                      * HTML5 Parser By Sam Blowes
+                                                                                                      *
+                                                                                                      * Designed for HTML5 documents
+                                                                                                      *
+                                                                                                      * Original code by John Resig (ejohn.org)
+                                                                                                      * http://ejohn.org/blog/pure-javascript-html-parser/
+                                                                                                      * Original code by Erik Arvidsson, Mozilla Public License
+                                                                                                      * http://erik.eae.net/simplehtmlparser/simplehtmlparser.js
+                                                                                                      *
+                                                                                                      * ----------------------------------------------------------------------------
+                                                                                                      * License
+                                                                                                      * ----------------------------------------------------------------------------
+                                                                                                      *
+                                                                                                      * This code is triple licensed using Apache Software License 2.0,
+                                                                                                      * Mozilla Public License or GNU Public License
+                                                                                                      *
+                                                                                                      * ////////////////////////////////////////////////////////////////////////////
+                                                                                                      *
+                                                                                                      * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+                                                                                                      * use this file except in compliance with the License.  You may obtain a copy
+                                                                                                      * of the License at http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                      *
+                                                                                                      * ////////////////////////////////////////////////////////////////////////////
+                                                                                                      *
+                                                                                                      * The contents of this file are subject to the Mozilla Public License
+                                                                                                      * Version 1.1 (the "License"); you may not use this file except in
+                                                                                                      * compliance with the License. You may obtain a copy of the License at
+                                                                                                      * http://www.mozilla.org/MPL/
+                                                                                                      *
+                                                                                                      * Software distributed under the License is distributed on an "AS IS"
+                                                                                                      * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+                                                                                                      * License for the specific language governing rights and limitations
+                                                                                                      * under the License.
+                                                                                                      *
+                                                                                                      * The Original Code is Simple HTML Parser.
+                                                                                                      *
+                                                                                                      * The Initial Developer of the Original Code is Erik Arvidsson.
+                                                                                                      * Portions created by Erik Arvidssson are Copyright (C) 2004. All Rights
+                                                                                                      * Reserved.
+                                                                                                      *
+                                                                                                      * ////////////////////////////////////////////////////////////////////////////
+                                                                                                      *
+                                                                                                      * This program is free software; you can redistribute it and/or
+                                                                                                      * modify it under the terms of the GNU General Public License
+                                                                                                      * as published by the Free Software Foundation; either version 2
+                                                                                                      * of the License, or (at your option) any later version.
+                                                                                                      *
+                                                                                                      * This program is distributed in the hope that it will be useful,
+                                                                                                      * but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                                                                                      * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                                                                                      * GNU General Public License for more details.
+                                                                                                      *
+                                                                                                      * You should have received a copy of the GNU General Public License
+                                                                                                      * along with this program; if not, write to the Free Software
+                                                                                                      * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+                                                                                                      *
+                                                                                                      * ----------------------------------------------------------------------------
+                                                                                                      * Usage
+                                                                                                      * ----------------------------------------------------------------------------
+                                                                                                      *
+                                                                                                      * // Use like so:
+                                                                                                      * HTMLParser(htmlString, {
+                                                                                                      *     start: function(tag, attrs, unary) {},
+                                                                                                      *     end: function(tag) {},
+                                                                                                      *     chars: function(text) {},
+                                                                                                      *     comment: function(text) {}
+                                                                                                      * });
+                                                                                                      *
+                                                                                                      * // or to get an XML string:
+                                                                                                      * HTMLtoXML(htmlString);
+                                                                                                      *
+                                                                                                      * // or to get an XML DOM Document
+                                                                                                      * HTMLtoDOM(htmlString);
+                                                                                                      *
+                                                                                                      * // or to inject into an existing document/DOM node
+                                                                                                      * HTMLtoDOM(htmlString, document);
+                                                                                                      * HTMLtoDOM(htmlString, document.body);
+                                                                                                      *
+                                                                                                      */
+// Regular Expressions for parsing tags and attributes
+var startTag = /^<([-A-Za-z0-9_]+)((?:\s+[a-zA-Z_:][-a-zA-Z0-9_:.]*(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)>/;
+var endTag = /^<\/([-A-Za-z0-9_]+)[^>]*>/;
+var attr = /([a-zA-Z_:][-a-zA-Z0-9_:.]*)(?:\s*=\s*(?:(?:"((?:\\.|[^"])*)")|(?:'((?:\\.|[^'])*)')|([^>\s]+)))?/g; // Empty Elements - HTML 5
+
+var empty = makeMap('area,base,basefont,br,col,frame,hr,img,input,link,meta,param,embed,command,keygen,source,track,wbr'); // Block Elements - HTML 5
+// fixed by xxx 将 ins 标签从块级名单中移除
+
+var block = makeMap('a,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video'); // Inline Elements - HTML 5
+
+var inline = makeMap('abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var'); // Elements that you can, intentionally, leave open
+// (and which close themselves)
+
+var closeSelf = makeMap('colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr'); // Attributes that have their values filled in disabled="disabled"
+
+var fillAttrs = makeMap('checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected'); // Special Elements (can contain anything)
+
+var special = makeMap('script,style');
+function HTMLParser(html, handler) {
+  var index;
+  var chars;
+  var match;
+  var stack = [];
+  var last = html;
+
+  stack.last = function () {
+    return this[this.length - 1];
+  };
+
+  while (html) {
+    chars = true; // Make sure we're not in a script or style element
+
+    if (!stack.last() || !special[stack.last()]) {
+      // Comment
+      if (html.indexOf('<!--') == 0) {
+        index = html.indexOf('-->');
+
+        if (index >= 0) {
+          if (handler.comment) {
+            handler.comment(html.substring(4, index));
+          }
+
+          html = html.substring(index + 3);
+          chars = false;
+        } // end tag
+
+      } else if (html.indexOf('</') == 0) {
+        match = html.match(endTag);
+
+        if (match) {
+          html = html.substring(match[0].length);
+          match[0].replace(endTag, parseEndTag);
+          chars = false;
+        } // start tag
+
+      } else if (html.indexOf('<') == 0) {
+        match = html.match(startTag);
+
+        if (match) {
+          html = html.substring(match[0].length);
+          match[0].replace(startTag, parseStartTag);
+          chars = false;
+        }
+      }
+
+      if (chars) {
+        index = html.indexOf('<');
+        var text = index < 0 ? html : html.substring(0, index);
+        html = index < 0 ? '' : html.substring(index);
+
+        if (handler.chars) {
+          handler.chars(text);
+        }
+      }
+    } else {
+      html = html.replace(new RegExp('([\\s\\S]*?)<\/' + stack.last() + '[^>]*>'), function (all, text) {
+        text = text.replace(/<!--([\s\S]*?)-->|<!\[CDATA\[([\s\S]*?)]]>/g, '$1$2');
+
+        if (handler.chars) {
+          handler.chars(text);
+        }
+
+        return '';
+      });
+      parseEndTag('', stack.last());
+    }
+
+    if (html == last) {
+      throw 'Parse Error: ' + html;
+    }
+
+    last = html;
+  } // Clean up any remaining tags
+
+
+  parseEndTag();
+
+  function parseStartTag(tag, tagName, rest, unary) {
+    tagName = tagName.toLowerCase();
+
+    if (block[tagName]) {
+      while (stack.last() && inline[stack.last()]) {
+        parseEndTag('', stack.last());
+      }
+    }
+
+    if (closeSelf[tagName] && stack.last() == tagName) {
+      parseEndTag('', tagName);
+    }
+
+    unary = empty[tagName] || !!unary;
+
+    if (!unary) {
+      stack.push(tagName);
+    }
+
+    if (handler.start) {
+      var attrs = [];
+      rest.replace(attr, function (match, name) {
+        var value = arguments[2] ? arguments[2] : arguments[3] ? arguments[3] : arguments[4] ? arguments[4] : fillAttrs[name] ? name : '';
+        attrs.push({
+          name: name,
+          value: value,
+          escaped: value.replace(/(^|[^\\])"/g, '$1\\\"') // "
+        });
+
+      });
+
+      if (handler.start) {
+        handler.start(tagName, attrs, unary);
+      }
+    }
+  }
+
+  function parseEndTag(tag, tagName) {
+    // If no tag name is provided, clean shop
+    if (!tagName) {
+      var pos = 0;
+    } // Find the closest opened tag of the same type
+    else {
+        for (var pos = stack.length - 1; pos >= 0; pos--) {
+          if (stack[pos] == tagName) {
+            break;
+          }
+        }
+      }
+
+    if (pos >= 0) {
+      // Close all the open elements, up the stack
+      for (var i = stack.length - 1; i >= pos; i--) {
+        if (handler.end) {
+          handler.end(stack[i]);
+        }
+      } // Remove the open elements from the stack
+
+
+      stack.length = pos;
+    }
+  }
+}
+
+function makeMap(str) {
+  var obj = {};
+  var items = str.split(',');
+
+  for (var i = 0; i < items.length; i++) {
+    obj[items[i]] = true;
+  }
+
+  return obj;
+}
+
+function removeDOCTYPE(html) {
+  return html.replace(/<\?xml.*\?>\n/, '').replace(/<!doctype.*>\n/, '').replace(/<!DOCTYPE.*>\n/, '');
+}
+
+function parseAttrs(attrs) {
+  return attrs.reduce(function (pre, attr) {
+    var value = attr.value;
+    var name = attr.name;
+
+    if (pre[name]) {
+      pre[name] = pre[name] + " " + value;
+    } else {
+      pre[name] = value;
+    }
+
+    return pre;
+  }, {});
+}
+
+function parseHtml(html) {
+  html = removeDOCTYPE(html);
+  var stacks = [];
+  var results = {
+    node: 'root',
+    children: [] };
+
+  HTMLParser(html, {
+    start: function start(tag, attrs, unary) {
+      var node = {
+        name: tag };
+
+
+      if (attrs.length !== 0) {
+        node.attrs = parseAttrs(attrs);
+      }
+
+      if (unary) {
+        var parent = stacks[0] || results;
+
+        if (!parent.children) {
+          parent.children = [];
+        }
+
+        parent.children.push(node);
+      } else {
+        stacks.unshift(node);
+      }
+    },
+    end: function end(tag) {
+      var node = stacks.shift();
+      if (node.name !== tag) console.error('invalid state: mismatch end tag');
+
+      if (stacks.length === 0) {
+        results.children.push(node);
+      } else {
+        var parent = stacks[0];
+
+        if (!parent.children) {
+          parent.children = [];
+        }
+
+        parent.children.push(node);
+      }
+    },
+    chars: function chars(text) {
+      var node = {
+        type: 'text',
+        text: text };
+
+
+      if (stacks.length === 0) {
+        results.children.push(node);
+      } else {
+        var parent = stacks[0];
+
+        if (!parent.children) {
+          parent.children = [];
+        }
+
+        parent.children.push(node);
+      }
+    },
+    comment: function comment(text) {
+      var node = {
+        node: 'comment',
+        text: text };
+
+      var parent = stacks[0];
+
+      if (!parent.children) {
+        parent.children = [];
+      }
+
+      parent.children.push(node);
+    } });
+
+  return results.children;
+}var _default =
+
+parseHtml;exports.default = _default;
+
+/***/ }),
+
+/***/ 67:
 /*!******************************************************!*\
   !*** D:/服务外包/竞赛统计/static/request/api_competition.js ***!
   \******************************************************/
@@ -10280,7 +10671,7 @@ exports.getAllCompetition = function () {return (0, _request.default)("/competit
 
 /***/ }),
 
-/***/ 770:
+/***/ 793:
 /*!****************************************************!*\
   !*** D:/服务外包/竞赛统计/components/select-city/citys.js ***!
   \****************************************************/
@@ -10490,6 +10881,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   gCodeMaxTime: 10, // 倒计时时长
   gUserInfo: {}, // 个人信息
   gEditContent: "", // MD编辑内容
+  gobj_RichText: null, // 富文本内容
   garr_competitions: [], // 所有比赛
   garr_forumTags: [],
   garr_prizeLevels: [//获奖等级

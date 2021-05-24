@@ -24,6 +24,13 @@
 				"navigationBarTitleText": "Aha口袋"
 			}
 		},
+		/* 富文本阅读器 */
+		{
+			"path": "pages/System/AhaRichText",
+			"style": {
+				"navigationBarTitleText": "阅读"
+			}
+		},
 		/* 
 			主页
 			4个副页全部放在app.vue中
@@ -277,6 +284,18 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "我的讨论"
+		    }
+		}, {
+		    "path" : "pages/Interflow/Forum/GoodsForums",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "点赞的讨论"
+		    }
+		}, {
+		    "path" : "pages/Interflow/Forum/MyComments",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "我的评论"
 		    }
 		}
     ],

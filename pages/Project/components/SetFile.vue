@@ -1,6 +1,6 @@
 <!-- 文件设置 -->
 <template>
-	<view class="set-file fix-screen" @click="$emit('close')" @touchmove.stop.prevent>
+	<view class="set-file fix-screen" @click="$emit('close')" @touchmove.stop>
 		<div class="content" @click.stop>
 			<view class="title">文件信息设置</view>
 			<form @submit="sure">

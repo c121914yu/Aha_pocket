@@ -106,7 +106,7 @@ export default {
 		width 100%
 		padding 10px
 		background-color #FFFFFF
-		textarea
+		.textarea
 			width 100%
 			min-height 65px
 			max-height 150px

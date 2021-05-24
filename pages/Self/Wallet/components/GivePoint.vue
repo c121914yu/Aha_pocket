@@ -7,12 +7,12 @@
 		<view class="content">
 			<view class="search">
 				<text class="iconfont icon-sousuo"></text>
-				<input type="text" placeholder="根据userId搜索用户" v-model="userId"/>
+				<input class="input-search" type="text" placeholder="根据userId搜索用户" v-model="userId"/>
 				<text class="search-btn" @click="onclickSearch">搜索</text>
 			</view>
 			<view v-if="obj_userInfo" class="userInfo">
 				<view class="center h3">用户信息</view>
-				<image :src="obj_userInfo.avatarUrl"></image>
+				<aha-avatar :src="obj_userInfo.avatarUrl"></aha-avatar>
 				<view class="item userId">
 					<text class="label">userId:</text>
 					<text class="value">{{obj_userInfo.userId}}</text>
@@ -108,7 +108,7 @@ export default {
 				position absolute
 				margin-left 7px
 				color var(--gray1)
-			input
+			.input-search
 				flex 1
 				padding-left 30px
 				border var(--border2)
@@ -120,7 +120,7 @@ export default {
 		/* 用户信息 */
 		.userInfo
 			margin-top 5px
-			image
+			.image
 				margin auto
 				width 60px
 				height 60px
@@ -137,10 +137,6 @@ export default {
 				.value
 					margin-left 5px
 					color var(--origin1)
-				input
-					padding 0 5px
-					border-radius 4px
-					border var(--border2)
 		.btns
 			margin-top 10px
 			font-size 30rpx

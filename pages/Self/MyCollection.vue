@@ -5,12 +5,14 @@
 <template>
 	<view class="my-collection">
 		<!-- 导航 -->
-		<top-navs
-			:navs="arr_navs"
-			padding
-			radius="0"
-			@navChange="changeType">
-		</top-navs>
+		<view class="nav">
+			<top-navs
+				:navs="arr_navs"
+				padding
+				radius="0"
+				@navChange="changeType">
+			</top-navs>
+		</view>
 		<!-- 列表 -->
 		<view class="projects" v-if="activeNav === 0">
 			<navigator 
@@ -139,11 +141,17 @@ export default {
 
 <style lang="stylus" scoped>
 .my-collection
+	padding-top 52px
 	min-height 100vh
-	padding-bottom 10px
 	background-color var(--white1)
 	navigator
 		display block
+	.nav
+		z-index 10
+		position fixed
+		top 0
+		width 100%
+		border-bottom var(--border2)
 	.projects
 		padding 0 5%
 	.forums
@@ -152,6 +160,6 @@ export default {
 		.forum
 			border-bottom var(--border2)
 	.remark
-		margin 10px 0
+		padding-bottom 10px
 		color var(--gray2)
 </style>

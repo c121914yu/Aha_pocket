@@ -3,10 +3,10 @@
 	author yjl
 -->
 <template>
-	<view class="teams" @touchmove="ontouchMove">
+	<view class="teams" @touchmove.prevent>
 		<!-- 筛选框 -->
 		<view class="filter">
-			<team-filter @canSlide="is_canSlide=$event"></team-filter>
+			<team-filter></team-filter>
 		</view>
 		<view class="list">
 			<team-card
@@ -32,7 +32,6 @@ export default {
 	},
 	data() {
 		return {
-			is_canSlide: true,
 			pageSize: 10,
 			pageNum: 1,
 			is_loadAll: false,
@@ -43,16 +42,6 @@ export default {
 		this.loadTeams(true)
 	},
 	methods: {
-		/**
-		 * 滑动事件
-		 */
-		ontouchMove(e)
-		{
-			/* 阻止滑动 */
-			if(!this.is_canSlide) {
-				e.preventDefault()
-			}
-		},
 		/**
 		 * 加载竞赛团队数据，默认会筛选招募中的队伍
 		 * @param {Boolean}  init 是否初始化

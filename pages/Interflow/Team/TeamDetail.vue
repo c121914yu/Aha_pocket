@@ -39,8 +39,8 @@
 			@navChange="currentNavs=$event.value">
 		</top-navs>
 		<!-- 介绍-->
-		<view v-if="currentNavs===0" class="card">
-			<view class="rich-text" v-html="intro || '暂无团队介绍'"></view>
+		<view v-if="currentNavs===0" class="card" @click="gReadRichText(intro,name)">
+			<rich-text :nodes="intro || '暂无团队介绍'"></rich-text>
 		</view>
 		<!-- 成就 -->
 		<view v-if="currentNavs===1" class="card">
@@ -59,7 +59,7 @@
 		<!-- 招募 -->
 		<view v-if="currentNavs===3" class="card">
 			<view v-if="recruitState===0" class="center">未发布招募内容</view>
-			<view class="rich-text" v-html="recruitContent"></view>
+			<rich-text :nodes="recruitContent" @click="gReadRichText(recruitContent,name)"></rich-text>
 		</view>
 		<!-- 申请加入弹窗 -->
 		<apply-join 

@@ -32,7 +32,10 @@
 		<!-- contaniner左右分布 -->
 		<view class="container">
 			<!-- 简要介绍 -->
-			<view class="intro small" v-html="teamIntro"></view>
+			<view class="intro small">
+				<rich-text :nodes="teamIntro"></rich-text>
+			</view>
+			
 			<!--咨询按键 -->
 			<button v-if="isShowContact" class="contact">咨询</button>
 		</view>

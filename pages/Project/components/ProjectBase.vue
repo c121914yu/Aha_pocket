@@ -71,7 +71,9 @@
 		<!-- md编辑 -->
 		<view class="description">
 			<view class="title">自定义描述</view>
-			<view class="intro" v-if="intro" v-html="intro"></view>
+			<view v-if="intro" class="intro">
+				<rich-text :nodes="intro"></rich-text>
+			</view>
 			<button @click="startEdit">编辑</button>
 		</view>
 	</view>

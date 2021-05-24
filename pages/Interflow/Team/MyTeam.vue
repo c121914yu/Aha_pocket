@@ -4,22 +4,24 @@
  -->
 <template>
 	<view v-if="env!==2" class="my-team">
-		<view class="search">
-			<search-input 
-				textBgColor="var(--origin2)" 
-				border="1px solid var(--origin2)"
-				placeholder="搜索我的团队"
-				v-model="search">
-			</search-input>
-		</view>
-		<view class="filter">
-			<view 
-				class="item"
-				:class="filter.value === activeFilter ? 'active' : ''"
-				v-for="filter in arr_filter"
-				:key="filter.value"
-				@click="activeFilter=filter.value">
-				{{filter.label}}
+		<view class="header">
+			<view class="search">
+				<search-input 
+					textBgColor="var(--origin2)" 
+					border="1px solid var(--origin2)"
+					placeholder="搜索我的团队"
+					v-model="search">
+				</search-input>
+			</view>
+			<view class="filter">
+				<view 
+					class="item"
+					:class="filter.value === activeFilter ? 'active' : ''"
+					v-for="filter in arr_filter"
+					:key="filter.value"
+					@click="activeFilter=filter.value">
+					{{filter.label}}
+				</view>
 			</view>
 		</view>
 		<view class="teams">
@@ -60,7 +62,7 @@ export default {
 			arr_teams: []
 		}
 	},
-	onLoad() {
+	onShow() {
 		this.loadTeams(true,true)
 	},
 	onPullDownRefresh() {
@@ -128,31 +130,37 @@ export default {
 <style lang="stylus" scoped>
 .my-team
 	min-height 100vh
-	margin-bottom 60px
+	padding-top 82px
 	padding-bottom constant(safe-area-inset-bottom)
 	padding-bottom env(safe-area-inset-bottom)
 	background-color var(--white1)
-	.search
-		padding 5px 15px
-		background-color #FFFFFF
-	.filter
-		background-color #FFFFFF
-		display flex
-		align-items center
-		justify-content space-around
-		.item
-			padding 8px 0
-			white-space nowrap
-			border-bottom 3px solid transparent
-			font-size 24rpx
-			font-weight 600
-			&.active
-				border-bottom-color var(--origin2)
-				color var(--origin2)
+	.header
+		z-index 10
+		position fixed
+		top 0
+		width 100%
+		.search
+			padding 5px 15px
+			background-color #FFFFFF
+		.filter
+			background-color #FFFFFF
+			display flex
+			align-items center
+			justify-content space-around
+			.item
+				padding 8px 0
+				white-space nowrap
+				border-bottom 3px solid transparent
+				font-size 24rpx
+				font-weight 600
+				&.active
+					border-bottom-color var(--origin2)
+					color var(--origin2)
 	.teams
 		width 90%
 		margin 10px auto
 	.remark
+		margin-bottom 60px
 		font-size 22rpx
 		color var(--gray2)
 </style>

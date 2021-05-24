@@ -5,6 +5,7 @@ export default  {
 	gCodeMaxTime: 10, // 倒计时时长
 	gUserInfo: {}, // 个人信息
 	gEditContent: "", // MD编辑内容
+	gobj_RichText: null, // 富文本内容
 	garr_competitions: [], // 所有比赛
 	garr_forumTags: [],
 	garr_prizeLevels: [//获奖等级

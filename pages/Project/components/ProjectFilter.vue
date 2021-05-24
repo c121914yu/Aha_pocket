@@ -1,12 +1,12 @@
 <template>
-	<view class="filter-card fix-screen">
+	<view class="filter-card fix-screen" @touchmove.stop>
 		<view class="blank" @click="$emit('close')"></view>
 		<view class="container">
 			<view class="head center">
 				<view class="h3">项目筛选</view>
 				<view class="small">{{ filterMsg }}</view>
 			</view>
-			<view class="filter">
+			<scroll-view class="filter" scroll-y="scroll-y">
 				<!-- 搜索框 -->
 				<view class="search-input">
 					<text class="iconfont icon-sousuo"></text>
@@ -39,8 +39,7 @@
 							@click="
 								compId = null;
 								compType = index;
-							"
-						>
+							">
 							{{ item.label }}
 						</view>
 					</view>
@@ -58,9 +57,16 @@
 				</view>
 				<!-- 获奖 -->
 				<view v-if="filterNav === 1" class="value level">
-					<view class="item" :class="index === level ? 'active' : ''" v-for="(item, index) in arr_level" :key="index" @click="level = index">{{ item.label }}</view>
+					<view 
+						class="item" 
+						:class="index === level ? 'active' : ''" 
+						v-for="(item, index) in arr_level" 
+						:key="index" 
+						@click="level = index">
+						{{ item.label }}
+					</view>
 				</view>
-			</view>
+			</scroll-view>
 			<!-- 按键组 -->
 			<view class="btns">
 				<button class="filter-btn" @click="sureFilter(false)">筛选项目</button>
@@ -187,8 +193,8 @@ export default {
 			background-color var(--origin2)
 		.filter
 			min-height 200px
-			max-height 80vh
-			padding 10px 10px 70px
+			max-height 60vh
+			padding 10px 0 60px
 			background-color var(--white1)
 			border-top-left-radius 22px
 			border-top-right-radius 22px

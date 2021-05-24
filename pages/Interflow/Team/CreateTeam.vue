@@ -39,7 +39,9 @@
 			</aha-tags>
 			<!-- 团队介绍 -->
 			<view style="margin: 5px 0" class="title strong">团队介绍</view>
-			<view v-if="intro" class="intro" v-html="intro"></view>
+			<view v-if="intro" class="intro">
+				<rich-text :nodes="intro"></rich-text>
+			</view>
 			<view v-else class="intro" @click="startEdit">点击编辑团队介绍</view>
 			<button class="intro-btn" @click="startEdit">编辑</button>
 		</view>

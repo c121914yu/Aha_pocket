@@ -6,15 +6,15 @@
 	<view 
 		v-if="arr_notices.length>0" 
 		class="aha-notice fix-screen"
-		@touchmove.stop.prevent>
+		@touchmove.stop>
 		<view class="content">
 			<text class="iconfont icon-guanbi" @click="closeNotice"></text>
-			<view class="notice">
+			<view class="notice" @click="gReadRichText(arr_notices[currentPage].content,arr_notices[currentPage].title)">
 				<view class="center h3">{{arr_notices[currentPage].title}}</view>
 				<scroll-view 
 					class="notice-content rich-text" 
-					scroll-y="scroll-y"
-					v-html="arr_notices[currentPage].content">
+					scroll-y="scroll-y">
+					<rich-text :nodes="arr_notices[currentPage].content"></rich-text>
 				</scroll-view>
 			</view>
 			<text class="page small">{{currentPage+1}} / {{arr_notices.length}}</text>
@@ -96,7 +96,6 @@ export default {
 				margin-bottom 5px
 			.notice-content
 				max-height 70vh
-				padding 0 10px
 				overflow-y auto
 		/* 页码 */
 		.page

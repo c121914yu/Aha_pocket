@@ -8,7 +8,7 @@
 		<view 
 			class="mask" 
 			@click.self="$emit('close')" 
-			@touchmove.stop.prevent>
+			@touchmove.stop>
 		</view>
 		<!-- 主体内容 -->
 		<view class="content">

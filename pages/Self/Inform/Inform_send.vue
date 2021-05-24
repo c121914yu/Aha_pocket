@@ -19,7 +19,9 @@
 		</view>
 		<!-- 信息内容 -->
 		<view class="content">
-			<view v-if="content.val" v-html="content.val"></view>
+			<view v-if="content.val">
+				<rich-text :nodes="content.val"></rich-text>
+			</view>
 			<view v-else class="remark" @click="onclickEdit">点击编辑发送内容</view>
 		</view>
 		<!-- 操作按键 -->

@@ -1,6 +1,6 @@
 <!-- 写评论 -->
 <template>
-	<view class="write-remark" @touchmove.stop.prevent>
+	<view class="write-remark" @touchmove.stop>
 		<!-- 提示模块 -->
 		<view v-if="type===0" class="remark-hint">
 			<button class="write" @click="type=1">发表评论</button>
@@ -23,7 +23,8 @@
 						v-model="checkCommentType">
 					</aha-picker>
 				</view>
-				<textarea 
+				<textarea
+					class="textarea"
 					placeholder="写下你的评论,让大家了解更多" 
 					v-model="commentContent"
 					maxlength="-1"
@@ -206,7 +207,7 @@ export default {
 				margin-bottom 5px
 				display flex
 				justify-content space-between
-			textarea
+			.textarea
 				margin 5px 0
 				width 100%
 				min-height 80px

@@ -3,7 +3,7 @@
 	author yjl
 -->
 <template>
-	<view id="forum" class="forum-detail" @touchmove="ontouchMove">
+	<view id="forum" class="forum-detail" @touchmove.prevent>
 		<!-- 编辑按键 -->
 		<navigator 
 			v-if="relation===1" 
@@ -45,7 +45,7 @@
 			</view>
 		</view>
 		<view class="content">
-			<view class="rich-text" v-html="content"></view>
+			<rich-text :nodes="content || '无内容'"></rich-text>
 			<!-- 最后更新时间 -->
 			<view class="update-time">
 				最新更新时间{{updateTime ? gformatDate(updateTime) : gformatDate(createTime)}}
@@ -196,14 +196,6 @@ export default {
 		this.$refs["Comments"].loadComment()
 	},
 	methods: {
-		/**
-		 * 滑动事件
-		 */
-		ontouchMove(e)
-		{
-			/* 阻止滑动 */
-			e.preventDefault()
-		},
 		/**
 		 * 点击关注用户,根据用户关系执行关注/取消关注
 		 */

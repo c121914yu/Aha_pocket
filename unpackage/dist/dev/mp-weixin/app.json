@@ -4,6 +4,7 @@
     "pages/Login/Register",
     "pages/Login/FindPassword",
     "pages/OutLink",
+    "pages/System/AhaRichText",
     "pages/app",
     "pages/Self/UserHome",
     "pages/Self/Resume/Resume",
@@ -45,7 +46,9 @@
     "pages/Interflow/Team/TeamDetail",
     "pages/Interflow/Forum/Create_EditForum",
     "pages/Interflow/Forum/ForumDetail",
-    "pages/Interflow/Forum/MyForum"
+    "pages/Interflow/Forum/MyForum",
+    "pages/Interflow/Forum/GoodsForums",
+    "pages/Interflow/Forum/MyComments"
   ],
   "subPackages": [],
   "window": {

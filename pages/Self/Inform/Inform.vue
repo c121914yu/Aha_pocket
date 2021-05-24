@@ -26,7 +26,9 @@
 				<text class="label">时&emsp;间:</text>{{receiveDate}}
 			</view>
 		</view>
-		<view class="content rich-text" v-html="content"></view>
+		<view class="content rich-text" @click="gReadRichText(content,title)">
+			<rich-text :nodes="content"></rich-text>
+		</view>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
 	</view>

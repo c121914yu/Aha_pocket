@@ -244,12 +244,15 @@ export default {
 .my-projects
 	min-height 100vh
 	background-color var(--white1)
-	margin-bottom 60px
+	padding-top 90px
 	padding-bottom constant(safe-area-inset-bottom)
 	padding-bottom env(safe-area-inset-bottom)
 	/* 数据统计 */
 	.header
-		margin-bottom 10px
+		z-index 10
+		position fixed
+		top 0
+		width 100%
 		padding 5px
 		font-size 24rpx
 		background-color #FFFFFF
@@ -297,5 +300,6 @@ export default {
 		width 90%
 		margin auto
 	.remark
+		margin-bottom 60px
 		color var(--gray2)
 </style>

@@ -203,7 +203,7 @@ export default {
 				width 100%
 				padding 5px
 				border-radius 40px
-				box-shadow var(--shadow-beside)
+				box-shadow var(--shadow-below)
 				font-size 30rpx
 				display flex
 				align-items center

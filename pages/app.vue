@@ -3,17 +3,14 @@
 	author: yjl
  -->
 <template>
-	<view class="app" @touchmove="ontouchMove">
+	<view class="app" @touchmove.prevent>
 		<!-- 用户须知 -->
 		<user-aggrement
 			v-if="!is_signedNotice"
 			@readed="successSign">
 		</user-aggrement>
 		<!-- 系统公告 -->
-		<system-notice 
-			ref="systemNotice" 
-			@isSlide="is_canSlide=$event">
-		</system-notice>
+		<system-notice ref="systemNotice"></system-notice>
 		<!-- 底部导航 -->
 		<aha-tabar :currentNav="currentNav" @navigate="onclickTabBar"></aha-tabar>
 		<!-- 项目主页 -->
@@ -64,7 +61,6 @@ export default {
 	},
 	data() {
 		return {
-			is_canSlide: true,
 			navs: [ // 利用loaded实现类似keep-alive效果
 				{name: "ProjectHome",loaded: true},
 				{name: "Interflow",loaded: false},
@@ -138,16 +134,6 @@ export default {
 		}
 	},
 	methods: {
-		/**
-		 * 滑动事件
-		 */
-		ontouchMove(e)
-		{
-			/* 阻止滑动 */
-			if(!this.is_canSlide) {
-				e.preventDefault()
-			}
-		},
 		/**
 		 * 判断是否有未读，如果有未读，提示是否需要跳转消息通知
 		 */

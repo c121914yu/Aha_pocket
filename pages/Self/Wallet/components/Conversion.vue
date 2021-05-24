@@ -6,7 +6,7 @@
 	<view class="conversion fix-screen">
 		<view class="content">
 			<view class="center h3">兑换Aha点</view>
-			<input type="text" placeholder="兑换码" v-model="code">
+			<input class="input" type="text" placeholder="兑换码" v-model="code">
 			<view class="btns">
 				<view class="cancel" @click="$emit('close')">取消</view>
 				<view class="confirm" @click="onclickConfirm">确认</view>
@@ -49,7 +49,7 @@ export default {
 	.content
 		width 90%
 		border-radius 8px
-		input
+		.input
 			margin 20px 0
 			border var(--border2)
 		.btns

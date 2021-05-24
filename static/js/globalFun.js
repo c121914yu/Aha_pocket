@@ -13,6 +13,7 @@
 	gChooseImage - 选择图片
 	gReadImage - 预览图片
 	gIsNull - 判断输入是否为空
+	gReadRichText - 富文本阅读
 	gBackPage - 页面后退并提示文字
 */
 import Vue from 'vue'
@@ -349,6 +350,24 @@ Vue.prototype.gBackPage = (msg,page=1) => {
 				})
 			}
 		}
+	})
+}
+
+/**
+ * 阅读富文本，跳转富文本阅读器
+ * @param {String}  content
+ * @param {type}  name 阅读器标题名
+ */
+Vue.prototype.gReadRichText = (content,name) => {
+	if(!content) {
+		return
+	}
+	getApp().globalData.gobj_RichText = {
+		content,
+		name
+	}
+	uni.navigateTo({
+		url: "/pages/System/AhaRichText"
 	})
 }
 

@@ -5,16 +5,16 @@
 <template>
 	<view class="my-forum">
 		<!-- 互动，点赞， -->
-		<view class="header" @click="undesign">
-			<view class="item">
+		<view class="header">
+			<navigator hover-class="none" class="item" url="./MyComments">
 				<text class="iconfont icon-hudong"></text>
 				<view class="label">互动</view>
-			</view>
-			<view class="item">
+			</navigator>
+			<navigator hover-class="none" class="item" url="./GoodsForums">
 				<text class="iconfont icon-zan"></text>
 				<view class="label">点赞</view>
-			</view>
-			<view class="item">
+			</navigator>
+			<view class="item" @click="undesign">
 				<text class="iconfont icon-jilu-copy"></text>
 				<view class="label">历史</view>
 			</view>

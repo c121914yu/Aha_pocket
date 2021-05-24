@@ -1,5 +1,5 @@
 <template>
-	<view class="project">
+	<view id="project" class="project">
 		<view class="header">
 			<aha-avatar :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="100" readed="readed"></aha-avatar>
 			<view class="right">
@@ -71,12 +71,14 @@
 				</view>
 			</view>
 		</view>
-		<view id="content2" class="content">
+		<view class="content" @click="gReadRichText(intro,name)">
 			<view class="head">项目详细</view>
 			<!-- 描述 -->
-			<view v-if="intro" class="item intro" @click="gReadImage(arr_introImg)">
+			<view class="item">
 				<view class="title">项目描述</view>
-				<view class="values"><view class="desc" v-html="intro"></view></view>
+				<view class="intro values">
+					<rich-text :nodes="intro || '无项目介绍'"></rich-text>
+				</view>
 			</view>
 			<!-- 附件 -->
 			<view v-if="resources.length>0" class="item files">
@@ -204,7 +206,6 @@ export default {
 			avatarUrl: 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png',
 			tags: '',
 			intro: '',
-			arr_introImg: [],
 			read: 0,
 			collect: 0,
 			compId: 0,
@@ -281,12 +282,6 @@ export default {
 		}
 	},
 	methods: {
-		/* 获取intro里的图片 */
-		getIntroImage()
-		{
-			// const reg = /(?<=src\=\").*?(?=\")/g
-			this.arr_introImg = this.intro.match(reg) || []
-		},
 		/* 判断是否提交过认领 */
 		judgeApply()
 		{
@@ -341,9 +336,10 @@ export default {
 			}
 			Promise.all([getRemarks(params),getPublicComments(params)])
 			.then(res => {
-				const fileComments = res[0].data
-				const publicComments = res[1].data
-				if(fileComments.dataPageSize < this.pageSize && publicComments.dataPageSize < this.pageSize){
+				const fileComments = res[0].data.pageData
+				const publicComments = res[1].data.pageData
+				console.log(fileComments);
+				if(fileComments.length < this.pageSize && publicComments.length < this.pageSize){
 					this.is_showAllComments = true
 				}
 				else{
@@ -352,7 +348,7 @@ export default {
 				if(init){
 					this.comments = []
 				}
-				publicComments.pageData.concat(fileComments.pageData).forEach(comment => {
+				publicComments.concat(fileComments).forEach(comment => {
 					if(comment.resourceId){
 						const file = this.resources.find(item => item.id === comment.resourceId)
 						comment.filename = file.name
@@ -472,7 +468,7 @@ export default {
 		scrollComment()
 		{
 			uni.createSelectorQuery().select("#comments").boundingClientRect(data=>{//目标节点
-			　　uni.createSelectorQuery().select("#content2").boundingClientRect((res)=>{//最外层盒子节点
+			　　uni.createSelectorQuery().select("#project").boundingClientRect((res)=>{//最外层盒子节点
 					uni.pageScrollTo({
 						duration:0,
 						scrollTop: data.top - res.top,//滚动到实际距离是元素距离顶部的距离减去最外层盒子的滚动距离
@@ -533,12 +529,12 @@ export default {
 				color var(--gray1)
 				font-weight 24rpx
 				font-size 24rpx
-			/* 描述 */
-			.desc
-				width 100%
-				border-radius 8px
-				padding 2px
-				border 2px solid var(--origin2)
+		/* 描述 */
+		.intro
+			width 100%
+			border-radius 8px
+			padding 2px
+			border 2px solid var(--origin2)
 	.header
 		display flex
 		align-items flex-start

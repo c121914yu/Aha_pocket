@@ -29,8 +29,8 @@
 				@input="selectPreIndex=null" 
 				v-model.number="amount">
 			<view class="btns">
-				<button class="pay" @click="onclickPay">充值</button>
-				<button class="cancel" @click="$emit('close')">取消</button>
+				<button class="btn pay" @click="onclickPay">充值</button>
+				<button class="btn cancel" @click="$emit('close')">取消</button>
 			</view>
 		</view>
 	</view>
@@ -159,7 +159,7 @@ export default {
 			margin-top 15px
 			display flex
 			justify-content space-around
-			button
+			.btn
 				width 35%
 			.cancel
 				background-color var(--gray1)

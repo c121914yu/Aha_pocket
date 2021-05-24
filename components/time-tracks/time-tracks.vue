@@ -7,7 +7,8 @@
 		<view
 			class="track"
 			v-for="(track,index) in tracks"
-			:key="index">
+			:key="index"
+			@click="onclickTrack(track)">
 			<!-- 辅助点 -->
 			<view class="dot"></view>
 			<!-- 时间 -->
@@ -27,6 +28,23 @@ export default {
 		tracks: {
 			type: Array,
 			default: () => []
+		}
+	},
+	created() {
+		console.log(this.tracks);
+	},
+	methods: {
+		/**
+		 * 点击轨迹，判断是哪种类型，如果是项目类型跳转项目主页
+		 * @param {Object} track 
+		 */
+		onclickTrack(track)
+		{
+			if(track.pid) {
+				uni.navigateTo({
+					url: `/pages/Project/Project?id=${track.pid}`
+				})
+			}
 		}
 	}
 }

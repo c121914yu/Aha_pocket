@@ -25,7 +25,9 @@
 						<text class="title">{{ item.title }}</text>
 						<text class="time">{{ gformatDate(item.receiveDate) }}</text>
 					</view>
-					<view class="content" v-html="item.content"></view>
+					<view class="content">
+						<rich-text :nodes="item.content"></rich-text>
+					</view>
 				</view>
 			</view>
 		</view>

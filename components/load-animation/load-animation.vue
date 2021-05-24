@@ -3,7 +3,7 @@
 	author yjl
  -->
 <template>
-	<view v-if="show" class="loading" @touchmove.stop.prevent>
+	<view v-if="show" class="loading" @touchmove.stop>
 		<view class="content">
 			<view class="load">
 				<text class="iconfont icon-start loader-star"></text>
