@@ -72,7 +72,7 @@ export default {
 			is_showPassword: true // 是否展示密码
 		}
 	},
-	onLoad() {
+	onLoad(e) {
 		/* 检查是否有存储token，验证登录身份 */
 		if (uni.getStorageSync('token')) {
 			uni.showLoading({
@@ -84,6 +84,10 @@ export default {
 				this.loginSuccess(res)
 			})
 			.finally(() => uni.hideLoading())
+		}
+		/* 检测是否携带跳转路径 */
+		if(e.path) {
+			getApp().globalData.startPath = `${e.path}?${e.paramKey}=${e.paramVal}`
 		}
 	},
 	methods: {

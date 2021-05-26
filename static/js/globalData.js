@@ -1,6 +1,7 @@
 export default  {
 	baseUrl: 'https://ahapocket.cn/api',
 	env: 0, // 版本表示，0开发，1体验，2上线
+	startPath: "", // 初始路径，会在app.vue中调用
 	gCodeTime: 0, // 用户允许发送验证码的倒计时
 	gCodeMaxTime: 10, // 倒计时时长
 	gUserInfo: {}, // 个人信息

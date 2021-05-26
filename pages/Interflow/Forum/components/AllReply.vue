@@ -53,7 +53,11 @@
 							</view>
 						</view>
 						<!-- 回复内容 -->
-						<view class="content" @click="replyOtherReply(reply)">{{reply.content}}</view>
+						<view 
+							class="content" 
+							@click="replyOtherReply(reply)">
+							<text style="margin-right: 5px;color: var(--gray2);">回复{{reply.toUserInfo.nickname}}: </text>{{reply.content}}
+						</view>
 						<!-- 底部，评论时间，回复，操作图标 -->
 						<view class="footer">
 							<view class="time">{{gformatDate(reply.createTime)}}</view>

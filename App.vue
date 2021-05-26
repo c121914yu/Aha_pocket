@@ -1,5 +1,6 @@
 <script>
 import globalData from './static/js/globalData.js'
+import Vue from 'vue'
 export default {
 	/* 全局变量,getApp().globalData 获取*/
 	globalData: globalData,
@@ -101,6 +102,14 @@ export default {
 				})
 			})
 		}
+		
+		/* 监听截屏 */
+		uni.onUserCaptureScreen(() => {
+			if(globalData.gUserInfo && globalData.gUserInfo.role.id === 2) {
+				const path = getCurrentPages()
+				Vue.prototype.gClipboardData(path[path.length-1].$page.fullPath,"复制路径成功")
+			}
+		})
 	},
 	methods: {
 		/**

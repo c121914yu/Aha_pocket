@@ -46,7 +46,7 @@ export default {
 			arr_navs: [ // 顶部导航
 				{label: "人才市场",value: 0,loaded: true},
 				{label: "竞赛组队",value: 1,loaded: false},
-				{label: "竞赛论坛",value: 2,loaded: false},
+				{label: "竞赛讨论",value: 2,loaded: false},
 			],
 			currentNav: 0
 		}

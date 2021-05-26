@@ -191,6 +191,14 @@ export default {
 			    getApp().globalData.garr_competitions = res.data
 				/* 加载项目列表 */
 				this.$refs.projectHome.loadProjects(true)
+				/* 判断有无跳转路径 */
+				const path = getApp().globalData.startPath
+				if(path) {
+					console.log(path);
+					uni.navigateTo({
+						url: path
+					})
+				}
 			})
 		},
 		/**

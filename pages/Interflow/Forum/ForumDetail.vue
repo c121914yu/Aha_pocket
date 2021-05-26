@@ -16,12 +16,18 @@
 			<view class="data">
 				<view class="time">{{gformatDate(createTime)}}</view>
 				<view class="read">{{read}}次阅读</view>
+				<view class="tag">{{tagname}}</view>
 			</view>
 			<view class="author">
 				<navigator
 					class="avatar"
+					hover-class="none"
 					:url="`/pages/Self/UserHome?userId=${obj_authorInfo.userId}`">
-					<image class="img" :src="obj_authorInfo.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
+					<aha-avatar
+						:src="obj_authorInfo.avatarUrl"
+						radius="radius"
+						size="50">
+					</aha-avatar>
 				</navigator>
 				<view class="name">
 					{{obj_authorInfo.nickname}}
@@ -138,6 +144,7 @@ export default {
 			is_liked: false,
 			read: 0,
 			title: "讨论题目",
+			tagname: "",
 			updateTime: new Date(), //最后更新时间
 			/* 评论对象 */
 			obj_writeContent: null,
@@ -161,17 +168,17 @@ export default {
 			this.read = res.data.read
 			this.title = res.data.title
 			this.updateTime = res.data.updateTime
-			
-			/* 评论数据 */
 			this.commentNum = res.data.commentNum
-			this.arr_comments = res.data.comments.pageData
-			if(this.arr_comments.length < this.pageSize) {
-				this.is_loadAllComment = true
-			}
-			else {
-				this.is_loadAllComment = false
-			}
+			this.tagname = getApp().globalData.garr_forumTags.find(item => item.id === res.data.tagId).name
 			console.log(res.data);
+			
+			/* 判断是否需要加载单条评论 */
+			if(e.commentId) {
+				this.$nextTick(() => {
+					this.$refs["Comments"].loadSingleComment(e.commentId)
+				})
+			}
+			
 			/* 获取与用户的关系 */
 			getUserRelation(this.obj_authorInfo.userId)
 			.then(res => {
@@ -338,25 +345,15 @@ export default {
 			font-size 20rpx
 			color var(--gray2)
 			display flex
-			.time
-				padding-right 10px
-				border-right var(--border2)
 			.read
-				padding-left 10px
+				margin 0 10px
+				padding 0 10px
+				border-left var(--border2)
+				border-right var(--border2)
 		.author
 			position relative
 			display flex
 			align-items flex-start
-			.avatar
-				width 40px
-				height 40px
-				border-radius 50%
-				padding 3px
-				background-color var(--origin3)
-				image
-					width 100%
-					height 100%
-					border-radius 50%
 			.name
 				margin-left 10px
 				flex 1

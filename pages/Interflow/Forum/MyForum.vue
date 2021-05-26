@@ -6,7 +6,7 @@
 	<view class="my-forum">
 		<!-- 互动，点赞， -->
 		<view class="header">
-			<navigator hover-class="none" class="item" url="./MyComments">
+			<navigator hover-class="none" class="item" url="./MyInteraction">
 				<text class="iconfont icon-hudong"></text>
 				<view class="label">互动</view>
 			</navigator>
@@ -14,10 +14,10 @@
 				<text class="iconfont icon-zan"></text>
 				<view class="label">点赞</view>
 			</navigator>
-			<view class="item" @click="undesign">
+			<navigator hover-class="none" class="item" url="./History">
 				<text class="iconfont icon-jilu-copy"></text>
 				<view class="label">历史</view>
-			</view>
+			</navigator>
 		</view>
 		<!-- 帖子列表 -->
 		<view class="list">
@@ -133,10 +133,6 @@ export default {
 			uni.navigateTo({
 				url: "./Create_EditForum"
 			})
-		},
-		undesign()
-		{
-			this.gToastMsg("设计中...")
 		}
 	}
 }

@@ -36,7 +36,7 @@ function myRequest(url,method,data){
 							uni.reLaunch({
 								url: "/pages/Login/Login",
 								success: () => {
-									Vue.prototype.gToastError(result.data.msg)
+									Vue.prototype.gToastError("登录凭证失效")
 								}
 							})
 						}

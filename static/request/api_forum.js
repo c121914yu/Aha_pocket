@@ -70,6 +70,13 @@ exports.getDiscussion = (postId) => request(`/post/detail/${postId}`,"GET")
 exports.getMylikeDiscussion = (params) => request("/post/myLike","GET",params)
 
 /**
+ * 获取我历史讨论记录
+ * @param {Number}  pageNum
+ * @param {Number}  pageSize
+ */
+exports.getHistoryDisc = (params) => request("/post/history","GET",params)
+
+/**
  * 点赞 / 取消点赞讨论帖子
  * @param {Boolean}  isLike true-点赞false-取消点赞
  */
@@ -89,6 +96,12 @@ exports.collectDiscussion = (postId,isCollect) => request(`/post/collection/${po
  * @param {String} loadBy 策略 hottest-最热（默认), latest-最新
  */
 exports.getDiscComments = ({postId,...params}) => request(`/post/${postId}/comments`,"GET",params)
+
+/**
+ * 获取单条评论信息
+ * @param {String}  commentId
+ */
+exports.getComment = (commentId) => request(`/post/comment/${commentId}`,"GET")
 
 /**
  * 点赞 / 取消点赞评论内容
@@ -116,6 +129,13 @@ exports.deleteDiscComment = (commentId) => request(`/post/comment/${commentId}`,
  * @param {String} loadBy 策略 hottest-最热（默认), latest-最新
  */
 exports.getDiscCommentsReply = ({commentId,...params}) => request(`/post/comment/${commentId}/replies`,"GET",params)
+
+/**
+ * 分页获取我的回复内容
+ * @param {Number}  pageNum
+ * @param {Number}  pageSize
+ */
+exports.getMyReply = ({userId,...params}) => request(`/post/reply/u/${userId}`,"GET",params)
 
 /**
  * 点赞 / 取消点赞回复内容

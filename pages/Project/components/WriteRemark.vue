@@ -173,7 +173,7 @@ export default {
 			color var(--font-dark)
 			border-radius 22px
 		.icon
-			font-size 44rpx
+			font-size 46rpx
 			color #FFFFFF
 			&.collected
 				color #e86452

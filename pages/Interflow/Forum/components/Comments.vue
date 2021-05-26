@@ -10,7 +10,7 @@
 		<!-- 评论列表 -->
 		<comment-card
 			v-for="(comment,i) in arr_comments"
-			:key="comment.id"
+			:key="i"
 			:comment="comment"
 			@deleteComment="deleteComment(i)"
 			@onclickLike="arr_comments[i].isLike=$event.isLike;arr_comments[i].likes=$event.likes"
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { getDiscComments } from "@/static/request/api_forum.js"
+import { getDiscComments,getComment } from "@/static/request/api_forum.js"
 import CommentCard from "./CommentCard.vue"
 import AllReply from "./AllReply.vue"
 export default {
@@ -79,6 +79,16 @@ export default {
 		this.loadComment(true,true)
 	},
 	methods: {
+		/**
+		 * 加载单条评论内容
+		 */
+		loadSingleComment(id)
+		{
+			getComment(id)
+			.then(res => {
+				this.obj_replyComment = res.data
+			})
+		},
 		/**
 		 * 加载评论
 		 * @param {String}  loadBy 排序方式

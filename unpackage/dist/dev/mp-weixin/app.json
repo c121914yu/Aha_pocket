@@ -48,7 +48,8 @@
     "pages/Interflow/Forum/ForumDetail",
     "pages/Interflow/Forum/MyForum",
     "pages/Interflow/Forum/GoodsForums",
-    "pages/Interflow/Forum/MyComments"
+    "pages/Interflow/Forum/MyInteraction",
+    "pages/Interflow/Forum/History"
   ],
   "subPackages": [],
   "window": {
@@ -62,6 +63,5 @@
       "desc": "获取您当前的城市信息"
     }
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

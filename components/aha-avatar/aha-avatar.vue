@@ -8,10 +8,19 @@
 		:style="{
 			'width': `${size}px`,
 			'height': `${size}px`,
-			'background-color': bgColor
+			'background-color': bgColor,
+			'border-radius': radius ? '50%' : '8px',
+			'padding': radius ? '3px' : '0'
 		}"
 		@click="readImg">
-		<image class="img" :src="src || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" mode="widthFix"></image>
+		<image 
+			class="img" 
+			:style="{
+				'border-radius': radius ? '50%' : '0'
+			}"
+			:src="src || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" 
+			:mode="radius ? 'aspectFill' : 'widthFix'">
+		</image>
 	</view>
 </template>
 
@@ -25,13 +34,17 @@ export default {
 		},
 		size: {
 			type: Number,
-			default: 80
+			default: 70
 		},
 		bgColor: {
 			type: String,
 			default: "var(--origin3)"
 		},
 		readed: {
+			type: Boolean,
+			default: false
+		},
+		radius: {
 			type: Boolean,
 			default: false
 		}
@@ -49,15 +62,13 @@ export default {
 
 <style lang="stylus" scoped>
 .avatar
-	margin-bottom 10px
 	flex-shrink 0
-	width 80px
-	height 80px
-	border-radius 8px
 	overflow hidden
 	display flex
 	align-items center
 	overflow hidden
 	.img
 		width 100%
+		height 100%
+		border-radius 50%
 </style>

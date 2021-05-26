@@ -4,9 +4,11 @@
  -->
 <template>
 	<view class="forum-card" @click="$emit('click',forum)">
-		<view class="avatar">
-			<image class="img" :src="forum.authorInfo.avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'"></image>
-		</view>
+		<aha-avatar
+			:src="forum.authorInfo.avatarUrl"
+			radius="radius"
+			size="40">
+		</aha-avatar>
 		<view class="right">
 			<view class="head">
 				<view class="name">{{forum.authorInfo.nickname}}</view>
@@ -49,16 +51,6 @@ export default {
 .forum-card
 	padding 10px
 	display flex
-	.avatar
-		width 40px
-		height 40px
-		border-radius 50%
-		padding 3px
-		background-color var(--origin3)
-		.img
-			width 100%
-			height 100%
-			border-radius 50%
 	.right
 		flex 1
 		margin-left 10px

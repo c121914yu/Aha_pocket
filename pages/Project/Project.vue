@@ -71,10 +71,10 @@
 				</view>
 			</view>
 		</view>
-		<view class="content" @click="gReadRichText(intro,name)">
+		<view class="content">
 			<view class="head">项目详细</view>
 			<!-- 描述 -->
-			<view class="item">
+			<view class="item" @click="gReadRichText(intro,name)">
 				<view class="title">项目描述</view>
 				<view class="intro values">
 					<rich-text :nodes="intro || '无项目介绍'"></rich-text>
@@ -141,7 +141,7 @@
 					<navigator 
 						hover-class="none"
 						:url="'../Self/UserHome?userId=' + comment.user.userId">
-						<image :src="comment.user.avatarUrl"></image>
+						<aha-avatar :src="comment.user.avatarUrl" radius="radius" size="40"></aha-avatar>
 					</navigator>
 					<view class="right">
 						<view class="user-info">
@@ -635,7 +635,7 @@ export default {
 						text-align center
 		.comment
 			margin 5px 0
-			padding 10px 10px 0 10px
+			padding 10px
 			border-radius 8px
 			background-color var(--origin4)
 			display flex
@@ -646,18 +646,19 @@ export default {
 			.right
 				flex 1
 				margin-left 10px
-				font-size 22rpx
 				.user-info
 					display flex
 					align-items center
 					.name
 						padding 0 10px
 						border-radius 22px
+						font-size 22rpx
 						background-color var(--origin2)
 						color #FFFFFF
 					.score
 						margin-left 5px
 						color var(--origin2)
+						font-size 22rpx
 						display flex
 						align-items center
 						.iconfont
@@ -669,11 +670,13 @@ export default {
 				.container
 					padding 5px 0
 				.file-control
+					font-size 20rpx
 					display flex
 					align-items center
 					justify-content space-between
 					.filename
 						color var(--gray2)
+						
 					.iconfont
 						color var(--origin1)
 		.nocomment

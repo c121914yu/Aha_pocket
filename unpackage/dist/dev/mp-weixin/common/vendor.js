@@ -2621,7 +2621,7 @@ function myRequest(url, method, data) {
                 uni.reLaunch({
                   url: "/pages/Login/Login",
                   success: function success() {
-                    _vue.default.prototype.gToastError(result.data.msg);
+                    _vue.default.prototype.gToastError("登录凭证失效");
                   } });
 
               }
@@ -8942,9 +8942,16 @@ exports.getDiscussion = function (postId) {return (0, _request.default)("/post/d
 exports.getMylikeDiscussion = function (params) {return (0, _request.default)("/post/myLike", "GET", params);};
 
 /**
-                                                                                                                 * 点赞 / 取消点赞讨论帖子
-                                                                                                                 * @param {Boolean}  isLike true-点赞false-取消点赞
+                                                                                                                 * 获取我历史讨论记录
+                                                                                                                 * @param {Number}  pageNum
+                                                                                                                 * @param {Number}  pageSize
                                                                                                                  */
+exports.getHistoryDisc = function (params) {return (0, _request.default)("/post/history", "GET", params);};
+
+/**
+                                                                                                             * 点赞 / 取消点赞讨论帖子
+                                                                                                             * @param {Boolean}  isLike true-点赞false-取消点赞
+                                                                                                             */
 exports.likeDiscussion = function (postId, isLike) {return (0, _request.default)("/post/like/".concat(postId, "?isLike=").concat(isLike), "POST");};
 
 /**
@@ -8963,9 +8970,15 @@ exports.collectDiscussion = function (postId, isCollect) {return (0, _request.de
 exports.getDiscComments = function (_ref4) {var postId = _ref4.postId,params = _objectWithoutProperties(_ref4, ["postId"]);return (0, _request.default)("/post/".concat(postId, "/comments"), "GET", params);};
 
 /**
-                                                                                                                                                                                                                 * 点赞 / 取消点赞评论内容
-                                                                                                                                                                                                                 * @param {Boolean}  isLike true-点赞false-取消点赞
+                                                                                                                                                                                                                 * 获取单条评论信息
+                                                                                                                                                                                                                 * @param {String}  commentId
                                                                                                                                                                                                                  */
+exports.getComment = function (commentId) {return (0, _request.default)("/post/comment/".concat(commentId), "GET");};
+
+/**
+                                                                                                                       * 点赞 / 取消点赞评论内容
+                                                                                                                       * @param {Boolean}  isLike true-点赞false-取消点赞
+                                                                                                                       */
 exports.likeDiscComment = function (commentId, isLike) {return (0, _request.default)("/post/comment/like/".concat(commentId, "?isLike=").concat(isLike), "POST");};
 
 /**
@@ -8990,9 +9003,16 @@ exports.deleteDiscComment = function (commentId) {return (0, _request.default)("
 exports.getDiscCommentsReply = function (_ref5) {var commentId = _ref5.commentId,params = _objectWithoutProperties(_ref5, ["commentId"]);return (0, _request.default)("/post/comment/".concat(commentId, "/replies"), "GET", params);};
 
 /**
-                                                                                                                                                                                                                                         * 点赞 / 取消点赞回复内容
-                                                                                                                                                                                                                                         * @param {Boolean}  isLike true-点赞false-取消点赞
+                                                                                                                                                                                                                                         * 分页获取我的回复内容
+                                                                                                                                                                                                                                         * @param {Number}  pageNum
+                                                                                                                                                                                                                                         * @param {Number}  pageSize
                                                                                                                                                                                                                                          */
+exports.getMyReply = function (_ref6) {var userId = _ref6.userId,params = _objectWithoutProperties(_ref6, ["userId"]);return (0, _request.default)("/post/reply/u/".concat(userId), "GET", params);};
+
+/**
+                                                                                                                                                                                                       * 点赞 / 取消点赞回复内容
+                                                                                                                                                                                                       * @param {Boolean}  isLike true-点赞false-取消点赞
+                                                                                                                                                                                                       */
 exports.likeDiscCommentReply = function (replyId, isLike) {return (0, _request.default)("/post/comment/reply/like/".concat(replyId, "?isLike=").concat(isLike), "POST");};
 
 /**
@@ -9016,7 +9036,7 @@ exports.deleteDiscCommentReply = function (replyId) {return (0, _request.default
                                                                                                                                         * @param {Number}  replyNum 评论数量
                                                                                                                                         * @param {String} loadBy 策略 hottest-最热（默认), latest-最新
                                                                                                                                         */
-exports.getUserComments = function (_ref6) {var userId = _ref6.userId,params = _objectWithoutProperties(_ref6, ["userId"]);return (0, _request.default)("/post/comment/u/".concat(userId), "GET", params);};
+exports.getUserComments = function (_ref7) {var userId = _ref7.userId,params = _objectWithoutProperties(_ref7, ["userId"]);return (0, _request.default)("/post/comment/u/".concat(userId), "GET", params);};
 
 /***/ }),
 
@@ -10671,7 +10691,7 @@ exports.getAllCompetition = function () {return (0, _request.default)("/competit
 
 /***/ }),
 
-/***/ 793:
+/***/ 795:
 /*!****************************************************!*\
   !*** D:/服务外包/竞赛统计/components/select-city/citys.js ***!
   \****************************************************/
@@ -10877,6 +10897,7 @@ citys;exports.default = _default;
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
   baseUrl: 'https://ahapocket.cn/api',
   env: 0, // 版本表示，0开发，1体验，2上线
+  startPath: "", // 初始路径，会在app.vue中调用
   gCodeTime: 0, // 用户允许发送验证码的倒计时
   gCodeMaxTime: 10, // 倒计时时长
   gUserInfo: {}, // 个人信息
