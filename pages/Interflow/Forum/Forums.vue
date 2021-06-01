@@ -158,7 +158,7 @@ export default {
 		{
 			this.gMenuPicker(this.arr_sort)
 			.then(res => {
-				if(res.value !== this.strategy.value) {
+				if(res && res.value !== this.strategy.value) {
 					this.strategy = res
 					this.loadDisc(true,true)
 				}

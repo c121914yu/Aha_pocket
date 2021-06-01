@@ -8,7 +8,7 @@
 			class="logo" 
 			src="https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png" 
 			mode="widthFix" />
-		<!-- 上次渐变背景 -->
+		<!-- 上层渐变背景 -->
 		<view class="top"></view>
 		<!-- 底部主体 -->
 		<view class="bottom">
@@ -37,14 +37,14 @@
 			</view>
 			<!-- 第三方登录 -->
 			<view class="small other">
-				<view class="outher-login strong">第三方登录</view>
+				<view class="other-login strong">第三方登录</view>
 				<button 
 					class="iconfont icon-weixin weixin" 
 					open-type="getUserInfo" 
 					@getuserinfo="onclickWxLogin">
 				</button>
 				<view style="color: var(--gray2)">微信登录</view>
-				<view style="margin-top:10rpxcolor:var(--gray2)">
+				<view style="margin-top: 10rpx;color: var(--gray2)">
 					登录后需要同意
 					<text style="color: var(--origin2)">Aha口袋用户使用协议</text>
 					才可使用
@@ -163,8 +163,8 @@ export default {
 <style lang="stylus" scoped>
 .login
 	position relative
-	min-height 100vh
-	width 100%
+	height 100vh
+	width 100vw
 	.logo
 		z-index 5
 		position absolute
@@ -186,10 +186,11 @@ export default {
 		bottom 0
 		min-height 70vh
 		width 100%
-		padding-bottom 10px
+		border-top-left-radius 22px
+		border-top-right-radius 22px
+		padding-bottom constant(safe-area-inset-bottom)
+		padding-bottom env(safe-area-inset-bottom)
 		background-color var(--white1)
-		border-top-left-radius 30px
-		border-top-right-radius 30px
 		display flex
 		flex-direction column
 		align-items center
@@ -211,7 +212,7 @@ export default {
 				font-size 30rpx
 				display flex
 				align-items center
-				text
+				.iconfont
 					position absolute
 					margin-left 8px
 					font-size 46rpx
@@ -232,27 +233,23 @@ export default {
 				color var(--gray2)
 		.other
 			transform translateY(-2vh)
-			display flex
-			flex-direction column
-			align-items center
-			justify-content space-between
-			.outher-login
+			text-align center
+			.other-login
+				position relative
 				display flex
 				align-items center
 				justify-content center
 				color var(--gray2)
 				&::before
 					content ''
-					position absolute
-					margin-left -32%
+					margin-right 5%
 					width 30%
 					height 1px
 					background-color var(--gray2)
 					border-radius 10px
 				&::after
 					content ''
-					position absolute
-					margin-left 32%
+					margin-left 5%
 					width 30%
 					height 1px
 					background-color var(--gray2)
@@ -263,6 +260,4 @@ export default {
 				color #04BE02
 				background-color transparent
 				font-size 45px
-				&:active
-					transform none
 </style>

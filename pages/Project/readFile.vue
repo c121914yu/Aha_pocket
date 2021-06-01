@@ -1,3 +1,7 @@
+<!-- 
+	阅读器
+	author yjl
+ -->
 <template>
 	<view class="read-file">
 		<image

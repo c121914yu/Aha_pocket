@@ -1,25 +1,27 @@
 <template>
-	<view class="content">
+	<view class="project-member content">
 		<view class="h3">添加成员</view>
 		<view class="search">
 			<input 
+				class="input"
 				type="number" 
 				placeholder="输入队友的ID" 
 				v-model="searchText"/>
-			<text class="iconfont icon-sousuo" @click="search"></text>
+			<text class="iconfont icon-jia" @click="onclickAddMember"></text>
 		</view>
-		<drawList 
-			v-if="members.length > 0" 
+		<draw-list 
 			ref="drawList" 
-			:list="members" 
-			@confirm="members = $event" 
-			@click="setMember">
-		</drawList>
-		<SetMember 
+			:list="arr_members" 
+			@confirm="confirmSort" 
+			@click="memberInfo = arr_members[$event]">
+		</draw-list>
+		<set-member 
 			v-if="memberInfo" 
-			:memberInfo.sync="memberInfo" 
-			@sure="sureMember">
-		</SetMember>
+			:memberInfo="memberInfo" 
+			@close="memberInfo=null"
+			@update="updateMember"
+			@remove="removeMember">
+		</set-member>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
 	</view>
@@ -31,6 +33,10 @@ import SetMember from './SetMember.vue';
 import { postMember, putMember, deleteMember } from '@/static/request/api_project.js';
 import { getUser } from '@/static/request/api_userInfo.js';
 export default {
+	components: {
+		"draw-list": drawList,
+		"set-member": SetMember
+	},
 	props: {
 		projectId: String
 	},
@@ -38,179 +44,140 @@ export default {
 		return {
 			searchText: '',
 			memberInfo: null,
-			members: []
+			arr_members: []
 		};
 	},
-	components: {
-		drawList,
-		SetMember
-	},
 	methods: {
-		/* 创建者默认为负责人 */
-		setNormalMember()
+		/**
+		 * 初始化数据
+		 */
+		initData(members)
 		{
-			const userInfo = getApp().globalData.gUserInfo.userInfo;
-			const data = {
-				memberUserId: userInfo.userId,
-				nickname: userInfo.nickname,
-				avatarUrl: userInfo.avatarUrl,
-				school: userInfo.school,
-				job: '负责人',
-				editable: true,
-				memberIndex: -1
-			}
-			this.sureMember({
-				type: 2,
-				member: data
-			})
+			members.sort((a,b) => a.rank - b.rank)
+			this.arr_members = members.map(item => ({
+				...item.memberUser,
+				memberUserId: item.memberUser.userId,
+				rank: item.rank,
+				job: item.job,
+				editable: item.editable,
+			}))
+			this.$refs["drawList"].initSort(this.arr_members)
+			console.log(this.arr_members);
 		},
-		/* 
-          name: 搜索队友
-          desc: 将输入内容传送给后台查询相关队员
-          @params this.searchText: String,搜索文字
-          @change this.members: Array,队友列表
-          time: 2020/11/15
-        */
-		search() 
+	    /**
+		 * 点击添加成员，并跳出弹窗添加成员进队伍
+		 */
+		onclickAddMember() 
 		{
 			if (this.searchText === ''){
-				return;
+				return
 			} 
 			/* 判断是否已经在成员列表中 */
-			const judge = this.members.find(item => item.memberUserId == this.searchText);
+			const judge = this.arr_members.find(item => item.memberUserId === +this.searchText)
 			if (judge) {
-				this.gToastError('改成员已存在');
-				return;
+				this.gToastError('改成员已存在')
+				return
 			}
-			this.gLoading(this, true);
+			this.gLoading(this, true)
 			/* 搜索用户 */
 			getUser(this.searchText)
-				.then(res => {
-					const data = res.data;
-					if (data) {
-						this.memberInfo = {
-							memberUserId: this.searchText,
-							nickname: data.nickname,
-							avatarUrl: data.avatarUrl,
-							job: '',
-							editable: false,
-							memberIndex: -1 // -1代表新成员
-						};
-					} else {
-						this.gToastError('用户不存在');
+			.then(res => {
+				const data = res.data
+				if (data) {
+					const member = {
+						memberUserId: this.searchText,
+						nickname: data.nickname,
+						avatarUrl: data.avatarUrl,
+						job: '',
+						editable: false,
+						rank: this.arr_members.length + 1,
+						userId: +this.searchText
 					}
-					this.gLoading(this, false);
-				})
-				.catch(err => {
-					this.gLoading(this, false);
-				});
-		},
-		/* 
-            name: 设置成员信息
-            desc: 点击排序列表，进入成员信息编辑界面
-            input:
-                        index: Number,成员下标列表
-            time: 2020/11/16
-        */
-		setMember(index) 
-		{
-			this.memberInfo = {
-				...this.members[index],
-				memberIndex: index
-			};
-			console.log(this.memberInfo);
-		},
-		sureMember(e) 
-		{
-			/* 0关闭，1删除，2确认修改/添加 */
-			if (e.type === 0) {
-				this.memberInfo = null;
-			} 
-			else if (e.type === 1) {
-				if (this.members.length === 1) {
-					this.gToastError('成员不能为空');
-					return;
-				}
-				this.gLoading(this, true);
-				deleteMember(this.projectId, e.member.memberUserId)
-					.then(res => {
-						this.members.splice(e.member.memberIndex, 1)
-						this.members.forEach((item,index) => {
-							item.rank = index+1
-						})
-						this.$refs.drawList.tempList = JSON.parse(JSON.stringify(this.members))
-						this.gToastSuccess('删除成功');
-						this.memberInfo = null;
-						this.gLoading(this, false);
+					postMember({
+						projectId: this.projectId,
+						memberUserId: member.memberUserId,
+						rank: member.rank,
+						job: member.job,
+						editable: member.editable,
 					})
-					.catch(err => {
-						this.gLoading(this, false);
-					});
-			} 
-			else if (e.member.memberIndex === -1) {
-				/* 新成员 */
-				this.gLoading(this, true);
-				const data = {
-					memberUserId: e.member.memberUserId,
-					job: e.member.job,
-					rank: this.members.length + 1,
-					editable: e.member.editable
+					this.arr_members.push(member)
+					this.$refs["drawList"].initSort(this.arr_members)
+					this.gToastMsg("添加成功")
+					this.searchText = ""
+				} else {
+					this.gToastError('用户不存在')
 				}
-				postMember(this.projectId, data)
-				.then(res => {
-					this.members.push({
-						...data,
-						nickname: e.member.nickname,
-						avatarUrl: e.member.avatarUrl
-					});
-					this.gLoading(this, false)
-					this.$nextTick(() => {
-						this.$refs.drawList.tempList = JSON.parse(JSON.stringify(this.members))
-						this.searchText = ''
-						this.memberInfo = null
-					})
-				})
-				.catch(err => {
-					this.gLoading(this, false)
-				})
-			} 
-			else {
-				/* 修改成员 */
-				this.gLoading(this, true);
-				putMember(this.projectId, e.member.memberUserId, {
-					rank: e.member.memberIndex + 1,
-					job: e.member.job,
-					editable: e.member.editable
-				})
-				.then(res => {
-					this.members[e.member.memberIndex] = e.member;
-					this.$refs.drawList.tempList[e.member.memberIndex] = e.member;
-					this.searchText = '';
-					this.memberInfo = null;
-					this.gLoading(this, false);
-				})
-				.catch(err => {
-					this.gLoading(this, false);
-				});
+			})
+			.finally(() => this.gLoading(this, false))
+		},
+		/**
+		 * 更新成员信息
+		 * @param {Object} e
+		 */
+		updateMember(member)
+		{
+			putMember({
+				projectId: this.projectId,
+				userId: member.userId,
+				rank: member.rank,
+				job: member.job,
+				editable: member.editable
+			})
+			const index = this.arr_members.findIndex(item => item.userId === member.userId)
+			this.arr_members[index] = member
+			this.$refs["drawList"].initSort(this.arr_members)
+			this.memberInfo = null
+			this.gToastMsg("更新成功")
+		},
+		/**
+		 * 删除成员
+		 * @param { Number } id 成员ID
+		 */
+		removeMember(id)
+		{
+			if (this.arr_members.length === 1) {
+				this.gToastMsg('成员不能为空')
+				return
 			}
+			deleteMember({
+				projectId: this.projectId,
+				userId: id
+			})
+			const index = this.arr_members.findIndex(item => item.userId === id)
+			this.arr_members.splice(index, 1)
+			this.$refs["drawList"].initSort(this.arr_members)
+			this.memberInfo = null
+			this.gToastMsg("删除成功")
+		},
+		/**
+		 * 确认排序顺序
+		 */
+		confirmSort(members)
+		{
+			this.arr_members = members.map((item,i) => ({
+				...item,
+				rank: i+1
+			}))
 		}
 	}
-};
+}
 </script>
 
 <style lang="stylus" scoped>
-.search
-	position relative
-	border 1px solid var(--origin2)
-	border-radius 10px
-	display flex
-	align-items center
-	input
-		flex 1
-		padding-right 40px
-	.iconfont
-		position absolute
-		right 10px
-		font-size 40rpx
-		color var(--origin2)
+.project-member
+	.search
+		position relative
+		margin 5px 0
+		border 1px solid var(--origin2)
+		border-radius 8px
+		display flex
+		align-items center
+		.input
+			flex 1
+			padding-right 40px
+		.iconfont
+			position absolute
+			right 10px
+			font-size 40rpx
+			color var(--origin2)
 </style>

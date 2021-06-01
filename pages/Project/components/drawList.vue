@@ -4,74 +4,82 @@
 			class="item"
 			:class="item.class"
 			:style="{
-				transform: `translateY(${item.translateY}px) translateZ(${item.translateZ}px)`
+				'transform': `translateY(${item.translateY}px)`
 			}"
 			v-for="(item, index) in tempList"
-			:key="index">
+			:key="index"
+			>
 			<view class="info" @click="$emit('click', index)">
-				<image :src="item.avatarUrl"></image>
-				<text>{{ item.trueName || item.nickname }}</text>
+				<image class="img" :src="item.avatarUrl"></image>
+				<text class="text">{{ item.trueName || item.nickname }}</text>
 			</view>
-			<text class="iconfont icon-sort" @touchstart="touchstart($event, index)" @touchmove="touchmove($event, index)" @touchend="touchend($event, index)"></text>
+			<view 
+				class="right"
+				@touchstart="ontouchstart($event, index)"
+				@touchmove.stop="ontouchmove($event, index)" 
+				@touchend="ontouchend($event, index)">
+				<text class="iconfont icon-sort"></text>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-var initY, lastY;
+var initY, lastY,timer
 export default {
-	props: {
-		list: Array
-	},
 	data() {
 		return {
 			tempList: []
-		};
-	},
-	created() {
-		this.initSort(this.list);
+		}
 	},
 	methods: {
-		/* 
-			name: 初始化排序
-			desc: 将tempList的元素排序属性清0，并重新计算所在位置
-		*/
+	    /**
+		 * 初始化排序
+		 * @param { Array } list 成员数组
+		 * 将tempList的元素排序属性清0，并重新计算所在位置
+		 */
 		initSort(list) 
 		{
-			this.tempList = list.map((item, i) => {
-				return {
+			this.tempList = list.map((item, i) => ({
 					...item,
 					translateY: 0,
-					translateZ: 0,
 					position: i * 50,
 					class: ''
-				};
-			});
+			}))
 		},
-		touchstart(e, i) 
+		/**
+		 * 触摸排序图标
+		 * @param {Object} e 默认参数
+		 * @param {Object} i 触碰对应的下标
+		 */
+		ontouchstart(e, i) 
 		{
-			this.tempList[i].class = 'active';
-			this.tempList[i].translateZ = 20;
-			initY = lastY = e.touches[0].pageY;
+			this.tempList[i].class = 'active'
+			initY = lastY = e.touches[0].pageY
+			uni.vibrateShort()
 		},
-		touchmove(e, i) 
+		/**
+		 * 移动过程，实时拖拽当前DOM，并计算其他DOM
+		 * @param {Object} e 默认参数
+		 * @param {Object} i 触碰对应的下标
+		 */
+		ontouchmove(e, i) 
 		{
 			/* 计算触摸移动位置，并移动触摸的DOM */
-			let pointY = e.touches[0].pageY;
-			const translateY = pointY - initY;
+			let pointY = e.touches[0].pageY
+			const translateY = pointY - initY
 			/* 移动DOM的偏移量 */
-			this.tempList[i].translateY = translateY;
-			/* 移动DOM的当前位置 */
-			const position = translateY + this.tempList[i].position;
+			this.tempList[i].translateY = translateY
+			/* 计算DOM的当前位置 */
+			const position = translateY + this.tempList[i].position
 			/* 拖拽方向*/
-			const direction = pointY - lastY;
-			lastY = pointY;
+			const direction = pointY - lastY
+			lastY = pointY
 			/* 判断触摸的DOM是否挤占其他DOM */
 			this.tempList.forEach((item, index) => {
 				if (i === index) {
 					return
 				}
-				item.class = 'animation';
 				const diff = item.position + item.translateY - position
 				/* 
 				  direction > 0 向下
@@ -90,56 +98,57 @@ export default {
 				else if (direction < 0 && diff > 0 && diff < 20) {
 					item.translateY = this.tempList[i].position > item.position ? 48 : 0
 				}
-			});
+			})
 		},
-		touchend(e, i) 
+		ontouchend(e, i) 
 		{
+			/* 根据translateY和position重新计算列表顺序 */
+			this.tempList.sort((a, b) => {
+				return a.translateY + a.position - (b.translateY + b.position)
+			})
 			/* 重新赋值给排序数组 */
 			this.tempList.forEach((item, i) => {
-				item.class = '';
-			});
-			/* 创建临时列表进行排序 */
-			const temp = JSON.parse(JSON.stringify(this.tempList));
-			/* 根据translateY和position重新计算列表顺序 */
-			temp.sort((a, b) => {
-				return a.translateY + a.position - (b.translateY + b.position);
-			});
-			this.initSort(temp);
-			this.$emit('confirm', JSON.parse(JSON.stringify(this.tempList)));
+				item.translateY = 0
+				item.position = i * 50,
+				item.class = ""
+			})
+			this.$emit('confirm', this.tempList)
 		}
 	}
 };
 </script>
 
 <style lang="stylus" scoped>
-.item
-	position relative
-	margin 8px 0
-	height 40px
-	padding 0 10px
-	background-color var(--origin2)
-	color #FFFFFF
-	border-radius 8px
-	display flex
-	align-items center
-	transition none
-	transform-style preserve-3d
-	&.active
-		z-index 5
-		box-shadow var(--shadow2)
-	&.animation
-		transition 0.3s
-	.info
-		flex 1
+.draw-list
+	.item
+		position relative
+		margin 8px 0
+		height 40px
+		padding 0 10px
+		background-color var(--nav-color)
+		color #FFFFFF
+		border-radius 8px
 		display flex
 		align-items center
-		text
-			margin-left 5px
-			font-size 14px
-	.iconfont
-		font-size 44rpx
-	image
-		width 30px
-		height 30px
-		border-radius 5px
+		// transition 0.3s
+		&.active
+			z-index 5
+			box-shadow var(--shadow2)
+			background-color var(--origin2)
+			// transition none
+		.info
+			display flex
+			align-items center
+			.text
+				margin-left 5px
+				font-size 14px
+		.right
+			flex 1
+			text-align end
+			.iconfont
+				font-size 40rpx
+		.img
+			width 30px
+			height 30px
+			border-radius 5px
 </style>

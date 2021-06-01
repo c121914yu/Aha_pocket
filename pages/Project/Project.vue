@@ -1,7 +1,11 @@
+<!-- 
+	项目项目介绍
+	author yjl
+ -->
 <template>
 	<view id="project" class="project">
 		<view class="header">
-			<aha-avatar :src="avatarUrl || 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png'" size="100" readed="readed"></aha-avatar>
+			<aha-avatar :src="avatarUrl" size="100" readed="readed"></aha-avatar>
 			<view class="right">
 				<!-- 项目题目 -->
 				<view class="small item">
@@ -13,12 +17,12 @@
 					<view class="title">项目成员</view>
 					<view class="flex">
 						<!-- 项目成员 -->
-						<view v-if="!isAnonymous" class="values arr">
+						<view v-if="!is_anonymous" class="values arr">
 							<navigator 
 								class="val" 
 								hover-class="none"
 								style="text-decoration: underline;"
-								v-for="(member, index) in members" 
+								v-for="(member, index) in arr_members" 
 								:key="index" 
 								:url="'../Self/UserHome?userId=' + member.memberUser.userId">
 								{{ member.memberUser.nickname }}
@@ -47,8 +51,7 @@
 		</view>
 		<!-- 项目情况 -->
 		<view class="content">
-			<view v-if="!passed" class="mini unpassed-hint">当前项目审核中,仅创建者可预览,附件信息将不被展示.</view>
-			<view class="head">项目情况</view>
+			<view v-if="!is_passed" class="mini unpassed-hint">当前项目审核中,仅创建者可预览,附件信息将不被展示.</view>
 			<!-- 获奖情况 -->
 			<view v-if="compId" class="item prize">
 				<view class="title">获奖情况</view>
@@ -72,18 +75,17 @@
 			</view>
 		</view>
 		<view class="content">
-			<view class="head">项目详细</view>
 			<!-- 描述 -->
 			<view class="item" @click="gReadRichText(intro,name)">
 				<view class="title">项目描述</view>
-				<view class="intro values">
+				<view class="intro">
 					<rich-text :nodes="intro || '无项目介绍'"></rich-text>
 				</view>
 			</view>
 			<!-- 附件 -->
-			<view v-if="resources.length>0" class="item files">
+			<view class="item files">
 				<view class="title">
-					项目附件<text v-if="isAnonymous" class="mini">(匿名项目不可购买)</text>
+					项目附件<text v-if="is_anonymous" class="mini">(匿名项目不可购买)</text>
 				</view>
 				<!-- <view class="small">非媒体类附件将从外部应用打开,请通过外部应用保存至本地.</view> -->
 				<view class="list">
@@ -105,7 +107,7 @@
 							<view class="name" @click="preview(file)">{{ file.name }}</view>
 							<!-- 非匿名资源 / 未购买情况下才显示购买按键 -->
 							<button 
-								v-if="!file.isBuy && !isAnonymous" 
+								v-if="!file.isBuy && !is_anonymous" 
 								@click="buyFile(file,'arr_previewFiles',index)">
 								{{file.price}}Aha点购买
 							</button>
@@ -120,7 +122,7 @@
 							<view class="name">{{ file.name }}</view>
 							<!-- 非匿名资源 / 未购买情况下才显示购买按键 -->
 							<button
-								v-if="!file.isBuy && !isAnonymous" 
+								v-if="!file.isBuy && !is_anonymous" 
 								@click="buyFile(file,'arr_previewFiles',index)">
 								{{file.price}}Aha点购买
 							</button>
@@ -129,14 +131,14 @@
 					
 				</view>
 			</view>
-			<!-- 项目评价 -->
+		</view>
+		<!-- 评论 -->
+		<view class="content">
 			<view class="item">
 				<view class="title" id="comments">项目评论</view>
-				<view v-if="comments.length===0" class="center nocomment">暂无评论</view>
 				<view 
-					v-else
 					class="comment"
-					v-for="(comment,index) in comments"
+					v-for="(comment,index) in arr_comments"
 					:key="index">
 					<navigator 
 						hover-class="none"
@@ -167,25 +169,33 @@
 						</view>
 					</view>
 				</view>
+				<view 
+					v-if="arr_comments.length===0" 
+					class="center remark"
+					@click="$refs['Reamrk'].type = 1">
+					暂无评论,点击抢楼！
+				</view>
+				<view v-else class="center remark">{{is_loadAllComments ? "已加载全部" : ""}}</view>
 			</view>
 		</view>
 		<!-- 认领项目 -->
-		<ClaimProject
+		<claim-project
 			v-if="is_claimProject"
 			:projectId="id"
 			:applyingID="applyingID"
 			@close="is_claimProject=false"
 			@success="judgeApply();is_claimProject=false">
-		</ClaimProject>
+		</claim-project>
 		<!-- 写评论模块 -->
-		<WriteRemark
+		<write-remark
 			v-if="id"
+			ref="Reamrk"
 			:projectId="id"
 			:files="arr_purchasedFiles"
 			@scrollComment="scrollComment"
 			@collectChange="collect+=$event"
 			@success="getCommentsInfo(true)">
-		</WriteRemark>
+		</write-remark>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
 	</view>
@@ -197,114 +207,125 @@ import { postOrder,putOrder,checkResourcePurchased } from "../../static/request/
 import WriteRemark from "./components/WriteRemark.vue"
 import ClaimProject from "./components/ClaimProject.vue"
 export default {
+	components: {
+		"claim-project": ClaimProject, //认领匿名项目
+		"write-remark": WriteRemark, // 写评价
+	},
 	data() {
 		return {
-			id: null,
-			isAnonymous: false,
+			/* 匿名项目认领相关 */
+			is_anonymous: false,
 			applyingID: 0,
-			name: '项目标题',
+			/* 项目相关 */
+			id: null,
+			is_passed: true,
 			avatarUrl: 'https://aha-public-1257019972.cos.ap-shanghai.myqcloud.com/icon/logo.png',
-			tags: '',
-			intro: '',
+			name: '项目标题',
+			arr_members: [],
 			read: 0,
 			collect: 0,
-			compId: 0,
-			compName: '',
+			/* 获奖相关 */
 			awardLevel: '',
 			awardTime: '',
-			members: [],
-			resources: [],
+			compName: '',
+			compId: 0,
+			tags: '', // 标签
+			intro: '',
+			/* 附件分类 */
+			arr_resources: [],
 			arr_purchasedFiles: [],
 			arr_previewFiles: [],
 			arr_unpreviewFiles: [],
-			comments: [],
-			passed: true,
-			/* 分页获取评论信息 */
+			/* 评论 */
+			arr_comments: [],
 			pageNum: 1,
-			pageSize: 5,
-			is_showAllComments: false, // 写评论弹窗
+			pageSize: 10,
+			is_loadAllComments: false, // 写评论弹窗
 			is_claimProject: false, //是否显示认证弹窗
 		}
 	},
 	computed: {
+		/* 获奖等级计算 */
 		awardLevelMsg() {
 			if (this.compId) {
 				let res = getApp().globalData.garr_prizeLevels.find(item => item.value === this.awardLevel);
 				if (res){
-					return res.label;
+					return res.label
 				} 
 			}
-			return '';
+			return ''
 		},
 		arr_tags() {
-			if (this.tags){
-				return this.tags.split(" ")
-			}
-			return ''
+			return this.tags.split(" ") || []
 		}
 	},
 	onLoad(e) {
 		this.gLoading(this,true)
 		getProject(e.id)
 		.then(res => {
-			res.data.members = res.data.members.sort((a, b) => a.rank - b.rank)
-			for (let key in res.data){
-				this[key] = res.data[key]
-			}
-			if(this.isAnonymous){
-				this.judgeApply() //判断匿名认领情况
-			}
-			if(this.resources.length > 0){
+			// for (let key in res.data){
+			// 	this[key] = res.data[key]
+			// }
+			this.id = res.data.id
+			this.is_passed = res.data.passed
+			this.avatarUrl = res.data.avatarUrl
+			this.name = res.data.name
+			this.arr_members = res.data.members.sort((a, b) => a.rank - b.rank)
+			this.tags = res.data.tags
+			this.awardLevel = res.data.awardLevel
+			this.awardTime = res.data.awardTime
+			this.compName = res.data.compName
+			this.compId = res.data.compId
+			this.intro = res.data.intro
+			this.arr_resources = res.data.resources
+			console.log(res.data);
+			// 如果是匿名项目，判断匿名认领情况
+			this.judgeApply()
+			/* 附件分类 */
+			if(this.arr_resources.length > 0){
 				this.initFiles()
 			}
-			this.gLoading(this,false)
-			// this.getIntroImage()
-			console.log(res.data);
 		})
-		.catch(err => {
-			this.gLoading(this,false)
-		})
-	},
-	components: {
-		ClaimProject,
-		WriteRemark
+		.finally(() => this.gLoading(this,false))
 	},
 	onShareAppMessage(e){
 		return {
 			title: "Aha口袋",
-			path: `pages/Project/Project?id=${this.id}`,
+			path: `/pages/Login/Login?path=/pages/Project/Project&paramKey=id&paramVal=${this.id}`,
 			desc: "Aha口袋邀您阅读" + this.name,
 		}
 	},
 	onReachBottom(){
-		if(!this.is_showAllComments){
-			this.getCommentsInfo()
-		}
+		this.getCommentsInfo()
 	},
 	methods: {
-		/* 判断是否提交过认领 */
+		/**
+		 * 判断是否提交过认领
+		 */
 		judgeApply()
 		{
 			// 判断是否提交过申请
-			if(this.isAnonymous){
+			if(this.is_anonymous){
 				getApplyProject(this.id)
 				.then(res => {
 					this.applyingID = res.data
 				})
 			}
 		},
-		/* 初始化附件 */
+		/**
+		 * 初始化附件,判断是否为项目成员，如果是全放在已购买里。若不是，根据已购记录判断
+		 */
 		initFiles()
 		{
 			/* 判断是否为项目成员,若为项目成员则直接添加到已购项目中 */
-			const member = this.members.find(item => item.memberUser.userId === getApp().globalData.gUserInfo.userInfo.userId)
+			const member = this.arr_members.find(item => item.memberUser.userId === getApp().globalData.gUserInfo.userInfo.userId)
 			if(member){
-				this.arr_purchasedFiles = this.resources
+				this.arr_purchasedFiles = this.arr_resources
 			}
 			else{
 				checkResourcePurchased(this.id)
 				.then(res => {
-					this.resources.forEach(file => {
+					this.arr_resources.forEach(file => {
 						file.isBuy = res.data.indexOf(file.id) > -1 ? true : false
 						if(file.isBuy){
 							this.arr_purchasedFiles.push(file)
@@ -319,49 +340,61 @@ export default {
 				})
 			}
 		},
-		/* 获取评论 */
+		/**
+		 * 加载获取评论
+		 */
 		getCommentsInfo(init=false)
 		{
-			if(this.is_showAllComments){
-				return
-			}
-			if(init){
+			if(init) {
+				this.gLoading(this,true)
+				this.is_loadAllComments = false
 				this.pageNum = 1
+			}
+			if(this.is_loadAllComments){
+				return
 			}
 			const userId = getApp().globalData.gUserInfo.userInfo.userId
 			const params = {
 				pageNum: this.pageNum,
 				pageSize: this.pageSize,
-				projectId: this.id
+				projectId: this.id,
+				sortBy: "time"
 			}
 			Promise.all([getRemarks(params),getPublicComments(params)])
 			.then(res => {
 				const fileComments = res[0].data.pageData
 				const publicComments = res[1].data.pageData
-				console.log(fileComments);
-				if(fileComments.length < this.pageSize && publicComments.length < this.pageSize){
-					this.is_showAllComments = true
+				if(init) {
+					this.arr_comments = []
 				}
-				else{
-					this.pageNum++
-				}
-				if(init){
-					this.comments = []
-				}
+				
 				publicComments.concat(fileComments).forEach(comment => {
 					if(comment.resourceId){
-						const file = this.resources.find(item => item.id === comment.resourceId)
+						const file = this.arr_resources.find(item => item.id === comment.resourceId)
 						comment.filename = file.name
 					}
 					comment.isMe = userId === comment.user.userId
 					comment.time = this.gformatDate(comment.time)
-					this.comments.push(comment)
+					this.arr_comments.push(comment)
 				})
-				console.log(this.comments);
+				/* 判断页码 */
+				if(fileComments.length < this.pageSize && publicComments.length < this.pageSize){
+					this.is_loadAllComments = true
+				}
+				else{
+					this.pageNum++
+				}
+				console.log(this.arr_comments);
 			})
+			.finally(() => this.gLoading(this,false))
 		},
-		/* 购买文件 */
-	    buyFile(file,arr,index)
+		/**
+		 * 购买文件
+		 * @param {Object} file
+		 * @param {Object} key
+		 * @param {Object} index
+		 */
+	    buyFile(file,key,index)
 		{
 			const ahaCredit = getApp().globalData.gUserInfo.ahaCredit
 			const ahaPoint = getApp().globalData.gUserInfo.ahaPoint
@@ -379,37 +412,42 @@ export default {
 					resourceIds: [file.id]
 				})
 				.then(res => {
+					this[key].splice(index,1)
+					this.arr_purchasedFiles.push(file)
+					this.arr_previewFiles = this.arr_previewFiles.filter(item => item.id !== file.id)
+					this.arr_unpreviewFiles = this.arr_unpreviewFiles.filter(item => item.id !== file.id)
+					this.gToastSuccess("购买成功")
 					const orderId = res.data
 					/* 调用微信支付 */
-					putOrder(orderId, "pay")
-					.then(res => {
-						this[arr].splice(index,1)
-						this.arr_purchasedFiles.push(file)
-						this.arr_previewFiles = this.arr_previewFiles.filter(item => item.id !== file.id)
-						this.arr_unpreviewFiles = this.arr_unpreviewFiles.filter(item => item.id !== file.id)
-						this.gToastSuccess("购买成功")
-					})
+					// putOrder(orderId, "pay")
+					// .then(res => {
+					// 	this[key].splice(index,1)
+					// 	this.arr_purchasedFiles.push(file)
+					// 	this.arr_previewFiles = this.arr_previewFiles.filter(item => item.id !== file.id)
+					// 	this.arr_unpreviewFiles = this.arr_unpreviewFiles.filter(item => item.id !== file.id)
+					// 	this.gToastSuccess("购买成功")
+					// })
 				})
 			})
 		},
-		/* 
-			阅读项目, 先判断类型,文档类跳转预览，其他类型需要获取下载地址再进行操作
-			@params file:Object,文件信息
-			@params index: Number,文件数组下标
-		*/
+	    /**
+		 * 阅读项目, 先判断类型,文档类跳转预览，其他类型需要获取下载地址再进行操作
+		 * @param {Object} file 文件信息
+		 * @param {Object} index 文件数组下标
+		 */
 	    readFile(file,index)
 		{
 			/* 文档类跳转readFile界面 */
 			if(file.fileType === 2){
 				uni.navigateTo({
-					url: "ReadFile?id=" + file.id
+					url: `ReadFile?id=${file.id}` 
 				})
 			}
 			else{
-				this.gLoading(this,true)
 				if(file.url){
 					/* 图片/视频直接打开 */
 					if(file.fileType === 0 || file.fileType === 1){
+						this.gLoading(this,true)
 						wx.previewMedia({
 							sources: [{
 								url: file.url,
@@ -424,36 +462,27 @@ export default {
 					/* 其他则复制下载链接 */
 					else{
 						this.gClipboardData(file.url,"已复制下载链接")
-						this.gLoading(this,false)
 					}
 				}
 				/* 没有缓存下载路径，请求签名路径后再回调该函数 */
 				else {
+					this.gLoading(this,true)
 					getLoadSignature(file.id)
 					.then(res => {
 						this.gGetFileUrl(res.data)
 						.then(url => {
 							this.arr_purchasedFiles[index].url = url
 							this.readFile(this.arr_purchasedFiles[index],index)
-							this.gLoading(this,false)
-						})
-						.catch(err => {
-							console.error(err)
-							this.gLoading(this,false)
 						})
 					})
-					.catch(err => {
-						console.error(err)
-						this.gLoading(this,false)
-					})
+					.finally(() => this.gLoading(this,false))
 				}
 			}
 		},
-		/* 
-			预览项目，先判断类型,文档类跳转预览，图片/视频直接打开
-			@params file:Object,文件信息
-			time: 2021/1/3
-		*/
+	    /**
+		 * 预览项目，先判断类型,文档类跳转预览，图片/视频直接打开
+		 * @param {Object} file 文件信息
+		 */
 		preview(file) 
 		{
 			const type = getApp().globalData.garr_fileTypes.find(item => item.reg.test(file.filename)).value
@@ -464,7 +493,9 @@ export default {
 				})
 			}
 		},
-		/* 滚动到评论区 */
+		/**
+		 * 滚动到评论区
+		 */
 		scrollComment()
 		{
 			uni.createSelectorQuery().select("#comments").boundingClientRect(data=>{//目标节点
@@ -476,7 +507,11 @@ export default {
 			　　}).exec()
 			}).exec()
 		},
-		/* 删除评论 */
+		/**
+		 * 删除评论
+		 * @param {Object} comment
+		 * @param {Number} index 数组下标
+		 */
 		removeComment(comment,index)
 		{
 			this.gShowModal("您确定删除该评价?",() => {
@@ -488,7 +523,7 @@ export default {
 				else {
 					deletePublicComment(comment.id)
 				}
-				this.comments.splice(index,1)
+				this.arr_comments.splice(index,1)
 				this.gToastSuccess("删除成功")
 			})
 		}
@@ -575,18 +610,14 @@ export default {
 					text-align center
 			
 	.content
-		margin 10px 0
-		padding 15px 20px
+		margin-bottom 10px
+		padding 10px 15px
 		border-radius 16px
 		background-color #FFFFFF
 		/* 审核中项目通知 */
 		.unpassed-hint
 			margin-bottom 5px
 			color var(--origin1)
-		.head
-			margin-bottom 10px
-			color var(--gray2)
-			font-weight 700
 		/* 附件 */
 		.files
 			.all-buy
@@ -633,6 +664,7 @@ export default {
 						font-weight 400
 						line-height 1
 						text-align center
+		/* 评论内容 */
 		.comment
 			margin 5px 0
 			padding 10px
@@ -679,7 +711,8 @@ export default {
 						
 					.iconfont
 						color var(--origin1)
-		.nocomment
+		/* 评论提示 */
+		.remark
 			font-size 20rpx
 			margin-top 5px
 			color var(--gray2)

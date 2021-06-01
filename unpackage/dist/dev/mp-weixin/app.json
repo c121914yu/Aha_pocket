@@ -35,6 +35,7 @@
     "pages/Project/MyProjects",
     "pages/Project/Project",
     "pages/Project/ReadFile",
+    "pages/Project/ReadFile2",
     "pages/Project/PreviewFile",
     "pages/Project/PurchasedProjects",
     "pages/Practice/MyEpiboly",

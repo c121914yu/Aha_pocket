@@ -8,6 +8,18 @@
 		<view class="filter">
 			<team-filter></team-filter>
 		</view>
+		<!-- 搜索 & 创建队伍 -->
+		<view class="search">
+			<search-input 
+				style="flex: 1;"
+				:radius="8"
+				placeholder="搜索团队" 
+				v-model="searchText">
+			</search-input>
+			<navigator hover-class="none" url="/pages/Interflow/Team/CreateTeam">
+				<text class="iconfont icon-add-fill"></text>
+			</navigator>
+		</view>
 		<view class="list">
 			<team-card
 				v-for="team in arr_teams"
@@ -35,7 +47,8 @@ export default {
 			pageSize: 10,
 			pageNum: 1,
 			is_loadAll: false,
-			arr_teams: []
+			arr_teams: [],
+			searchText: ""
 		}
 	},
 	created() {
@@ -102,6 +115,15 @@ export default {
 		position fixed
 		top 50px
 		width 100%
+	.search
+		margin 10px 0
+		padding 0 10px
+		display flex
+		align-items center
+		.iconfont
+			margin-left 5px
+			font-size 45rpx
+			color var(--origin2)
 	.list
 		z-index 10
 		margin 10px 2%

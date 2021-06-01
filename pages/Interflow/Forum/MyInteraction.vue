@@ -226,7 +226,7 @@ export default {
 		.data
 			font-size 20rpx
 			color var(--gray2)
-		.remark
-			padding 10px
-			color var(--gray2)
+	.remark
+		padding 10px
+		color var(--gray2)
 </style>

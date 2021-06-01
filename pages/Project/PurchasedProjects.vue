@@ -1,8 +1,16 @@
-<!-- 已经购买的项目 -->
+<!-- 
+	已经购买的项目
+	author yjl
+-->
 <template>
 	<view class="purchased-projects">
 		<view class="search">
-			<search-input placeholder="搜索相关项目" v-model="searchText"></search-input>
+			<search-input 
+				placeholder="搜索相关项目" 
+				v-model="searchText"
+				textBgColor="var(--origin2)"
+				textColor="#fff">
+			</search-input>
 		</view>
 		<!-- 统计 -->
 		<view class="statistics">
@@ -42,7 +50,7 @@
 			</view>
 		</view>
 		<!-- 提示文字 -->
-		<view class="hint center small">已加载全部</view>
+		<view class="remark center">已加载全部</view>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
 	</view>
@@ -52,8 +60,10 @@
 import { getPurchased } from "@/static/request/api_userInfo.js"
 import { getProject,getLoadSignature } from "../../static/request/api_project.js"
 import ProjectCard from "./components/ProjectCard.vue"
-import ProjectHead from "./components/ProjectHead.vue"
-export default {
+export default{
+	components: {
+		"project-card": ProjectCard
+	},
 	data() {
 		return {
 			purchaseAmount: 0,
@@ -65,16 +75,13 @@ export default {
 			is_showAll: false, 
 		}
 	},
-	components: {
-		ProjectCard,
-		ProjectHead
-	},
 	onLoad() {
-		// this.gUndesign()
 		this.loadPurchased()
 	},
 	methods: {
-		/* 获取已购数据 */
+		/**
+		 * 获取已购数据
+		 */
 		loadPurchased(init=false)
 		{	
 			this.gLoading(this,true)
@@ -99,12 +106,9 @@ export default {
 						this.arr_project[index].files.push(file.resource)
 					}
 				})
-				this.gLoading(this,false)
-				console.log(this.arr_project);
+				console.log(this.arr_project)
 			})
-			.catch(err => {
-				this.gLoading(this,false)
-			})
+			.finally(() => this.gLoading(this,false))
 		},
 		/* 获取项目信息并更新到对应下标的数组中 */
 		getProject(id,index)
@@ -112,7 +116,6 @@ export default {
 			getProject(id)
 			.then(res => {
 				this.arr_project[index].project = res.data
-				// console.log(this.arr_project[index]);
 			})
 		},
 		/*
@@ -123,17 +126,15 @@ export default {
 		readFile(file,index1,index2)
 		{
 			const type = getApp().globalData.garr_fileTypes.find(item => item.reg.test(file.filename)).value
-			/* 文档类跳转readFile界面 */
+			/* 文档类跳转outlink界面，链接服务器阅读地址 */
 			if(type === 2){
-				uni.navigateTo({
-					url: "ReadFile?id=" + file.id
-				})
+				console.log(`http://localhost:8081/file/read/${file.id}/${uni.getStorageSync("token")}`);
 			}
 			else{
-				this.gLoading(this,true)
 				if(file.url){
 					/* 图片/视频直接打开 */
 					if(type === 0 || type === 1){
+						this.gLoading(this,true)
 						wx.previewMedia({
 							sources: [{
 								url: file.url,
@@ -151,32 +152,22 @@ export default {
 						    data: file.url,
 							success: () => {
 								this.gToastMsg("已复制下载链接")
-							},
-							complete: () => {
-								this.gLoading(this,false)
 							}
 						})
 					}
 				}
 				/* 没有缓存下载路径，请求签名路径后再回调该函数 */
 				else {
+					this.gLoading(this,true)
 					getLoadSignature(file.id)
 					.then(res => {
 						this.gGetFileUrl(res.data)
 						.then(url => {
 							this.arr_project[index1].files[index2].url = url
 							this.readFile(this.arr_project[index1].files[index2],index1,index2)
-							this.gLoading(this,false)
-						})
-						.catch(err => {
-							console.error(err)
-							this.gLoading(this,false)
 						})
 					})
-					.catch(err => {
-						console.error(err)
-						this.gLoading(this,false)
-					})
+					.finally(() => this.gLoading(this,false))
 				}
 			}
 		},
@@ -189,21 +180,20 @@ export default {
 	background-color var(--white1)
 	min-height 100vh
 	.search
-		background-color var(--origin2)
-		padding 3px 5%
+		background-color var(--origin3)
+		padding 5px 5%
 	/* 统计数据 */
 	.statistics
-		padding 5px
+		padding 5px 0 5px 5px
 		background-color #FFFFFF
 		border-bottom-left-radius 22px
 		border-bottom-right-radius 22px
 		text-align center
-		padding 5px
 		font-size 24rpx
-		display grid
-		grid-template-columns repeat(3,1fr)
-		grid-gap 5px
+		display flex
 		.item
+			margin-right 5px
+			flex 1
 			padding 5px 0
 			background-color var(--origin4)
 			color var(--gray1)
@@ -224,7 +214,7 @@ export default {
 			overflow hidden
 			.title
 				padding 8px 10px
-				background-color var(--origin3)
+				background-color var(--origin2)
 				font-size 24rpx
 				font-weight 700
 				color #FFFFFF
@@ -247,6 +237,8 @@ export default {
 						border-radius 50%
 						background-color var(--origin1)
 	/* 提示文字 */
-	.hint
+	.remark
+		padding 10px
+		font-size 22rpx
 		color var(--gray2)
 </style>

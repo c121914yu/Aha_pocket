@@ -206,6 +206,11 @@
 				"onReachBottomDistance": 250
 			}
 		}, {
+			"path": "pages/Project/ReadFile2",
+			"style": {
+				"navigationBarTitleText": "阅读器2"
+			}
+		}, {
 			"path": "pages/Project/PreviewFile",
 			"style": {
 				"navigationBarTitleText": "预览项目"
@@ -238,9 +243,7 @@
 		    "path" : "pages/Interflow/Team/MyTeam",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "我的团队",
-				"enablePullDownRefresh": true,
-				"onReachBottomDistance": 150
+		        "navigationBarTitleText": "我的团队"
 		    }
 		    
 		},

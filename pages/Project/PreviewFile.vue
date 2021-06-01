@@ -1,4 +1,7 @@
-<!-- 预览文档类型附件 -->
+<!-- 
+	预览文档类型附件
+	author yjl
+-->
 <template>
 	<view class="read-file">
 		<image

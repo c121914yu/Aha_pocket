@@ -5,8 +5,16 @@
 		<view v-if="type===0" class="remark-hint">
 			<button class="write" @click="type=1">发表评论</button>
 			<view class="icon iconfont icon-xinxi" @click="$emit('scrollComment')"></view>
-			<view v-if="isCollect" class="icon iconfont icon-collection collected" @click="collected"></view>
-			<view v-else class="icon iconfont icon-shoucang" @click="collected"></view>
+			<view 
+				v-if="isCollect" 
+				class="icon iconfont icon-collection collected" 
+				@click="onclickCollect">
+			</view>
+			<view 
+				v-else 
+				class="icon iconfont icon-shoucang" 
+				@click="onclickCollect">
+			</view>
 			<button class="icon iconfont icon-share share" open-type="share"></button>
 			<!-- <view class="webRead icon iconfont icon-airplaytouping" @click="webRead"></view> -->
 		</view>
@@ -25,21 +33,23 @@
 				</view>
 				<textarea
 					class="textarea"
-					placeholder="写下你的评论,让大家了解更多" 
-					v-model="commentContent"
-					maxlength="-1"
+					maxlength="120"
 					cursor-spacing="120"
 					:show-confirm-bar="false"
-					auto-height
-					fixed/>
+					auto-height="auto-height"
+					focus="focus"
+					placeholder="写下你的评论,让大家了解更多"
+					v-model="commentContent.val"/>
 				<!-- 评分 -->
 				<view class="footer">
 					<comment-star v-if="checkCommentType.value!=='public'" v-model="score"></comment-star>
 					<view v-else></view>
-					<button class="publish" @click="publish">发表</button>
+					<button class="publish" @click="onclickPublish">发表</button>
 				</view>
 			</view>
 		</view>
+		<!-- 加载动画 -->
+		<load-animation ref="loading"></load-animation>
 	</view>
 </template>
 
@@ -54,7 +64,10 @@ export default {
 		return {
 			type: 0,
 			isCollect: false,
-			commentContent: "",
+			commentContent: {
+				val: "",
+				errMsg: "评论内容不能为空"
+			},
 			checkCommentType: {
 				label: "公开讨论",
 				value: "public"
@@ -84,11 +97,10 @@ export default {
 		})
 	},
 	methods:{
-		/*
-			name: 收藏/取消收藏项目
-			desc：根据当前收藏状态判断，收藏项目还是取消收藏，修改收藏状态及项目收藏数量
-		*/
-		collected()
+	    /**
+		 * 根据当前收藏状态判断，收藏项目还是取消收藏，修改收藏状态及项目收藏数量
+		 */
+		onclickCollect()
 		{
 			/* 本是收藏的，取消收藏 */
 			if (this.isCollect) {
@@ -111,39 +123,41 @@ export default {
 			"已复制连接,请用电脑浏览器打开!"
 			)
 		},
-		/* 发表评论 */
-		publish()
+		/**
+		 * 点击发表评论
+		 */
+		onclickPublish()
 		{
-			if(this.commentContent === ""){
-				this.gToastError("内容不能为空")
-				return
-			}
-			let postFn
-			if(this.checkCommentType.value === "public"){
-				postFn = postPublicComment({
-					projectId: this.projectId,
-					comment: this.commentContent,
-				})
-			}
-			else{
-				postFn = postRemark(this.checkCommentType.value,{
-					comment: this.commentContent,
-					score: this.score
-				})
-			}
-			postFn.then(res => {
-				this.gToastSuccess("评论成功")
-				this.type = 0
-				this.commentContent = ""
-				this.checkCommentType = {
-					label: "公开讨论",
-					value: "public"
+			if(!this.gIsNull([this.commentContent])){
+				this.gLoading(this,true)
+				let postFn
+				if(this.checkCommentType.value === "public"){
+					postFn = postPublicComment({
+						projectId: this.projectId,
+						comment: this.commentContent.val,
+					})
 				}
-				this.score = 5
-				this.$emit("success")
-			})
+				else{
+					postFn = postRemark(this.checkCommentType.value,{
+						comment: this.commentContent.val,
+						score: this.score
+					})
+				}
+				postFn.then(res => {
+					this.gToastSuccess("评论成功")
+					this.type = 0
+					this.commentContent.val = ""
+					this.checkCommentType = {
+						label: "公开讨论",
+						value: "public"
+					}
+					this.score = 5
+					this.$emit("success")
+				})
+				.finally(() => this.gLoading(this,false))
+			}
 		}
-	},
+	}
 }
 </script>
 

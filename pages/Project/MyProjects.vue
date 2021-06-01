@@ -1,4 +1,7 @@
-<!-- 个人项目管理 -->
+<!-- 
+	个人项目管理
+	author
+-->
 <template>
 	<view class="my-projects">
 		<!-- 头部 -->
@@ -8,7 +11,7 @@
 				<view style="border-bottom-left-radius: 16px;" class="item amount">
 					<view class="title">
 						项目总数
-						<text class="mini">(<text class="strong">{{checkAmount}}</text> 个审核中)</text>
+						<text class="mini">(<text class="strong">{{checkingAmount}}</text> 个审核中)</text>
 					</view>
 					<view class="value">{{projects.length}}</view>
 				</view>
@@ -17,7 +20,7 @@
 					<view class="value">{{collection}}</view>
 				</view>
 			</view>
-			<!-- 导航 -->
+			<!-- 项目排序 & 筛选 -->
 			<view class="sorts">
 				<view 
 					class="sort"
@@ -39,29 +42,26 @@
 		<!-- 项目卡片 -->
 		<view class="cards">
 			<view>
-				<projectCard
+				<project-card
 					v-for="(project, index) in projects"
 					:key="index"
 					margin="10px 0"
 					radius="16px"
 					isShowStatus
 					:project="project"
-					@click="projectSetting(project)"
-				></projectCard>
+					@click="onclickProject(project)">
+				</project-card>
 			</view>
 		</view>
-		<view class="center mini remark">{{ is_showAll ? "已加载全部" : "" }}</view>
+		<view class="center mini remark">{{ is_loadAll ? "已加载全部" : "" }}</view>
 		<!-- 上传项目 -->
-		<btn-bottom
-			text="上传项目"
-			@click="upProject">
-		</btn-bottom>
+		<btn-bottom @click="upProject">上传项目</btn-bottom>
 		<!-- 筛选组件 -->
-		<ProjectFilter
+		<project-filter
 			v-show="is_showFileter"
 			@close="is_showFileter=false"
 			@filterChange="filterChange">
-		</ProjectFilter>
+		</project-filter>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
 	</view>
@@ -72,6 +72,10 @@ import { getMeProjects, deleteProject } from '@/static/request/api_project.js';
 import ProjectCard from "./components/ProjectCard.vue"
 import ProjectFilter from "./components/ProjectFilter.vue"
 export default {
+	components: {
+		"project-card": ProjectCard,
+		"project-filter": ProjectFilter
+	},
 	data() {
 		return {
 			sortList: [
@@ -86,45 +90,42 @@ export default {
 			pageSize: 15,
 			sortBy: "read",
 			filter: null,
-			is_showAll: false, 
+			is_loadAll: false, 
 			is_showFileter: false
 		}
 	},
 	computed: {
-		checkAmount(){
+		checkingAmount(){
 			return this.projects.filter(item => !item.passed).length
 		},
+		/**
+		 * 我的项目获得收藏总数
+		 */
 		collection(){
-			console.log(getApp().globalData.gUserInfo);
 			return getApp().globalData.gUserInfo.statistice.totalReceivedCollection
 		}
 	},
-	components: {
-		ProjectCard,
-		ProjectFilter
-	},
 	onShow() {
-		this.loadProjects(true)
+		this.loadProjects(true,true)
 	},
 	onPullDownRefresh() {
-		this.loadProjects(true)
+		this.loadProjects(true,true)
 	},
 	onReachBottom() {
-		if (!this.is_showAll) {
-			this.loadProjects(false,false)
+		if (!this.is_loadAll) {
+			this.loadProjects()
 		}
 	},
 	methods: {
-		/*
-			name: 获取项目
-			desc: 请求项目数据，根据界面条件排序/筛选。传入init参数，判断是否初始化进行操作。
-			time: 2020/12/4
-		*/
-		loadProjects(init=false,loading=true) 
+	    /**
+		 * 分页加载项目
+		 */
+		loadProjects(init=false,loading=false) 
 		{
 			this.gLoading(this, loading)
 			if (init) {
 				this.pageNum = 1
+				this.is_loadAll = false
 			}
 			let params = {
 				pageNum: this.pageNum,
@@ -136,13 +137,13 @@ export default {
 			}
 			getMeProjects(params)
 			.then(res => {
+				this.projects = init ? res.data.pageData : this.projects.concat(res.data.pageData)
 				if(res.data.pageData.length < this.pageSize){
-					this.is_showAll = true
+					this.is_loadAll = true
 				}
 				else{
 					this.pageNum++
 				}
-				this.projects = init ? res.data.pageData : this.projects.concat(res.data.pageData)
 				console.log(this.projects);
 			})
 			.finally(() => {
@@ -150,25 +151,29 @@ export default {
 				uni.stopPullDownRefresh()
 			})
 		},
-		/*
-			name: 确定排序模式
-			@params sort: Object 排序参数
-			@params index: Number 对应的下标
-			desc：点击排序，先判断是否重复点击，若非则切换排序
-		*/
+	    /**
+		 * 点击排序，判断是否重复点击，若不是则重新请求项目
+		 * @param { Object } sort 排序内容
+		 * @param { Number } index 点击的下标
+		 */
 		onclickSort(sort, index) 
 		{
 			if(this.sortActive !== index){
 				this.sortActive = index
 				this.sortBy = sort.val
-				this.loadProjects(true)
+				this.loadProjects(true,true)
 			}
 		},
+		/**
+		 * 筛选改变，重新请求项目
+		 * @param { Object } sort 排序内容
+		 * @param { Number } index 点击的下标
+		 */
 		filterChange(e)
 		{
 			this.filter = e
-			this.loadProjects(true)
 			this.is_showFileter = false
+			this.loadProjects(true,true)
 		},
 		/**
 		 * 点击上传项目
@@ -176,31 +181,14 @@ export default {
 		upProject()
 		{
 			uni.navigateTo({
-				url: "UpProject"
+				url: "./UpProject"
 			})
-			// uni.showActionSheet({
-			// 	itemList: ["小程序上传","电脑上传"],
-			// 	success: (res) => {
-			// 		if(res.tapIndex === 0){
-			// 			uni.navigateTo({
-			// 				url: "UpProject"
-			// 			})
-			// 		}
-			// 		else {
-			// 			this.gClipboardData(
-			// 				"http://localhost:8081/project/up/"+uni.getStorageSync("token"),
-			// 				"已复制连接,请使用电脑浏览器打开!"
-			// 			)
-			// 		}
-			// 	}
-			// })
 		},
-		/* 
-			name: 项目设置
-			desc: 根据项目id进入项目编辑界面
-			time: 2020/11/20
-		*/
-		projectSetting(project) 
+	    /**
+		 * 点击项目，调用menu弹窗，可阅读项目或修改项目
+		 * @param {Object} project
+		 */
+		onclickProject(project) 
 		{
 			/* 如果项目已经通过，不允许删除 */
 			const itemList = ["阅读项目", "修改项目"]
@@ -212,12 +200,12 @@ export default {
 				switch(res) {
 					case "阅读项目": 
 						uni.navigateTo({
-							url: `Project?id=${project.id}`
+							url: `./Project?id=${project.id}`
 						})
 						break
 					case "修改项目":
 						uni.navigateTo({
-							url: `EditProject?id=${project.id}`
+							url: `./EditProject?id=${project.id}`
 						})
 						break
 					case "删除项目":
@@ -230,13 +218,8 @@ export default {
 						break
 				}
 			})
-			/* PC编辑项目，跳转阅读界面 */
-			// this.gClipboardData(
-			// 	`http://localhost:8081/project/edit/${project.id}/${uni.getStorageSync("token")}`,
-			// 	"已复制连接,请使用电脑浏览器打开!"
-			// )
 		}
-	},
+	}
 }
 </script>
 

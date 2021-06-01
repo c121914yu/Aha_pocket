@@ -300,7 +300,12 @@ Vue.prototype.gChooseImage = (count=1,original=false) => {
 			sizeType: original ? ["original","compressed"] :  ["compressed"]
 		})
 		.then(img => {
-			resolve(img[1].tempFilePaths)
+			if(img[0] && img[0].errMsg === "chooseImage:fail cancel") {
+				reject("cancel choose")
+			}
+			else {
+				resolve(img[1].tempFilePaths)
+			}
 		})
 		.catch(err => reject(err))
 	})

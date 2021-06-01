@@ -51,12 +51,19 @@
 				border="var(--border2)">
 			</aha-tags>
 			<!-- 团队介绍 -->
-			<view style="margin: 5px 0;" class="strong">团队介绍</view>
+			<view style="margin: 5px 0;" class="strong">
+				团队介绍
+				<text 
+					style="margin-left: 10px;font-weight: 700;color: var(--origin1);"
+					class="start-edit" 
+					@click="startEdit('intro')">
+					点击编辑
+				</text>
+			</view>
 			<view v-if="intro" class="rich-text">
 				<rich-text :nodes="intro"></rich-text>
 			</view>
 			<view v-else class="rich-text" @click="startEdit">点击编辑团队介绍</view>
-			<button class="intro-btn" @click="startEdit('intro')">编辑</button>
 		</view>
 		<!-- 成员卡片 -->
 		<view v-if="currentNav===1" class="card member-info">
@@ -184,20 +191,6 @@ export default {
 			is_showApplyList: false,
 		};
 	},
-	filters: {
-		memberIdentify(member,captainId){
-			if(member.uid === captainId){
-				return "队长"
-			}
-			if(member.isAdmin){
-				return "管理员"
-			}
-			if(member.role){
-				return member.role
-			}
-			return "队员"
-		}
-	},
 	onLoad(e) {
 		this.gLoading(this,true)
 		this.id = Number(e.id)
@@ -242,13 +235,14 @@ export default {
 		this.getMemberApply()
 	},
 	onShow() {
-		if(this.currentNav === 0){
-			this.intro = getApp().globalData.gEditContent
+		if(getApp().globalData.gEditContent) {
+			if(this.currentNav === 0){
+				this.intro = getApp().globalData.gEditContent
+			}
+			else if(this.currentNav === 2){
+				this.recruitContent = getApp().globalData.gEditContent
+			}
 		}
-		else if(this.currentNav === 2){
-			this.recruitContent = getApp().globalData.gEditContent
-		}
-		getApp().globalData.gEditContent = ""
 	},
 	methods: {
 		/**

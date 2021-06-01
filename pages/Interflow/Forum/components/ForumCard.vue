@@ -31,6 +31,10 @@
 				<view class="data">
 					<text class="iconfont icon-zan"></text>{{forum.likes}}
 				</view>
+				<!-- 评论数 -->
+				<view class="data">
+					<text class="iconfont icon-pinglun"></text>{{forum.commentNum}}
+				</view>
 			</view>
 		</view>
 	</view>

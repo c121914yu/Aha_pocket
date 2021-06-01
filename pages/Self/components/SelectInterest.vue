@@ -270,16 +270,14 @@ export default {
 			color var(--origin2)
 			&::before
 				content ''
-				position absolute
-				margin-left -25%
+				margin-right 5%
 				width 22%
 				height 2px
 				background-color var(--origin2)
 				border-radius 10px
 			&::after
 				content ''
-				position absolute
-				margin-left 25%
+				margin-left 5%
 				width 22%
 				height 2px
 				background-color var(--origin2)

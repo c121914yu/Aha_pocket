@@ -1,3 +1,7 @@
+<!-- 
+	项目筛选弹窗
+	author yjl
+ -->
 <template>
 	<view class="filter-card fix-screen" @touchmove.stop>
 		<view class="blank" @click="$emit('close')"></view>
@@ -9,18 +13,16 @@
 			<scroll-view class="filter" scroll-y="scroll-y">
 				<!-- 搜索框 -->
 				<view class="search-input">
-					<text class="iconfont icon-sousuo"></text>
-					<input 
-						class="input"
-						type="text" 
-						placeholder="根据项目题目搜索" 
+					<search-input 
+						placeholder="根据项目标题搜索" 
 						@input="initData"
-						v-model="searchText"/>	
+						v-model="searchText">
+					</search-input>
 				</view>
 				<!-- 赛事 | 获奖 -->
 				<view class="filter-nav">
 					<view
-						class="item"
+						class="nav"
 						:class="index === filterNav ? 'active' : ''"
 						v-for="(item, index) in filterType"
 						:key="index"
@@ -36,21 +38,18 @@
 							:class="index === compType ? 'active' : ''"
 							v-for="(item, index) in arr_compType"
 							:key="index"
-							@click="
-								compId = null;
-								compType = index;
-							">
+							@click="compId = null;compType = index;">
 							{{ item.label }}
 						</view>
 					</view>
 					<view class="value competition">
 						<view
+							style="width: 100%;"
 							class="item"
 							:class="index === compId ? 'active' : ''"
 							v-for="(item, index) in arr_competition"
 							:key="index"
-							@click="compId = compId === index ? null : index"
-						>
+							@click="compId = compId === index ? null : index">
 							{{ item.name }}
 						</view>
 					</view>
@@ -120,12 +119,9 @@ export default {
 		}
 	},
 	methods: {
-		/* 筛选内容大类改变，清空输入 */
-		filterNavChange(e) 
-		{
-			this.searchText = '';
-		},
-		/* 输入搜索内容,初始筛选条件 */
+		/**
+		 * 初始筛选条件
+		 */
 		initData() 
 		{
 			this.filterNav = null;
@@ -133,11 +129,9 @@ export default {
 			this.level = 0;
 			this.compId = null;
 		},
-		/*
-			name: 确认筛选模式
-			desc: 获取筛选模式，退出弹窗。
-			time: 2020/12/26
-		*/
+	    /**
+		 * 确认筛选模式
+		 */
 		sureFilter(All = false) 
 		{
 			/* 点击所有项目 */
@@ -201,28 +195,16 @@ export default {
 			font-size 12px
 			overflow auto
 			.search-input
-				position relative
-				border-radius 22px
-				display flex
-				align-items center
-				overflow hidden
-				.iconfont
-					position absolute
-					margin-left 10px
-					color var(--origin2)
-				.input
-					flex 1
-					padding-left 30px
-					background-color #FFFFFF
+				padding 0 5%
 			.filter-nav
 				margin 10px
 				padding 10px
 				background-color #FFFFFF
 				border-radius 22px
-				display grid
-				grid-template-columns 1fr 1fr
+				display flex
 				text-align center
-				.item
+				.nav
+					flex 1
 					border-radius 22px
 					padding 5px
 					color var(--gray2)
@@ -234,10 +216,12 @@ export default {
 				padding 10px
 				background-color #FFFFFF
 				border-radius 22px
-				display grid
-				grid-gap 10px
+				display flex
+				flex-wrap wrap
 				text-align center
 				.item
+					margin-bottom 10px
+					width 25%
 					padding 5px
 					&.active
 						border-radius 22px

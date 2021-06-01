@@ -124,14 +124,14 @@ export default {
 		border var(--border2)
 		border-radius 8px
 		display flex
-		.left
-			.role
-				font-size 22rpx
-				border-radius 4px
-				padding 0 5px
-				text-align center
-				background-color var(--origin2)
-				color #FFFFFF
+		.left .role
+			margin-top 10px	
+			font-size 22rpx
+			border-radius 4px
+			padding 0 5px
+			text-align center
+			background-color var(--origin2)
+			color #FFFFFF
 		.right
 			margin-left 10px
 			flex 1

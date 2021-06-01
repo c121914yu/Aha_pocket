@@ -129,6 +129,11 @@ export default {
 			this.copy = true
 		}
 	},
+	destroyed() {
+		setTimeout(() => {
+			getApp().globalData.gEditContent = ""
+		})
+	},
 	methods: {
 		/**
 		 * 加载完成，初始化富文本内容

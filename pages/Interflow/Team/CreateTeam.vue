@@ -70,8 +70,9 @@ export default {
 	},
 	onShow() {
 		/* 获取md内容 */
-		this.intro = getApp().globalData.gEditContent
-		getApp().globalData.gEditContent = ""
+		if(getApp().globalData.gEditContent) {
+			this.intro = getApp().globalData.gEditContent
+		}
 	},
 	methods: {
 		/**

@@ -7,6 +7,11 @@ import request from "./request.js"
 exports.getTeams = (params) => request("/team/","GET",params)
 
 /**
+ * 获取我的团队列表
+ */
+exports.getMyTeams = () => request("/team/me","GET")
+
+/**
  * 获取单个团队详细
  * @param {Number}  teamId
  */

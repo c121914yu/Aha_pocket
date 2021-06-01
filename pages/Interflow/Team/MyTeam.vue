@@ -33,7 +33,14 @@
 				@click="onclickTeam(team)">
 			</team-card>
 		</view>
-		<view class="center remark">{{is_loadAll ? "已加载全部" : ""}}</view>
+		<view v-if="arr_teams.length > 0" class="center remark">已加载全部</view>
+		<view v-else class="no-team">
+			<view class="msg">还没有团队，要不试试</view>
+			<view class="btns">
+				<button class="btn" @click="findTeam">寻找团队</button>
+				<navigator class="btn" hover-class="none" url="./CreateTeam"><button>创建团队</button></navigator>
+			</view>
+		</view>
 		<btn-bottom linkTo="./CreateTeam">创建团队</btn-bottom>
 		<!-- 加载动画 -->
 		<load-animation ref="loading"></load-animation>
@@ -41,7 +48,7 @@
 </template>
 
 <script>
-import { getTeams } from "@/static/request/api_team.js"
+import { getMyTeams } from "@/static/request/api_team.js"
 import TeamCard from "./components/TeamCard.vue"
 export default {
 	components: {
@@ -56,51 +63,25 @@ export default {
 				{label: "我管理",value: "admin"}
 			],
 			activeFilter: "all",
-			pageNum: 1,
-			pageSize: 10,
-			is_loadAll: false,
 			arr_teams: []
 		}
 	},
 	onShow() {
-		this.loadTeams(true,true)
-	},
-	onPullDownRefresh() {
-		if(!this.is_loadAll) {
-			this.loadTeams()
-		}
+		this.loadTeams()
 	},
 	methods: {
 		/**
 		 * 加载团队信息
 		 */
-		loadTeams(init=false,loading=false)
+		loadTeams()
 		{
-			this.gLoading(this,loading)
-			if(init){
-				this.pageNum = 1
-			}
-			getTeams({
-				pageNum: this.pageNum,
-				pageSize: this.pageSize,
-			})
+			this.gLoading(this,true)
+			getMyTeams()
 			.then(res => {
-				if(init) {
-					this.arr_teams = []
-				}
-				console.log(res.data)
-				/* 判断是否加载全部 */
-				if(res.data.length < this.pageSize) {
-					this.is_loadAll = true
-				}
-				else {
-					this.pageNum++
-				}
-				this.arr_teams = this.arr_teams.concat(res.data)
+				this.arr_teams = res.data
 			})
 			.finally(() => {
 				this.gLoading(this, false)
-				uni.stopPullDownRefresh()
 			})
 		},
 		/**
@@ -121,6 +102,16 @@ export default {
 						url: `./EditTeam?id=${team.id}`
 					})
 				}
+			})
+		},
+		/**
+		 * 查找团队，返回上一页，并切换底部路由至1
+		 */
+		findTeam()
+		{
+			uni.$emit("navChange",1)
+			uni.navigateBack({
+				delta: 1
 			})
 		}
 	}
@@ -159,6 +150,18 @@ export default {
 	.teams
 		width 90%
 		margin 10px auto
+	.no-team
+		padding 20px
+		text-align center
+		.msg
+			color var(--origin1)
+		.btns
+			margin-top 10px
+			display flex
+			justify-content space-around
+			.btn
+				margin 0
+				width 35%
 	.remark
 		margin-bottom 60px
 		font-size 22rpx

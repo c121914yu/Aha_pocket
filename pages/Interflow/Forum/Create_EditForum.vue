@@ -107,7 +107,7 @@ export default {
 				const tagId = this.arr_forumTags.find(item => item.name === this.tag.val)
 				const data = {
 					title: this.title.val,
-					tagId: tagId ? tagId.id : 9,
+					tagId: tagId ? tagId.id : 11,
 					content: this.content,
 				}
 				if(this.id === null) {

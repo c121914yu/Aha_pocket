@@ -132,6 +132,7 @@ export default {
 				background-color var(--origin2)
 				color #FFFFFF
 	.container
+		margin-top 5px
 		display flex
 		align-items flex-end
 		.intro

@@ -97,6 +97,7 @@ export default {
 			this.loadNeed()
 			this.judgeUnreadInforms()
 		}
+		
 	},
 	onShow() {
 		/* 更新个人页未读 */
@@ -129,7 +130,7 @@ export default {
 	onShareAppMessage(e){
 		return {
 			title: "Aha口袋",
-			path: `pages/Login/Login?token=${uni.getStorageSync('token')}`,
+			path: `/pages/Login/Login`,
 			desc: `${getApp().globalData.gUserInfo.userInfo.nickname}邀您加入Aha口袋`
 		}
 	},

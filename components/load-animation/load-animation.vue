@@ -4,7 +4,7 @@
  -->
 <template>
 	<view v-if="show" class="loading" @touchmove.stop>
-		<view class="content">
+		<view class="load-content">
 			<view class="load">
 				<text class="iconfont icon-start loader-star"></text>
 				<view class="loader-circles"></view>
@@ -31,7 +31,7 @@ export default {
 	right 0
 	bottom 0
 	left 0
-	.content
+	.load-content
 		position absolute
 		top 50%
 		left 50%

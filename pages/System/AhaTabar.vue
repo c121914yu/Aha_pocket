@@ -41,6 +41,21 @@ export default {
 				{icon: "icon-user",text: "我的Aha",name: "Self"},
 			]
 		}
+	},
+	created() {
+		uni.$once("navChange",(index) => {
+			this.watchNav(index)
+		})
+	},
+	methods: {
+		watchNav(i)
+		{
+			console.log(i);
+			this.$emit('navigate',this.navs[i].name)
+			uni.$once("navChange",(index) => {
+				this.watchNav(index)
+			})
+		}
 	}
 }
 </script>

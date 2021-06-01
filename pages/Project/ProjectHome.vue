@@ -35,14 +35,14 @@
 		</view>
 		<!-- 比赛推荐 -->
 		<view class="recommand">
-			<ProjectHead 
+			<project-head 
 				topRadius
 				@sortChange="sortChange" 
 				@filterChange="filterChange">
-			</ProjectHead>
+			</project-head>
 			<!-- 推荐比赛列表 -->
 			<view class="list">
-				<projectCard
+				<project-card
 					v-for="(project, index) in arr_projects"
 					:key="index"
 					margin="0 0 10px 0"
@@ -50,7 +50,7 @@
 					:project="project"
 					isShowAnonymous
 					@click="readProject(project.id)"
-				></projectCard>
+				></project-card>
 			</view>
 		</view>
 		<view class="center small remark">{{ is_loadAll ? "已加载全部" : "" }}</view>
@@ -64,6 +64,10 @@ import { getProjects } from '@/static/request/api_project.js'
 import ProjectCard from "./components/ProjectCard.vue"
 import ProjectHead from "./components/ProjectHead.vue"
 export default {
+	components: {
+		"project-head": ProjectHead,
+		"project-card": ProjectCard
+	},
 	data() {
 		return {
 			rankType: 'week',
@@ -74,18 +78,14 @@ export default {
 			RankingData: [],
 			arr_projects: [],
 			is_loadAll: false
-		};
-	},
-	components: {
-		ProjectHead,
-		ProjectCard
+		}
 	},
 	methods: {
-		/* 
-			name: 获取项目
-			desc: 请求项目数据，根据界面条件排序/筛选。传入init参数，判断是否初始化进行操作。
-			time: 2020/12/4
-		*/
+	    /**
+		 * 加载项目
+		 * @param {Boolean}  init 是否初始化
+		 * @param {Boolean}  loading 加载动画
+		 */
 		loadProjects(init=false,loading=false) 
 		{
 			if (init) {
@@ -119,7 +119,7 @@ export default {
 					this.arr_projects.push(project)
 				})
 				
-				/* 获取推荐 */
+				/* 模拟获取推荐 */
 				if(this.arr_projects.length >= 3){
 					this.RankingData = [this.arr_projects[0], this.arr_projects[1], this.arr_projects[2]]
 				}
@@ -130,22 +130,27 @@ export default {
 			})
 			.finally(() => this.gLoading(this, false))
 		},
-		/* 排序发生改变，获取排序字段并重新请求数据 */
+		/**
+		 * 排序发生改变，获取排序字段并重新请求数据
+		 * @param {Object} e 排序对象
+		 */
 		sortChange(e)
 		{
 			this.sortBy = e.val
 			this.loadProjects(true,true)
 		},
-		/* 
-			name: 确认筛选
-			desc: 获取筛选模式，关闭弹窗，请求数据
-		*/
+	    /**
+		 * 确认筛选模式，关闭弹窗，请求数据
+		 * @param {Object} e
+		 */
 	    filterChange(e)
 	    {
 			this.filter = e
 			this.loadProjects(true,true)
 	    },
-		/* 进入项目详细 */
+		/**
+		 * 进入项目详细
+		 */
 		readProject(id) 
 		{
 			uni.navigateTo({

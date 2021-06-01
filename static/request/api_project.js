@@ -177,15 +177,14 @@ exports.putResource = (resourceId,data) => request(`/project/resource/${resource
  * 获取下载签名
  * @param {Number}  resourceId
  */
-exports.getLoadSignature = (resourceId) => request(`/project/resource/${resourceId}/sign/download`,"GET",{})
+exports.getLoadSignature = (resourceId) => request(`/project/resource/${resourceId}/sign/download`,"GET")
 
 /**
  * 获取阅读签名
  * @param {Number}  resourceId
  */
-exports.getReadSignature = (resourceId) => request(`/project/resource/${resourceId}/sign/read`,"GET",{})
+exports.getReadSignature = (resourceId) => request(`/project/resource/${resourceId}/sign/read`,"GET")
 
-/*  */
 /**
  * 创建项目成员
  * @param {Number}  projectId
@@ -194,31 +193,31 @@ exports.getReadSignature = (resourceId) => request(`/project/resource/${resource
  * @param {String}  job 职务
  * @param {Boolean}  editable 是否可编辑项目信息
  */
-exports.postMember = (projectId,data) => request(`/project/member/${projectId}`,"POST",data)
+exports.postMember = ({projectId,...data}) => request(`/project/member/${projectId}`,"POST",data)
 
 /**
  * 更新项目单个成员信息
  * @param {Number}  projectId
- * @param {Number}  memberUserId 成员ID
+ * @param {Number}  userId 成员ID
  * @param {Number}  rank 排名
  * @param {String}  job 职务
  * @param {Boolean}  editable 是否可编辑项目信息
  */
-exports.putMember = (projectId,memberUserId,data) => request(`/project/member/${projectId}/${memberUserId}`,"PUT",data)
+exports.putMember = ({projectId,userId,...data}) => request(`/project/member/${projectId}/${userId}`,"PUT",data)
 
 /**
  * 批量更新项目成员
  * @param {Number}  projectId
  * @param {Array}  body 内容同上
  */
-exports.putMembers = (projectId,data) => request(`/project/members/${projectId}`,"PUT",data)
+exports.putMembers = ({projectId,members}) => request(`/project/members/${projectId}`,"PUT",members)
 
 /**
  * 删除成员
  * @param {Number}  projectId
- * @param {Number}  memberUserId 成员ID
+ * @param {Number}  userId 成员ID
  */
-exports.deleteMember = (projectId,memberUserId) => request(`/project/member/${projectId}/${memberUserId}`,"DELETE")
+exports.deleteMember = ({projectId,userId}) => request(`/project/member/${projectId}/${userId}`,"DELETE")
 
 /**
  * 申请认领资源

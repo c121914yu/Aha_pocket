@@ -8,12 +8,12 @@
 		<view class="container">
 			<textarea
 				class="textarea"
-				focus="focus" 
 				:placeholder="placeholder"
 				auto-height="auto-height"
-				maxlength="-1"
+				maxlength="200"
 				cursor-spacing="120"
 				:show-confirm-bar="false"
+				focus="focus"
 				v-model="content"/>
 			<view class="footer">
 				<view></view>

@@ -138,6 +138,13 @@ export default {
 			arr_userTracks: []
 		}
 	},
+	onShareAppMessage(e){
+		return {
+			title: "Aha口袋",
+			path: `/pages/Login/Login?path=/pages/Self/UserHome&paramKey=userId&paramVal=${this.userId}`,
+			desc: "Aha口袋邀您阅读" + this.name,
+		}
+	},
 	onLoad(e) {
 		if (!e.userId) {
 			this.gBackPage("ID无效")

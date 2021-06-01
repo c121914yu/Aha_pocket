@@ -211,9 +211,11 @@ export default {
 			display flex
 			align-items flex-start
 			.apply-status
+				margin-top 10px
 				background-color var(--origin1)
-				padding 0
-				line-height 1.6
+				padding 0 10px
+				font-size 22rpx
+				border-radius 22px
 			.right
 				position relative
 				padding-right 10px
@@ -230,7 +232,7 @@ export default {
 					background-color var(--origin2)
 					color #FFFFFF
 					display inline-block
-				.consult, .apply-status
+				.consult
 					position absolute
 					right 0
 					top 0px
