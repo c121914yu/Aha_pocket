@@ -263,14 +263,14 @@ export default {
 		this.gLoading(this,true)
 		getProject(e.id)
 		.then(res => {
-			// for (let key in res.data){
-			// 	this[key] = res.data[key]
-			// }
+			this.is_anonymous = res.data.isAnonymous
 			this.id = res.data.id
 			this.is_passed = res.data.passed
 			this.avatarUrl = res.data.avatarUrl
 			this.name = res.data.name
 			this.arr_members = res.data.members.sort((a, b) => a.rank - b.rank)
+			this.read = res.data.read
+			this.collect = res.data.collect
 			this.tags = res.data.tags
 			this.awardLevel = res.data.awardLevel
 			this.awardTime = res.data.awardTime
